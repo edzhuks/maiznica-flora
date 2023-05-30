@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Link to="/products">games</Link>
+        <Link to="/products">products</Link>
         <Link to="/login">log in</Link>
         <Link to="/signup">sign up</Link>
       </div>
