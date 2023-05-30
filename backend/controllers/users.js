@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (request, response) => {
-  const { username, password, email } = request.body
+  const { username, password, email, admin, maintainer } = request.body
   if (!username) {
     return response.status(400).json({ error: 'username is required' })
   }
@@ -49,6 +49,8 @@ router.post('/', async (request, response) => {
     username,
     passwordHash,
     email,
+    admin: admin ?? false,
+    maintainer: maintainer ?? false,
   })
 
   const savedUser = await user.save()

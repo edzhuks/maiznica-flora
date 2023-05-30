@@ -5,15 +5,24 @@ const app = require('../app')
 const api = supertest(app)
 
 const User = require('../models/user')
-const dummyUser = {
-  username: 'root',
-  password: 'password11!!',
-  email: 'email@email.email',
-}
+const dummyUsers = [
+  {
+    username: 'root',
+    password: 'password11!!',
+    email: 'email@email.email',
+  },
+  {
+    username: 'admin',
+    password: 'password11!!',
+    email: 'email2@email.email',
+    admin: true,
+  },
+]
 
 beforeEach(async () => {
   await User.deleteMany({})
-  await api.post('/api/users').send(dummyUser)
+  await api.post('/api/users').send(dummyUsers[0])
+  await api.post('/api/users').send(dummyUsers[1])
 })
 
 describe('initial user', () => {
@@ -24,18 +33,19 @@ describe('initial user', () => {
       .expect('Content-Type', /application\/json/)
   })
 
-  test('there is one user', async () => {
+  test('there are 2 users', async () => {
     const response = await api.get('/api/users')
-    expect(response.body).toHaveLength(1)
+    expect(response.body).toHaveLength(2)
   })
 
-  test('the user has username root', async () => {
+  test('the users have usernames root and admin', async () => {
     const response = await api.get('/api/users')
-    expect(response.body[0].username).toEqual('root')
+    expect(response.body.map((u) => u.username)).toContain('root')
+    expect(response.body.map((u) => u.username)).toContain('admin')
   })
 })
 
-describe('user creation', () => {
+describe('user creation validation', () => {
   test('user with correct data can be added', async () => {
     const newUser = {
       username: 'tester',
@@ -50,7 +60,7 @@ describe('user creation', () => {
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/users')
-    expect(response.body).toHaveLength(2)
+    expect(response.body).toHaveLength(3)
 
     expect(response.body.map((u) => u.username)).toContain('tester')
     expect(response.body.map((u) => u.email)).toContain('user@site.com')
@@ -105,11 +115,70 @@ describe('user creation', () => {
   })
 })
 
+describe('user creation roles', () => {
+  test('user has no special roles by default', async () => {
+    const newUser = {
+      username: 'tester',
+      password: 'secret222!!!',
+      email: 'user@site.com',
+    }
+
+    await api.post('/api/users').send(newUser)
+
+    const response = await api.get('/api/users')
+    console.log(response.body)
+    expect(
+      response.body.find((u) => u.username === newUser.username).admin
+    ).toBe(false)
+    expect(
+      response.body.find((u) => u.username === newUser.username).maintainer
+    ).toBe(false)
+  })
+
+  test('user can be admin', async () => {
+    const newUser = {
+      username: 'tester',
+      password: 'secret222!!!',
+      email: 'user@site.com',
+      admin: true,
+    }
+
+    await api.post('/api/users').send(newUser)
+
+    const response = await api.get('/api/users')
+    expect(
+      response.body.find((u) => u.username === newUser.username).admin
+    ).toBe(true)
+    expect(
+      response.body.find((u) => u.username === newUser.username).maintainer
+    ).toBe(false)
+  })
+
+  test('user can be maintainer', async () => {
+    const newUser = {
+      username: 'tester',
+      password: 'secret222!!!',
+      email: 'user@site.com',
+      maintainer: true,
+    }
+
+    await api.post('/api/users').send(newUser)
+
+    const response = await api.get('/api/users')
+    expect(
+      response.body.find((u) => u.username === newUser.username).admin
+    ).toBe(false)
+    expect(
+      response.body.find((u) => u.username === newUser.username).maintainer
+    ).toBe(true)
+  })
+})
+
 describe('login', () => {
   test('user can log in with username and password', async () => {
     const response = await api
       .post('/api/login')
-      .send(dummyUser)
+      .send(dummyUsers[0])
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
