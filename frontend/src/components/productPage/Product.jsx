@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import cartService from '../../services/cart'
 
 const Product = () => {
+  const [quantity, setQuantity] = useState(1)
+
   const [product, setProduct] = useState()
   const id = useParams().id
 
@@ -11,6 +14,10 @@ const Product = () => {
       .get(`http://localhost:3001/api/products/${id}`)
       .then((g) => setProduct(g.data))
   }, [])
+
+  const addToCart = () => {
+    cartService.addToCart({ quantity, product })
+  }
 
   if (product)
     return (
@@ -90,6 +97,14 @@ const Product = () => {
               height={66}
             />
           )}
+          <div>
+            <input
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              type="number"
+            />
+          </div>
+          <button onClick={addToCart}>add to cart</button>
         </div>
       </div>
     )

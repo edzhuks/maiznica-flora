@@ -5,10 +5,23 @@ import Product from './components/productPage/Product'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import NewProductFrom from './components/NewProduct'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('maiznicefloraUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
+
+  const logout = () => {
+    setUser(null)
+    window.localStorage.removeItem('maiznicafloraUser')
+  }
 
   return (
     <UserContext.Provider value={[user, setUser]}>
@@ -22,7 +35,7 @@ function App() {
               <Link to="/signup">sign up</Link>
             </>
           )}
-          {user && <button onClick={() => setUser(null)}>log out</button>}
+          {user && <button onClick={logout}>log out</button>}
         </div>
 
         <Routes>

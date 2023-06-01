@@ -18,6 +18,7 @@ const Login = () => {
     const result = await userService.login(username.value, password.value)
     console.log(result)
     setUser(result)
+    window.localStorage.setItem('maiznicefloraUser', JSON.stringify(result))
     navigate('/products')
   }
 

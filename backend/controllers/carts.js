@@ -1,5 +1,6 @@
 const express = require('express')
 const Cart = require('../models/cart')
+const { userExtractor } = require('../util/middleware')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -12,9 +13,24 @@ router.get('/:id', async (req, res) => {
   res.send(carts)
 })
 
-router.post('/', async (req, res) => {
-  console.log(req.body)
-  const cart = new Cart(req.body)
+router.post('/', userExtractor, async (req, res) => {
+  let cart = await Cart.findOne({ user: req.user.id })
+  if (!cart) {
+    cart = await new Cart({
+      content: [],
+      user: req.user.id,
+    })
+  }
+  if (
+    (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
+  ) {
+    item.quantity += Number(req.body.quantity)
+  } else {
+    cart.content = cart.content.concat({
+      product: req.body.product.id,
+      quantity: req.body.quantity,
+    })
+  }
   await cart.save()
   res.send(cart)
 })

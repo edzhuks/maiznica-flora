@@ -8,6 +8,7 @@ const reviewRouter = require('./controllers/reviews')
 const userRouter = require('./controllers/users')
 const app = express()
 const mongoose = require('mongoose')
+const { tokenExtractor } = require('./util/middleware')
 mongoose.set('strictQuery', false)
 
 const url = config.MONGODB_URI
@@ -25,9 +26,10 @@ mongoose
 
 app.use(cors())
 app.use(express.json())
+app.use(tokenExtractor)
 app.use('/api/products', productRouter)
 app.use('/api/login', loginRouter)
-app.use('/api/carts', publihserRouter)
+app.use('/api/cart', publihserRouter)
 app.use('/api/reviews', reviewRouter)
 app.use('/api/users', userRouter)
 
