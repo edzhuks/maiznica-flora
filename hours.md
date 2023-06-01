@@ -7,3 +7,5 @@
 | 30.05 | 0     | changed plans from board game website to a bakery website with webshop, copied usable parts (almost everything) and renamed everything to fit. So the prior work is not wasted |
 
 | 30.05 | 0.5 | user roles in frontend, backend and tests |
+
+| 01.06 | 1 | extended product schema, more detailed product page, page for adding new products |

@@ -3,13 +3,18 @@ import { Link } from 'react-router-dom'
 const ProductListItem = ({ product }) => {
   return (
     <div>
-      <Link to={`/products/${product.id}`}>{product.name}</Link>
-      <p>{product.description}</p>
+      <Link to={`/products/${product.id}`}>
+        <img
+          src={product.image}
+          width={100}
+          height={100}
+        />
+        <h3>{product.name}</h3>
+      </Link>
       <p>
-        {product.price} euro <br />
-        {product.weight} grams
+        €{product.price} {product.weight}g
       </p>
-      <h4>rating: {product.rating}</h4>
+      {product.rating && <h4>{product.rating}/10</h4>}
     </div>
   )
 }

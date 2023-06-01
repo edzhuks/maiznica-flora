@@ -3,6 +3,17 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
   name: String,
   description: String,
+  ingredients: String,
+  nutrition: {
+    energy: Number,
+    fat: Number,
+    saturatedFat: Number,
+    carbs: Number,
+    sugar: Number,
+    fiber: Number,
+    protein: Number,
+    salt: Number,
+  },
   weight: Number,
   price: Number,
   reviews: [
@@ -12,6 +23,9 @@ const productSchema = new mongoose.Schema({
     },
   ],
   rating: Number,
+  EAN: String,
+  image: String,
+  bio: Boolean,
 })
 
 productSchema.set('toJSON', {

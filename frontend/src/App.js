@@ -3,12 +3,14 @@ import ProductList from './components/productList/ProductList'
 import Product from './components/productPage/Product'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
+import NewProductFrom from './components/NewProduct'
 
 function App() {
   return (
     <Router>
       <div>
         <Link to="/products">products</Link>
+        <Link to="/new-product">new product</Link>
         <Link to="/login">log in</Link>
         <Link to="/signup">sign up</Link>
       </div>
@@ -21,6 +23,10 @@ function App() {
         <Route
           path="/products/:id"
           element={<Product />}
+        />
+        <Route
+          path="/new-product"
+          element={<NewProductFrom />}
         />
         <Route
           path="/login"
