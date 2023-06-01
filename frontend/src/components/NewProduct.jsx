@@ -1,6 +1,7 @@
 import productService from '../services/product'
 import useField from '../hooks/useField'
 import { useState } from 'react'
+import Input from './basic/Input'
 
 const NewProductFrom = () => {
   const name = useField('text')
@@ -76,7 +77,7 @@ const NewProductFrom = () => {
       <h1>Add a new product</h1>
       <form onSubmit={onSubmit}>
         <div>
-          name: <input {...name} />
+          name: <Input {...name} />
         </div>
         <div>
           description:
@@ -93,44 +94,44 @@ const NewProductFrom = () => {
           />
         </div>
         <div>
-          weight: <input {...weight} />
+          weight: <Input {...weight} />
         </div>
         <div>
-          price: <input {...price} />
+          price: <Input {...price} />
         </div>
         <div>
-          energy: <input {...energy} />
+          energy: <Input {...energy} />
         </div>
         <div>
-          fat: <input {...fat} />
+          fat: <Input {...fat} />
         </div>
         <div>
-          saturated fat: <input {...saturatedFat} />
+          saturated fat: <Input {...saturatedFat} />
         </div>
         <div>
-          carbs: <input {...carbs} />
+          carbs: <Input {...carbs} />
         </div>
         <div>
-          sugar: <input {...sugar} />
+          sugar: <Input {...sugar} />
         </div>
         <div>
-          fiber: <input {...fiber} />
+          fiber: <Input {...fiber} />
         </div>
         <div>
-          protein: <input {...protein} />
+          protein: <Input {...protein} />
         </div>
         <div>
-          salt: <input {...salt} />
+          salt: <Input {...salt} />
         </div>
         <div>
-          EAN: <input {...EAN} />
+          EAN: <Input {...EAN} />
         </div>
         <div>
-          image: <input {...image} />
+          image: <Input {...image} />
         </div>
 
         <div>
-          <input
+          <Input
             type="checkbox"
             checked={bio}
             onChange={() => setBio(!bio)}

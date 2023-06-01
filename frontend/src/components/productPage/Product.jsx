@@ -30,7 +30,7 @@ const Product = () => {
           {product.description && <p>{product.description}</p>}
           {product.ingredients && <p>{product.ingredients}</p>}
           {product.nutrition && (
-            <table class="wp-block-table is-style-stripes">
+            <table>
               <tbody>
                 <tr>
                   <td>

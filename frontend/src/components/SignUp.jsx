@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import userService from '../services/user'
 import useField from '../hooks/useField'
 import { useState } from 'react'
+import Input from './basic/Input'
 
 const SignUp = () => {
   const navigate = useNavigate()
@@ -30,16 +31,16 @@ const SignUp = () => {
       <h1>Register</h1>
       <form onSubmit={onSubmit}>
         <div>
-          username: <input {...username} />
+          username: <Input {...username} />
         </div>
         <div>
-          email: <input {...email} />
+          email: <Input {...email} />
         </div>
         <div>
-          password: <input {...password} />
+          password: <Input {...password} />
         </div>
         <div>
-          <input
+          <Input
             type="checkbox"
             checked={admin}
             onChange={() => setAdmin(!admin)}
@@ -47,7 +48,7 @@ const SignUp = () => {
           admin
         </div>
         <div>
-          <input
+          <Input
             type="checkbox"
             checked={maintainer}
             onChange={() => setMaintainer(!maintainer)}
