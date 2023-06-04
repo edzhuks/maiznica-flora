@@ -10,3 +10,4 @@
 
 | 01.06 | 1 | extended product schema, more detailed product page, page for adding new products |
 | 01.06 | 1 | user stuff in frontend, cart amnagement in front and backend |
+| 04.06 | 1 | cart management improvements |
