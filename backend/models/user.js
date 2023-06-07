@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
   },
   admin: Boolean,
   maintainer: Boolean,
+  addresses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Address',
+    },
+  ],
 })
 
 userSchema.set('toJSON', {
