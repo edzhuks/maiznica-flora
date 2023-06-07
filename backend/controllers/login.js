@@ -7,7 +7,7 @@ const User = require('../models/user')
 router.post('/', async (request, response) => {
   const { username, password } = request.body
 
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username }).populate('addresses')
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash)
 
@@ -24,14 +24,13 @@ router.post('/', async (request, response) => {
 
   const token = jwt.sign(userForToken, process.env.SECRET)
 
-  response
-    .status(200)
-    .send({
-      token,
-      username: user.username,
-      admin: user.admin,
-      maintainer: user.maintainer,
-    })
+  response.status(200).send({
+    token,
+    username: user.username,
+    admin: user.admin,
+    maintainer: user.maintainer,
+    addresses: user.addresses,
+  })
 })
 
 module.exports = router

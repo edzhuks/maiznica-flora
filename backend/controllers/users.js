@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt')
 const express = require('express')
+const { userExtractor } = require('../util/middleware')
 const router = express.Router()
 const User = require('../models/user')
+const Address = require('../models/address')
+const Cart = require('../models/cart')
 
 router.get('/', async (req, res) => {
   const users = await User.find()
@@ -51,11 +54,27 @@ router.post('/', async (request, response) => {
     email,
     admin: admin ?? false,
     maintainer: maintainer ?? false,
+    addresses: [],
   })
 
   const savedUser = await user.save()
 
+  const newCart = new Cart({
+    content: [],
+    user: savedUser.id,
+  })
+  await newCart.save()
+
   response.status(201).json(savedUser)
+})
+
+router.post('/address', userExtractor, async (req, res) => {
+  let user = await User.findById(req.user.id)
+  const address = new Address(req.body)
+  await address.save()
+  user.addresses = user.addresses.concat(address)
+  await user.save()
+  res.send(address)
 })
 
 module.exports = router

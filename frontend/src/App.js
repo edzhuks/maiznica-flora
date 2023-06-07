@@ -7,6 +7,7 @@ import SignUp from './components/SignUp'
 import NewProductFrom from './components/NewProduct'
 import { useState, useEffect } from 'react'
 import Cart from './components/Cart'
+import Order from './components/Order'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -48,6 +49,10 @@ function App() {
           <Route
             path="/cart"
             element={<Cart />}
+          />
+          <Route
+            path="/order"
+            element={<Order />}
           />
           <Route
             path="/products/:id"
