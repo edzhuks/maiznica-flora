@@ -4,6 +4,16 @@ import useField from '../hooks/useField'
 import { useContext, useState } from 'react'
 import Input from './basic/Input'
 import UserContext from '../contexts/userContext'
+import {
+  BigTitle,
+  Centerer,
+  CheckBox,
+  FullWidthButton,
+  InputGroup,
+  Label,
+  LoginCard,
+  LoginInput,
+} from './styled/base'
 
 const SignUp = () => {
   const [user, setUser] = useContext(UserContext)
@@ -34,37 +44,41 @@ const SignUp = () => {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          username: <Input {...username} />
-        </div>
-        <div>
-          email: <Input {...email} />
-        </div>
-        <div>
-          password: <Input {...password} />
-        </div>
-        <div>
-          <Input
-            type="checkbox"
-            checked={admin}
-            onChange={() => setAdmin(!admin)}
-          />
-          admin
-        </div>
-        <div>
-          <Input
-            type="checkbox"
-            checked={maintainer}
-            onChange={() => setMaintainer(!maintainer)}
-          />
-          maintainer
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <Centerer>
+      <LoginCard>
+        <BigTitle>Register</BigTitle>
+        <form onSubmit={onSubmit}>
+          <InputGroup>
+            <Label>Username</Label> <LoginInput {...username} />
+          </InputGroup>
+          <InputGroup>
+            <Label>Email</Label> <LoginInput {...email} />
+          </InputGroup>
+          <InputGroup>
+            <Label>Password</Label> <LoginInput {...password} />
+          </InputGroup>
+          <CheckBox>
+            <Input
+              type="checkbox"
+              checked={admin}
+              onChange={() => setAdmin(!admin)}
+            />
+            <span></span>
+            <p>Admin</p>
+          </CheckBox>
+          <CheckBox>
+            <Input
+              type="checkbox"
+              checked={maintainer}
+              onChange={() => setMaintainer(!maintainer)}
+            />
+            <span></span>
+            <p>Maintainer</p>
+          </CheckBox>
+          <FullWidthButton type="submit">Sign Up</FullWidthButton>
+        </form>
+      </LoginCard>
+    </Centerer>
   )
 }
 

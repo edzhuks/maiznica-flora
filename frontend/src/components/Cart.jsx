@@ -3,6 +3,41 @@ import UserContext from '../contexts/userContext'
 import { useContext, useEffect, useState } from 'react'
 import cartService from '../services/cart'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import {
+  Button,
+  ColoredText,
+  FullWidthButton,
+  ProductRow,
+  Right,
+  Row,
+  Title,
+} from './styled/base'
+
+const CartContents = styled.div`
+  float: left;
+  width: 100%;
+  @media (min-width: 768px) {
+    width: 75%;
+  }
+`
+
+const CartSummary = styled.div`
+  float: right;
+  width: 25%;
+  padding: 0px 20px;
+`
+const SummrayLeft = styled.div`
+  float: left;
+  width: 65%;
+  text-align: right;
+  background-color: #fbfbfb;
+`
+const SummrayRight = styled.div`
+  float: right;
+  width: 30%;
+  background-color: #fbfbfb;
+`
 
 const Cart = () => {
   const [cart, setCart] = useState(null)
@@ -10,6 +45,10 @@ const Cart = () => {
   const [deliveryCost, setDeliveryCost] = useState(0)
 
   useEffect(() => {
+    update()
+  }, [])
+
+  const update = () => {
     cartService.getCart().then((c) => {
       setCart(c)
       setTotal(
@@ -20,7 +59,7 @@ const Cart = () => {
       )
       setDeliveryCost(total > 50 ? 0 : 7)
     })
-  }, [])
+  }
 
   const removeItem = (item) => {
     setCart({
@@ -31,10 +70,10 @@ const Cart = () => {
   return (
     <>
       {cart && (
-        <div style={{ display: 'flex' }}>
-          <div>
+        <div style={{ display: 'inline-block', width: '100%' }}>
+          <CartContents>
             {cart.content.length > 0 ? (
-              <div>
+              <ProductRow>
                 {cart.content.map((item) => (
                   <ProductListItem
                     inCart
@@ -42,21 +81,43 @@ const Cart = () => {
                     product={item.product}
                     key={item.product.id}
                     remove={() => removeItem(item)}
+                    update={update}
                   />
                 ))}
-              </div>
+              </ProductRow>
             ) : (
               <p>Nothing in cart.</p>
             )}
-          </div>
-          <div>
-            <p>Sum: €{total}</p>
-            <p>Paid delivery (under €50): €{total > 50 ? 0 : deliveryCost}</p>
-            <p>Total: €{total + deliveryCost}</p>
+          </CartContents>
+          <CartSummary>
+            <SummrayLeft>
+              <p>
+                <b>Sum:</b>
+              </p>
+              <p>
+                <b>Paid delivery</b>
+                <br /> (under €50):
+              </p>
+              <p>
+                <b>Total:</b>
+              </p>
+            </SummrayLeft>
+            <SummrayRight>
+              <p>€{total}</p>
+              <p>
+                <br />€{total > 50 ? 0 : deliveryCost}
+              </p>
+              <p>
+                <b>
+                  <ColoredText>€{total + deliveryCost}</ColoredText>
+                </b>
+              </p>
+            </SummrayRight>
+
             <Link to="/order">
-              <button>order</button>
+              <FullWidthButton>Order</FullWidthButton>
             </Link>
-          </div>
+          </CartSummary>
         </div>
       )}
     </>
