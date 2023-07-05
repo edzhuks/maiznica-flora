@@ -84,7 +84,7 @@ function App() {
         <Container>
           <Routes>
             <Route
-              path="/products"
+              path="/products/:category?"
               element={<ProductList />}
             />
             <Route
