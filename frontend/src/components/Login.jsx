@@ -4,6 +4,17 @@ import useField from '../hooks/useField'
 import UserContext from '../contexts/userContext'
 import { useContext } from 'react'
 import Input from './basic/Input'
+import styled from 'styled-components'
+import {
+  FullWidthButton,
+  Label,
+  StyledInput,
+  BigTitle,
+  Centerer,
+  LoginCard,
+  LoginInput,
+  InputGroup,
+} from './styled/base'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -23,19 +34,23 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <h1>Log In</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          username: <Input {...username} />
-        </div>
-        <div>
-          password: <Input {...password} />
-        </div>
+    <Centerer>
+      <LoginCard>
+        <BigTitle>Sign In</BigTitle>
+        <form onSubmit={onSubmit}>
+          <InputGroup>
+            <Label>Username</Label>
+            <LoginInput {...username} />
+          </InputGroup>
+          <InputGroup>
+            <Label>Password</Label>
+            <LoginInput {...password} />
+          </InputGroup>
 
-        <button type="submit">login</button>
-      </form>
-    </div>
+          <FullWidthButton type="submit">Sign In</FullWidthButton>
+        </form>
+      </LoginCard>
+    </Centerer>
   )
 }
 

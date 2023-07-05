@@ -5,6 +5,43 @@ import userService from '../services/user'
 import useField from '../hooks/useField'
 import Input from './basic/Input'
 import orderService from '../services/order'
+import styled from 'styled-components'
+import {
+  Button,
+  FullWidthButton,
+  Label,
+  StyledInput,
+  Radio,
+} from './styled/base'
+
+const InputGroup = styled.div`
+  float: left;
+  margin-left: 9px;
+  width: 24%;
+  input {
+    width: 100%;
+    margin-right: 0px;
+  }
+`
+const CompactLabel = styled(Label)`
+  width: auto;
+`
+const InputRow = styled.div`
+  display: inline-block;
+  width: 100%;
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
+`
+
+const AddressChoice = styled(Radio)`
+  background-color: #fbfbfb;
+  padding: 18px;
+`
+const Address = styled.div`
+  background-color: #fbfbfb;
+  padding: 18px;
+`
 
 const Order = () => {
   const [user, setUser] = useContext(UserContext)
@@ -48,17 +85,18 @@ const Order = () => {
 
   return (
     <div>
-      {selectedAddress && <button onClick={order}>Place order</button>}
+      {selectedAddress && <Button onClick={order}>Proceed to payment</Button>}
       <div>
         {user?.addresses.map((address) => (
-          <div key={address.id}>
-            <label>
+          <label>
+            <AddressChoice key={address.id}>
               <input
                 type="radio"
                 value={address}
                 checked={selectedAddress === address}
                 onChange={() => selectAddress(address)}
               />
+              <span></span>
               <p>
                 {address.name} {address.surname} {address.phone}
               </p>
@@ -66,36 +104,43 @@ const Order = () => {
                 {address.city} {address.street} {address.house}{' '}
                 {address.apartment}
               </p>
-            </label>
-          </div>
+            </AddressChoice>
+          </label>
         ))}
       </div>
-      <div>
+      <Address>
         <form onSubmit={onSubmit}>
-          <div>
-            name: <Input {...name} />
-          </div>
-          <div>
-            surname: <Input {...surname} />
-          </div>
-          <div>
-            phone: <Input {...phone} />
-          </div>
-          <div>
-            city: <Input {...city} />
-          </div>
-          <div>
-            street: <Input {...street} />
-          </div>
-          <div>
-            house: <Input {...house} />
-          </div>
-          <div>
-            apartment: <Input {...apartment} />
-          </div>
-          <button type="submit">Add new address</button>
+          <InputRow>
+            <InputGroup>
+              <CompactLabel>Name</CompactLabel> <StyledInput {...name} />
+            </InputGroup>
+            <InputGroup>
+              <CompactLabel>Surname</CompactLabel> <StyledInput {...surname} />
+            </InputGroup>
+            <InputGroup>
+              <CompactLabel>Phone</CompactLabel> <StyledInput {...phone} />
+            </InputGroup>
+            <InputGroup style={{}}>
+              <CompactLabel />
+              <FullWidthButton type="submit">Add new address</FullWidthButton>
+            </InputGroup>
+          </InputRow>
+          <InputRow>
+            <InputGroup>
+              <CompactLabel>City</CompactLabel> <StyledInput {...city} />
+            </InputGroup>
+            <InputGroup>
+              <CompactLabel>Street</CompactLabel> <StyledInput {...street} />
+            </InputGroup>
+            <InputGroup>
+              <CompactLabel>House</CompactLabel> <StyledInput {...house} />
+            </InputGroup>
+            <InputGroup>
+              <CompactLabel>Apt.</CompactLabel> <StyledInput {...apartment} />
+            </InputGroup>
+          </InputRow>
         </form>
-      </div>
+      </Address>
     </div>
   )
 }
