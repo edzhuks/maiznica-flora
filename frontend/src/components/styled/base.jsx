@@ -112,6 +112,10 @@ const ProductRow = styled.div`
   justify-content: space-around;
   gap: 20px;
 `
+
+const EmptyProductItem = styled.div`
+  width: 262px;
+`
 const Title = styled.p`
   color: #333333;
   font-size: 18px;
@@ -323,4 +327,5 @@ export {
   InputGroup,
   Radio,
   CheckBox,
+  EmptyProductItem,
 }

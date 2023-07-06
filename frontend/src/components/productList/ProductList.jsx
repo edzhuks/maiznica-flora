@@ -3,7 +3,7 @@ import ProductListItem from './ProductListItem'
 import UserContext from '../../contexts/userContext'
 import { useContext } from 'react'
 import styled from 'styled-components'
-import { ProductRow } from '../styled/base'
+import { EmptyProductItem, ProductRow } from '../styled/base'
 import Categories from './Categories'
 import { useParams } from 'react-router-dom'
 
@@ -27,6 +27,10 @@ const ProductList = () => {
               key={product.id}
             />
           ))}
+
+          <EmptyProductItem />
+          <EmptyProductItem />
+          <EmptyProductItem />
         </ProductRow>
       )}
     </div>
