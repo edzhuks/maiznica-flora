@@ -19,6 +19,8 @@ import {
 } from './components/styled/base'
 import { ShoppingCart } from '@styled-icons/entypo/ShoppingCart'
 import ManagementPage from './components/management/ManagementPage'
+import HomePage from './components/Home'
+import ProductListWithCategories from './components/productList/ProductListWithCategories'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -43,12 +45,14 @@ function App() {
         <Header>
           <Container>
             <Row>
-              <img
-                src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
-                width={93}
-                height={73}
-                style={{ marginRight: 20 }}
-              />
+              <a href="/">
+                <img
+                  src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
+                  width={93}
+                  height={73}
+                  style={{ marginRight: 20 }}
+                />
+              </a>
 
               <HeaderTab to="/category/all">products</HeaderTab>
               <HeaderTab>About</HeaderTab>
@@ -86,7 +90,7 @@ function App() {
           <Routes>
             <Route
               path="/category/:category?"
-              element={<ProductList />}
+              element={<ProductListWithCategories />}
             />
             <Route
               path="/cart"
@@ -114,7 +118,7 @@ function App() {
             />
             <Route
               path="/"
-              element={<h1>404 Not found</h1>}
+              element={<HomePage />}
             />
           </Routes>
         </Container>

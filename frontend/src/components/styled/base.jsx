@@ -3,10 +3,14 @@ import styled from 'styled-components'
 import Input from '../basic/Input'
 
 const Container = styled.div`
-  max-width: 1150px;
+  max-width: 1350px;
   margin: auto;
   padding: 0 18px;
   height: 100%;
+`
+
+const Center = styled.div`
+  align-items: center;
 `
 
 const Row = styled.div`
@@ -214,12 +218,6 @@ const BigTitle = styled.div`
   &::after {
     margin: 0 0 0 20px;
   }
-  /* font-size: 38px;
-  font-weight: 600;
-  margin: 0;
-  margin-bottom: 38px;
-  font-family: 'Roboto Slab', serif;
-  text-align: center; */
 `
 
 const Centerer = styled.div`
@@ -391,4 +389,5 @@ export {
   ModalContent,
   ModalHalf,
   ModalOr,
+  Center,
 }

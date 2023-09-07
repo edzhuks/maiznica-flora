@@ -25,6 +25,21 @@ const addExisting = ({ categoriesToAdd, parentCategory }) => {
   return request.then((response) => response.data)
 }
 
+const addProducts = ({ productsToAdd, parentCategory }) => {
+  const config = makeConfig()
+  const request = axios.put(
+    `${baseUrl}/products`,
+    { productsToAdd, parentCategory },
+    config
+  )
+  return request.then((response) => response.data)
+}
+
+const getNewProducts = () => {
+  const request = axios.get(`${baseUrl}/new`)
+  return request.then((response) => response.data)
+}
+
 const getAllIds = () => {
   const request = axios.get(`${baseUrl}/ids`)
   return request.then((response) => response.data)
@@ -40,10 +55,18 @@ const getTopCategory = () => {
   return request.then((response) => response.data)
 }
 
+const getCategory = (category) => {
+  const request = axios.get(`${baseUrl}/${category}`)
+  return request.then((response) => response.data)
+}
+
 export default {
   getTopCategory,
   getFullCatalogue,
   getAllIds,
   addNew,
   addExisting,
+  addProducts,
+  getNewProducts,
+  getCategory,
 }

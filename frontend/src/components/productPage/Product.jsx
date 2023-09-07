@@ -4,6 +4,7 @@ import axios from 'axios'
 import cartService from '../../services/cart'
 import styled from 'styled-components'
 import { NumberInput, Button } from '../styled/base'
+import productService from '../../services/product'
 
 const Text = styled.p`
   font-family: 'Roboto', sans-serif;
@@ -60,9 +61,7 @@ const Product = () => {
   const id = useParams().id
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/api/products/${id}`)
-      .then((g) => setProduct(g.data))
+    productService.getById(id).then((g) => setProduct(g.data))
   }, [])
 
   const addToCart = () => {
