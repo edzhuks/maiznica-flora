@@ -28,7 +28,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const image = useField('text')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/categories/ids').then((result) => {
+    categoryService.getAllIds().then((result) => {
       setAllCategories(
         result.data.map((category) => ({
           value: category._id,

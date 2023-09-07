@@ -48,7 +48,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const [bio, setBio] = useState(false)
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/products').then((result) => {
+    productService.getAll().then((result) => {
       setAllProducts(
         result.data.map((product) => ({
           value: product.id,

@@ -73,6 +73,17 @@ categoryRouter.post('/', async (req, res) => {
   res.send(catalogue)
 })
 
+
+categoryRouter.put('/products', async (req, res) => {
+  console.log(req.body)
+  const parentCategory = await Category.findById(req.body.parentCategory)
+  parentCategory.products.push(...req.body.productsToAdd)
+  await parentCategory.save()
+  let catalogue = await getCatalogue()
+  res.send(catalogue)
+})
+
+
 categoryRouter.put('/', async (req, res) => {
   console.log(req.body)
   const parentCategory = await Category.findById(req.body.parentCategory)

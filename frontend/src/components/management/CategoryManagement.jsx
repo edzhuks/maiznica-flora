@@ -152,11 +152,9 @@ const CategoryManagement = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/categories/complete')
-      .then((result) => {
-        setCatalogue(result.data)
-      })
+    categoryService.getFullCatalogue().then((result) => {
+      setCatalogue(result.data)
+    })
   }, [])
 
   return (
