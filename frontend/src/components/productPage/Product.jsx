@@ -84,7 +84,7 @@ const Product = () => {
             {product.name} {product.weight}g
           </Title>
           {product.rating && <h4>rating: {product.rating}</h4>}
-          <Text>
+          <Text style={{ whiteSpace: 'pre-line' }}>
             {product.description && <p>{product.description}</p>}
             {product.ingredients && <p>{product.ingredients}</p>}
             {product.nutrition && (

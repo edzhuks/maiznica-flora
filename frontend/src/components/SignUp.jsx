@@ -7,13 +7,14 @@ import UserContext from '../contexts/userContext'
 import {
   BigTitle,
   Centerer,
-  CheckBox,
+  Form,
   FullWidthButton,
   InputGroup,
   Label,
   LoginCard,
   LoginInput,
 } from './styled/base'
+import Checkbox from './basic/Checkbox'
 
 const SignUp = () => {
   const [user, setUser] = useContext(UserContext)
@@ -47,36 +48,37 @@ const SignUp = () => {
     <Centerer>
       <LoginCard>
         <BigTitle>Register</BigTitle>
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <InputGroup>
-            <Label>Username</Label> <LoginInput {...username} />
+            <Label>
+              Username
+              <LoginInput {...username} />
+            </Label>
           </InputGroup>
           <InputGroup>
-            <Label>Email</Label> <LoginInput {...email} />
+            <Label>
+              Email
+              <LoginInput {...email} />
+            </Label>
           </InputGroup>
           <InputGroup>
-            <Label>Password</Label> <LoginInput {...password} />
+            <Label>
+              Password
+              <LoginInput {...password} />
+            </Label>
           </InputGroup>
-          <CheckBox>
-            <Input
-              type="checkbox"
-              checked={admin}
-              onChange={() => setAdmin(!admin)}
-            />
-            <span></span>
-            <p>Admin</p>
-          </CheckBox>
-          <CheckBox>
-            <Input
-              type="checkbox"
-              checked={maintainer}
-              onChange={() => setMaintainer(!maintainer)}
-            />
-            <span></span>
-            <p>Maintainer</p>
-          </CheckBox>
+          <Checkbox
+            checked={admin}
+            onChange={() => setAdmin(!admin)}
+            label="Admin"
+          />
+          <Checkbox
+            checked={maintainer}
+            onChange={() => setMaintainer(!maintainer)}
+            label="Maintainer"
+          />
           <FullWidthButton type="submit">Sign Up</FullWidthButton>
-        </form>
+        </Form>
       </LoginCard>
     </Centerer>
   )

@@ -55,8 +55,8 @@ const Categories = ({ categories }) => {
     <CategoryGroup>
       {categories.map((category) => (
         <CategoryItem
-          to={`/products/${category.id}`}
-          key={category.id}>
+          to={`/category/${category._id}`}
+          key={category._id}>
           <CategoryImage
             style={{
               background: `url(${category.image}) center center`,

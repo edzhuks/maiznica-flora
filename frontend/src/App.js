@@ -4,7 +4,7 @@ import ProductList from './components/productList/ProductList'
 import Product from './components/productPage/Product'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
-import NewProductFrom from './components/NewProduct'
+import NewProductFrom from './components/management/NewProduct'
 import { useState, useEffect } from 'react'
 import Cart from './components/Cart'
 import Order from './components/Order'
@@ -18,6 +18,7 @@ import {
   Spacer,
 } from './components/styled/base'
 import { ShoppingCart } from '@styled-icons/entypo/ShoppingCart'
+import ManagementPage from './components/management/ManagementPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -49,7 +50,7 @@ function App() {
                 style={{ marginRight: 20 }}
               />
 
-              <HeaderTab to="/products">products</HeaderTab>
+              <HeaderTab to="/category/all">products</HeaderTab>
               <HeaderTab>About</HeaderTab>
               <HeaderTab>Contact</HeaderTab>
               <Spacer />
@@ -84,7 +85,7 @@ function App() {
         <Container>
           <Routes>
             <Route
-              path="/products/:category?"
+              path="/category/:category?"
               element={<ProductList />}
             />
             <Route
@@ -101,7 +102,7 @@ function App() {
             />
             <Route
               path="/new-product"
-              element={<NewProductFrom />}
+              element={<ManagementPage />}
             />
             <Route
               path="/login"

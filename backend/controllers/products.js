@@ -1,5 +1,7 @@
 const express = require('express')
 const Product = require('../models/product')
+const Category = require('../models/category')
+const { getCatalogue } = require('./categories')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -16,7 +18,11 @@ router.post('/', async (req, res) => {
   console.log(req.body)
   const product = new Product(req.body)
   await product.save()
-  res.send(product)
+  const topCategory = await Category.findById('all')
+  topCategory.products.push(product._id)
+  await topCategory.save()
+  let catalogue = await getCatalogue()
+  res.send(catalogue)
 })
 
 module.exports = router
