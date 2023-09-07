@@ -29,7 +29,7 @@ const Header = styled.div`
   padding-top: 18px;
   border-bottom: 1px solid #999999;
   background-color: #fffdfd;
-  z-index: 999;
+  z-index: 4;
 `
 
 const HeaderTab = styled(Link)`
@@ -72,6 +72,13 @@ const Button = styled.button`
   }
 `
 
+const CancelButton = styled(Button)`
+  background-color: red;
+  &:hover {
+    background-color: darkred;
+  }
+`
+
 const FullWidthButton = styled(Button)`
   width: 100%;
   font-weight: 500;
@@ -102,10 +109,45 @@ const StyledInput = styled(Input)`
   font-size: large;
 `
 
+const TextArea = styled.textarea`
+  width: 300px;
+  border: 1px solid #e5e5e5;
+  color: #888888;
+  border-radius: 5px;
+  &:focus {
+    outline: none;
+    border-color: #45941e;
+  }
+  font-size: medium;
+`
+
 const NumberInput = styled(StyledInput)`
   width: 100px;
 `
+const WideNumberInput = styled(NumberInput)`
+  width: 200px;
+`
 
+const Form = styled.form`
+  min-width: 100px;
+  display: inline-block;
+  ${StyledInput} {
+    float: right;
+    margin-left: 28px;
+  }
+  ${TextArea} {
+    margin-left: 28px;
+    float: right;
+  }
+  ${WideNumberInput} {
+    margin-left: 28px;
+    float: right;
+  }
+`
+
+const FormMultiCol = styled.form`
+  overflow: auto;
+`
 const ProductRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -133,6 +175,7 @@ const SubTitle = styled.p`
 
 const CenteredTitle = styled(Title)`
   text-align: center;
+  min-height: 66px;
 `
 const CenteredSubTitle = styled(SubTitle)`
   text-align: center;
@@ -148,9 +191,7 @@ const ColoredText = styled.span`
 
 const Label = styled.label`
   color: #777777;
-  margin-right: 18px;
-  display: inline-block;
-  width: 100px;
+  display: block;
 `
 const BigTitle = styled.div`
   font-family: 'Roboto Slab', serif;
@@ -186,7 +227,6 @@ const Centerer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-bottom: 20%;
 `
 
 const LoginCard = styled.div`
@@ -202,7 +242,12 @@ const LoginInput = styled(StyledInput)`
   width: 200px;
 `
 const InputGroup = styled.div`
-  margin-bottom: 38px;
+  margin-bottom: 58px;
+`
+
+const CompactInputGroup = styled(InputGroup)`
+  margin-bottom: 10px;
+  overflow: auto;
 `
 
 const Radio = styled.label`
@@ -275,30 +320,39 @@ const Radio = styled.label`
   }
 `
 
-const CheckBox = styled(Radio)`
-  p {
-    color: #777777;
-    font-size: 16px;
-  }
-  span {
-    border-radius: 5px;
-    top: 12px;
-    left: 0;
-  }
-  span:after {
-    background: transparent;
-    left: 9px;
-    top: 5px;
-    width: 8px;
-    height: 13px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    border-radius: 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
+const ModalContainer = styled.div`
+  /* display: none; Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 50; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5da9;
+  padding-top: 50px;
 `
+const ModalContent = styled.div`
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  max-width: 1020px; /* Could be more or less, depending on screen size */
+  overflow: visible;
+`
+
+const ModalHalf = styled.div`
+  width: 45%;
+  flex: 0 0 45%;
+  padding: 18px;
+`
+const ModalOr = styled.div`
+  width: 10%;
+  padding-top: 80px;
+  font-size: 30px;
+  color: #777777;
+  text-align: center;
+`
+
 export {
   Container,
   Header,
@@ -308,11 +362,13 @@ export {
   RowSpaceBetween,
   Spacer,
   Button,
+  CancelButton,
   FullWidthButton,
   InvertedButton,
   StyledInput,
   Label,
   NumberInput,
+  WideNumberInput,
   ProductRow,
   Title,
   CenteredTitle,
@@ -325,7 +381,14 @@ export {
   LoginCard,
   LoginInput,
   InputGroup,
+  CompactInputGroup,
   Radio,
-  CheckBox,
   EmptyProductItem,
+  TextArea,
+  Form,
+  FormMultiCol,
+  ModalContainer,
+  ModalContent,
+  ModalHalf,
+  ModalOr,
 }

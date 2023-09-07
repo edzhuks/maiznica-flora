@@ -12,26 +12,19 @@ import {
   Label,
   StyledInput,
   Radio,
+  FormMultiCol,
 } from './styled/base'
 
 const InputGroup = styled.div`
   float: left;
-  margin-left: 9px;
-  width: 24%;
+  margin: 10px;
+  width: 23%;
   input {
     width: 100%;
-    margin-right: 0px;
   }
 `
 const CompactLabel = styled(Label)`
   width: auto;
-`
-const InputRow = styled.div`
-  display: inline-block;
-  width: 100%;
-  &:not(:last-child) {
-    margin-bottom: 18px;
-  }
 `
 
 const AddressChoice = styled(Radio)`
@@ -109,37 +102,57 @@ const Order = () => {
         ))}
       </div>
       <Address>
-        <form onSubmit={onSubmit}>
-          <InputRow>
-            <InputGroup>
-              <CompactLabel>Name</CompactLabel> <StyledInput {...name} />
-            </InputGroup>
-            <InputGroup>
-              <CompactLabel>Surname</CompactLabel> <StyledInput {...surname} />
-            </InputGroup>
-            <InputGroup>
-              <CompactLabel>Phone</CompactLabel> <StyledInput {...phone} />
-            </InputGroup>
-            <InputGroup style={{}}>
-              <CompactLabel />
-              <FullWidthButton type="submit">Add new address</FullWidthButton>
-            </InputGroup>
-          </InputRow>
-          <InputRow>
-            <InputGroup>
-              <CompactLabel>City</CompactLabel> <StyledInput {...city} />
-            </InputGroup>
-            <InputGroup>
-              <CompactLabel>Street</CompactLabel> <StyledInput {...street} />
-            </InputGroup>
-            <InputGroup>
-              <CompactLabel>House</CompactLabel> <StyledInput {...house} />
-            </InputGroup>
-            <InputGroup>
-              <CompactLabel>Apt.</CompactLabel> <StyledInput {...apartment} />
-            </InputGroup>
-          </InputRow>
-        </form>
+        <FormMultiCol onSubmit={onSubmit}>
+          <InputGroup>
+            <CompactLabel>
+              City
+              <StyledInput {...city} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              Street
+              <StyledInput {...street} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              House
+              <StyledInput {...house} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              Apt.
+              <StyledInput {...apartment} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              Name
+              <StyledInput {...name} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              Surname
+              <StyledInput {...surname} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <CompactLabel>
+              Phone
+              <StyledInput {...phone} />
+            </CompactLabel>
+          </InputGroup>
+          <InputGroup>
+            <FullWidthButton
+              style={{ marginTop: 18 }}
+              type="submit">
+              Add new address
+            </FullWidthButton>
+          </InputGroup>
+        </FormMultiCol>
       </Address>
     </div>
   )

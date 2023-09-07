@@ -14,6 +14,7 @@ import {
   LoginCard,
   LoginInput,
   InputGroup,
+  Form,
 } from './styled/base'
 
 const Login = () => {
@@ -37,18 +38,22 @@ const Login = () => {
     <Centerer>
       <LoginCard>
         <BigTitle>Sign In</BigTitle>
-        <form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <InputGroup>
-            <Label>Username</Label>
-            <LoginInput {...username} />
+            <Label>
+              Username
+              <LoginInput {...username} />
+            </Label>
           </InputGroup>
           <InputGroup>
-            <Label>Password</Label>
-            <LoginInput {...password} />
+            <Label>
+              Password
+              <LoginInput {...password} />
+            </Label>
           </InputGroup>
 
           <FullWidthButton type="submit">Sign In</FullWidthButton>
-        </form>
+        </Form>
       </LoginCard>
     </Centerer>
   )
