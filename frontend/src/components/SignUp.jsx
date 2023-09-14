@@ -41,7 +41,7 @@ const SignUp = () => {
     console.log(result)
     setUser(result)
     window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
-    navigate('/products')
+    navigate('/')
   }
 
   return (
