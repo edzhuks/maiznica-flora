@@ -16,6 +16,7 @@ const productSchema = new mongoose.Schema({
   },
   weight: Number,
   price: Number,
+  discountPrice: Number,
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

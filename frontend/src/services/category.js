@@ -40,6 +40,11 @@ const getNewProducts = () => {
   return request.then((response) => response.data)
 }
 
+const getDiscountedProducts = () => {
+  const request = axios.get(`${baseUrl}/discount`)
+  return request.then((response) => response.data)
+}
+
 const getAllIds = () => {
   const request = axios.get(`${baseUrl}/ids`)
   return request.then((response) => response.data)
@@ -68,5 +73,6 @@ export default {
   addExisting,
   addProducts,
   getNewProducts,
+  getDiscountedProducts,
   getCategory,
 }

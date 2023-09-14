@@ -30,7 +30,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   useEffect(() => {
     categoryService.getAllIds().then((result) => {
       setAllCategories(
-        result.data.map((category) => ({
+        result.map((category) => ({
           value: category._id,
           label: category.displayName,
         }))

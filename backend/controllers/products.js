@@ -4,14 +4,28 @@ const Category = require('../models/category')
 const { getCatalogue } = require('./categories')
 const router = express.Router()
 
+router.put('/discount/:id', async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  product.discountPrice = req.body.discountPrice
+  await product.save()
+  res.send(product)
+})
+
+router.delete('/discount/:id', async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  product.discountPrice = undefined
+  await product.save()
+  res.send(product)
+})
+
 router.get('/', async (req, res) => {
   const products = await Product.find()
   res.send(products)
 })
 
 router.get('/:id', async (req, res) => {
-  const products = await Product.findById(req.params.id)
-  res.send(products)
+  const product = await Product.findById(req.params.id)
+  res.send(product)
 })
 
 router.post('/', async (req, res) => {

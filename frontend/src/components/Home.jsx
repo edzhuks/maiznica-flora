@@ -7,10 +7,14 @@ import ProductList from './productList/ProductList'
 
 const HomePage = () => {
   const [newProducts, setNewProducts] = useState({ products: [] })
+  const [discountedProducts, setDiscountedProducts] = useState({ products: [] })
   const [allProducts, setAllProducts] = useState({ categories: [] })
 
   useEffect(() => {
     categoryService.getNewProducts().then((p) => setNewProducts(p))
+    categoryService
+      .getDiscountedProducts()
+      .then((p) => setDiscountedProducts(p))
     categoryService.getTopCategory().then((p) => setAllProducts(p))
   }, [])
   return (
@@ -27,7 +31,7 @@ const HomePage = () => {
       <ProductList products={newProducts.products} />
 
       <BigTitle>Special Offers</BigTitle>
-      <ProductList products={newProducts.products} />
+      <ProductList products={discountedProducts.products} />
 
       <BigTitle>Prodcuts</BigTitle>
       <Categories categories={allProducts.categories} />
