@@ -33,6 +33,12 @@ router.delete('/:id', async (req, res) => {
   res.status(204)
 })
 
+router.put('/:id', async (req, res) => {
+  await Product.updateOne({ _id: req.params.id }, req.body)
+  const product = await Product.findById(req.params.id)
+  res.send(product)
+})
+
 router.post('/', async (req, res) => {
   console.log(req.body)
   const product = new Product(req.body)

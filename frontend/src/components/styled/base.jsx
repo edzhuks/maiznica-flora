@@ -363,7 +363,7 @@ const HalfWidth = styled.div`
   padding: 30px;
 `
 
-const Text = styled.p`
+const ContactText = styled.p`
   letter-spacing: 1px;
   line-height: 1.5;
 `
@@ -410,5 +410,5 @@ export {
   ModalOr,
   Center,
   HalfWidth,
-  Text,
+  ContactText,
 }
