@@ -61,7 +61,9 @@ const Product = () => {
   const id = useParams().id
 
   useEffect(() => {
-    productService.getById(id).then((g) => setProduct(g.data))
+    productService.getById(id).then((p) => {
+      setProduct(p)
+    })
   }, [])
 
   const addToCart = () => {
