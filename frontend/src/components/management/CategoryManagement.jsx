@@ -153,7 +153,7 @@ const CategoryManagement = () => {
 
   useEffect(() => {
     categoryService.getFullCatalogue().then((result) => {
-      setCatalogue(result.data)
+      setCatalogue(result)
     })
   }, [])
 
