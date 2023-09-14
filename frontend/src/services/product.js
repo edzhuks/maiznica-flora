@@ -23,10 +23,16 @@ const deleteProduct = (productId) => {
   const request = axios.delete(`${baseURL}/${productId}`, config)
   return request.then((response) => response.data)
 }
+const update = (productId, product) => {
+  const config = makeConfig()
+  const request = axios.put(`${baseURL}/${productId}`, product, config)
+  return request.then((response) => response.data)
+}
 
 export default {
   create,
   getAll,
   getById,
   deleteProduct,
+  update,
 }

@@ -10,7 +10,7 @@ import {
   TextArea,
   Button,
   HalfWidth,
-  Text,
+  ContactText,
 } from './styled/base'
 
 const FooterContainer = styled.div`
@@ -53,7 +53,7 @@ const Footer = () => {
             <Button>Send message</Button>
           </HalfWidth>
           <HalfWidth>
-            <Text>
+            <ContactText>
               SIA “Maiznīca Flora”
               <br />
               Ražotne: Vecvaltes, Krimuldas pagasts,
@@ -63,7 +63,7 @@ const Footer = () => {
               Tālrunis: +371 67521291
               <br />
               E-pasts: flora@maiznica.lv
-            </Text>
+            </ContactText>
           </HalfWidth>
         </Row>
       </Container>

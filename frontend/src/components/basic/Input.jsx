@@ -1,4 +1,4 @@
-const Input = ({ clear, ...props }) => {
+const Input = ({ clear, changeValue, ...props }) => {
   return <input {...props} />
 }
 export default Input

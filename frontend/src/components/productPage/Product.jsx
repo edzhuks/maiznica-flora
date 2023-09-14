@@ -13,70 +13,80 @@ import {
   FullWidthCancelButton,
 } from '../styled/base'
 import productService from '../../services/product'
-
-const Text = styled.p`
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-`
-
-const Title = styled.p`
-  font-family: 'Roboto Slab', serif;
-  font-size: 28px;
-  color: #45941e;
-  font-weight: 400;
-`
+import TextualInformation from './TextualInformation'
+import useField from '../../hooks/useField'
 
 const Image = styled.img`
   transform: scale(0.8);
 `
 
-const TableHeader = styled.th`
-  text-align: left;
-  border-width: 0px 0px 1px 0px;
-  border-color: #333333;
-  border-style: solid;
-  font-weight: 400;
-  padding: 5px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 1px 1px;
-  }
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-`
-
-const Cell = styled.td`
-  padding: 2px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: #333333;
-  }
-`
-
-const TableRow = styled.tr`
-  &:nth-child(odd) {
-    background-color: #f9f9f9;
-  }
-`
 const Product = () => {
+  const [editMode, setEditMode] = useState(false)
+
   const navigate = useNavigate()
 
   const [user, setUser] = useContext(UserContext)
 
   const [quantity, setQuantity] = useState(1)
 
-  const [product, setProduct] = useState()
+  const [product, setProduct] = useState({
+    name: '',
+    description: '',
+    ingredients: '',
+    weight: 0,
+    price: 0,
+    EAN: '',
+    image: '',
+    bio: false,
+  })
+
+  const [description, setDescription] = useState(product.description)
+  const [ingredients, setIngredients] = useState(product.ingredients)
+
+  const [bio, setBio] = useState(product.bio)
+
+  const name = useField('text')
+  const weight = useField('number')
+  const price = useField('number')
+  const energy = useField('number')
+  const fat = useField('number')
+  const saturatedFat = useField('number')
+  const carbs = useField('number')
+  const sugar = useField('number')
+  const fiber = useField('number')
+  const protein = useField('number')
+  const salt = useField('number')
+  const EAN = useField('text')
+
   const id = useParams().id
 
   useEffect(() => {
     productService.getById(id).then((p) => {
+      console.log(p)
       setProduct(p)
+      setFields(p)
     })
   }, [])
+
+  const setFields = (p) => {
+    setIngredients(p.ingredients)
+    setDescription(p.description)
+    setBio(p.bio)
+    name.changeValue(p.name)
+    weight.changeValue(p.weight)
+    price.changeValue(p.price)
+    if (p.nutrition) {
+      energy.changeValue(p.nutrition.energy)
+      fat.changeValue(p.nutrition.fat)
+      saturatedFat.changeValue(p.nutrition.saturatedFat)
+      carbs.changeValue(p.nutrition.carbs)
+      sugar.changeValue(p.nutrition.sugar)
+      fiber.changeValue(p.nutrition.fiber)
+      protein.changeValue(p.nutrition.protein)
+      salt.changeValue(p.nutrition.salt)
+    }
+    EAN.changeValue(p.EAN)
+  }
 
   const addToCart = () => {
     cartService.addToCart({ quantity, product })
@@ -88,20 +98,85 @@ const Product = () => {
     }
   }
 
+  const updateProduct = () => {
+    if (window.confirm('Are you sure you want to save these changes?')) {
+      productService
+        .update(id, {
+          name: name.value,
+          weight: weight.value,
+          price: price.value,
+          nutrition:
+            energy.value ||
+            fat.value ||
+            saturatedFat.value ||
+            carbs.value ||
+            sugar.value ||
+            fiber.value ||
+            protein.value ||
+            salt.value
+              ? {
+                  energy: energy.value,
+                  fat: fat.value,
+                  saturatedFat: saturatedFat.value,
+                  carbs: carbs.value,
+                  sugar: sugar.value,
+                  fiber: fiber.value,
+                  protein: protein.value,
+                  salt: salt.value,
+                }
+              : null,
+          EAN: EAN.value,
+          // image: image.value,
+          description,
+          ingredients,
+          bio,
+        })
+        .then((p) => {
+          setProduct(p)
+          setFields(p)
+          setEditMode(false)
+        })
+    }
+  }
+
+  const discardChanges = () => {
+    setFields(product)
+    setEditMode(false)
+  }
+
   if (product)
     return (
       <>
         {user && user.admin && (
-          <Row>
-            <HalfWidth>
-              <FullWidthButton>Edit product</FullWidthButton>
-            </HalfWidth>
-            <HalfWidth>
-              <FullWidthCancelButton onClick={deleteProduct}>
-                Delete product
-              </FullWidthCancelButton>
-            </HalfWidth>
-          </Row>
+          <>
+            {editMode ? (
+              <Row>
+                <HalfWidth>
+                  <FullWidthButton onClick={updateProduct}>
+                    Save changes
+                  </FullWidthButton>
+                </HalfWidth>
+                <HalfWidth>
+                  <FullWidthCancelButton onClick={discardChanges}>
+                    Discard changes
+                  </FullWidthCancelButton>
+                </HalfWidth>
+              </Row>
+            ) : (
+              <Row>
+                <HalfWidth>
+                  <FullWidthButton onClick={() => setEditMode(true)}>
+                    Edit product
+                  </FullWidthButton>
+                </HalfWidth>
+                <HalfWidth>
+                  <FullWidthCancelButton onClick={deleteProduct}>
+                    Delete product
+                  </FullWidthCancelButton>
+                </HalfWidth>
+              </Row>
+            )}
+          </>
         )}
         <div style={{ display: 'flex' }}>
           <div>
@@ -112,69 +187,28 @@ const Product = () => {
             />
           </div>
           <div>
-            <Title>
-              {product.name} {product.weight}g
-            </Title>
-            {product.rating && <h4>rating: {product.rating}</h4>}
-            <Text style={{ whiteSpace: 'pre-line' }}>
-              {product.description && <p>{product.description}</p>}
-              {product.ingredients && <p>{product.ingredients}</p>}
-              {product.nutrition && (
-                <Table>
-                  <tbody>
-                    <TableRow>
-                      <TableHeader>
-                        <b>Nutritional info </b>
-                      </TableHeader>
-                      <TableHeader>
-                        <strong>100g contains</strong>
-                      </TableHeader>
-                    </TableRow>
-                    <TableRow>
-                      <Cell>Energy content</Cell>
-                      <Cell>
-                        {Math.round(product.nutrition.energy * 4.184)}kJ/
-                        {product.nutrition.energy}kcal
-                      </Cell>
-                    </TableRow>
-                    <TableRow>
-                      <Cell>Fat</Cell>
-                      <Cell>{product.nutrition.fat}g</Cell>
-                    </TableRow>
-                    <TableRow>
-                      <Cell>&nbsp;&nbsp;&nbsp; Of which saturated fat</Cell>
-                      <Cell>{product.nutrition.saturatedFat}g</Cell>
-                    </TableRow>
-
-                    <TableRow>
-                      <Cell>Carbohydrates</Cell>
-                      <Cell>{product.nutrition.carbs}g</Cell>
-                    </TableRow>
-                    <TableRow>
-                      <Cell>&nbsp;&nbsp;&nbsp; Of which sugars</Cell>
-                      <Cell>{product.nutrition.sugar}g</Cell>
-                    </TableRow>
-                    {product.nutrition.fiber && (
-                      <TableRow>
-                        <Cell>Fiber</Cell>
-                        <Cell>{product.nutrition.fiber}g</Cell>
-                      </TableRow>
-                    )}
-                    <TableRow>
-                      <Cell>Protein</Cell>
-                      <Cell>{product.nutrition.protein}g</Cell>
-                    </TableRow>
-                    <TableRow>
-                      <Cell>Salt</Cell>
-                      <Cell>{product.nutrition.salt}g</Cell>
-                    </TableRow>
-                  </tbody>
-                </Table>
-              )}
-              <p>EAN code {product.EAN}</p>
-              <Title>€ {product.price}</Title>
-            </Text>
-
+            <TextualInformation
+              product={product}
+              editMode={editMode}
+              name={name}
+              weight={weight}
+              description={description}
+              ingredients={ingredients}
+              setDescription={setDescription}
+              setIngredients={setIngredients}
+              energy={energy}
+              fat={fat}
+              saturatedFat={saturatedFat}
+              carbs={carbs}
+              sugar={sugar}
+              fiber={fiber}
+              protein={protein}
+              salt={salt}
+              EAN={EAN}
+              price={price}
+              bio={bio}
+              setBio={setBio}
+            />
             <NumberInput
               style={{ marginRight: 20 }}
               value={quantity}
