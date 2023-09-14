@@ -8,7 +8,6 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 const CarouselContainer = styled.div`
   width: 100%;
   padding: 0px 60px;
-  height: 43vh;
   position: relative;
   margin-bottom: 40px;
 `
@@ -36,10 +35,12 @@ const CarouselImages = styled.div`
 `
 
 const CarouselImage = styled.img`
-  width: auto;
-  height: inherit;
-  opacity: ${(props) => (props.active ? '100%' : '0')};
-  position: absolute;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  display: ${(props) => (props.active ? 'block' : 'none')};
+  /* position: absolute; */
   transition: 0.5s;
 `
 
