@@ -1,5 +1,6 @@
 const express = require('express')
 const Category = require('../models/category')
+const Product = require('../models/product')
 const { userExtractor } = require('../util/middleware')
 const categoryRouter = express.Router()
 
@@ -50,6 +51,11 @@ const getCatalogue = async () => {
   return catalogue
 }
 
+categoryRouter.get('/discount', async (req, res) => {
+  const products = await Product.find({ discountPrice: { $exists: true } })
+  res.send({ products })
+})
+
 categoryRouter.get('/complete', async (req, res) => {
   let catalogue = await getCatalogue()
   res.send(catalogue)
@@ -73,7 +79,6 @@ categoryRouter.post('/', async (req, res) => {
   res.send(catalogue)
 })
 
-
 categoryRouter.put('/products', async (req, res) => {
   console.log(req.body)
   const parentCategory = await Category.findById(req.body.parentCategory)
@@ -82,7 +87,6 @@ categoryRouter.put('/products', async (req, res) => {
   let catalogue = await getCatalogue()
   res.send(catalogue)
 })
-
 
 categoryRouter.put('/', async (req, res) => {
   console.log(req.body)

@@ -50,7 +50,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
   useEffect(() => {
     productService.getAll().then((result) => {
       setAllProducts(
-        result.data.map((product) => ({
+        result.map((product) => ({
           value: product.id,
           label: product.name,
         }))
