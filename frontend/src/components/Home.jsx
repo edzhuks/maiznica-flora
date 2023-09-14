@@ -1,24 +1,20 @@
-import useResource from '../hooks/useResource'
-import ProductListItem from './productList/ProductListItem'
-import UserContext from '../contexts/userContext'
-import { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { EmptyProductItem, ProductRow, Center, BigTitle } from './styled/base'
+import { useEffect, useState } from 'react'
+import { BigTitle } from './styled/base'
 import Categories from './productList/Categories'
-import { useParams } from 'react-router-dom'
 import Carousel from './basic/Carousel'
-import axios from 'axios'
 import categoryService from '../services/category'
 import ProductList from './productList/ProductList'
 
 const HomePage = () => {
   const [newProducts, setNewProducts] = useState({ products: [] })
+  const [allProducts, setAllProducts] = useState({ categories: [] })
 
   useEffect(() => {
     categoryService.getNewProducts().then((p) => setNewProducts(p))
+    categoryService.getTopCategory().then((p) => setAllProducts(p))
   }, [])
   return (
-    <Center>
+    <div>
       <Carousel
         images={[
           'https://www.maiznica.lv/wp-content/uploads/2022/09/4.png',
@@ -32,7 +28,10 @@ const HomePage = () => {
 
       <BigTitle>Special Offers</BigTitle>
       <ProductList products={newProducts.products} />
-    </Center>
+
+      <BigTitle>Prodcuts</BigTitle>
+      <Categories categories={allProducts.categories} />
+    </div>
   )
 }
 
