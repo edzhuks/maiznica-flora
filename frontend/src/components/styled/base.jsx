@@ -6,9 +6,10 @@ const Container = styled.div`
   max-width: 1350px;
   margin: auto;
   padding: 0 18px;
-  height: 100%;
 `
-
+const FullHeightContainer = styled(Container)`
+  min-height: 100vh;
+`
 const Center = styled.div`
   align-items: center;
 `
@@ -353,6 +354,7 @@ const ModalOr = styled.div`
 
 export {
   Container,
+  FullHeightContainer,
   Header,
   HeaderSpacer,
   HeaderTab,

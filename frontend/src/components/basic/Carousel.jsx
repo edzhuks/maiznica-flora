@@ -1,6 +1,4 @@
-import Input from './Input'
 import styled from 'styled-components'
-import { Radio } from '../styled/base'
 import { useState } from 'react'
 import { CaretLeftFill } from '@styled-icons/bootstrap/CaretLeftFill'
 import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
@@ -31,7 +29,6 @@ const CarouselRight = styled(CarouselLeft)`
 const CarouselImages = styled.div`
   width: inherit;
   height: inherit;
-  /* overflow: hidden; */
 `
 
 const CarouselImage = styled.img`
@@ -40,7 +37,6 @@ const CarouselImage = styled.img`
   max-height: 100%;
   height: auto;
   display: ${(props) => (props.active ? 'block' : 'none')};
-  /* position: absolute; */
   transition: 0.5s;
 `
 
