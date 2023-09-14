@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react'
+import UserContext from '../../contexts/userContext'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import cartService from '../../services/cart'
 import styled from 'styled-components'
-import { NumberInput, Button } from '../styled/base'
+import {
+  NumberInput,
+  Button,
+  FullWidthButton,
+  HalfWidth,
+  Row,
+  FullWidthCancelButton,
+} from '../styled/base'
 import productService from '../../services/product'
 
 const Text = styled.p`
@@ -55,6 +63,10 @@ const TableRow = styled.tr`
   }
 `
 const Product = () => {
+  const navigate = useNavigate()
+
+  const [user, setUser] = useContext(UserContext)
+
   const [quantity, setQuantity] = useState(1)
 
   const [product, setProduct] = useState()
@@ -70,99 +82,119 @@ const Product = () => {
     cartService.addToCart({ quantity, product })
   }
 
+  const deleteProduct = () => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      productService.deleteProduct(id).then(navigate('/'))
+    }
+  }
+
   if (product)
     return (
-      <div style={{ display: 'flex' }}>
-        <div>
-          <Image
-            src={product.image}
-            width={500}
-            height={500}
-          />
-        </div>
-        <div>
-          <Title>
-            {product.name} {product.weight}g
-          </Title>
-          {product.rating && <h4>rating: {product.rating}</h4>}
-          <Text style={{ whiteSpace: 'pre-line' }}>
-            {product.description && <p>{product.description}</p>}
-            {product.ingredients && <p>{product.ingredients}</p>}
-            {product.nutrition && (
-              <Table>
-                <tbody>
-                  <TableRow>
-                    <TableHeader>
-                      <b>Nutritional info </b>
-                    </TableHeader>
-                    <TableHeader>
-                      <strong>100g contains</strong>
-                    </TableHeader>
-                  </TableRow>
-                  <TableRow>
-                    <Cell>Energy content</Cell>
-                    <Cell>
-                      {Math.round(product.nutrition.energy * 4.184)}kJ/
-                      {product.nutrition.energy}kcal
-                    </Cell>
-                  </TableRow>
-                  <TableRow>
-                    <Cell>Fat</Cell>
-                    <Cell>{product.nutrition.fat}g</Cell>
-                  </TableRow>
-                  <TableRow>
-                    <Cell>&nbsp;&nbsp;&nbsp; Of which saturated fat</Cell>
-                    <Cell>{product.nutrition.saturatedFat}g</Cell>
-                  </TableRow>
-
-                  <TableRow>
-                    <Cell>Carbohydrates</Cell>
-                    <Cell>{product.nutrition.carbs}g</Cell>
-                  </TableRow>
-                  <TableRow>
-                    <Cell>&nbsp;&nbsp;&nbsp; Of which sugars</Cell>
-                    <Cell>{product.nutrition.sugar}g</Cell>
-                  </TableRow>
-                  {product.nutrition.fiber && (
+      <>
+        {user && user.admin && (
+          <Row>
+            <HalfWidth>
+              <FullWidthButton>Edit product</FullWidthButton>
+            </HalfWidth>
+            <HalfWidth>
+              <FullWidthCancelButton onClick={deleteProduct}>
+                Delete product
+              </FullWidthCancelButton>
+            </HalfWidth>
+          </Row>
+        )}
+        <div style={{ display: 'flex' }}>
+          <div>
+            <Image
+              src={product.image}
+              width={500}
+              height={500}
+            />
+          </div>
+          <div>
+            <Title>
+              {product.name} {product.weight}g
+            </Title>
+            {product.rating && <h4>rating: {product.rating}</h4>}
+            <Text style={{ whiteSpace: 'pre-line' }}>
+              {product.description && <p>{product.description}</p>}
+              {product.ingredients && <p>{product.ingredients}</p>}
+              {product.nutrition && (
+                <Table>
+                  <tbody>
                     <TableRow>
-                      <Cell>Fiber</Cell>
-                      <Cell>{product.nutrition.fiber}g</Cell>
+                      <TableHeader>
+                        <b>Nutritional info </b>
+                      </TableHeader>
+                      <TableHeader>
+                        <strong>100g contains</strong>
+                      </TableHeader>
                     </TableRow>
-                  )}
-                  <TableRow>
-                    <Cell>Protein</Cell>
-                    <Cell>{product.nutrition.protein}g</Cell>
-                  </TableRow>
-                  <TableRow>
-                    <Cell>Salt</Cell>
-                    <Cell>{product.nutrition.salt}g</Cell>
-                  </TableRow>
-                </tbody>
-              </Table>
+                    <TableRow>
+                      <Cell>Energy content</Cell>
+                      <Cell>
+                        {Math.round(product.nutrition.energy * 4.184)}kJ/
+                        {product.nutrition.energy}kcal
+                      </Cell>
+                    </TableRow>
+                    <TableRow>
+                      <Cell>Fat</Cell>
+                      <Cell>{product.nutrition.fat}g</Cell>
+                    </TableRow>
+                    <TableRow>
+                      <Cell>&nbsp;&nbsp;&nbsp; Of which saturated fat</Cell>
+                      <Cell>{product.nutrition.saturatedFat}g</Cell>
+                    </TableRow>
+
+                    <TableRow>
+                      <Cell>Carbohydrates</Cell>
+                      <Cell>{product.nutrition.carbs}g</Cell>
+                    </TableRow>
+                    <TableRow>
+                      <Cell>&nbsp;&nbsp;&nbsp; Of which sugars</Cell>
+                      <Cell>{product.nutrition.sugar}g</Cell>
+                    </TableRow>
+                    {product.nutrition.fiber && (
+                      <TableRow>
+                        <Cell>Fiber</Cell>
+                        <Cell>{product.nutrition.fiber}g</Cell>
+                      </TableRow>
+                    )}
+                    <TableRow>
+                      <Cell>Protein</Cell>
+                      <Cell>{product.nutrition.protein}g</Cell>
+                    </TableRow>
+                    <TableRow>
+                      <Cell>Salt</Cell>
+                      <Cell>{product.nutrition.salt}g</Cell>
+                    </TableRow>
+                  </tbody>
+                </Table>
+              )}
+              <p>EAN code {product.EAN}</p>
+              <Title>€ {product.price}</Title>
+            </Text>
+
+            <NumberInput
+              style={{ marginRight: 20 }}
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              type="number"
+            />
+            <Button onClick={addToCart}>Add to cart</Button>
+
+            {product.bio && (
+              <div style={{ paddingTop: 30 }}>
+                <img
+                  src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"
+                  width={100}
+                  height={66}
+                />
+              </div>
             )}
-            <p>EAN code {product.EAN}</p>
-            <Title>€ {product.price}</Title>
-          </Text>
-
-          <NumberInput
-            style={{ marginRight: 20 }}
-            value={quantity}
-            onChange={(event) => setQuantity(event.target.value)}
-            type="number"
-          />
-          <Button onClick={addToCart}>Add to cart</Button>
-
-          {product.bio && (
-            <div style={{ paddingTop: 30 }}>
-              <img
-                src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"
-                width={100}
-                height={66}
-              />
-            </div>
-          )}
+          </div>
         </div>
-      </div>
+      </>
     )
 }
 

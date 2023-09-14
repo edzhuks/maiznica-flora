@@ -75,7 +75,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
 
   return (
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContent style={{ maxWidth: '720px' }}>
+      <ModalContent style={{ maxWidth: '920px' }}>
         <BigTitle style={{ marginBottom: 15 }}>Add Category</BigTitle>
         <Row>
           <ModalHalf>
