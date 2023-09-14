@@ -28,6 +28,11 @@ router.get('/:id', async (req, res) => {
   res.send(product)
 })
 
+router.delete('/:id', async (req, res) => {
+  await Product.deleteOne({ _id: req.params.id })
+  res.status(204)
+})
+
 router.post('/', async (req, res) => {
   console.log(req.body)
   const product = new Product(req.body)

@@ -91,6 +91,12 @@ const FullWidthButton = styled(Button)`
   height: 38px;
 `
 
+const FullWidthCancelButton = styled(FullWidthButton)`
+  background-color: red;
+  &:hover {
+    background-color: darkred;
+  }
+`
 const InvertedButton = styled(Button)`
   padding: 1px 4px;
   background-color: transparent;
@@ -352,6 +358,16 @@ const ModalOr = styled.div`
   text-align: center;
 `
 
+const HalfWidth = styled.div`
+  width: 50%;
+  padding: 30px;
+`
+
+const Text = styled.p`
+  letter-spacing: 1px;
+  line-height: 1.5;
+`
+
 export {
   Container,
   FullHeightContainer,
@@ -364,6 +380,7 @@ export {
   Button,
   CancelButton,
   FullWidthButton,
+  FullWidthCancelButton,
   InvertedButton,
   StyledInput,
   Label,
@@ -392,4 +409,6 @@ export {
   ModalHalf,
   ModalOr,
   Center,
+  HalfWidth,
+  Text,
 }
