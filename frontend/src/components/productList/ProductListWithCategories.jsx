@@ -23,7 +23,10 @@ const ProductListWithCategories = () => {
 
   return (
     <div>
-      <Categories categories={categoryData.categories} />
+      <Categories
+        categories={categoryData.categories}
+        name={categoryData.displayName}
+      />
       <ProductList products={categoryData.products} />
     </div>
   )

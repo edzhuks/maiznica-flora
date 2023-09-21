@@ -3,13 +3,14 @@ import ProductListItem from './ProductListItem'
 import UserContext from '../../contexts/userContext'
 import { useContext } from 'react'
 import styled from 'styled-components'
-import { ProductRow } from '../styled/base'
+import { BigTitle, ProductRow } from '../styled/base'
 import { Link } from 'react-router-dom'
 
 const CategoryGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: space-evenly;
+  gap: 30px;
   margin-bottom: 20px;
 `
 
@@ -33,8 +34,11 @@ const CategoryText = styled.div`
   transition: all 0.5s;
 `
 const CategoryItem = styled(Link)`
-  max-width: 32%;
-  flex: 0 0 32%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  width: calc(100% / 4 - 23px);
+  min-width: 243px;
+  aspect-ratio: 1;
   &:hover {
     ${CategoryTextBackground} {
       height: 320px;
@@ -45,30 +49,43 @@ const CategoryItem = styled(Link)`
     }
   }
 `
+
+const Spacer = styled.div`
+  width: calc(100% / 4 - 23px);
+  min-width: 243px;
+  height: 0;
+`
 const CategoryImage = styled.div`
   width: 100%;
-  height: 320px;
+  aspect-ratio: 1;
+  /* height: 320px; */
   position: relative;
 `
-const Categories = ({ categories }) => {
+const Categories = ({ categories, name }) => {
   return (
-    <CategoryGroup>
-      {categories.map((category) => (
-        <CategoryItem
-          to={`/category/${category._id}`}
-          key={category._id}>
-          <CategoryImage
-            style={{
-              background: `url(${category.image}) center center`,
-              backgroundSize: 'cover',
-            }}>
-            <CategoryTextBackground>
-              <CategoryText>{category.displayName}</CategoryText>
-            </CategoryTextBackground>
-          </CategoryImage>
-        </CategoryItem>
-      ))}
-    </CategoryGroup>
+    <>
+      <CategoryGroup>
+        {categories.map((category) => (
+          <CategoryItem
+            to={`/category/${category._id}`}
+            key={category._id}>
+            <CategoryImage
+              style={{
+                background: `url(${category.image}) center center`,
+                backgroundSize: 'cover',
+              }}>
+              <CategoryTextBackground>
+                <CategoryText>{category.displayName}</CategoryText>
+              </CategoryTextBackground>
+            </CategoryImage>
+          </CategoryItem>
+        ))}
+        <Spacer />
+        <Spacer />
+        <Spacer />
+      </CategoryGroup>
+      <BigTitle>{name}</BigTitle>
+    </>
   )
 }
 
