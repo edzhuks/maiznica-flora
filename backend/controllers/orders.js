@@ -15,6 +15,8 @@ router.post('/', userExtractor, async (req, res) => {
     user: cart.user,
     content: cart.content,
     address,
+    status: { status: 'placed' },
+    datePlaced: Date.now(),
   })
   await order.save()
   await cart.deleteOne()
@@ -24,6 +26,30 @@ router.post('/', userExtractor, async (req, res) => {
   })
   await newCart.save()
   res.send(order)
+})
+
+router.put('/:id', userExtractor, async (req, res) => {
+  let newOrder = req.body
+  newOrder.status.lastModifiedBy = req.user.id
+  newOrder.status.lastModified = new Date()
+  console.log(newOrder)
+  const orderr = await Order.findById(req.params.id)
+  console.log(req.params.id)
+  await Order.updateOne({ _id: req.params.id }, newOrder)
+  const order = await Order.findById(req.params.id).populate([
+    { path: 'content', populate: { path: 'product' } },
+    { path: 'status', populate: { path: 'lastModifiedBy' } },
+  ])
+
+  res.send(order)
+})
+
+router.get('/', async (req, res) => {
+  const orders = await Order.find().populate([
+    { path: 'content', populate: { path: 'product' } },
+    { path: 'status', populate: { path: 'lastModifiedBy' } },
+  ])
+  res.send(orders)
 })
 
 module.exports = router

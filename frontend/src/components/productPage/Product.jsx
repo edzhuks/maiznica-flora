@@ -17,7 +17,10 @@ import TextualInformation from './TextualInformation'
 import useField from '../../hooks/useField'
 
 const Image = styled.img`
-  transform: scale(0.8);
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+  /* transform: scale(0.8); */
 `
 
 const Product = () => {
@@ -182,8 +185,8 @@ const Product = () => {
           <div>
             <Image
               src={product.image}
-              width={500}
-              height={500}
+              // width="500px"
+              // height="500px"
             />
           </div>
           <div>

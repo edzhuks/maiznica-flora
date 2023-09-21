@@ -15,3 +15,6 @@
 | ~05.07-07.09 | 10    | category and product management from frontend for admins (with a very nice tree view), product view with categories, nested categories, overhauled product and category creation page |
 | 07.09        | 4     | home page with image carousel, new products, minor code improvements                                                                                                                  |
 | 14.09        | 6     | footer and fixes, discounts, product editing and deleting                                                                                                                             |
+| - 21.09      | 8     | order management page for the company side                                                                                                                                            |
+
+total | 48.5 | |

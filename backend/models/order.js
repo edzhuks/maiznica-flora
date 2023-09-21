@@ -12,11 +12,32 @@ const orderSchema = new mongoose.Schema({
         ref: 'Product',
       },
       quantity: Number,
+      packed: Boolean,
     },
   ],
   address: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Address',
+  },
+  datePlaced: Date,
+  status: {
+    status: {
+      type: String,
+      enum: [
+        'placed',
+        'accepted',
+        'refused',
+        'packing',
+        'vaitingForDelivery',
+        'delivering',
+        'completed',
+      ],
+    },
+    lastModifiedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    lastModified: Date,
   },
 })
 
