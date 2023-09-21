@@ -22,6 +22,9 @@ const RowSpaceBetween = styled(Row)`
   justify-content: space-between;
 `
 
+const RowSpaceEvenly = styled(Row)`
+  justify-content: space-evenly;
+`
 const HeaderSpacer = styled.div`
   height: 130px;
 `
@@ -411,4 +414,5 @@ export {
   Center,
   HalfWidth,
   ContactText,
+  RowSpaceEvenly,
 }

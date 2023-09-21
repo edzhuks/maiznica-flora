@@ -23,6 +23,7 @@ import ManagementPage from './components/management/ManagementPage'
 import HomePage from './components/Home'
 import ProductListWithCategories from './components/productList/ProductListWithCategories'
 import Footer from './components/Footer'
+import OrderManagementPage from './components/orders/OrderManagementPage'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -71,7 +72,10 @@ function App() {
                   </HeaderTab>
                 )}
                 {user && user.admin && (
-                  <HeaderTab to="/new-product">new product</HeaderTab>
+                  <>
+                    <HeaderTab to="/new-product">new product</HeaderTab>
+                    <HeaderTab to="/orders">orders</HeaderTab>
+                  </>
                 )}
                 {!user && (
                   <>
@@ -110,6 +114,10 @@ function App() {
               <Route
                 path="/new-product"
                 element={<ManagementPage />}
+              />
+              <Route
+                path="/orders"
+                element={<OrderManagementPage />}
               />
               <Route
                 path="/login"
