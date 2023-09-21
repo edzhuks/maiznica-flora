@@ -8,7 +8,6 @@ import {
   Button,
   ColoredText,
   FullWidthButton,
-  ProductRow,
   Right,
   Row,
   Title,
@@ -20,6 +19,13 @@ const CartContents = styled.div`
   @media (min-width: 768px) {
     width: 75%;
   }
+`
+
+const ProductRow = styled.div`
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 30px;
 `
 
 const CartSummary = styled.div`

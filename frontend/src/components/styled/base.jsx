@@ -113,7 +113,7 @@ const InvertedButton = styled(Button)`
 
 const StyledInput = styled(Input)`
   height: 38px;
-  border: 1px solid #e5e5e5;
+  border: 0px solid #e5e5e5;
   color: #888888;
   border-radius: 5px;
   &:focus {
@@ -121,6 +121,7 @@ const StyledInput = styled(Input)`
     border-color: #45941e;
   }
   font-size: large;
+  /* box-shadow: inset 0 0 15px #ccc; */
 `
 
 const TextArea = styled.textarea`
@@ -162,16 +163,7 @@ const Form = styled.form`
 const FormMultiCol = styled.form`
   overflow: auto;
 `
-const ProductRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 20px;
-`
 
-const EmptyProductItem = styled.div`
-  width: 262px;
-`
 const Title = styled.p`
   color: #333333;
   font-size: 18px;
@@ -185,14 +177,6 @@ const SubTitle = styled.p`
   font-size: 18px;
   text-decoration: none;
   margin: 20px 0px;
-`
-
-const CenteredTitle = styled(Title)`
-  text-align: center;
-  min-height: 66px;
-`
-const CenteredSubTitle = styled(SubTitle)`
-  text-align: center;
 `
 
 const Right = styled.span`
@@ -389,11 +373,8 @@ export {
   Label,
   NumberInput,
   WideNumberInput,
-  ProductRow,
   Title,
-  CenteredTitle,
   SubTitle,
-  CenteredSubTitle,
   Right,
   ColoredText,
   BigTitle,
@@ -403,7 +384,6 @@ export {
   InputGroup,
   CompactInputGroup,
   Radio,
-  EmptyProductItem,
   TextArea,
   Form,
   FormMultiCol,
