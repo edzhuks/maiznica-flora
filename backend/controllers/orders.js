@@ -11,6 +11,12 @@ router.post('/', userExtractor, async (req, res) => {
     return res.status(400).json({ error: 'Address is required' })
   }
   let cart = await Cart.findOne({ user: req.user.id })
+  if (!cart) {
+    return res.status(400).json({ error: 'User does not have a cart' })
+  }
+  if (cart.content.length < 1) {
+    return res.status(400).json({ error: 'Cannot order an empty cart' })
+  }
   const order = new Order({
     user: cart.user,
     content: cart.content,
@@ -29,27 +35,46 @@ router.post('/', userExtractor, async (req, res) => {
 })
 
 router.put('/:id', userExtractor, async (req, res) => {
-  let newOrder = req.body
-  newOrder.status.lastModifiedBy = req.user.id
-  newOrder.status.lastModified = new Date()
-  console.log(newOrder)
-  const orderr = await Order.findById(req.params.id)
-  console.log(req.params.id)
-  await Order.updateOne({ _id: req.params.id }, newOrder)
-  const order = await Order.findById(req.params.id).populate([
-    { path: 'content', populate: { path: 'product' } },
-    { path: 'status', populate: { path: 'lastModifiedBy' } },
-  ])
-
-  res.send(order)
+  if (req.user.admin) {
+    let newOrder = req.body
+    if (
+      ![
+        'placed',
+        'accepted',
+        'refused',
+        'packing',
+        'waitingForDelivery',
+        'delivering',
+        'completed',
+      ].find((s) => s === newOrder.status.status)
+    ) {
+      return res.status(400).json({ error: 'Invalid order status' })
+    }
+    newOrder.status.lastModifiedBy = req.user.id
+    newOrder.status.lastModified = new Date()
+    newOrder.address = newOrder.address.id
+    const orderr = await Order.findById(req.params.id)
+    await Order.updateOne({ _id: req.params.id }, newOrder)
+    const order = await Order.findById(req.params.id).populate([
+      { path: 'content', populate: { path: 'product' } },
+      { path: 'status', populate: { path: 'lastModifiedBy' } },
+    ])
+    res.send(order)
+  } else {
+    res.status(403).end()
+  }
 })
 
-router.get('/', async (req, res) => {
-  const orders = await Order.find().populate([
-    { path: 'content', populate: { path: 'product' } },
-    { path: 'status', populate: { path: 'lastModifiedBy' } },
-  ])
-  res.send(orders)
+router.get('/', userExtractor, async (req, res) => {
+  if (req.user.admin) {
+    const orders = await Order.find().populate([
+      { path: 'content', populate: { path: 'product' } },
+      { path: 'status', populate: { path: 'lastModifiedBy' } },
+    ])
+    res.send(orders)
+  } else {
+    res.status(403).end()
+  }
 })
 
 module.exports = router

@@ -625,6 +625,8 @@ describe('an admin user can', () => {
       product = response.body
     })
     test('and it is removed from categories', async () => {
+      const response1 = await api.get(`/api/categories/all`)
+      expect(response1.body.products.length).toBe(1)
       const response = await api
         .delete(`/api/products/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -634,8 +636,6 @@ describe('an admin user can', () => {
     })
   })
 })
-
-
 
 afterAll(async () => {
   await mongoose.connection.close()

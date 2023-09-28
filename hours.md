@@ -17,4 +17,5 @@
 | 14.09        | 6     | footer and fixes, discounts, product editing and deleting                                                                                                                             |
 | - 21.09      | 8     | order management page for the company side                                                                                                                                            |
 | 21.09        | 1     | better css, mobile-friendly                                                                                                                                                           |
-| total        | 49.5  |                                                                                                                                                                                       |
+| 28.09        | 8.5   | product, category, cart, order, address tests                                                                                                                                         |
+| total        | 58    |                                                                                                                                                                                       |

@@ -1,6 +1,7 @@
 const express = require('express')
 const Cart = require('../models/cart')
 const { userExtractor } = require('../util/middleware')
+const { isPositiveInteger } = require('../util/functions')
 const router = express.Router()
 
 router.get('/', userExtractor, async (req, res) => {
@@ -11,35 +12,14 @@ router.get('/', userExtractor, async (req, res) => {
 })
 
 router.post('/', userExtractor, async (req, res) => {
-  if (req.body.quantity < 1) {
-    return res.status(400).json({ error: 'Cannot add less than 1 item' })
+  if (!isPositiveInteger(req.body.quantity)) {
+    return res.status(400).send('Cannot add less than 1 item')
   }
-  let cart = await Cart.findOne({ user: req.user.id })
-  if (!cart) {
-    cart = await new Cart({
-      content: [],
-      user: req.user.id,
-    })
+  if (!req.body.product) {
+    return res.status(400).send('Product missing')
   }
-  if (
-    (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
-  ) {
-    item.quantity += Number(req.body.quantity)
-  } else {
-    cart.content = cart.content.concat({
-      product: req.body.product.id,
-      quantity: req.body.quantity,
-    })
-  }
-  await cart.save()
-  res.send(cart)
-})
-
-router.put('/', userExtractor, async (req, res) => {
-  if (req.body.quantity < 0) {
-    return res
-      .status(400)
-      .json({ error: 'Cannot have a negative amount of item' })
+  if (!req.body.product.id) {
+    return res.status(400).send('Product id missing')
   }
   let cart = await Cart.findOne({ user: req.user.id })
   if (!cart) {
@@ -52,7 +32,6 @@ router.put('/', userExtractor, async (req, res) => {
     cart.content = cart.content.filter(
       (item) => !item.product.equals(req.body.product.id)
     )
-    item = { product: req.body.product, quantity: 0 }
   } else {
     if (
       (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
@@ -66,22 +45,7 @@ router.put('/', userExtractor, async (req, res) => {
     }
   }
   await cart.save()
-  res.send(item)
-})
-
-router.delete('/:id', userExtractor, async (req, res) => {
-  let cart = await Cart.findOne({ user: req.user.id })
-  if (!cart) {
-    cart = await new Cart({
-      content: [],
-      user: req.user.id,
-    })
-  }
-  cart.content = cart.content.filter(
-    (item) => !item.product.equals(req.params.id)
-  )
-  await cart.save()
-  res.send(cart)
+  res.status(201).send(cart)
 })
 
 module.exports = router
