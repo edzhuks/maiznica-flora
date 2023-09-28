@@ -69,12 +69,23 @@ router.post('/', async (request, response) => {
 })
 
 router.post('/address', userExtractor, async (req, res) => {
+  if (
+    !req.body.name ||
+    !req.body.surname ||
+    !req.body.phone ||
+    !req.body.city ||
+    !req.body.street ||
+    !req.body.house ||
+    !req.body.apartment
+  ) {
+    return res.status(400).send('Missing required fields')
+  }
   let user = await User.findById(req.user.id)
   const address = new Address(req.body)
   await address.save()
   user.addresses = user.addresses.concat(address)
   await user.save()
-  res.send(address)
+  res.status(201).send(address)
 })
 
 module.exports = router

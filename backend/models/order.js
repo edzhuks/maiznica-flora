@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema({
         'accepted',
         'refused',
         'packing',
-        'vaitingForDelivery',
+        'waitingForDelivery',
         'delivering',
         'completed',
       ],

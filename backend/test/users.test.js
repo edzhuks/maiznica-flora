@@ -185,6 +185,111 @@ describe('login', () => {
   })
 })
 
+describe('address', () => {
+  const goodAddress = {
+    name: 'John',
+    surname: 'Smith',
+    phone: '123456789',
+    city: 'Helsinki',
+    street: 'Fabianinkatu',
+    house: '34',
+    apartment: '123A',
+  }
+  let token
+  beforeEach(async () => {
+    const response = await api.post('/api/login').send(notAdmin)
+    token = response.body.token
+  })
+  test('can be added to user profile', async () => {
+    const addressResponse = await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(goodAddress)
+      .expect(201)
+    delete addressResponse.body.id
+    expect(addressResponse.body).toStrictEqual(goodAddress)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(1)
+  })
+  test('creation fails without mandatory fields: name', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.name
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: surname', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.surname
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: phone', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.phone
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: city', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.city
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: street', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.street
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: house', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.house
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+  test('creation fails without mandatory fields: apartment', async () => {
+    const badAddress = { ...goodAddress }
+    delete badAddress.apartment
+    await api
+      .post('/api/users/address')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badAddress)
+      .expect(400)
+    const response2 = await api.post('/api/login').send(notAdmin)
+    expect(response2.body.addresses.length).toBe(0)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
