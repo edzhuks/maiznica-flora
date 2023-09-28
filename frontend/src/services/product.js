@@ -4,7 +4,9 @@ import makeConfig from './token'
 const baseURL = 'http://localhost:3001/api/products'
 
 const create = (newProduct) => {
-  const request = axios.post(baseURL, newProduct)
+  const config = makeConfig()
+
+  const request = axios.post(baseURL, newProduct, config)
   return request.then((response) => response.data)
 }
 

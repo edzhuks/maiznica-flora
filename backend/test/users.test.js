@@ -5,24 +5,23 @@ const app = require('../app')
 const api = supertest(app)
 
 const User = require('../models/user')
-const dummyUsers = [
-  {
-    username: 'root',
-    password: 'password11!!',
-    email: 'email@email.email',
-  },
-  {
-    username: 'admin',
-    password: 'password11!!',
-    email: 'email2@email.email',
-    admin: true,
-  },
-]
+const notAdmin = {
+  username: 'notadmin',
+  password: 'password11!!',
+  email: 'email@email.email',
+}
+
+const admin = {
+  username: 'admin',
+  password: 'password11!!',
+  email: 'email2@email.email',
+  admin: true,
+}
 
 beforeEach(async () => {
   await User.deleteMany({})
-  await api.post('/api/users').send(dummyUsers[0])
-  await api.post('/api/users').send(dummyUsers[1])
+  await api.post('/api/users').send(notAdmin)
+  await api.post('/api/users').send(admin)
 })
 
 describe('initial user', () => {
@@ -38,10 +37,10 @@ describe('initial user', () => {
     expect(response.body).toHaveLength(2)
   })
 
-  test('the users have usernames root and admin', async () => {
+  test('the users have correct usernames', async () => {
     const response = await api.get('/api/users')
-    expect(response.body.map((u) => u.username)).toContain('root')
-    expect(response.body.map((u) => u.username)).toContain('admin')
+    expect(response.body.map((u) => u.username)).toContain(notAdmin.username)
+    expect(response.body.map((u) => u.username)).toContain(admin.username)
   })
 })
 
@@ -96,7 +95,7 @@ describe('user creation validation', () => {
 
   test('user with existing username cannot be added', async () => {
     const newUser = {
-      username: 'root',
+      username: 'notadmin',
       password: 'secret222!!!',
       email: 'eeeemail@email.email',
     }
@@ -178,7 +177,7 @@ describe('login', () => {
   test('user can log in with username and password', async () => {
     const response = await api
       .post('/api/login')
-      .send(dummyUsers[0])
+      .send(notAdmin)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
