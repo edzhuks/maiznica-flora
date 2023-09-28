@@ -68,6 +68,26 @@ categoryRouter.get('/:category', async (req, res) => {
   res.send(categories)
 })
 
+categoryRouter.post('/init', async (req, res) => {
+  const all = new Category({
+    _id: 'all',
+    categories: [],
+    products: [],
+    image: '',
+    displayName: 'All',
+  })
+  await all.save()
+  const news = new Category({
+    _id: 'new',
+    categories: [],
+    products: [],
+    image: '',
+    displayName: 'New',
+  })
+  await news.save()
+  res.status(201).end()
+})
+
 categoryRouter.post('/', async (req, res) => {
   console.log(req.body)
   const newCategory = new Category(req.body.newCategory)

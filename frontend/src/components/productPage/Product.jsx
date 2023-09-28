@@ -17,9 +17,11 @@ import TextualInformation from './TextualInformation'
 import useField from '../../hooks/useField'
 
 const Image = styled.img`
-  width: 500px;
+  width: auto;
   height: 500px;
   object-fit: contain;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   /* transform: scale(0.8); */
 `
 
@@ -181,8 +183,8 @@ const Product = () => {
             )}
           </>
         )}
-        <div style={{ display: 'flex' }}>
-          <div>
+        <div style={{ display: 'flex', gap: '60px' }}>
+          <div style={{ width: '500px' }}>
             <Image
               src={product.image}
               // width="500px"
