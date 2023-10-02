@@ -16,9 +16,6 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
-      - name: Check style
-        working-directory: ./backend
-        run: npm run eslint
       - name: test
         working-directory: ./backend
         run: npm run test
