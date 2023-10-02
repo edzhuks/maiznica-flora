@@ -5,6 +5,7 @@ const router = express.Router()
 const User = require('../models/user')
 const Address = require('../models/address')
 const Cart = require('../models/cart')
+const { TEST_MODE } = require('../util/config')
 
 router.get('/', async (req, res) => {
   const users = await User.find()
@@ -52,8 +53,8 @@ router.post('/', async (request, response) => {
     username,
     passwordHash,
     email,
-    admin: false,
-    maintainer: false,
+    admin: admin && TEST_MODE ? true : false,
+    maintainer: maintainer && TEST_MODE ? true : false,
     addresses: [],
   })
 
