@@ -21,7 +21,9 @@ router.post('/', userExtractor, async (req, res) => {
   if (!req.body.product.id) {
     return res.status(400).send('Product id missing')
   }
-  let cart = await Cart.findOne({ user: req.user.id })
+  let cart = await Cart.findOne({ user: req.user.id }).populate({
+    path: 'content.product',
+  })
   if (!cart) {
     cart = await new Cart({
       content: [],

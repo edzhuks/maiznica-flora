@@ -15,7 +15,6 @@ import {
   Button,
 } from '../styled/base'
 import Select from 'react-select'
-import axios from 'axios'
 import { useState } from 'react'
 import categoryService from '../../services/category'
 import useField from '../../hooks/useField'
@@ -31,7 +30,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     categoryService.getAllIds().then((result) => {
       setAllCategories(
         result.map((category) => ({
-          value: category._id,
+          value: category.id,
           label: category.displayName,
         }))
       )
@@ -50,25 +49,25 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
       categoryService
         .addExisting({
           categoriesToAdd: selectedCategoryIds,
-          parentCategory: activeCategory._id,
+          parentCategory: activeCategory.id,
         })
-        .then((newCatalogue) => {
+        .then(() => {
           clear()
-          onClose(newCatalogue)
+          onClose()
         })
     } else {
       categoryService
         .addNew({
           newCategory: {
             displayName: name.value,
-            _id: id.value,
+            id: id.value,
             image: image.value,
           },
-          parentCategory: activeCategory._id,
+          parentCategory: activeCategory.id,
         })
-        .then((newCatalogue) => {
+        .then(() => {
           clear()
-          onClose(newCatalogue)
+          onClose()
         })
     }
   }

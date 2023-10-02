@@ -1,16 +1,7 @@
 import styled from 'styled-components'
-import {
-  StyledInput,
-  Form,
-  WideNumberInput,
-  TextArea,
-  Label,
-  CompactInputGroup,
-  NumberInput,
-} from '../styled/base'
-import useField from '../../hooks/useField'
-import { useEffect, useState } from 'react'
+import { StyledInput, TextArea, NumberInput } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
+import { centsToEuro, gramsToKilos } from '../../util/convert'
 
 const Text = styled.p`
   font-family: 'Roboto', sans-serif;
@@ -62,7 +53,7 @@ const StaticInformation = ({ product }) => {
   return (
     <div>
       <Title>
-        {product.name} {product.weight}g
+        {product.name} {gramsToKilos(product.weight)}
       </Title>
       {product.rating && <h4>rating: {product.rating}</h4>}
       {product.description && <Text>{product.description}</Text>}
@@ -120,7 +111,7 @@ const StaticInformation = ({ product }) => {
         </Table>
       )}
       <Text>EAN code {product.EAN}</Text>
-      <Title>€ {product.price}</Title>
+      <Title>{centsToEuro(product.price)}</Title>
     </div>
   )
 }

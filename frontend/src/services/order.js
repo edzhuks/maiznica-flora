@@ -10,14 +10,14 @@ const placeOrder = (address) => {
 }
 
 const updateOrder = (newOrder) => {
-  console.log(newOrder)
   const config = makeConfig()
   const request = axios.put(`${baseURL}/${newOrder.id}`, newOrder, config)
   return request.then((response) => response.data)
 }
 
 const getAll = () => {
-  const request = axios.get(baseURL)
+  const config = makeConfig()
+  const request = axios.get(baseURL, config)
   return request.then((response) => response.data)
 }
 

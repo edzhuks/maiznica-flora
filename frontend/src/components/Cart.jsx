@@ -12,6 +12,7 @@ import {
   Row,
   Title,
 } from './styled/base'
+import { centsToEuro } from '../util/convert'
 
 const CartContents = styled.div`
   float: left;
@@ -31,7 +32,9 @@ const ProductRow = styled.div`
 const CartSummary = styled.div`
   float: right;
   width: 25%;
-  padding: 0px 20px;
+  padding: 0px 20px 20px 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `
 const SummrayLeft = styled.div`
   float: left;
@@ -54,17 +57,18 @@ const Cart = () => {
     update()
   }, [])
 
-  const update = () => {
-    cartService.getCart().then((c) => {
-      setCart(c)
-      setTotal(
-        c.content.reduce(
-          (sum, item) => sum + item.quantity * item.product.price,
-          0
-        )
+  const update = async (newCart) => {
+    if (!newCart) {
+      newCart = await cartService.getCart()
+    }
+    setCart(newCart)
+    setTotal(
+      newCart.content.reduce(
+        (sum, item) => sum + item.quantity * item.product.price,
+        0
       )
-      setDeliveryCost(total > 50 ? 0 : 7)
-    })
+    )
+    setDeliveryCost(total > 50 ? 0 : 7)
   }
 
   const removeItem = (item) => {
@@ -109,13 +113,14 @@ const Cart = () => {
               </p>
             </SummrayLeft>
             <SummrayRight>
-              <p>€{total}</p>
+              <p>{centsToEuro(total)}</p>
               <p>
-                <br />€{total > 50 ? 0 : deliveryCost}
+                <br />
+                {centsToEuro(deliveryCost)}
               </p>
               <p>
                 <b>
-                  <ColoredText>€{total + deliveryCost}</ColoredText>
+                  <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
                 </b>
               </p>
             </SummrayRight>

@@ -1,24 +1,7 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import {
-  BigTitle,
-  Button,
-  CancelButton,
-  CenteredTitle,
-  Centerer,
-  FullWidthButton,
-  InputGroup,
-  Label,
-  Row,
-  StyledInput,
-  Title,
-  Form,
-  CompactInputGroup,
-  SubTitle,
-} from '../styled/base'
-import useField from '../../hooks/useField'
-import Select from 'react-select'
+import { Button } from '../styled/base'
+
 import categoryService from '../../services/category'
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
@@ -30,8 +13,6 @@ const CategoryList = styled.ul`
   padding: 0;
   margin: 0;
   margin-left: 30px;
-
-  /* margin-top: 10px; */
 `
 
 const Clearer = styled.div`
@@ -109,7 +90,9 @@ const CategoryTab = ({ category, handleCategory, handleProduct }) => {
               <Link
                 to={`/products/${p.id}`}
                 style={{ textDecoration: 'none' }}>
-                <span>{p.name}</span>
+                <span>
+                  {p.name} {p.weight}g
+                </span>
               </Link>
             </ProductItem>
           ))}
@@ -144,17 +127,21 @@ const CategoryManagement = () => {
     setAddingProduct(true)
   }
 
-  const onModalClose = (newCatalogue) => {
-    setCatalogue(newCatalogue)
+  const onModalClose = () => {
     setActiveCategory(null)
     setAddingCategory(false)
     setAddingProduct(false)
+    refresh()
   }
 
-  useEffect(() => {
+  const refresh = () => {
     categoryService.getFullCatalogue().then((result) => {
       setCatalogue(result)
     })
+  }
+
+  useEffect(() => {
+    refresh()
   }, [])
 
   return (

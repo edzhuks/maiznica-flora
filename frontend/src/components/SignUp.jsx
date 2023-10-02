@@ -12,7 +12,7 @@ import {
   InputGroup,
   Label,
   LoginCard,
-  LoginInput,
+  StyledInput,
 } from './styled/base'
 import Checkbox from './basic/Checkbox'
 
@@ -52,19 +52,28 @@ const SignUp = () => {
           <InputGroup>
             <Label>
               Username
-              <LoginInput {...username} />
+              <StyledInput
+                {...username}
+                onLight
+              />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               Email
-              <LoginInput {...email} />
+              <StyledInput
+                {...email}
+                onLight
+              />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               Password
-              <LoginInput {...password} />
+              <StyledInput
+                {...password}
+                onLight
+              />
             </Label>
           </InputGroup>
           <Checkbox

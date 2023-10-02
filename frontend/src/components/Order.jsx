@@ -28,10 +28,14 @@ const CompactLabel = styled(Label)`
 `
 
 const AddressChoice = styled(Radio)`
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   background-color: #fbfbfb;
   padding: 18px;
 `
 const Address = styled.div`
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   background-color: #fbfbfb;
   padding: 18px;
 `
@@ -106,43 +110,64 @@ const Order = () => {
           <InputGroup>
             <CompactLabel>
               City
-              <StyledInput {...city} />
+              <StyledInput
+                {...city}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               Street
-              <StyledInput {...street} />
+              <StyledInput
+                {...street}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               House
-              <StyledInput {...house} />
+              <StyledInput
+                {...house}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               Apt.
-              <StyledInput {...apartment} />
+              <StyledInput
+                {...apartment}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               Name
-              <StyledInput {...name} />
+              <StyledInput
+                {...name}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               Surname
-              <StyledInput {...surname} />
+              <StyledInput
+                {...surname}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>
             <CompactLabel>
               Phone
-              <StyledInput {...phone} />
+              <StyledInput
+                {...phone}
+                onLight
+              />
             </CompactLabel>
           </InputGroup>
           <InputGroup>

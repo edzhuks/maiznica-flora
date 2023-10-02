@@ -17,7 +17,6 @@ import {
   TextArea,
 } from '../styled/base'
 import Select from 'react-select'
-import axios from 'axios'
 import { useState } from 'react'
 import productService from '../../services/product'
 import categoryService from '../../services/category'
@@ -46,6 +45,8 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const [ingredients, setIngredients] = useState('')
 
   const [bio, setBio] = useState(false)
+  const [addToAll, setAddToAll] = useState(true)
+  const [addToNew, setAddToNew] = useState(true)
 
   useEffect(() => {
     productService.getAll().then((result) => {
@@ -82,7 +83,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
       categoryService
         .addProducts({
           productsToAdd: selectedProductIds,
-          parentCategory: activeCategory._id,
+          parentCategory: activeCategory.id,
         })
         .then((newCatalogue) => {
           clear()
@@ -91,34 +92,39 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
     } else {
       productService
         .create({
-          name: name.value,
-          weight: weight.value,
-          price: price.value,
-          nutrition:
-            energy.value ||
-            fat.value ||
-            saturatedFat.value ||
-            carbs.value ||
-            sugar.value ||
-            fiber.value ||
-            protein.value ||
-            salt.value
-              ? {
-                  energy: energy.value,
-                  fat: fat.value,
-                  saturatedFat: saturatedFat.value,
-                  carbs: carbs.value,
-                  sugar: sugar.value,
-                  fiber: fiber.value,
-                  protein: protein.value,
-                  salt: salt.value,
-                }
-              : null,
-          EAN: EAN.value,
-          image: image.value,
-          description,
-          ingredients,
-          bio,
+          product: {
+            name: name.value,
+            weight: weight.value,
+            price: price.value,
+            nutrition:
+              energy.value ||
+              fat.value ||
+              saturatedFat.value ||
+              carbs.value ||
+              sugar.value ||
+              fiber.value ||
+              protein.value ||
+              salt.value
+                ? {
+                    energy: energy.value,
+                    fat: fat.value,
+                    saturatedFat: saturatedFat.value,
+                    carbs: carbs.value,
+                    sugar: sugar.value,
+                    fiber: fiber.value,
+                    protein: protein.value,
+                    salt: salt.value,
+                  }
+                : null,
+            EAN: EAN.value,
+            image: image.value,
+            description,
+            ingredients,
+            bio,
+          },
+          parentCategory: activeCategory.id,
+          addToAll,
+          addToNew,
         })
         .then((newCatalogue) => {
           clear()
@@ -152,14 +158,17 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               <CompactInputGroup>
                 <Label>
                   name
-                  <StyledInput {...name} />
+                  <StyledInput
+                    {...name}
+                    style={{ width: '420px', float: 'left', marginLeft: 0 }}
+                  />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
                   description
                   <TextArea
-                    rows={4}
+                    rows={8}
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                   />
@@ -169,7 +178,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
                 <Label>
                   ingredients
                   <TextArea
-                    rows={4}
+                    rows={6}
                     value={ingredients}
                     onChange={(event) => setIngredients(event.target.value)}
                   />
@@ -252,6 +261,16 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
                 checked={bio}
                 onChange={() => setBio(!bio)}
                 label="bio"
+              />
+              <Checkbox
+                checked={addToAll}
+                onChange={() => setAddToAll(!addToAll)}
+                label="Add to category 'all'"
+              />
+              <Checkbox
+                checked={addToNew}
+                onChange={() => setAddToNew(!setAddToNew)}
+                label="Add to category 'new'"
               />
             </Form>
           </ModalHalf>
