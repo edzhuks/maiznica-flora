@@ -236,7 +236,7 @@ const LoginCard = styled.div`
 `
 
 const InputGroup = styled.div`
-  margin-bottom: 58px;
+  margin-bottom: 15px;
 `
 
 const CompactInputGroup = styled(InputGroup)`

@@ -24,6 +24,8 @@ import HomePage from './components/Home'
 import ProductListWithCategories from './components/productList/ProductListWithCategories'
 import Footer from './components/Footer'
 import OrderManagementPage from './components/orders/OrderManagementPage'
+import AboutPage from './components/AboutPage'
+import Contact from './components/Contact'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -58,9 +60,10 @@ function App() {
                   />
                 </a>
 
-                <HeaderTab to="/category/all">products</HeaderTab>
-                <HeaderTab>About</HeaderTab>
-                <HeaderTab>Contact</HeaderTab>
+                <HeaderTab to="/category/all">Products</HeaderTab>
+                <HeaderTab to="/about">About</HeaderTab>
+                <HeaderTab to="/contact">Contact</HeaderTab>
+
                 <Spacer />
                 {user ? (
                   <HeaderTab to="/cart">
@@ -130,6 +133,14 @@ function App() {
               <Route
                 path="/"
                 element={<HomePage />}
+              />
+              <Route
+                path="/contact"
+                element={<Contact />}
+              />
+              <Route
+                path="/about"
+                element={<AboutPage />}
               />
             </Routes>
           </FullHeightContainer>
