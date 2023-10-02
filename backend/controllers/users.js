@@ -52,8 +52,8 @@ router.post('/', async (request, response) => {
     username,
     passwordHash,
     email,
-    admin: admin ?? false,
-    maintainer: maintainer ?? false,
+    admin: false,
+    maintainer: false,
     addresses: [],
   })
 
