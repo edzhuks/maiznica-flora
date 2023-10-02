@@ -57,7 +57,11 @@ const Login = () => {
             </Label>
           </InputGroup>
 
-          <FullWidthButton type="submit">Sign In</FullWidthButton>
+          <FullWidthButton
+            style={{ marginTop: '40px' }}
+            type="submit">
+            Sign In
+          </FullWidthButton>
         </Form>
       </LoginCard>
     </Centerer>

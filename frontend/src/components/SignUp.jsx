@@ -67,7 +67,7 @@ const SignUp = () => {
               />
             </Label>
           </InputGroup>
-          <InputGroup>
+          <InputGroup style={{ marginBottom: '35px' }}>
             <Label>
               Password
               <StyledInput

@@ -19,6 +19,10 @@ const CarouselLeft = styled.div`
   left: 0;
   height: 100%;
   display: flex;
+  svg > path {
+    filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.5));
+    color: #f3f3f3;
+  }
 `
 
 const CarouselRight = styled(CarouselLeft)`
@@ -29,6 +33,8 @@ const CarouselRight = styled(CarouselLeft)`
 const CarouselImages = styled.div`
   width: inherit;
   height: inherit;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `
 
 const CarouselImage = styled.img`

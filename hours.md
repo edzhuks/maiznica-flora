@@ -19,4 +19,5 @@
 | 21.09        | 1     | better css, mobile-friendly                                                                                                                                                           |
 | 28.09        | 8.5   | product, category, cart, order, address tests                                                                                                                                         |
 | 02.10        | 3     | fixing frontend to work with the improved backend, other improvements                                                                                                                 |
-| total        | 61    |                                                                                                                                                                                       |
+| 02.10        | 1     | contact and about page                                                                                                                                                                |
+| total        | 62    |                                                                                                                                                                                       |
