@@ -1,9 +1,8 @@
 import axios from 'axios'
-import user from './user'
-import withToken from './token'
 import makeConfig from './token'
+import { apiURL } from '../util/config'
 
-const baseUrl = 'http://localhost:3001/api/categories'
+const baseUrl = `${apiURL}/categories`
 
 const addNew = ({ newCategory, parentCategory }) => {
   const config = makeConfig()

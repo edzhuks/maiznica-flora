@@ -1,7 +1,8 @@
 import axios from 'axios'
 import makeConfig from './token'
+import { apiURL } from '../util/config'
 
-const baseURL = 'http://localhost:3001/api/products'
+const baseURL = `${apiURL}/products`
 
 const create = (newProduct) => {
   const config = makeConfig()
