@@ -76,7 +76,7 @@ const SignUp = () => {
               />
             </Label>
           </InputGroup>
-          <Checkbox
+          {/* <Checkbox
             checked={admin}
             onChange={() => setAdmin(!admin)}
             label="Admin"
@@ -85,7 +85,7 @@ const SignUp = () => {
             checked={maintainer}
             onChange={() => setMaintainer(!maintainer)}
             label="Maintainer"
-          />
+          /> */}
           <FullWidthButton type="submit">Sign Up</FullWidthButton>
         </Form>
       </LoginCard>
