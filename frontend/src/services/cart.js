@@ -15,8 +15,9 @@ const addToCart = (newProduct) => {
 
 const removeFromCart = (product) => {
   const config = makeConfig()
-  const request = axios.delete(
-    `http://localhost:3001/api/cart/${product.id}`,
+  const request = axios.post(
+    `http://localhost:3001/api/cart`,
+    { product, quantity: 0 },
     config
   )
   return request.then((response) => response.data)
@@ -25,7 +26,7 @@ const removeFromCart = (product) => {
 const changeQuantity = (newProduct) => {
   const config = makeConfig()
 
-  const request = axios.put(
+  const request = axios.post(
     'http://localhost:3001/api/cart',
     newProduct,
     config

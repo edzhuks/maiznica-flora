@@ -87,6 +87,11 @@ router.post('/', userExtractor, productChecker, async (req, res) => {
       newsCategory.products.push(createdProduct._id)
       await newsCategory.save()
     }
+    if (req.body.parentCategory) {
+      const parentCategory = await Category.findById(req.body.parentCategory)
+      parentCategory.products.push(createdProduct._id)
+      await parentCategory.save()
+    }
     res.status(201).send(createdProduct)
   } else {
     res.status(403).end()

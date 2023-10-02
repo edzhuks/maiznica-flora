@@ -6,7 +6,6 @@ import {
   Button,
   InvertedButton,
   NumberInput,
-  Row,
   RowSpaceBetween,
   Title,
   SubTitle,
@@ -14,16 +13,16 @@ import {
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
+import { centsToEuro, gramsToKilos } from '../../util/convert'
 
 const ProductCard = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: calc(100% / 4 - 23px);
   min-width: 243px;
-  background-color: #f8f8f8;
+  background-color: #fbfbfb;
   border-radius: 5px;
   display: flex;
-  /* height: 100%; */
   flex-direction: column;
 `
 const CardLink = styled(Link)`
@@ -39,7 +38,6 @@ const CardLink = styled(Link)`
 `
 const CenteredTitle = styled(Title)`
   text-align: center;
-  /* min-height: 66px; */
 `
 
 const CenteredSubTitle = styled(SubTitle)`
@@ -65,7 +63,7 @@ const BuyButton = styled(Button)`
 `
 
 const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
-  const [quantityToAdd, setQuantityToAdd] = useState(inCart ? quantity : 1)
+  const [quantityToAdd, setQuantityToAdd] = useState(1)
 
   const addToCart = () => {
     cartService.addToCart({ quantity: quantityToAdd, product })
@@ -78,23 +76,18 @@ const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
 
   const addMore = async () => {
     const updated = await cartService.changeQuantity({
-      quantity: quantityToAdd + 1,
+      quantity: quantity + 1,
       product,
     })
-    setQuantityToAdd(updated.quantity)
-    update()
+    update(updated)
   }
 
   const removeSome = async () => {
     const updated = await cartService.changeQuantity({
-      quantity: quantityToAdd - 1,
+      quantity: quantity - 1,
       product,
     })
-    if (updated.quantity === 0) {
-      remove()
-    }
-    setQuantityToAdd(updated.quantity)
-    update()
+    update(updated)
   }
 
   return (
@@ -113,8 +106,9 @@ const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
         </CenteredTitle>
       </CardLink>
       <CenteredSubTitle>
-        {product.weight}g &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        €{product.price}
+        {gramsToKilos(product.weight)}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {centsToEuro(product.price)}
       </CenteredSubTitle>
       {product.rating && <h4>{product.rating}/10</h4>}
       {inCart ? (
@@ -122,7 +116,7 @@ const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
           <InvertedButton onClick={removeSome}>
             <Minus />
           </InvertedButton>
-          <CenteredSubTitle>{quantityToAdd}</CenteredSubTitle>
+          <SubTitle style={{ margin: 0 }}>{quantity}</SubTitle>
           <InvertedButton onClick={addMore}>
             <Plus />
           </InvertedButton>
@@ -136,6 +130,7 @@ const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
             value={quantityToAdd}
             onChange={(event) => setQuantityToAdd(event.target.value)}
             type="number"
+            onLight
           />
           <BuyButton onClick={addToCart}>BUY</BuyButton>
         </RowSpaceBetween>

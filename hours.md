@@ -18,4 +18,5 @@
 | - 21.09      | 8     | order management page for the company side                                                                                                                                            |
 | 21.09        | 1     | better css, mobile-friendly                                                                                                                                                           |
 | 28.09        | 8.5   | product, category, cart, order, address tests                                                                                                                                         |
-| total        | 58    |                                                                                                                                                                                       |
+| 02.10        | 3     | fixing frontend to work with the improved backend, other improvements                                                                                                                 |
+| total        | 61    |                                                                                                                                                                                       |

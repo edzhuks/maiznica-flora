@@ -182,15 +182,7 @@ describe('an admin user can', () => {
           .send({ product: badProduct2 })
           .expect(400)
       })
-      test('a description', async () => {
-        const badProduct = { ...goodProduct }
-        delete badProduct.description
-        await api
-          .post('/api/products')
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send({ product: badProduct })
-          .expect(400)
-      })
+
       test('ingredients', async () => {
         const badProduct = { ...goodProduct }
         delete badProduct.ingredients
@@ -200,15 +192,7 @@ describe('an admin user can', () => {
           .send({ product: badProduct })
           .expect(400)
       })
-      test('an EAN code', async () => {
-        const badProduct = { ...goodProduct }
-        delete badProduct.EAN
-        await api
-          .post('/api/products')
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send({ product: badProduct })
-          .expect(400)
-      })
+
       test('an image', async () => {
         const badProduct = { ...goodProduct }
         delete badProduct.image
@@ -415,15 +399,7 @@ describe('an admin user can', () => {
           .send({ product: badProduct2 })
           .expect(400)
       })
-      test('a description', async () => {
-        const badProduct = { ...goodProduct }
-        delete badProduct.description
-        await api
-          .put(`/api/products/${product.id}`)
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send({ product: badProduct })
-          .expect(400)
-      })
+
       test('ingredients', async () => {
         const badProduct = { ...goodProduct }
         delete badProduct.ingredients
@@ -433,15 +409,7 @@ describe('an admin user can', () => {
           .send({ product: badProduct })
           .expect(400)
       })
-      test('an EAN code', async () => {
-        const badProduct = { ...goodProduct }
-        delete badProduct.EAN
-        await api
-          .put(`/api/products/${product.id}`)
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send({ product: badProduct })
-          .expect(400)
-      })
+
       test('an image', async () => {
         const badProduct = { ...goodProduct }
         delete badProduct.image

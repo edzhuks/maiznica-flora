@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import cartService from '../../services/cart'
 import styled from 'styled-components'
 import {
@@ -17,12 +16,24 @@ import TextualInformation from './TextualInformation'
 import useField from '../../hooks/useField'
 
 const Image = styled.img`
-  width: auto;
-  height: 500px;
-  object-fit: contain;
+  flex: 50%;
+  width: 100%;
+  height: auto;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   /* transform: scale(0.8); */
+`
+const WrappableRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+  div {
+    flex: 50%;
+  }
+  column-gap: 40px;
 `
 
 const Product = () => {
@@ -131,7 +142,6 @@ const Product = () => {
                 }
               : null,
           EAN: EAN.value,
-          // image: image.value,
           description,
           ingredients,
           bio,
@@ -183,14 +193,8 @@ const Product = () => {
             )}
           </>
         )}
-        <div style={{ display: 'flex', gap: '60px' }}>
-          <div style={{ width: '500px' }}>
-            <Image
-              src={product.image}
-              // width="500px"
-              // height="500px"
-            />
-          </div>
+        <WrappableRow>
+          <Image src={product.image} />
           <div>
             <TextualInformation
               product={product}
@@ -232,7 +236,7 @@ const Product = () => {
               </div>
             )}
           </div>
-        </div>
+        </WrappableRow>
       </>
     )
 }

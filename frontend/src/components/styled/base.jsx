@@ -30,12 +30,14 @@ const HeaderSpacer = styled.div`
 `
 
 const Header = styled.div`
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: 100%;
   height: 110px;
   position: fixed;
   top: 0;
   padding-top: 18px;
-  border-bottom: 1px solid #999999;
+  /* border-bottom: 1px solid #999999; */
   background-color: #fffdfd;
   z-index: 4;
 `
@@ -101,7 +103,7 @@ const FullWidthCancelButton = styled(FullWidthButton)`
   }
 `
 const InvertedButton = styled(Button)`
-  padding: 1px 4px;
+  /* padding: 1px 4px; */
   background-color: transparent;
   font-weight: bold;
   color: #999999;
@@ -113,11 +115,14 @@ const InvertedButton = styled(Button)`
 
 const StyledInput = styled(Input)`
   height: 38px;
-  border: 0px solid #e5e5e5;
+  border: 0px;
   color: #888888;
-  border-radius: 5px;
+  border-radius: 2px;
+  border: 1px solid ${(props) => (props.onLight ? '#f1f1f1' : 'white')};
+  background-color: ${(props) => (props.onLight ? '#f1f1f1' : 'white')};
   &:focus {
     outline: none;
+    border: 1px solid #e5e5e5;
     border-color: #45941e;
   }
   font-size: large;
@@ -140,7 +145,7 @@ const NumberInput = styled(StyledInput)`
   width: 100px;
 `
 const WideNumberInput = styled(NumberInput)`
-  width: 200px;
+  width: 217px;
 `
 
 const Form = styled.form`
@@ -188,8 +193,9 @@ const ColoredText = styled.span`
 `
 
 const Label = styled.label`
-  color: #777777;
+  color: #555555;
   display: block;
+  line-height: 40px;
 `
 const BigTitle = styled.div`
   font-family: 'Roboto Slab', serif;
@@ -224,15 +230,11 @@ const Centerer = styled.div`
 const LoginCard = styled.div`
   background-color: white;
   padding: 58px;
-  border-radius: 20px;
-  /* box-shadow: 10px 10px 2px 2px rgb(255, 168, 177); */
-  box-shadow: rgba(69, 148, 30, 0.12) 0px 54px 55px,
-    rgba(69, 148, 30, 0.12) 0px -12px 30px, rgba(69, 148, 30, 0.12) 0px 4px 6px,
-    rgba(69, 148, 30, 0.12) 0px 12px 13px, rgba(69, 148, 30, 0.09) 0px -3px 5px;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `
-const LoginInput = styled(StyledInput)`
-  width: 200px;
-`
+
 const InputGroup = styled.div`
   margin-bottom: 58px;
 `
@@ -325,7 +327,7 @@ const ModalContainer = styled.div`
   padding-top: 50px;
 `
 const ModalContent = styled.div`
-  background-color: #fefefe;
+  background-color: #f8f8f8;
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
   max-width: 1020px; /* Could be more or less, depending on screen size */
@@ -380,7 +382,6 @@ export {
   BigTitle,
   Centerer,
   LoginCard,
-  LoginInput,
   InputGroup,
   CompactInputGroup,
   Radio,

@@ -33,16 +33,12 @@ const productChecker = async (req, res, next) => {
     !product.name ||
     !product.weight ||
     !product.price ||
-    !product.description ||
     !product.ingredients ||
-    !product.EAN ||
     !product.image
   ) {
     return res
       .status(400)
-      .send(
-        'Missing name, weight, price, description, ingredients, EAN or image'
-      )
+      .send('Missing name, weight, price, ingredients, or image')
   }
   if (!isPositiveInteger(product.weight)) {
     return res

@@ -12,7 +12,6 @@ import {
   BigTitle,
   Centerer,
   LoginCard,
-  LoginInput,
   InputGroup,
   Form,
 } from './styled/base'
@@ -42,13 +41,19 @@ const Login = () => {
           <InputGroup>
             <Label>
               Username
-              <LoginInput {...username} />
+              <StyledInput
+                {...username}
+                onLight
+              />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               Password
-              <LoginInput {...password} />
+              <StyledInput
+                {...password}
+                onLight
+              />
             </Label>
           </InputGroup>
 

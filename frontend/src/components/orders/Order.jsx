@@ -3,7 +3,6 @@ import ExpandedOrder from './ExpandedOrder'
 import CompactOrder from './CompactOrder'
 
 const Order = ({ order, updateOrder }) => {
-  const status = order.status?.status
   const [expanded, setExpanded] = useState(false)
   const [closing, setClosing] = useState(false)
 

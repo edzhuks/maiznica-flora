@@ -1,9 +1,5 @@
-import useResource from '../../hooks/useResource'
-import ProductListItem from './ProductListItem'
-import UserContext from '../../contexts/userContext'
-import { useContext } from 'react'
 import styled from 'styled-components'
-import { BigTitle, ProductRow } from '../styled/base'
+import { BigTitle } from '../styled/base'
 import { Link } from 'react-router-dom'
 
 const CategoryGroup = styled.div`
@@ -32,6 +28,13 @@ const CategoryText = styled.div`
   text-align: center;
   padding: 15px;
   transition: all 0.5s;
+  container-type: inline-size;
+  font-size: 1.1cqh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
 `
 const CategoryItem = styled(Link)`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
@@ -41,11 +44,8 @@ const CategoryItem = styled(Link)`
   aspect-ratio: 1;
   &:hover {
     ${CategoryTextBackground} {
-      height: 320px;
-    }
-    ${CategoryText} {
-      transform: translateY(200%);
-      /* bottom: 50%; */
+      aspect-ratio: 1/1;
+      height: 100%;
     }
   }
 `
@@ -56,9 +56,7 @@ const Spacer = styled.div`
   height: 0;
 `
 const CategoryImage = styled.div`
-  width: 100%;
   aspect-ratio: 1;
-  /* height: 320px; */
   position: relative;
 `
 const Categories = ({ categories, name }) => {
@@ -67,7 +65,7 @@ const Categories = ({ categories, name }) => {
       <CategoryGroup>
         {categories.map((category) => (
           <CategoryItem
-            to={`/category/${category._id}`}
+            to={`/category/${category.id}`}
             key={category._id}>
             <CategoryImage
               style={{
@@ -84,7 +82,7 @@ const Categories = ({ categories, name }) => {
         <Spacer />
         <Spacer />
       </CategoryGroup>
-      <BigTitle>{name}</BigTitle>
+      {name && <BigTitle>{name}</BigTitle>}
     </>
   )
 }
