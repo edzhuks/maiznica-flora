@@ -1,0 +1,30 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+      - name: Check style
+        working-directory: ./backend
+        run: npm run eslint
+      - name: test
+        working-directory: ./backend
+        run: npm run test
+      - name: Trigger deployment
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)),'#skip') }}
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
