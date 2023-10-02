@@ -1,7 +1,8 @@
 import axios from 'axios'
 import makeConfig from './token'
+import { apiURL } from '../util/config'
 
-const baseURL = 'http://localhost:3001/api/order'
+const baseURL = `${apiURL}/order`
 
 const placeOrder = (address) => {
   const config = makeConfig()

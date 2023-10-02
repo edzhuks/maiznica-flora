@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const config = require('./util/config')
 const cors = require('cors')
 const productRouter = require('./controllers/products')
@@ -40,6 +41,9 @@ app.use('/api/users', userRouter)
 
 app.get('/api/version', (request, response) => {
   response.send('1')
+})
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/index.html'))
 })
 
 module.exports = app
