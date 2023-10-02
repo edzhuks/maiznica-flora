@@ -16,6 +16,8 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
+        env:
+          TEST_MONGODB_URI: ${{secrets.TEST_MONGODB_URI}}
       - name: test
         working-directory: ./backend
         run: npm run test
