@@ -13,6 +13,7 @@ import {
   Title,
 } from './styled/base'
 import { centsToEuro } from '../util/convert'
+import { useSelector } from 'react-redux'
 
 const CartContents = styled.div`
   float: left;
@@ -49,49 +50,38 @@ const SummrayRight = styled.div`
 `
 
 const Cart = () => {
-  const [cart, setCart] = useState(null)
-  const [total, setTotal] = useState(0)
-  const [deliveryCost, setDeliveryCost] = useState(0)
-
-  useEffect(() => {
-    update()
-  }, [])
-
-  const update = async (newCart) => {
-    if (!newCart) {
-      newCart = await cartService.getCart()
-    }
-    setCart(newCart)
-    setTotal(
-      newCart.content.reduce(
-        (sum, item) => sum + item.quantity * item.product.price,
-        0
-      )
-    )
-    setDeliveryCost(total > 50 ? 0 : 7)
-  }
-
-  const removeItem = (item) => {
-    setCart({
-      content: cart.content.filter((i) => i.product.id !== item.product.id),
-    })
-  }
+  const cart = useSelector((state) => state.cart)
+  const total = useSelector((state) =>
+    state.cart
+      .map((i) => i.product.price * i.quantity)
+      .reduce((acc, cur) => {
+        return acc + cur
+      }, 0)
+  )
+  const deliveryCost = useSelector((state) =>
+    state.cart
+      .map((i) => i.product.price * i.quantity)
+      .reduce((acc, cur) => {
+        return acc + cur
+      }, 0) >
+    30 * 100
+      ? 0
+      : 10 * 100
+  )
 
   return (
     <>
       {cart && (
         <div style={{ display: 'inline-block', width: '100%' }}>
           <CartContents>
-            {cart.content.length > 0 ? (
+            {cart.length > 0 ? (
               <ProductRow>
-                {cart.content.map((item) => (
+                {cart.map((item) => (
                   <ProductListItem
                     inCart
                     quantity={item.quantity}
                     product={item.product}
                     key={item.product.id}
-                    remove={() => removeItem(item)}
-                    update={update}
                   />
                 ))}
               </ProductRow>
@@ -106,7 +96,7 @@ const Cart = () => {
               </p>
               <p>
                 <b>Paid delivery</b>
-                <br /> (under €50):
+                <br /> (under €30):
               </p>
               <p>
                 <b>Total:</b>
