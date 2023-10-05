@@ -44,6 +44,7 @@ const Cell = styled.td`
 `
 
 const TableRow = styled.tr`
+  background-color: white;
   &:nth-child(odd) {
     background-color: #f9f9f9;
   }

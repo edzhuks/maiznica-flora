@@ -51,7 +51,7 @@ const ProductItem = styled.li`
   span::after {
     content: '';
     height: 27px;
-    width: 1000px;
+    width: 400px;
     background: white;
     position: absolute;
     bottom: 10px;
