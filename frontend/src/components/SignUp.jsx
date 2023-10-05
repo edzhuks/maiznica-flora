@@ -54,7 +54,7 @@ const SignUp = () => {
               Username
               <StyledInput
                 {...username}
-                onLight
+                $isonlightbackground
               />
             </Label>
           </InputGroup>
@@ -63,7 +63,7 @@ const SignUp = () => {
               Email
               <StyledInput
                 {...email}
-                onLight
+                $isonlightbackground
               />
             </Label>
           </InputGroup>
@@ -72,7 +72,7 @@ const SignUp = () => {
               Password
               <StyledInput
                 {...password}
-                onLight
+                $isonlightbackground
               />
             </Label>
           </InputGroup>

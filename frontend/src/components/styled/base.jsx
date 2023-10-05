@@ -103,7 +103,7 @@ const FullWidthCancelButton = styled(FullWidthButton)`
   }
 `
 const InvertedButton = styled(Button)`
-  /* padding: 1px 4px; */
+  padding: 1px 4px;
   background-color: transparent;
   font-weight: bold;
   color: #999999;
@@ -118,8 +118,10 @@ const StyledInput = styled(Input)`
   border: 0px;
   color: #888888;
   border-radius: 2px;
-  border: 1px solid ${(props) => (props.onLight ? '#f1f1f1' : 'white')};
-  background-color: ${(props) => (props.onLight ? '#f1f1f1' : 'white')};
+  border: 1px solid
+    ${(props) => (props.$isonlightbackground ? '#f1f1f1' : 'white')};
+  background-color: ${(props) =>
+    props.$isonlightbackground ? '#f1f1f1' : 'white'};
   &:focus {
     outline: none;
     border: 1px solid #e5e5e5;

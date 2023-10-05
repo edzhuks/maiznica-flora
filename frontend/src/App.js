@@ -26,19 +26,84 @@ import Footer from './components/Footer'
 import OrderManagementPage from './components/orders/OrderManagementPage'
 import AboutPage from './components/AboutPage'
 import Contact from './components/Contact'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearCart, loadCart } from './reducers/cartReducer'
+import styled, { css, keyframes } from 'styled-components'
+
+const pop = keyframes`
+  0% {
+    transform: scale(100%);
+  }
+  10%{
+    transform: scale(80%);
+  }
+  20%{
+    color: rgb(69, 148, 30);
+
+  }
+  50%{
+    transform: scale(200%);
+  }
+  80%{
+    color: rgb(69, 148, 30);
+
+  }90%{
+    transform: scale(90%);
+  }
+  100% {
+    transform: scale(100%);
+  }
+`
+const AnimatedShoppingCart = styled.div`
+  animation: ${(props) =>
+    props.cart.length > 0
+      ? css`
+          ${pop} 0.7s ease-in-out both
+        `
+      : 'none'};
+`
+
+const CartBadge = styled.div`
+  display: ${(props) => (props.number > 0 ? 'block' : 'none')};
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: -15px;
+  margin-bottom: -15px;
+  background: rgb(69, 148, 30);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  span {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    color: white;
+    margin-top: 2px;
+  }
+`
 
 function App() {
+  const dispatch = useDispatch()
+  const cart = useSelector((state) => state.cart)
+  const productCount = useSelector((state) =>
+    state.cart.reduce((acc, cur) => {
+      return acc + cur.quantity
+    }, 0)
+  )
   const [user, setUser] = useState(null)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('maiznicafloraUser')
     if (loggedUserJSON) {
+      dispatch(loadCart())
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
     }
   }, [])
 
   const logout = () => {
+    dispatch(clearCart())
     window.localStorage.removeItem('maiznicafloraUser')
     setUser(null)
   }
@@ -67,7 +132,14 @@ function App() {
                 <Spacer />
                 {user ? (
                   <HeaderTab to="/cart">
-                    <ShoppingCart size={40} />
+                    <AnimatedShoppingCart
+                      cart={cart}
+                      key={JSON.stringify(cart)}>
+                      <ShoppingCart size={50} />
+                      <CartBadge number={productCount}>
+                        <span>{productCount}</span>
+                      </CartBadge>
+                    </AnimatedShoppingCart>
                   </HeaderTab>
                 ) : (
                   <HeaderTab to="/login">

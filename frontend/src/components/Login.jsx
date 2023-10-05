@@ -5,6 +5,8 @@ import UserContext from '../contexts/userContext'
 import { useContext } from 'react'
 import Input from './basic/Input'
 import styled from 'styled-components'
+import { loadCart, setCart } from '../reducers/cartReducer'
+import { useDispatch } from 'react-redux'
 import {
   FullWidthButton,
   Label,
@@ -17,6 +19,7 @@ import {
 } from './styled/base'
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [user, setUser] = useContext(UserContext)
@@ -30,6 +33,7 @@ const Login = () => {
     console.log(result)
     setUser(result)
     window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
+    dispatch(loadCart())
     navigate('/')
   }
 
@@ -43,7 +47,7 @@ const Login = () => {
               Username
               <StyledInput
                 {...username}
-                onLight
+                $isonlightbackground
               />
             </Label>
           </InputGroup>
@@ -52,7 +56,7 @@ const Login = () => {
               Password
               <StyledInput
                 {...password}
-                onLight
+                $isonlightbackground
               />
             </Label>
           </InputGroup>

@@ -19,6 +19,8 @@ const statusToColor = (status) => {
       return '#ffdddd'
     case 'accepted':
       return '#ffffff'
+    case 'refused':
+      return '#dadada'
     case 'packing':
       return '#ffffee'
     case 'waitingForDelivery':
