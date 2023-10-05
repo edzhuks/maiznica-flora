@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize]
-  
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -20,6 +20,7 @@ jobs:
         working-directory: ./backend
         run: npm install
       - name: test
+        if: ${{ github.event_name != 'push' }}
         working-directory: ./backend
         run: npm run test
         env:
