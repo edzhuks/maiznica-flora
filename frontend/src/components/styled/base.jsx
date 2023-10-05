@@ -9,6 +9,7 @@ const Container = styled.div`
 `
 const FullHeightContainer = styled(Container)`
   min-height: 100vh;
+  padding-bottom: 100px;
 `
 const Center = styled.div`
   align-items: center;
@@ -24,41 +25,6 @@ const RowSpaceBetween = styled(Row)`
 
 const RowSpaceEvenly = styled(Row)`
   justify-content: space-evenly;
-`
-const HeaderSpacer = styled.div`
-  height: 130px;
-`
-
-const Header = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  width: 100%;
-  height: 110px;
-  position: fixed;
-  top: 0;
-  padding-top: 18px;
-  /* border-bottom: 1px solid #999999; */
-  background-color: #fffdfd;
-  z-index: 4;
-`
-
-const HeaderTab = styled(Link)`
-  padding: 0 30px;
-  text-transform: uppercase;
-  color: #333333;
-  text-decoration: none;
-  font-size: 22px;
-  background-color: transparent;
-  flex: 0 1 auto;
-  display: flex;
-  align-items: center;
-  border: 0;
-  cursor: pointer;
-  justify-content: center;
-  transition: 0.3s;
-  &:hover {
-    color: rgb(69, 148, 30);
-  }
 `
 
 const Spacer = styled.div`
@@ -362,9 +328,6 @@ const ContactText = styled.p`
 export {
   Container,
   FullHeightContainer,
-  Header,
-  HeaderSpacer,
-  HeaderTab,
   Row,
   RowSpaceBetween,
   Spacer,
