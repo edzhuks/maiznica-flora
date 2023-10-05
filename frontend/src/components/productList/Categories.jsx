@@ -66,7 +66,7 @@ const Categories = ({ categories, name }) => {
         {categories.map((category) => (
           <CategoryItem
             to={`/category/${category.id}`}
-            key={category._id}>
+            key={category.id}>
             <CategoryImage
               style={{
                 background: `url(${category.image}) center center`,

@@ -47,6 +47,9 @@ router.post('/', userExtractor, async (req, res) => {
     }
   }
   await cart.save()
+  await cart.populate({
+    path: 'content.product',
+  })
   res.status(201).send(cart)
 })
 

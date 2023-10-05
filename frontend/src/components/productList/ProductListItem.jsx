@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
-import cartService from '../../services/cart'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import {
   Button,
@@ -14,6 +13,13 @@ import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
 import { centsToEuro, gramsToKilos } from '../../util/convert'
+import { useDispatch } from 'react-redux'
+import {
+  addItem,
+  changeQuantityOfItem,
+  removeItem,
+} from '../../reducers/cartReducer'
+import UserContext from '../../contexts/userContext'
 
 const ProductCard = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
@@ -62,32 +68,30 @@ const BuyButton = styled(Button)`
   width: 40%;
 `
 
-const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
+const ProductListItem = ({ inCart, product, quantity }) => {
+  const [user, setUser] = useContext(UserContext)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [quantityToAdd, setQuantityToAdd] = useState(1)
 
   const addToCart = () => {
-    cartService.addToCart({ quantity: quantityToAdd, product })
+    if (!user) {
+      navigate('/login')
+    } else {
+      dispatch(addItem({ quantity: quantityToAdd, product }))
+    }
   }
 
   const removeFromCart = () => {
-    cartService.removeFromCart(product)
-    remove()
+    dispatch(removeItem(product))
   }
 
   const addMore = async () => {
-    const updated = await cartService.changeQuantity({
-      quantity: quantity + 1,
-      product,
-    })
-    update(updated)
+    dispatch(changeQuantityOfItem({ product, quantity: quantity + 1 }))
   }
 
   const removeSome = async () => {
-    const updated = await cartService.changeQuantity({
-      quantity: quantity - 1,
-      product,
-    })
-    update(updated)
+    dispatch(changeQuantityOfItem({ product, quantity: quantity - 1 }))
   }
 
   return (
@@ -130,7 +134,7 @@ const ProductListItem = ({ inCart, product, quantity, remove, update }) => {
             value={quantityToAdd}
             onChange={(event) => setQuantityToAdd(event.target.value)}
             type="number"
-            onLight
+            $isonlightbackground
           />
           <BuyButton onClick={addToCart}>BUY</BuyButton>
         </RowSpaceBetween>
