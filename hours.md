@@ -21,4 +21,5 @@
 | 02.10        | 3     | fixing frontend to work with the improved backend, other improvements                                                                                                                 |
 | 02.10        | 1     | contact and about page                                                                                                                                                                |
 | 02.10        | 3     | deployment pipeline - test and deploy to render                                                                                                                                       |
-| total        | 65    |                                                                                                                                                                                       |
+| 05.10        | 2     | redux toolkit for cart state management                                                                                                                                               |
+| total        | 67    |                                                                                                                                                                                       |

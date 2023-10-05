@@ -1,9 +1,7 @@
-import ProductListItem from './productList/ProductListItem'
 import UserContext from '../contexts/userContext'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import userService from '../services/user'
 import useField from '../hooks/useField'
-import Input from './basic/Input'
 import orderService from '../services/order'
 import styled from 'styled-components'
 import {
@@ -14,6 +12,8 @@ import {
   Radio,
   FormMultiCol,
 } from './styled/base'
+import { useDispatch } from 'react-redux'
+import { clearCart } from '../reducers/cartReducer'
 
 const InputGroup = styled.div`
   float: left;
@@ -41,6 +41,7 @@ const Address = styled.div`
 `
 
 const Order = () => {
+  const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
 
   const [selectedAddress, selectAddress] = useState()
@@ -72,9 +73,10 @@ const Order = () => {
     console.log(user)
   }
 
-  const order = () => {
+  const order = async () => {
     if (selectedAddress) {
       orderService.placeOrder(selectedAddress)
+      dispatch(clearCart())
     } else {
       console.error('No address selected')
     }
@@ -112,7 +114,7 @@ const Order = () => {
               City
               <StyledInput
                 {...city}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -121,7 +123,7 @@ const Order = () => {
               Street
               <StyledInput
                 {...street}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -130,7 +132,7 @@ const Order = () => {
               House
               <StyledInput
                 {...house}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -139,7 +141,7 @@ const Order = () => {
               Apt.
               <StyledInput
                 {...apartment}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -148,7 +150,7 @@ const Order = () => {
               Name
               <StyledInput
                 {...name}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -157,7 +159,7 @@ const Order = () => {
               Surname
               <StyledInput
                 {...surname}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
@@ -166,7 +168,7 @@ const Order = () => {
               Phone
               <StyledInput
                 {...phone}
-                onLight
+                $isonlightbackground
               />
             </CompactLabel>
           </InputGroup>
