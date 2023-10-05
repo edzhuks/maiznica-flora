@@ -9,27 +9,27 @@ const baseURL = `${apiURL}/cart`
 const addToCart = (newProduct) => {
   const config = makeConfig()
   const request = axios.post(baseURL, newProduct, config)
-  return request.then((response) => response.data)
+  return request.then((response) => response.data.content)
 }
 
 const removeFromCart = (product) => {
   const config = makeConfig()
   const request = axios.post(baseURL, { product, quantity: 0 }, config)
-  return request.then((response) => response.data)
+  return request.then((response) => response.data.content)
 }
 
 const changeQuantity = (newProduct) => {
   const config = makeConfig()
 
   const request = axios.post(baseURL, newProduct, config)
-  return request.then((response) => response.data)
+  return request.then((response) => response.data.content)
 }
 
 const getCart = () => {
   const config = makeConfig()
 
   const request = axios.get(baseURL, config)
-  return request.then((response) => response.data)
+  return request.then((response) => response.data.content)
 }
 
 export default {
