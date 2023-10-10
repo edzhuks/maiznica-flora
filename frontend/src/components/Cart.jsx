@@ -49,7 +49,10 @@ const CostTile = styled.div`
 
 const OrderButton = styled.div`
   height: calc(100% - 28 * 3%);
-  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+  justify-content: center;
 `
 
 const CartSummary = ({ total, deliveryCost }) => {
