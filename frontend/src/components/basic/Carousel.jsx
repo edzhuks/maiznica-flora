@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CaretLeftFill } from '@styled-icons/bootstrap/CaretLeftFill'
 import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 
@@ -73,15 +73,26 @@ const CarouselItem = ({ image, active }) => {
 
 const Carousel = ({ images }) => {
   const [activeImage, setActiveImage] = useState(0)
+  const [int, setInt] = useState(undefined)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveImage((activeImage) => (activeImage + 1) % images.length)
+    }, 3000)
+    setInt(interval)
+
+    return () => clearInterval(interval)
+  }, [images])
 
   return (
     <CarouselContainer>
       <CarouselLeft
-        onClick={() =>
+        onClick={() => {
           setActiveImage(
             activeImage === 0 ? images.length - 1 : activeImage - 1
           )
-        }>
+          clearInterval(int)
+        }}>
         <CaretLeftFill color="lightgray" />
       </CarouselLeft>
       <CarouselImages>
@@ -94,7 +105,10 @@ const Carousel = ({ images }) => {
         ))}
       </CarouselImages>
       <CarouselRight
-        onClick={() => setActiveImage((activeImage + 1) % images.length)}>
+        onClick={() => {
+          setActiveImage((activeImage + 1) % images.length)
+          clearInterval(int)
+        }}>
         <CaretRightFill color="lightgray" />
       </CarouselRight>
       <CarouselIndicators>
