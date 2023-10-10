@@ -8,6 +8,7 @@ import {
   RowSpaceBetween,
   Title,
   SubTitle,
+  ProductCard,
 } from '../styled/base'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
@@ -21,16 +22,6 @@ import {
 } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'
 
-const ProductCard = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  width: calc(100% / 4 - 23px);
-  min-width: 243px;
-  background-color: #fbfbfb;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-`
 const CardLink = styled(Link)`
   text-decoration: none;
   &:hover p {

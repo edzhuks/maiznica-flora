@@ -1,55 +1,97 @@
 import ProductListItem from './productList/ProductListItem'
-import UserContext from '../contexts/userContext'
-import { useContext, useEffect, useState } from 'react'
-import cartService from '../services/cart'
+import { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
-  Button,
   ColoredText,
   FullWidthButton,
-  Right,
-  Row,
-  Title,
+  ProductCard,
+  Spacer,
 } from './styled/base'
 import { centsToEuro } from '../util/convert'
 import { useSelector } from 'react-redux'
-
-const CartContents = styled.div`
-  float: left;
-  width: 100%;
-  @media (min-width: 768px) {
-    width: 75%;
-  }
-`
+import MobileContext from '../contexts/mobileContext'
 
 const ProductRow = styled.div`
   display: flex;
   align-items: stretch;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 30px;
 `
 
-const CartSummary = styled.div`
-  float: right;
-  width: 25%;
-  padding: 0px 20px 20px 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-`
-const SummrayLeft = styled.div`
-  float: left;
-  width: 65%;
-  text-align: right;
-  background-color: #fbfbfb;
-`
-const SummrayRight = styled.div`
-  float: right;
-  width: 30%;
-  background-color: #fbfbfb;
+const EmptyProductItem = styled.div`
+  width: calc(100% / 4 - 23px);
+  height: 0;
 `
 
+const SummaryCard = styled(ProductCard)``
+
+const CostInformation = styled.span`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+`
+
+const CostNumber = styled.span`
+  font-size: 40px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+`
+
+const CostTile = styled.div`
+  height: 28%;
+  border-bottom: 4px #dddddd dashed;
+  position: relative;
+  padding: 10px;
+`
+
+const OrderButton = styled.div`
+  height: calc(100% - 28 * 3%);
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+  justify-content: center;
+`
+
+const CartSummary = ({ total, deliveryCost }) => {
+  return (
+    <SummaryCard>
+      <CostTile>
+        <CostInformation>
+          <b>Sum</b>
+        </CostInformation>
+        <CostNumber>{centsToEuro(total)}</CostNumber>
+      </CostTile>
+      <CostTile>
+        <CostInformation>
+          <b>Paid delivery</b>
+          <br />
+          (under €30)
+        </CostInformation>
+        <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
+      </CostTile>
+      <CostTile>
+        <CostInformation>
+          <b>Total</b>
+        </CostInformation>
+        <CostNumber>
+          <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
+        </CostNumber>
+      </CostTile>
+      <OrderButton>
+        <Link to="/order">
+          <FullWidthButton>Order</FullWidthButton>
+        </Link>
+      </OrderButton>
+    </SummaryCard>
+  )
+}
+
 const Cart = () => {
+  const [mobile, setIsMobile] = useContext(MobileContext)
+
   const cart = useSelector((state) => state.cart)
   const total = useSelector((state) =>
     state.cart
@@ -72,53 +114,60 @@ const Cart = () => {
   return (
     <>
       {cart && (
-        <div style={{ display: 'inline-block', width: '100%' }}>
-          <CartContents>
-            {cart.length > 0 ? (
-              <ProductRow>
-                {cart.map((item) => (
+        <div>
+          {cart.length > 0 ? (
+            <ProductRow>
+              {cart.map((item, index) => (
+                <Fragment key={index}>
                   <ProductListItem
                     inCart
                     quantity={item.quantity}
                     product={item.product}
                     key={item.product.id}
                   />
-                ))}
-              </ProductRow>
-            ) : (
-              <p>Nothing in cart.</p>
-            )}
-          </CartContents>
-          <CartSummary>
-            <SummrayLeft>
-              <p>
-                <b>Sum:</b>
-              </p>
-              <p>
-                <b>Paid delivery</b>
-                <br /> (under €30):
-              </p>
-              <p>
-                <b>Total:</b>
-              </p>
-            </SummrayLeft>
-            <SummrayRight>
-              <p>{centsToEuro(total)}</p>
-              <p>
-                <br />
-                {centsToEuro(deliveryCost)}
-              </p>
-              <p>
-                <b>
-                  <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
-                </b>
-              </p>
-            </SummrayRight>
-
-            <Link to="/order">
-              <FullWidthButton>Order</FullWidthButton>
-            </Link>
-          </CartSummary>
+                  {mobile && index === 0 && (
+                    <CartSummary
+                      total={total}
+                      deliveryCost={deliveryCost}
+                    />
+                  )}
+                  {!mobile && index === 2 && (
+                    <CartSummary
+                      total={total}
+                      deliveryCost={deliveryCost}
+                    />
+                  )}
+                  {!mobile && index === 1 && cart.length === 2 && (
+                    <>
+                      <EmptyProductItem />
+                      <CartSummary
+                        total={total}
+                        deliveryCost={deliveryCost}
+                      />
+                    </>
+                  )}
+                  {!mobile && index === 0 && cart.length === 1 && (
+                    <>
+                      <EmptyProductItem />
+                      <EmptyProductItem />
+                      <CartSummary
+                        total={total}
+                        deliveryCost={deliveryCost}
+                      />
+                    </>
+                  )}
+                </Fragment>
+              ))}
+              <Spacer />
+              <Spacer />
+              <Spacer />
+            </ProductRow>
+          ) : (
+            <p>Nothing in cart.</p>
+          )}
+          {/* <CartSummary>
+            
+          </CartSummary> */}
         </div>
       )}
     </>
