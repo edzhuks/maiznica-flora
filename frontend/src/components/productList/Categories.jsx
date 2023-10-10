@@ -16,20 +16,20 @@ const CategoryTextBackground = styled.div`
   bottom: 0;
   background: rgba(69, 148, 30, 0.6);
   transition: height 0.5s;
-  height: 62px;
+  height: 90px;
 `
 
 const CategoryText = styled.div`
   margin: 0px;
   color: #fff;
   font-family: 'Roboto Slab', serif;
-  font-size: 24px;
+  font-size: 22px;
   text-transform: uppercase;
   text-align: center;
   padding: 15px;
   transition: all 0.5s;
   container-type: inline-size;
-  font-size: 1.1cqh;
+  /* font-size: 1.1cqh; */
   display: flex;
   align-content: center;
   justify-content: center;
