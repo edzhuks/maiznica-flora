@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BigTitle } from '../styled/base'
+import { BigTitle, Spacer } from '../styled/base'
 import { Link } from 'react-router-dom'
 
 const CategoryGroup = styled.div`
@@ -48,12 +48,6 @@ const CategoryItem = styled(Link)`
       height: 100%;
     }
   }
-`
-
-const Spacer = styled.div`
-  width: calc(100% / 4 - 23px);
-  min-width: 243px;
-  height: 0;
 `
 const CategoryImage = styled.div`
   aspect-ratio: 1;

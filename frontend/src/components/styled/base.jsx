@@ -27,10 +27,6 @@ const RowSpaceEvenly = styled(Row)`
   justify-content: space-evenly;
 `
 
-const Spacer = styled.div`
-  flex: 1 1 auto;
-`
-
 const Button = styled.button`
   cursor: pointer;
   border: 0;
@@ -325,12 +321,36 @@ const ContactText = styled.p`
   line-height: 1.5;
 `
 
+const ProductCard = styled.div`
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  width: calc(100% / 4 - 23px);
+  min-width: 243px;
+  background-color: #fbfbfb;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+`
+
+const ProductRow = styled.div`
+  display: flex;
+  align-items: stretch;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 30px;
+`
+
+const Spacer = styled.div`
+  width: calc(100% / 4 - 23px);
+  height: 0;
+  min-width: 243px;
+`
+
 export {
   Container,
   FullHeightContainer,
   Row,
   RowSpaceBetween,
-  Spacer,
   Button,
   CancelButton,
   FullWidthButton,
@@ -361,4 +381,7 @@ export {
   HalfWidth,
   ContactText,
   RowSpaceEvenly,
+  ProductCard,
+  ProductRow,
+  Spacer,
 }
