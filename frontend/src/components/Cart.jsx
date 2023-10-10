@@ -1,18 +1,12 @@
 import ProductListItem from './productList/ProductListItem'
-import UserContext from '../contexts/userContext'
-import { Fragment, useContext, useEffect, useState } from 'react'
-import cartService from '../services/cart'
+import { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
-  Button,
   ColoredText,
   FullWidthButton,
   ProductCard,
-  Right,
-  Row,
   Spacer,
-  Title,
 } from './styled/base'
 import { centsToEuro } from '../util/convert'
 import { useSelector } from 'react-redux'
@@ -31,10 +25,7 @@ const EmptyProductItem = styled.div`
   height: 0;
 `
 
-const SummaryCard = styled(ProductCard)`
-  /* padding: 20px; */
-  /* justify-content: stretch; */
-`
+const SummaryCard = styled(ProductCard)``
 
 const CostInformation = styled.span`
   position: absolute;

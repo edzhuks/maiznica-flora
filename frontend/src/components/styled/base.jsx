@@ -129,10 +129,6 @@ const Form = styled.form`
   }
 `
 
-const FormMultiCol = styled.form`
-  overflow: auto;
-`
-
 const Title = styled.p`
   color: #333333;
   font-size: 18px;
@@ -238,7 +234,7 @@ const Radio = styled.label`
   span {
     position: absolute;
     top: 25px;
-    left: 10px;
+    left: 20px;
     height: 25px;
     width: 25px;
     background-color: #eee;
@@ -372,7 +368,6 @@ export {
   Radio,
   TextArea,
   Form,
-  FormMultiCol,
   ModalContainer,
   ModalContent,
   ModalHalf,

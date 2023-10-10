@@ -19,12 +19,20 @@ const InputGroup = styled.div`
   float: left;
   margin: 10px;
   width: 23%;
+  min-width: 230px;
   input {
     width: 100%;
   }
 `
 const CompactLabel = styled(Label)`
   width: auto;
+`
+
+const Form = styled.form`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-around;
 `
 
 const AddressChoice = styled(Radio)`
@@ -83,8 +91,19 @@ const Order = () => {
   }
 
   return (
-    <div>
-      {selectedAddress && <Button onClick={order}>Proceed to payment</Button>}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+      }}>
+      {selectedAddress && (
+        <Button
+          style={{ alignSelf: 'end' }}
+          onClick={order}>
+          Proceed to payment
+        </Button>
+      )}
       <div>
         {user?.addresses.map((address) => (
           <label>
@@ -100,7 +119,8 @@ const Order = () => {
                 {address.name} {address.surname} {address.phone}
               </p>
               <p>
-                {address.city} {address.street} {address.house}{' '}
+                {address.city}, {address.street} {address.house}
+                {'-'}
                 {address.apartment}
               </p>
             </AddressChoice>
@@ -108,7 +128,7 @@ const Order = () => {
         ))}
       </div>
       <Address>
-        <FormMultiCol onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit}>
           <InputGroup>
             <CompactLabel>
               City
@@ -172,14 +192,12 @@ const Order = () => {
               />
             </CompactLabel>
           </InputGroup>
-          <InputGroup>
-            <FullWidthButton
-              style={{ marginTop: 18 }}
-              type="submit">
-              Add new address
-            </FullWidthButton>
+          <InputGroup style={{ display: 'flex' }}>
+            <CompactLabel style={{ alignSelf: 'end' }}>
+              <FullWidthButton type="submit">Add new address</FullWidthButton>
+            </CompactLabel>
           </InputGroup>
-        </FormMultiCol>
+        </Form>
       </Address>
     </div>
   )

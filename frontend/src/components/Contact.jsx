@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import {
   Container,
   BigTitle,
@@ -11,10 +12,29 @@ import {
   HalfWidth,
   ContactText,
 } from './styled/base'
+
+const WrappableRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+  div {
+    flex: 50%;
+  }
+  column-gap: 40px;
+  padding-bottom: 100px;
+`
+
+const Half = styled.div`
+  padding: 30px;
+`
+
 const Contact = () => {
   return (
-    <Row>
-      <HalfWidth>
+    <WrappableRow>
+      <Half>
         <BigTitle>Contact us</BigTitle>
         <Form style={{ width: '100%', paddingBottom: 20 }}>
           <InputGroup>
@@ -40,8 +60,8 @@ const Contact = () => {
           </InputGroup>
         </Form>
         <Button>Send message</Button>
-      </HalfWidth>
-      <HalfWidth>
+      </Half>
+      <Half>
         <ContactText>
           SIA “Maiznīca Flora”
           <br />
@@ -53,8 +73,8 @@ const Contact = () => {
           <br />
           E-pasts: flora@maiznica.lv
         </ContactText>
-      </HalfWidth>
-    </Row>
+      </Half>
+    </WrappableRow>
   )
 }
 export default Contact

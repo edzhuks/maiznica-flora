@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import { Container, Row, Spacer } from './styled/base'
+import { Container, Row } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { useContext, useState } from 'react'
 import UserContext from '../contexts/userContext'
@@ -135,6 +135,10 @@ const SideMenuTab = styled(Link)`
   padding: 20px 80px 20px 0px;
   background-color: transparent;
   border: 0;
+`
+
+const Spacer = styled.div`
+  flex: 1 1 auto;
 `
 
 const Header = () => {
