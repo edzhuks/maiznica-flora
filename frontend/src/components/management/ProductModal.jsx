@@ -22,8 +22,10 @@ import productService from '../../services/product'
 import categoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import Checkbox from '../basic/Checkbox'
+import { useSelector } from 'react-redux'
 
 const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allProducts, setAllProducts] = useState([])
   const [selectedProductIds, setSelectedProductIds] = useState([])
 
@@ -136,10 +138,10 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
   return (
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
       <ModalContent>
-        <BigTitle style={{ marginBottom: 15 }}>Add Product</BigTitle>
+        <BigTitle style={{ marginBottom: 15 }}>{lang.add_product}</BigTitle>
         <Row>
           <ModalHalf>
-            <SubTitle>Select existing products</SubTitle>
+            <SubTitle>{lang.select_existing_products}</SubTitle>
             <Select
               isMulti
               options={allProducts}
@@ -153,11 +155,11 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
           </ModalHalf>
           <ModalOr>OR</ModalOr>
           <ModalHalf>
-            <SubTitle>Add a new product</SubTitle>
+            <SubTitle>{lang.add_new_product}</SubTitle>
             <Form>
               <CompactInputGroup>
                 <Label>
-                  name
+                  {lang.product_name}
                   <StyledInput
                     {...name}
                     style={{ width: '420px', float: 'left', marginLeft: 0 }}
@@ -166,7 +168,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  description
+                  {lang.description}
                   <TextArea
                     rows={8}
                     value={description}
@@ -176,7 +178,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  ingredients
+                  {lang.ingredients}
                   <TextArea
                     rows={6}
                     value={ingredients}
@@ -186,73 +188,73 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  weight (grams)
+                  {lang.weight} ({lang.in_grams})
                   <WideNumberInput {...weight} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  price (€ x.xx)
+                  {lang.price} (€ x.xx)
                   <WideNumberInput {...price} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  energy (kcal)
+                  {lang.energy_content} (kcal)
                   <WideNumberInput {...energy} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  fat (grams)
+                  {lang.fat} ({lang.in_grams})
                   <WideNumberInput {...fat} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  saturated fat (grams)
+                  {lang.of_which_saturated_fat} ({lang.in_grams})
                   <WideNumberInput {...saturatedFat} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  carbs (grams)
+                  {lang.carbohydrates} ({lang.in_grams})
                   <WideNumberInput {...carbs} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  sugar (grams)
+                  {lang.of_which_sugars} ({lang.in_grams})
                   <WideNumberInput {...sugar} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  fiber (grams)
+                  {lang.fiber} ({lang.in_grams})
                   <WideNumberInput {...fiber} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  protein (grams)
+                  {lang.protein} ({lang.in_grams})
                   <WideNumberInput {...protein} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  salt (grams)
+                  {lang.salt} ({lang.in_grams})
                   <WideNumberInput {...salt} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  EAN
+                  {lang.EAN_code}
                   <StyledInput {...EAN} />
                 </Label>
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  image url
+                  {lang.image_url}
                   <StyledInput {...image} />
                 </Label>
               </CompactInputGroup>
@@ -265,12 +267,12 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               <Checkbox
                 checked={addToAll}
                 onChange={() => setAddToAll(!addToAll)}
-                label="Add to category 'all'"
+                label={lang.add_to_all}
               />
               <Checkbox
                 checked={addToNew}
                 onChange={() => setAddToNew(!setAddToNew)}
-                label="Add to category 'new'"
+                label={lang.add_to_new}
               />
             </Form>
           </ModalHalf>
@@ -281,12 +283,12 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
             onClose(catalogue)
           }}
           style={{ margin: 20 }}>
-          Cancel
+          {lang.cancel}
         </CancelButton>
         <Button
           style={{ margin: 20, float: 'right' }}
           onClick={addProducts}>
-          Add
+          {lang.add}
         </Button>
       </ModalContent>
     </ModalContainer>

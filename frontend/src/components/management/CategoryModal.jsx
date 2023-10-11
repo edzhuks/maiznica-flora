@@ -18,8 +18,10 @@ import Select from 'react-select'
 import { useState } from 'react'
 import categoryService from '../../services/category'
 import useField from '../../hooks/useField'
+import { useSelector } from 'react-redux'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const name = useField('text')
@@ -75,10 +77,10 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   return (
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
       <ModalContent style={{ maxWidth: '920px' }}>
-        <BigTitle style={{ marginBottom: 15 }}>Add Category</BigTitle>
+        <BigTitle style={{ marginBottom: 15 }}>{lang.add_category}</BigTitle>
         <Row>
           <ModalHalf>
-            <SubTitle>Select existing categories</SubTitle>
+            <SubTitle>{lang.select_existing_categories}</SubTitle>
             <Select
               isMulti
               options={allCategories}
@@ -90,13 +92,13 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
               )}
             />
           </ModalHalf>
-          <ModalOr>OR</ModalOr>
+          <ModalOr>{lang.or}</ModalOr>
           <ModalHalf>
-            <SubTitle>Add a new category</SubTitle>
+            <SubTitle>{lang.add_new_category}</SubTitle>
             <Form>
               <CompactInputGroup>
                 <Label>
-                  Name
+                  {lang.product_name}
                   <StyledInput
                     style={{ marginLeft: 20 }}
                     {...name}
@@ -115,7 +117,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  Image url
+                  {lang.image_url}
                   <StyledInput
                     style={{ marginLeft: 20 }}
                     {...image}
@@ -131,12 +133,12 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             onClose(catalogue)
           }}
           style={{ margin: 20 }}>
-          Cancel
+          {lang.cancel}
         </CancelButton>
         <Button
           style={{ margin: 20, float: 'right' }}
           onClick={addCategories}>
-          Add
+          {lang.add}
         </Button>
       </ModalContent>
     </ModalContainer>

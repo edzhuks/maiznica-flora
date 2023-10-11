@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux'
 import { loadCart } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
 import Header from './components/Header'
+import { setLanguage } from './reducers/languageReducer'
 
 function App() {
   const dispatch = useDispatch()
@@ -25,6 +26,10 @@ function App() {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    const language = window.localStorage.getItem('language')
+    if (language) {
+      dispatch(setLanguage(language))
+    }
     const loggedUserJSON = window.localStorage.getItem('maiznicafloraUser')
     if (loggedUserJSON) {
       dispatch(loadCart())

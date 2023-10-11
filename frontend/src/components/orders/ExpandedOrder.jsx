@@ -2,6 +2,7 @@ import OrderHeader from './OrderHeader'
 import { ActionTile, Question, _ExpandedOrder } from './styledComponents'
 import { RowSpaceEvenly, Button, CancelButton } from '../styled/base'
 import ProductTile from './ProductTile'
+import { useSelector } from 'react-redux'
 
 const OrderAction = ({
   question,
@@ -24,6 +25,7 @@ const OrderAction = ({
 }
 
 const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allPacked = () => {
     return order.content.every((o) => o.packed)
   }
@@ -104,31 +106,31 @@ const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
       ))}
       {order.status?.status === 'placed' && (
         <OrderAction
-          question="Accept order?"
-          action1text="Accept"
-          action2text="Refuse"
+          question={lang.accept_order}
+          action1text={lang.accept}
+          action2text={lang.refuse}
           action1callback={acceptOrder}
           action2callback={refuseOrder}
         />
       )}
       {order.status?.status === 'packing' && allPacked() && (
         <OrderAction
-          question="Ready for delivery?"
-          action1text="Ready"
+          question={lang.ready_for_delivery}
+          action1text={lang.ready}
           action1callback={makeOrderReadyForDelivery}
         />
       )}
       {order.status?.status === 'waitingForDelivery' && (
         <OrderAction
-          question="Out for delivery?"
-          action1text="Deliver"
+          question={lang.out_for_delivery}
+          action1text={lang.deliver}
           action1callback={startDeliveringOrder}
         />
       )}
       {order.status?.status === 'delivering' && (
         <OrderAction
-          question="Delivery completed?"
-          action1text="Completed"
+          question={lang.delivery_completed}
+          action1text={lang.completed}
           action1callback={completeDelivery}
         />
       )}

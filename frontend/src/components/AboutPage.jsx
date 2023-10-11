@@ -7,6 +7,7 @@ import ProductList from './productList/ProductList'
 import styled from 'styled-components'
 import { Nature } from '@styled-icons/material/Nature'
 import { People } from '@styled-icons/fluentui-system-filled/People'
+import { useSelector } from 'react-redux'
 
 const BigImage = styled.div`
   position: relative;

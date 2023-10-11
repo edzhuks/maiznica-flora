@@ -6,6 +6,7 @@ import categoryService from '../../services/category'
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
+import { useSelector } from 'react-redux'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -16,7 +17,7 @@ const CategoryList = styled.ul`
 `
 
 const Clearer = styled.div`
-  background: white;
+  background: #fafafa;
   z-index: -1;
   position: absolute;
   height: 170px;
@@ -36,7 +37,7 @@ const ProductItem = styled.li`
     color: black;
   }
   position: relative;
-  background: white;
+  background: #fafafa;
   span::before {
     content: '';
     height: 1500%;
@@ -52,7 +53,7 @@ const ProductItem = styled.li`
     content: '';
     height: 27px;
     width: 400px;
-    background: white;
+    background: #fafafa;
     position: absolute;
     bottom: 10px;
     left: 0px;
@@ -65,6 +66,8 @@ const CategoryItem = styled(ProductItem)`
 `
 
 const CategoryTab = ({ category, handleCategory, handleProduct }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+
   const handleCategoryButton = () => {
     handleCategory(category)
   }
@@ -80,8 +83,12 @@ const CategoryTab = ({ category, handleCategory, handleProduct }) => {
           style={{ textDecoration: 'none' }}>
           <span>{category.displayName}</span>
         </Link>
-        <SmallButton onClick={handleProductButton}>+ product</SmallButton>
-        <SmallButton onClick={handleCategoryButton}>+ category</SmallButton>
+        <SmallButton onClick={handleProductButton}>
+          + {lang.product}
+        </SmallButton>
+        <SmallButton onClick={handleCategoryButton}>
+          + {lang.category}
+        </SmallButton>
       </CategoryItem>
       <CategoryList>
         {category.categories &&
