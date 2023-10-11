@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import Input from './basic/Input'
 import styled from 'styled-components'
 import { loadCart, setCart } from '../reducers/cartReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   FullWidthButton,
   Label,
@@ -19,6 +19,7 @@ import {
 } from './styled/base'
 
 const Login = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -40,11 +41,11 @@ const Login = () => {
   return (
     <Centerer>
       <LoginCard>
-        <BigTitle>Sign In</BigTitle>
+        <BigTitle>{lang.sign_in}</BigTitle>
         <Form onSubmit={onSubmit}>
           <InputGroup>
             <Label>
-              Username
+              {lang.username}
               <StyledInput
                 {...username}
                 $isonlightbackground
@@ -53,7 +54,7 @@ const Login = () => {
           </InputGroup>
           <InputGroup>
             <Label>
-              Password
+              {lang.password}
               <StyledInput
                 {...password}
                 $isonlightbackground
@@ -64,7 +65,7 @@ const Login = () => {
           <FullWidthButton
             style={{ marginTop: '40px' }}
             type="submit">
-            Sign In
+            {lang.sign_in}
           </FullWidthButton>
         </Form>
       </LoginCard>

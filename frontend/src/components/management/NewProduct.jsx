@@ -10,8 +10,10 @@ import {
   Form,
 } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
+import { useSelector } from 'react-redux'
 
 const NewProductFrom = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const name = useField('text')
   const weight = useField('number')
   const price = useField('number')
@@ -82,17 +84,17 @@ const NewProductFrom = () => {
 
   return (
     <div>
-      <h1>Add a new product</h1>
+      <h1>{lang.add_new_product}</h1>
       <Form onSubmit={onSubmit}>
         <CompactInputGroup>
           <Label>
-            name
+            {lang.product_name}
             <StyledInput {...name} />
           </Label>
         </CompactInputGroup>
         <CompactInputGroup>
           <Label>
-            description
+            {lang.description}
             <TextArea
               rows={4}
               value={description}
@@ -102,7 +104,7 @@ const NewProductFrom = () => {
         </CompactInputGroup>
         <CompactInputGroup>
           <Label>
-            ingredients
+            {lang.ingredients}
             <TextArea
               rows={4}
               value={ingredients}
@@ -112,7 +114,7 @@ const NewProductFrom = () => {
         </CompactInputGroup>
         <CompactInputGroup>
           <Label>
-            weight (grams)
+            {lang.weight} ({lang.in_grams})
             <WideNumberInput {...weight} />
           </Label>
         </CompactInputGroup>

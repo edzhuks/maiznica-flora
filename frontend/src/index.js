@@ -5,9 +5,10 @@ import App from './App'
 import './App.css'
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from './reducers/cartReducer'
+import languageReducer from './reducers/languageReducer'
 
 const store = configureStore({
-  reducer: { cart: cartReducer },
+  reducer: { cart: cartReducer, lang: languageReducer },
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

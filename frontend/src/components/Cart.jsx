@@ -56,25 +56,25 @@ const OrderButton = styled.div`
 `
 
 const CartSummary = ({ total, deliveryCost }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <SummaryCard>
       <CostTile>
         <CostInformation>
-          <b>Sum</b>
+          <b>{lang.sum}</b>
         </CostInformation>
         <CostNumber>{centsToEuro(total)}</CostNumber>
       </CostTile>
       <CostTile>
         <CostInformation>
-          <b>Paid delivery</b>
-          <br />
-          (under €30)
+          <b>{lang.paid_delivery}</b>
+          <br />({lang.under_30})
         </CostInformation>
         <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
       </CostTile>
       <CostTile>
         <CostInformation>
-          <b>Total</b>
+          <b>{lang.total}</b>
         </CostInformation>
         <CostNumber>
           <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
@@ -82,7 +82,7 @@ const CartSummary = ({ total, deliveryCost }) => {
       </CostTile>
       <OrderButton>
         <Link to="/order">
-          <FullWidthButton>Order</FullWidthButton>
+          <FullWidthButton>{lang.order}</FullWidthButton>
         </Link>
       </OrderButton>
     </SummaryCard>
@@ -90,6 +90,7 @@ const CartSummary = ({ total, deliveryCost }) => {
 }
 
 const Cart = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [mobile, setIsMobile] = useContext(MobileContext)
 
   const cart = useSelector((state) => state.cart)
@@ -163,7 +164,7 @@ const Cart = () => {
               <Spacer />
             </ProductRow>
           ) : (
-            <p>Nothing in cart.</p>
+            <p>{lang.empty_cart}</p>
           )}
           {/* <CartSummary>
             
