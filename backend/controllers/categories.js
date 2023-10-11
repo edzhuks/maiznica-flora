@@ -76,7 +76,11 @@ categoryRouter.post('/init', userExtractor, async (req, res) => {
       categories: [],
       products: [],
       image: '',
-      displayName: 'All',
+      displayName: {
+        lv: 'Visi produkti',
+        en: 'All products',
+        de: 'Alle produkte',
+      },
     })
     await all.save()
     const news = new Category({
@@ -84,7 +88,11 @@ categoryRouter.post('/init', userExtractor, async (req, res) => {
       categories: [],
       products: [],
       image: '',
-      displayName: 'New',
+      displayName: {
+        lv: 'Jaunie produkti',
+        en: 'New products',
+        de: 'Neue produkte',
+      },
     })
     await news.save()
     res.status(201).end()
@@ -118,7 +126,10 @@ categoryRouter.post('/', userExtractor, async (req, res) => {
     if (!req.body.newCategory.id) {
       return res.status(400).send('New category id missing')
     }
-    if (!req.body.newCategory.displayName) {
+    if (
+      !req.body.newCategory.displayName ||
+      !req.body.newCategory.displayName.lv
+    ) {
       return res.status(400).send('New category display name missing')
     }
     if (!req.body.newCategory.image) {
