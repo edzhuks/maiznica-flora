@@ -31,9 +31,11 @@ const productChecker = async (req, res, next) => {
   }
   if (
     !product.name ||
+    !product.name.lv ||
     !product.weight ||
     !product.price ||
     !product.ingredients ||
+    !product.ingredients.lv ||
     !product.image
   ) {
     return res
