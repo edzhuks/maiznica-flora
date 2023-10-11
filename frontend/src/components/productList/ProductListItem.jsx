@@ -56,7 +56,7 @@ const ProductImage = styled.img`
 `
 
 const BuyButton = styled(Button)`
-  width: 40%;
+  max-width: 50%;
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {

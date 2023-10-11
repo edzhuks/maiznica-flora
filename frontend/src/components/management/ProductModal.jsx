@@ -153,7 +153,7 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
               )}
             />
           </ModalHalf>
-          <ModalOr>OR</ModalOr>
+          <ModalOr>{lang.or}</ModalOr>
           <ModalHalf>
             <SubTitle>{lang.add_new_product}</SubTitle>
             <Form>

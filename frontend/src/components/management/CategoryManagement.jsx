@@ -51,7 +51,7 @@ const ProductItem = styled.li`
   }
   span::after {
     content: '';
-    height: 27px;
+    height: 33px;
     width: 400px;
     background: #fafafa;
     position: absolute;

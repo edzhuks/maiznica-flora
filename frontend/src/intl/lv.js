@@ -20,7 +20,7 @@ const lv = {
   phone: 'tālrunis',
   add_new_address: 'pievienot adresi',
   proceed_to_payment: 'uz apmaksu',
-  contact_us: 'sazienies ar mums',
+  contact_us: 'sazinies ar mums',
   email: 'e-pasts',
   message: 'vēstule',
   send_message: 'nosūtīt',
@@ -42,6 +42,7 @@ const lv = {
   nature: 'daba',
   people: 'cilvēks',
   quality: 'kvalitāte',
+  how_products_are_made: 'KĀ TOP MAIZNĪCAs FLORA PRODUKTI?',
   product: 'produkts',
   category: 'kategorija',
   select_existing_categories: 'Izvēlēties no esošām kategorijām',
@@ -73,7 +74,7 @@ const lv = {
   completed: 'piegādāts',
   order_status: {
     placed: 'pasūtīts',
-    accpeted: 'pieņemts',
+    accepted: 'pieņemts',
     refused: 'atteikts',
     packing: 'tiek gatavots',
     waitingForDelivery: 'gaida piegādi',
@@ -91,6 +92,28 @@ const lv = {
   orders: 'pasūtījumi',
   username: 'lietotājvārds',
   password: 'parole',
+  about_text_top:
+    'Stāsts par mums ir himna roku darbam un gadu gaitā uzkrātām zināšanām, kā radīt kvalitatīvus un veselīgus gardumus. Tā ir himna Latvijas zemei, kas ik gadu vēlīgi pieņem zeltainos graudus un dāsni apbalvo mūs ar ražu. Tas ir stāsts par augsta līmeņa profesionāļiem, kas pašaizliedzīgi strādā, lai ikviens varētu celt savā galdā vislabāko – gan Latvijā, gan tālu pāri robežām. Stāsts par mums ir arī stāsts par skatu nākotnē un lieliem mērķiem.',
+  about_text: [
+    {
+      title: 'MODERNA UN JAUDĪGA RAŽOTNE',
+      text: 'Mēs lepojamies ar mūsdienīgu Eiropas Savienības līmenim atbilstošu ražotni, kurā ik gadu tiek saražotas ap 1000 tonnu produkcijas – maize, cepumi, piparkūkas un citi konditorejas izstrādājumi. ',
+    },
+    {
+      title: 'LIELĀKAIS DARBA DEVĒJS NOVADĀ',
+      text: 'Šobrīd uzņēmumā strādā 100 darbinieki – un mūsu skaits arvien pieaug. Mēs esam atvērta, zinātkāra un draudzīga komanda, ko veido arī ģimenes, turklāt dažiem šī ir bijusi vienīgā darba vieta. ',
+    },
+    {
+      title: 'TĀLREDZĪGA DOMĀŠANA',
+      text: 'Mēs esam noenkurojušies pie lielākā un vecākā Latvijas nacionālā parka robežas – Krimuldas pagastā, tāpēc likumsakarīgi, ka domājam tālredzīgi un saimniekojam dabai draudzīgi. Esam ieguvuši Bioloģiski ražotu produktu sertifikātu Nr. 05-001-2012/P-02, izmantojam organiski audzētas izejvielas, kā arī piedāvājam produktus vegāniem.',
+    },
+  ],
+  nature_text:
+    'Līdzsvars un harmonija dabā mūs fascinē un veldzē. Iedvesmo jauniem mērķiem un virsotnēm. Daba mūs baro un atjauno. Mēs esam atbildīgi par šo mantojumu un aicinām tādiem būt arī citiem.',
+  people_text:
+    'Mēs godājam kompetentu, priecīgu un meistarīgu darbinieku mijiedarbībā ar zinošu, pārliecinātu un apmierinātu klientu. Mēs ticam, ka, dzīvojot sabiedrībā, kur cilvēks ir vērtība, mēs atstāsim labāku pasauli saviem bērniem.',
+  quality_text:
+    'Kvalitāte it visā, kam ķeramies klāt. Ko veidojam un radām. Ikkatrā maizes klaipā un cepuma gabaliņā. Un attiecībās. Kvalitāte ik uz soļa, bez kompromisiem. Tas nebūtu iespējams, ja mēs negodātu šo principu – labāk mazāk, bet augstvērtīgi, nekā pavirši un daudz.',
 }
 
 export default lv
