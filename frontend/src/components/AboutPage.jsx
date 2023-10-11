@@ -1,12 +1,5 @@
-import { useEffect, useState } from 'react'
 import { BigTitle } from './styled/base'
-import Categories from './productList/Categories'
-import Carousel from './basic/Carousel'
-import categoryService from '../services/category'
-import ProductList from './productList/ProductList'
 import styled from 'styled-components'
-import { Nature } from '@styled-icons/material/Nature'
-import { People } from '@styled-icons/fluentui-system-filled/People'
 import { useSelector } from 'react-redux'
 
 const BigImage = styled.div`
@@ -32,7 +25,7 @@ const BigImage = styled.div`
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
-    filter: brightness(80%);
+    filter: brightness(60%);
   }
 `
 const BiggerTitle = styled.h1`
@@ -43,6 +36,18 @@ const BiggerTitle = styled.h1`
   font-size: 38px;
   margin: 0;
   padding: 120px 100px 100px 100px;
+`
+const BigText = styled.p`
+  display: block;
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  font-size: 20px;
+  line-height: 36px;
+  color: #fff;
+  /* margin: 0; */
+  width: 80%;
+  margin: -40px auto 40px auto;
+  padding: 0 0 60px 0;
 `
 
 const Text = styled.p`
@@ -55,15 +60,24 @@ const Text = styled.p`
   margin: 0 auto 20px auto;
 `
 
+const AboutTextGroup = styled.div`
+  margin-bottom: 50px;
+  margin-top: 50px;
+`
+
 const ValueRow = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   margin-bottom: 60px;
+  align-items: stretch;
+  gap: 30px;
+  justify-content: space-evenly;
 `
 
-const Value = styled.div`
+const ValueCard = styled.div`
   div {
-    width: 50%;
+    /* width: 50%; */
     background-color: white;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
       rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
@@ -73,8 +87,7 @@ const Value = styled.div`
     align-items: center;
     margin: auto;
 
-    img,
-    svg {
+    img {
       margin-bottom: 24px;
       color: #45931e;
       height: 64px;
@@ -86,7 +99,69 @@ const Value = styled.div`
       color: #333333;
     }
   }
-  flex: 33.3333%;
+  /* flex: 33.3333%; */
+`
+const BigValueCard = styled(ValueCard)`
+  max-width: 410px;
+  padding: 0;
+  div {
+    height: 100%;
+    width: auto;
+    display: block;
+    padding: 20px;
+    div {
+      height: auto;
+      box-shadow: none;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      img {
+        width: 70px;
+        height: auto;
+        margin-bottom: 0;
+        margin-right: 30px;
+      }
+      span {
+        font-weight: bolder;
+      }
+    }
+    p {
+      margin-top: 20px;
+      color: #333;
+      line-height: 1.5;
+    }
+  }
+`
+const AboutTextList = styled.ul`
+  width: 70%;
+  margin: 0 auto;
+  padding: 45px 0px 40px 0px;
+  position: relative;
+  li {
+    list-style: none;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    span {
+      color: #333;
+      font-size: 16px;
+    }
+  }
+  li::before {
+    position: absolute;
+    left: -55px;
+    padding-top: 3px;
+    display: inline-block;
+    text-align: center;
+    margin: 5px 10px;
+    line-height: 20px;
+    transition: all 0.2s;
+    color: #ffffff;
+    background: #45941e;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    content: '✓';
+  }
 `
 
 const YoutubePanel = styled.div`
@@ -104,12 +179,37 @@ const YoutubePanel = styled.div`
   }
 `
 
+const Value = ({ image, title, text }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  if (!lang[text]) {
+    return (
+      <ValueCard>
+        <div>
+          <img src={image}></img>
+          <span>{lang[title]}</span>
+        </div>
+      </ValueCard>
+    )
+  } else {
+    return (
+      <BigValueCard>
+        <div>
+          <div>
+            <img src={image}></img>
+            <span>{lang[title]}</span>
+          </div>
+          <p>{lang[text]}</p>
+        </div>
+      </BigValueCard>
+    )
+  }
+}
+
 const Youtube = ({ embedId }) => {
   return (
     <YoutubePanel className="video-responsive">
       <iframe
         width="100%"
-        // height=""
         src={`https://www.youtube.com/embed/${embedId}`}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -121,64 +221,55 @@ const Youtube = ({ embedId }) => {
 }
 
 const AboutPage = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <div>
       <BigImage>
-        <BiggerTitle>About Us</BiggerTitle>
+        <BiggerTitle>{lang.about_us}</BiggerTitle>
+        {selectedLang === 'lv' && <BigText>{lang.about_text_top}</BigText>}
       </BigImage>
-      <Text>
-        Flora Bakery was founded back in the 1990s when it put its first
-        homemade loaf of white bread on the festive table at Christmas time. The
-        bakery’s name has historical origins. Before focusing on making
-        delicious baked products and pastries, the owners grew flowers. This
-        inspired them to give their next line of business a name connected with
-        nature. The bakery was named Flora.
-      </Text>
-      <Text>
-        In 2008, Flora opened its new EU standard production plan in Krimulda
-        Parish in a mythical place named Ragana. Here all products are produced
-        at one site. However, in this modern bakery, our greatest asset is still
-        the fact that our products are handcrafted, which we combine with years
-        of knowledge of how to bake the best quality products.
-      </Text>
-      <Text>
-        In April 2012, Flora Bakery received a BIO product production
-        certificate.
-      </Text>
-      <Text>
-        Fragrant, organic, natural ingredients are among the core values of
-        Flora Bakery, whereby nature and its colours are the source of
-        inspiration, which created the Flora Bakery. Picture the scenery,
-        Latvia’s blossoming meadows adorned by playful red poppies and golden
-        ears, radiating in the glowing sun. Just as an perfumer takes the most
-        captivating aromas to create perfumes, we seek the highest quality
-        ingredients as well as unique herbs and spices. Flora products are made
-        nurturing the knowledge and know-how of our expert bakers. We offer our
-        customers an intimate bouquet of flavour created right here in the
-        picturesque Latvian parish of Krimulda. May the floral delights blossom
-        on your table!
-      </Text>
-      <BigTitle>Flora Bakery's Values</BigTitle>
+
+      {selectedLang !== 'lv' && (
+        <AboutTextGroup>
+          {lang.about_text.map((text, i) => (
+            <Text key={i}>{text}</Text>
+          ))}
+        </AboutTextGroup>
+      )}
+      {selectedLang === 'lv' && (
+        <AboutTextList>
+          {lang.about_text.map((text, i) => (
+            <li key={i}>
+              <strong>{text.title} – </strong>
+              <span>{text.text}</span>
+            </li>
+          ))}
+        </AboutTextList>
+      )}
+
+      <BigTitle>{lang.values}</BigTitle>
       <ValueRow>
-        <Value>
-          <div>
-            <img src="http://www.maiznica.lv/wp-content/uploads/2019/05/kvalitate.png"></img>
-            <span>Quality</span>
-          </div>
-        </Value>
-        <Value>
-          <div>
-            <Nature /> <span>Nature</span>
-          </div>
-        </Value>
-        <Value>
-          <div>
-            <People /> <span>People</span>
-          </div>
-        </Value>
+        <Value
+          title="nature"
+          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon2.png"
+          text="nature_text"
+        />
+        <Value
+          title="people"
+          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon3.png"
+          text="people_text"
+        />
+        <Value
+          title="quality"
+          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon1.png"
+          text="quality_text"
+        />
       </ValueRow>
-      <BigTitle>HOW FLORA BAKERY’S PRODUCTS ARE MADE?</BigTitle>
-      <Youtube embedId={'gGIFEEo3CeY'} />
+      <BigTitle>{lang.how_products_are_made}</BigTitle>
+      <Youtube
+        embedId={selectedLang === 'de' ? 'wRTPG91SR6o' : 'gGIFEEo3CeY'}
+      />
       <div style={{ height: '100px' }} />
     </div>
   )

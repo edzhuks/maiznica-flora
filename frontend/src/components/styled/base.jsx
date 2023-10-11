@@ -32,9 +32,9 @@ const Button = styled.button`
   border: 0;
   color: white;
   padding: 5px 20px;
-  border-radius: 5px;
-  font-size: 15px;
-  font-weight: 500;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: 600;
   background-color: #45941e;
   transition: 0.3s;
   min-width: 40px;
@@ -42,6 +42,12 @@ const Button = styled.button`
   &:hover {
     background-color: #3f861b;
   }
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+  font-family: 'Roboto Slab', serif;
+  letter-spacing: 1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 `
 
 const CancelButton = styled(Button)`
@@ -53,9 +59,6 @@ const CancelButton = styled(Button)`
 
 const FullWidthButton = styled(Button)`
   width: 100%;
-  font-weight: 500;
-  font-size: 18px;
-  height: 38px;
 `
 
 const FullWidthCancelButton = styled(FullWidthButton)`
@@ -67,6 +70,7 @@ const FullWidthCancelButton = styled(FullWidthButton)`
 const InvertedButton = styled(Button)`
   padding: 1px 4px;
   background-color: transparent;
+  box-shadow: none;
   font-weight: bold;
   color: #999999;
   &:hover {
@@ -95,14 +99,19 @@ const StyledInput = styled(Input)`
 
 const TextArea = styled.textarea`
   width: 300px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #ffffffff;
   color: #888888;
-  border-radius: 5px;
+  border-radius: 2px;
   &:focus {
     outline: none;
     border-color: #45941e;
   }
   font-size: medium;
+  &:focus {
+    outline: none;
+    border: 1px solid #e5e5e5;
+    border-color: #45941e;
+  }
 `
 
 const NumberInput = styled(StyledInput)`
@@ -156,6 +165,10 @@ const Label = styled.label`
   color: #555555;
   display: block;
   line-height: 40px;
+  text-transform: none;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 `
 const BigTitle = styled.div`
   font-family: 'Roboto Slab', serif;
@@ -305,6 +318,7 @@ const ModalOr = styled.div`
   font-size: 30px;
   color: #777777;
   text-align: center;
+  text-transform: uppercase;
 `
 
 const HalfWidth = styled.div`

@@ -42,7 +42,7 @@ function App() {
 
   //choose the screen size
   const handleResize = () => {
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 1130) {
       setIsMobile(true)
     } else {
       setIsMobile(false)

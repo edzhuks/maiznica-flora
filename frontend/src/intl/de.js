@@ -42,6 +42,7 @@ const de = {
   nature: 'natur',
   people: 'Menschen',
   quality: 'Qualität',
+  how_products_are_made: 'WIE WERDEN UNSERE PRODUKTE HERGESTELLT?',
   product: 'Produkt',
   category: 'Kategorie',
   select_existing_categories: 'Vorhandene Kategorien auswählen',
@@ -92,6 +93,12 @@ const de = {
   orders: 'Bestellungen',
   username: 'benutzername',
   password: 'passwort',
+  about_text: [
+    'Die Tätigkeit der Bäckerei „Flora“ begann schon in den 90er Jahren, als zu den Weihnachten der erste selbstgebackene Weißbrotlaib auf den Tisch gelegt wurde. Der Name der Bäckerei stammt aus der früheren Geschäftstätigkeit der Inhaber, die sich vor der Herstellung von leckeren Backwaren mit der Blumenzucht beschäftigt haben. So entstand die Idee, dem Unternehmen einen mit der Natur verbundenen Namen zu geben, und die Bäckerei wurde „Flora“ genannt.',
+    '2008 eröffnete die Bäckerei „Flora“ ihre neue, moderne, den Standards der EU entsprechende Produktionsstätte in der Gemeinde Krimulda – an einem mythischen Ort mit dem Namen Ragana (deutsch: Hexe). Hier werden alle Produktarten hergestellt. Jedoch hat auch in der modernen Produktion nach wie vor den größten Stellenwert die Handarbeit gelegt, die mit den jahrelang gesammelten Kenntnissen über die Herstellung der besten Produkte vereinigt wird.',
+    'Im April 2012 hat die Bäckerei „Flora“ das Zertifikat zur Herstellung von BIO-Produkten erhalten.',
+    'Flora – es ist die ganze unsere Umwelt, die schön, grün, wohlriechend, echt und natürlich ist. Es sind die sonnigen Blumenwiesen Lettlands mit prachtvollem, rotem Mohn und goldenen Getreideähren. Die Natur und ihre Farben sind unsere Inspirationsquellen, die eine wichtige Rolle bei der Entstehung und der Arbeit der Bäckerei „Flora“ spielen. Ähnlich, wie ein Parfümeur die bezauberndsten und reizvollsten Blumengeruche wählt, um ein neues Aroma zu entwickeln, suchen wir die hochwertigsten Rohstoffe und einzigartigsten Zutaten für unsere Backwaren aus. Dank den Kenntnissen und der sorgfältigen Handarbeit unserer Bäcker entstehen die leckeren Produkte der Bäckerei „Flora“! Wir erfreuen unsere Kunden durch einzigartiges Geschmacksvergnügen, das hier in Lettland, in der malerischen Gemeinde Krimulda entstanden ist. Damit die leckeren Backwaren auf Ihrem Tisch das Gefühl der blühenden Wiesen in Ihr Haus bringen!',
+  ],
 }
 
 export default de

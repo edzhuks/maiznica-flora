@@ -42,6 +42,7 @@ const en = {
   nature: 'nature',
   people: 'people',
   quality: 'quality',
+  how_products_are_made: "how flora bakery's products are made",
   product: 'product',
   category: 'category',
   select_existing_categories: 'Select existing categories',
@@ -73,7 +74,7 @@ const en = {
   completed: 'completed',
   order_status: {
     placed: 'placed',
-    accpeted: 'accepted',
+    accepted: 'accepted',
     refused: 'refused',
     packing: 'packing',
     waitingForDelivery: 'waiting for delivery',
@@ -91,6 +92,12 @@ const en = {
   orders: 'orders',
   username: 'username',
   password: 'password',
+  about_text: [
+    'Flora Bakery was founded back in the 1990s when it put its first homemade loaf of white bread on the festive table at Christmas time. The bakery’s name has historical origins. Before focusing on making delicious baked products and pastries, the owners grew flowers. This inspired them to give their next line of business a name connected with nature. The bakery was named Flora.',
+    'In 2008, Flora opened its new EU standard production plan in Krimulda Parish in a mythical place named Ragana. Here all products are produced at one site. However, in this modern bakery, our greatest asset is still the fact that our products are handcrafted, which we combine with years of knowledge of how to bake the best quality products.',
+    'In April 2012, Flora Bakery received a BIO product production certificate.',
+    'Fragrant, organic, natural ingredients are among the core values of Flora Bakery, whereby nature and its colours are the source of inspiration, which created the Flora Bakery. Picture the scenery, Latvia’s blossoming meadows adorned by playful red poppies and golden ears, radiating in the glowing sun. Just as an perfumer takes the most captivating aromas to create perfumes, we seek the highest quality ingredients as well as unique herbs and spices. Flora products are made nurturing the knowledge and know-how of our expert bakers. We offer our customers an intimate bouquet of flavour created right here in the picturesque Latvian parish of Krimulda. May the floral delights blossom on your table!',
+  ],
 }
 
 export default en
