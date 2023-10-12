@@ -23,60 +23,31 @@ import categoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
+import { gramsToKilos } from '../../util/convert'
 
 const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allProducts, setAllProducts] = useState([])
   const [selectedProductIds, setSelectedProductIds] = useState([])
-
-  const name = useField('text')
-  const weight = useField('number')
-  const price = useField('number')
-  const energy = useField('number')
-  const fat = useField('number')
-  const saturatedFat = useField('number')
-  const carbs = useField('number')
-  const sugar = useField('number')
-  const fiber = useField('number')
-  const protein = useField('number')
-  const salt = useField('number')
-  const EAN = useField('text')
-  const image = useField('url')
-
-  const [description, setDescription] = useState('')
-  const [ingredients, setIngredients] = useState('')
-
-  const [bio, setBio] = useState(false)
-  const [addToAll, setAddToAll] = useState(true)
-  const [addToNew, setAddToNew] = useState(true)
 
   useEffect(() => {
     productService.getAll().then((result) => {
       setAllProducts(
         result.map((product) => ({
           value: product.id,
-          label: product.name,
+          label: `${
+            product.name[selectedLang] || product.name.lv
+          } ${gramsToKilos(product.weight)}`,
         }))
       )
+      if (activeCategory) {
+        setSelectedProductIds(activeCategory.products.map((p) => p.id))
+      }
     })
-  }, [])
+  }, [selectedLang, activeCategory])
 
   const clear = () => {
-    name.clear()
-    weight.clear()
-    price.clear()
-    energy.clear()
-    fat.clear()
-    saturatedFat.clear()
-    sugar.clear()
-    fiber.clear()
-    protein.clear()
-    salt.clear()
-    EAN.clear()
-    image.clear()
-    setDescription('')
-    setIngredients('')
-    setBio(false)
     setSelectedProductIds([])
   }
 
@@ -91,47 +62,6 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
           clear()
           onClose(newCatalogue)
         })
-    } else {
-      productService
-        .create({
-          product: {
-            name: name.value,
-            weight: weight.value,
-            price: price.value,
-            nutrition:
-              energy.value ||
-              fat.value ||
-              saturatedFat.value ||
-              carbs.value ||
-              sugar.value ||
-              fiber.value ||
-              protein.value ||
-              salt.value
-                ? {
-                    energy: energy.value,
-                    fat: fat.value,
-                    saturatedFat: saturatedFat.value,
-                    carbs: carbs.value,
-                    sugar: sugar.value,
-                    fiber: fiber.value,
-                    protein: protein.value,
-                    salt: salt.value,
-                  }
-                : null,
-            EAN: EAN.value,
-            image: image.value,
-            description,
-            ingredients,
-            bio,
-          },
-          parentCategory: activeCategory.id,
-          addToAll,
-          addToNew,
-        })
-        .then((newCatalogue) => {
-          clear()
-          onClose(newCatalogue)
-        })
     }
   }
 
@@ -139,9 +69,9 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
       <ModalContent>
         <BigTitle style={{ marginBottom: 15 }}>{lang.add_product}</BigTitle>
-        <Row>
-          <ModalHalf>
-            <SubTitle>{lang.select_existing_products}</SubTitle>
+        <div style={{ padding: '30px 100px' }}>
+          <SubTitle>{lang.select_existing_products}</SubTitle>
+          <div style={{ width: '600px' }}>
             <Select
               isMulti
               options={allProducts}
@@ -152,131 +82,8 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
                 selectedProductIds.includes(item.value)
               )}
             />
-          </ModalHalf>
-          <ModalOr>{lang.or}</ModalOr>
-          <ModalHalf>
-            <SubTitle>{lang.add_new_product}</SubTitle>
-            <Form>
-              <CompactInputGroup>
-                <Label>
-                  {lang.product_name}
-                  <StyledInput
-                    {...name}
-                    style={{ width: '420px', float: 'left', marginLeft: 0 }}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.description}
-                  <TextArea
-                    rows={8}
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.ingredients}
-                  <TextArea
-                    rows={6}
-                    value={ingredients}
-                    onChange={(event) => setIngredients(event.target.value)}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.weight} ({lang.in_grams})
-                  <WideNumberInput {...weight} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.price} (€ x.xx)
-                  <WideNumberInput {...price} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.energy_content} (kcal)
-                  <WideNumberInput {...energy} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.fat} ({lang.in_grams})
-                  <WideNumberInput {...fat} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.of_which_saturated_fat} ({lang.in_grams})
-                  <WideNumberInput {...saturatedFat} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.carbohydrates} ({lang.in_grams})
-                  <WideNumberInput {...carbs} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.of_which_sugars} ({lang.in_grams})
-                  <WideNumberInput {...sugar} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.fiber} ({lang.in_grams})
-                  <WideNumberInput {...fiber} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.protein} ({lang.in_grams})
-                  <WideNumberInput {...protein} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.salt} ({lang.in_grams})
-                  <WideNumberInput {...salt} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.EAN_code}
-                  <StyledInput {...EAN} />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.image_url}
-                  <StyledInput {...image} />
-                </Label>
-              </CompactInputGroup>
-
-              <Checkbox
-                checked={bio}
-                onChange={() => setBio(!bio)}
-                label="bio"
-              />
-              <Checkbox
-                checked={addToAll}
-                onChange={() => setAddToAll(!addToAll)}
-                label={lang.add_to_all}
-              />
-              <Checkbox
-                checked={addToNew}
-                onChange={() => setAddToNew(!setAddToNew)}
-                label={lang.add_to_new}
-              />
-            </Form>
-          </ModalHalf>
-        </Row>
+          </div>
+        </div>
         <CancelButton
           onClick={() => {
             clear()

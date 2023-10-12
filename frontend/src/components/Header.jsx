@@ -165,6 +165,15 @@ const Lang = styled.div`
   }
 `
 
+const MobileLang = styled(Lang)`
+  flex-direction: row;
+  button {
+    margin: 0px 15px;
+    padding: 10px;
+    font-size: 16px;
+  }
+`
+
 const Header = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   console.log(lang)
@@ -232,8 +241,8 @@ const Header = () => {
               <SideMenuTab to="/contact">{lang.contact}</SideMenuTab>
               {user && user.admin && (
                 <>
-                  <SideMenuTab to="/new-product">
-                    {lang.new_product}
+                  <SideMenuTab to="/management/categories">
+                    {lang.management}
                   </SideMenuTab>
                   <SideMenuTab to="/orders">{lang.orders}</SideMenuTab>
                 </>
@@ -251,6 +260,28 @@ const Header = () => {
                   {lang.sign_out}
                 </SideMenuTab>
               )}
+              <SideMenuTab>
+                <MobileLang>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('lv'))
+                    }}>
+                    LV
+                  </button>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('en'))
+                    }}>
+                    EN
+                  </button>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('de'))
+                    }}>
+                    DE
+                  </button>
+                </MobileLang>
+              </SideMenuTab>
             </SideMenu>
           )}
         </>
@@ -290,7 +321,9 @@ const Header = () => {
               )}
               {user && user.admin && (
                 <>
-                  <HeaderTab to="/new-product">{lang.new_product}</HeaderTab>
+                  <HeaderTab to="/management/categories">
+                    {lang.management}
+                  </HeaderTab>
                   <HeaderTab to="/orders">{lang.orders}</HeaderTab>
                 </>
               )}

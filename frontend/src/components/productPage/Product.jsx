@@ -10,34 +10,16 @@ import {
   HalfWidth,
   Row,
   FullWidthCancelButton,
+  ProductImage,
+  WrappableRow,
 } from '../styled/base'
 import productService from '../../services/product'
 import TextualInformation from './TextualInformation'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 
-const Image = styled.img`
-  flex: 50%;
-  width: 100%;
-  height: auto;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  /* transform: scale(0.8); */
-`
-const WrappableRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-  div {
-    flex: 50%;
-  }
-  column-gap: 40px;
-`
-
 const Product = () => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [editMode, setEditMode] = useState(false)
 
@@ -196,7 +178,7 @@ const Product = () => {
           </>
         )}
         <WrappableRow>
-          <Image src={product.image} />
+          <ProductImage src={product.image} />
           <div>
             <TextualInformation
               product={product}

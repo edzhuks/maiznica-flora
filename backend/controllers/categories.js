@@ -53,7 +53,10 @@ const getCatalogue = async () => {
 
 categoryRouter.get('/discount', async (req, res) => {
   const products = await Product.find({ discountPrice: { $exists: true } })
-  res.send({ products })
+  res.send({
+    products,
+    displayName: { lv: 'Atlaides', en: 'Discounts', de: 'Rabatt' },
+  })
 })
 
 categoryRouter.get('/complete', async (req, res) => {
@@ -96,6 +99,40 @@ categoryRouter.post('/init', userExtractor, async (req, res) => {
     })
     await news.save()
     res.status(201).end()
+  } else {
+    res.status(403).end()
+  }
+})
+
+categoryRouter.delete('/products', userExtractor, async (req, res) => {
+  if (req.user.admin) {
+    if (!req.body.parentCategory) {
+      return res.status(400).send('Parent category msut be defined')
+    }
+    if (!req.body.productId) {
+      return res.status(400).send('Product id must be given')
+    }
+    const parentCategory = await Category.findById(req.body.parentCategory)
+    parentCategory.products.pull({ _id: req.body.productId })
+    await parentCategory.save()
+    res.status(200).send(parentCategory)
+  } else {
+    res.status(403).end()
+  }
+})
+
+categoryRouter.delete('/categories', userExtractor, async (req, res) => {
+  if (req.user.admin) {
+    if (!req.body.parentCategory) {
+      return res.status(400).send('Parent category msut be defined')
+    }
+    if (!req.body.categoryId) {
+      return res.status(400).send('Category id must be given')
+    }
+    const parentCategory = await Category.findById(req.body.parentCategory)
+    parentCategory.categories.pull({ _id: req.body.categoryId })
+    await parentCategory.save()
+    res.status(200).send(parentCategory)
   } else {
     res.status(403).end()
   }
@@ -157,7 +194,7 @@ categoryRouter.put('/products', userExtractor, async (req, res) => {
       return res.status(400).send('Parent category msut be defined')
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
-    parentCategory.products.push(...req.body.productsToAdd)
+    parentCategory.products = req.body.productsToAdd
     await parentCategory.save()
     res.status(200).send(parentCategory)
   } else {
@@ -171,7 +208,7 @@ categoryRouter.put('/', userExtractor, async (req, res) => {
       return res.status(400).send('Parent category msut be defined')
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
-    parentCategory.categories.push(...req.body.categoriesToAdd)
+    parentCategory.categories = req.body.categoriesToAdd
     await parentCategory.save()
     res.status(200).send(parentCategory)
   } else {

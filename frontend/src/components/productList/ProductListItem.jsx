@@ -60,6 +60,7 @@ const BuyButton = styled(Button)`
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useContext(UserContext)
   const navigate = useNavigate()
@@ -98,7 +99,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         </ImageWrapper>
 
         <CenteredTitle style={{ marginLeft: 20, marginRight: 20 }}>
-          {product.name}
+          {product.name[selectedLang] || product.name.lv}
         </CenteredTitle>
       </CardLink>
       <CenteredSubTitle>
