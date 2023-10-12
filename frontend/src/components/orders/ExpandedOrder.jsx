@@ -25,7 +25,6 @@ const OrderAction = ({
 }
 
 const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allPacked = () => {
     return order.content.every((o) => o.packed)

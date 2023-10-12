@@ -3,9 +3,7 @@ import userService from '../services/user'
 import useField from '../hooks/useField'
 import UserContext from '../contexts/userContext'
 import { useContext } from 'react'
-import Input from './basic/Input'
-import styled from 'styled-components'
-import { loadCart, setCart } from '../reducers/cartReducer'
+import { loadCart } from '../reducers/cartReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   FullWidthButton,
@@ -23,7 +21,7 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [user, setUser] = useContext(UserContext)
+  const [, setUser] = useContext(UserContext)
 
   const username = useField('text')
   const password = useField('password')

@@ -1,7 +1,4 @@
-import { useState } from 'react'
 import { Button, Row } from '../styled/base'
-import CategoryManagement from './CategoryManagement'
-import NewProductFrom from './NewProduct'
 import { Link, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 

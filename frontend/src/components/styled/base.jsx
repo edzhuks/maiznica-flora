@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Input from '../basic/Input'
 
@@ -94,7 +93,6 @@ const StyledInput = styled(Input)`
     border-color: #45941e;
   }
   font-size: large;
-  /* box-shadow: inset 0 0 15px #ccc; */
 `
 
 const TextArea = styled.textarea`
@@ -148,7 +146,6 @@ const ProductImage = styled.img`
   height: auto;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  /* transform: scale(0.8); */
 `
 const WrappableRow = styled.div`
   display: flex;
@@ -313,7 +310,6 @@ const Radio = styled.label`
 `
 
 const ModalContainer = styled.div`
-  /* display: none; Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 50; /* Sit on top */
   left: 0;
@@ -336,12 +332,9 @@ const ModalContent = styled.div`
 const ModalHalf = styled.div`
   width: 400px;
   min-width: 400px;
-  /* width: 45%; */
-  /* flex: 0 0 45%; */
   padding: 20px;
 `
 const ModalOr = styled.div`
-  /* width: 10%; */
   padding: 80px 40px;
   font-size: 30px;
   color: #777777;

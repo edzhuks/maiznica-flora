@@ -2,12 +2,8 @@ import productService from '../../services/product'
 import useField from '../../hooks/useField'
 import { useState } from 'react'
 import {
-  WideNumberInput,
   StyledInput,
-  CompactInputGroup,
-  Label,
   TextArea,
-  Form,
   NumberInput,
   Row,
   Button,
@@ -96,7 +92,6 @@ const ProductTextArea = styled(TextArea)`
 `
 
 const NewProductFrom = () => {
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allLang = useSelector((state) => state.lang)
   const name_lv = useField('text')

@@ -1,17 +1,5 @@
 import styled from 'styled-components'
-import {
-  Container,
-  BigTitle,
-  Row,
-  Form,
-  InputGroup,
-  StyledInput,
-  Label,
-  TextArea,
-  Button,
-  HalfWidth,
-  ContactText,
-} from './styled/base'
+import { Container } from './styled/base'
 import Contact from './Contact'
 
 const FooterContainer = styled.div`

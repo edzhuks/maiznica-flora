@@ -1,15 +1,12 @@
 import styled from 'styled-components'
 import {
-  Container,
   BigTitle,
-  Row,
   Form,
   InputGroup,
   StyledInput,
   Label,
   TextArea,
   Button,
-  HalfWidth,
   ContactText,
 } from './styled/base'
 import { useSelector } from 'react-redux'

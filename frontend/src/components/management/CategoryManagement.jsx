@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, InvertedButton } from '../styled/base'
+import { Button } from '../styled/base'
 
 import categoryService from '../../services/category'
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
-import productService from '../../services/product'
 
 const CategoryList = styled.ul`
   list-style: none;

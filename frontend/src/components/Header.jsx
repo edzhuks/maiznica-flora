@@ -9,7 +9,7 @@ import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline'
 import { Link } from 'react-router-dom'
 import { clearCart } from '../reducers/cartReducer'
 import MobileContext from '../contexts/mobileContext'
-import { changeLanguage, setLanguage } from '../reducers/languageReducer'
+import { changeLanguage } from '../reducers/languageReducer'
 
 const HeaderSpacer = styled.div`
   height: 130px;
@@ -23,7 +23,6 @@ const DesktopHeader = styled.div`
   position: fixed;
   top: 0;
   padding-top: 18px;
-  /* border-bottom: 1px solid #999999; */
   background-color: #fffdfd;
   z-index: 4;
 `

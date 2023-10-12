@@ -62,7 +62,7 @@ const BuyButton = styled(Button)`
 const ProductListItem = ({ inCart, product, quantity }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [user, setUser] = useContext(UserContext)
+  const [user] = useContext(UserContext)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [quantityToAdd, setQuantityToAdd] = useState(1)
