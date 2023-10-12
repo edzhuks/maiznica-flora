@@ -15,8 +15,10 @@ import {
   StyledInput,
 } from './styled/base'
 import Checkbox from './basic/Checkbox'
+import { useSelector } from 'react-redux'
 
 const SignUp = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useContext(UserContext)
 
   const navigate = useNavigate()
@@ -47,11 +49,11 @@ const SignUp = () => {
   return (
     <Centerer>
       <LoginCard>
-        <BigTitle>Register</BigTitle>
+        <BigTitle>{lang.sign_up}</BigTitle>
         <Form onSubmit={onSubmit}>
           <InputGroup>
             <Label>
-              Username
+              {lang.username}
               <StyledInput
                 {...username}
                 $isonlightbackground
@@ -60,7 +62,7 @@ const SignUp = () => {
           </InputGroup>
           <InputGroup>
             <Label>
-              Email
+              {lang.email}
               <StyledInput
                 {...email}
                 $isonlightbackground
@@ -69,7 +71,7 @@ const SignUp = () => {
           </InputGroup>
           <InputGroup style={{ marginBottom: '35px' }}>
             <Label>
-              Password
+              {lang.password}
               <StyledInput
                 {...password}
                 $isonlightbackground
@@ -86,7 +88,7 @@ const SignUp = () => {
             onChange={() => setMaintainer(!maintainer)}
             label="Maintainer"
           /> */}
-          <FullWidthButton type="submit">Sign Up</FullWidthButton>
+          <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
         </Form>
       </LoginCard>
     </Centerer>

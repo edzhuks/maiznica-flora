@@ -12,6 +12,7 @@ import {
   HalfWidth,
   ContactText,
 } from './styled/base'
+import { useSelector } from 'react-redux'
 
 const WrappableRow = styled.div`
   display: flex;
@@ -32,26 +33,27 @@ const Half = styled.div`
 `
 
 const Contact = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <WrappableRow>
       <Half>
-        <BigTitle>Contact us</BigTitle>
+        <BigTitle>{lang.contact_us}</BigTitle>
         <Form style={{ width: '100%', paddingBottom: 20 }}>
           <InputGroup>
             <Label>
-              Name
+              {lang.name}
               <StyledInput style={{ width: '400px' }} />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
-              Email
+              {lang.email}
               <StyledInput style={{ width: '400px' }} />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
-              Message
+              {lang.message}
               <TextArea
                 rows={5}
                 style={{ width: '400px' }}
@@ -59,7 +61,7 @@ const Contact = () => {
             </Label>
           </InputGroup>
         </Form>
-        <Button>Send message</Button>
+        <Button>{lang.send_message}</Button>
       </Half>
       <Half>
         <ContactText>

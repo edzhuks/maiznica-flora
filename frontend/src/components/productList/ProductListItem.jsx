@@ -14,7 +14,7 @@ import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
 import { centsToEuro, gramsToKilos } from '../../util/convert'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   addItem,
   changeQuantityOfItem,
@@ -56,10 +56,12 @@ const ProductImage = styled.img`
 `
 
 const BuyButton = styled(Button)`
-  width: 40%;
+  max-width: 50%;
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useContext(UserContext)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -97,7 +99,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         </ImageWrapper>
 
         <CenteredTitle style={{ marginLeft: 20, marginRight: 20 }}>
-          {product.name}
+          {product.name[selectedLang] || product.name.lv}
         </CenteredTitle>
       </CardLink>
       <CenteredSubTitle>
@@ -105,7 +107,6 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {centsToEuro(product.price)}
       </CenteredSubTitle>
-      {product.rating && <h4>{product.rating}/10</h4>}
       {inCart ? (
         <RowSpaceBetween style={{ margin: 20, alignItems: 'center' }}>
           <InvertedButton onClick={removeSome}>
@@ -127,7 +128,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             type="number"
             $isonlightbackground
           />
-          <BuyButton onClick={addToCart}>BUY</BuyButton>
+          <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
         </RowSpaceBetween>
       )}
     </ProductCard>

@@ -4,11 +4,22 @@ import Categories from './productList/Categories'
 import Carousel from './basic/Carousel'
 import categoryService from '../services/category'
 import ProductList from './productList/ProductList'
+import { useSelector } from 'react-redux'
 
 const HomePage = () => {
-  const [newProducts, setNewProducts] = useState({ products: [] })
-  const [discountedProducts, setDiscountedProducts] = useState({ products: [] })
-  const [allProducts, setAllProducts] = useState({ categories: [] })
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const [newProducts, setNewProducts] = useState({
+    products: [],
+    displayName: '',
+  })
+  const [discountedProducts, setDiscountedProducts] = useState({
+    products: [],
+    displayName: '',
+  })
+  const [allProducts, setAllProducts] = useState({
+    categories: [],
+    displayName: '',
+  })
 
   useEffect(() => {
     categoryService.getNewProducts().then((p) => setNewProducts(p))
@@ -27,13 +38,21 @@ const HomePage = () => {
           'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
         ]}
       />
-      <BigTitle>New Products</BigTitle>
-      <ProductList products={newProducts.products} />
+      {newProducts.length && (
+        <div>
+          <BigTitle>{newProducts.displayName[selectedLang]}</BigTitle>
+          <ProductList products={newProducts.products} />
+        </div>
+      )}
 
-      <BigTitle>Special Offers</BigTitle>
-      <ProductList products={discountedProducts.products} />
+      {discountedProducts.length && (
+        <div>
+          <BigTitle>{discountedProducts.displayName[selectedLang]}</BigTitle>
+          <ProductList products={discountedProducts.products} />
+        </div>
+      )}
 
-      <BigTitle>Prodcuts</BigTitle>
+      <BigTitle>{allProducts.displayName[selectedLang]}</BigTitle>
       <Categories categories={allProducts.categories} />
     </div>
   )

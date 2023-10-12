@@ -18,8 +18,11 @@ import Select from 'react-select'
 import { useState } from 'react'
 import categoryService from '../../services/category'
 import useField from '../../hooks/useField'
+import { useSelector } from 'react-redux'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const name = useField('text')
@@ -27,15 +30,21 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const image = useField('text')
 
   useEffect(() => {
-    categoryService.getAllIds().then((result) => {
-      setAllCategories(
-        result.map((category) => ({
-          value: category.id,
-          label: category.displayName,
-        }))
-      )
-    })
-  }, [])
+    if (activeCategory) {
+      categoryService.getAllIds().then((result) => {
+        setAllCategories(
+          result
+            .map((category) => ({
+              value: category.id,
+              label:
+                category.displayName[selectedLang] || category.displayName.lv,
+            }))
+            .filter((c) => c.value !== activeCategory.id)
+        )
+        setSelectedCategoryIds(activeCategory.categories.map((c) => c.id))
+      })
+    }
+  }, [selectedLang, activeCategory])
 
   const clear = () => {
     name.clear()
@@ -74,29 +83,31 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
 
   return (
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContent style={{ maxWidth: '920px' }}>
-        <BigTitle style={{ marginBottom: 15 }}>Add Category</BigTitle>
-        <Row>
+      <ModalContent>
+        <BigTitle style={{ marginBottom: 15 }}>{lang.add_category}</BigTitle>
+        <Row style={{ flexWrap: 'wrap' }}>
           <ModalHalf>
-            <SubTitle>Select existing categories</SubTitle>
-            <Select
-              isMulti
-              options={allCategories}
-              onChange={(e) =>
-                setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
-              }
-              value={allCategories.filter((item) =>
-                selectedCategoryIds.includes(item.value)
-              )}
-            />
+            <SubTitle>{lang.select_existing_categories}</SubTitle>
+            <div style={{ width: '360px' }}>
+              <Select
+                isMulti
+                options={allCategories}
+                onChange={(e) =>
+                  setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
+                }
+                value={allCategories.filter((item) =>
+                  selectedCategoryIds.includes(item.value)
+                )}
+              />
+            </div>
           </ModalHalf>
-          <ModalOr>OR</ModalOr>
+          <ModalOr>{lang.or}</ModalOr>
           <ModalHalf>
-            <SubTitle>Add a new category</SubTitle>
+            <SubTitle>{lang.add_new_category}</SubTitle>
             <Form>
               <CompactInputGroup>
                 <Label>
-                  Name
+                  {lang.product_name}
                   <StyledInput
                     style={{ marginLeft: 20 }}
                     {...name}
@@ -115,7 +126,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
               </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
-                  Image url
+                  {lang.image_url}
                   <StyledInput
                     style={{ marginLeft: 20 }}
                     {...image}
@@ -131,12 +142,12 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             onClose(catalogue)
           }}
           style={{ margin: 20 }}>
-          Cancel
+          {lang.cancel}
         </CancelButton>
         <Button
           style={{ margin: 20, float: 'right' }}
           onClick={addCategories}>
-          Add
+          {lang.add}
         </Button>
       </ModalContent>
     </ModalContainer>

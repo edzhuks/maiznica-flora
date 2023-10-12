@@ -18,6 +18,9 @@ import { useDispatch } from 'react-redux'
 import { loadCart } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
 import Header from './components/Header'
+import { setLanguage } from './reducers/languageReducer'
+import CategoryManagement from './components/management/CategoryManagement'
+import NewProductFrom from './components/management/NewProduct'
 
 function App() {
   const dispatch = useDispatch()
@@ -25,6 +28,10 @@ function App() {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    const language = window.localStorage.getItem('language')
+    if (language) {
+      dispatch(setLanguage(language))
+    }
     const loggedUserJSON = window.localStorage.getItem('maiznicafloraUser')
     if (loggedUserJSON) {
       dispatch(loadCart())
@@ -37,7 +44,7 @@ function App() {
 
   //choose the screen size
   const handleResize = () => {
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 1130) {
       setIsMobile(true)
     } else {
       setIsMobile(false)
@@ -75,9 +82,17 @@ function App() {
                   element={<Product />}
                 />
                 <Route
-                  path="/new-product"
-                  element={<ManagementPage />}
-                />
+                  path="/management"
+                  element={<ManagementPage />}>
+                  <Route
+                    path="categories"
+                    element={<CategoryManagement />}
+                  />
+                  <Route
+                    path="new_product"
+                    element={<NewProductFrom />}
+                  />
+                </Route>
                 <Route
                   path="/orders"
                   element={<OrderManagementPage />}
