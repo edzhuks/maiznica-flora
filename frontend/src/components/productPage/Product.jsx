@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import { useParams, useNavigate } from 'react-router-dom'
 import cartService from '../../services/cart'
-import styled from 'styled-components'
 import {
   NumberInput,
   Button,
@@ -19,7 +18,6 @@ import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 
 const Product = () => {
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [editMode, setEditMode] = useState(false)
 
@@ -66,7 +64,7 @@ const Product = () => {
       setProduct(p)
       setFields(p)
     })
-  }, [])
+  }, [id])
 
   const setFields = (p) => {
     setIngredients(p.ingredients)

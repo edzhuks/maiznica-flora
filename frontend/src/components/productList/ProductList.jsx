@@ -1,6 +1,5 @@
-import { EmptyProductItem, ProductRow, Spacer } from '../styled/base'
+import { ProductRow, Spacer } from '../styled/base'
 import ProductListItem from './ProductListItem'
-import styled from 'styled-components'
 
 const ProductList = ({ products }) => {
   return (

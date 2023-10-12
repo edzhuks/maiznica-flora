@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import userService from '../services/user'
 import useField from '../hooks/useField'
 import { useContext, useState } from 'react'
-import Input from './basic/Input'
 import UserContext from '../contexts/userContext'
 import {
   BigTitle,
@@ -14,12 +13,11 @@ import {
   LoginCard,
   StyledInput,
 } from './styled/base'
-import Checkbox from './basic/Checkbox'
 import { useSelector } from 'react-redux'
 
 const SignUp = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [user, setUser] = useContext(UserContext)
+  const [, setUser] = useContext(UserContext)
 
   const navigate = useNavigate()
 

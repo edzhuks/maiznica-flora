@@ -252,7 +252,6 @@ const Question = styled.span`
   font-size: 20px;
   flex-grow: 0;
   text-align: center;
-  /* width: 100%; */
   text-transform: uppercase;
 `
 

@@ -28,5 +28,4 @@ const CompactOrder = ({ order, expand }) => {
     </_CompactOrder>
   )
 }
-
 export default CompactOrder

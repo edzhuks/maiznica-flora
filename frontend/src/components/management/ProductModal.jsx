@@ -2,26 +2,15 @@ import { useEffect } from 'react'
 import {
   ModalContainer,
   ModalContent,
-  ModalHalf,
-  ModalOr,
-  Row,
   BigTitle,
   SubTitle,
-  Form,
-  CompactInputGroup,
-  Label,
-  StyledInput,
   CancelButton,
   Button,
-  WideNumberInput,
-  TextArea,
 } from '../styled/base'
 import Select from 'react-select'
 import { useState } from 'react'
 import productService from '../../services/product'
 import categoryService from '../../services/category'
-import useField from '../../hooks/useField'
-import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import { gramsToKilos } from '../../util/convert'
 

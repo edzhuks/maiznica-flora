@@ -10,7 +10,6 @@ import {
   Label,
   StyledInput,
   Radio,
-  FormMultiCol,
 } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../reducers/cartReducer'
