@@ -54,14 +54,14 @@ const productChecker = async (req, res, next) => {
   }
   if (
     product.nutrition &&
-    (!product.nutrition.energy ||
-      !product.nutrition.fat ||
-      !product.nutrition.saturatedFat ||
-      !product.nutrition.carbs ||
-      !product.nutrition.sugar ||
-      !product.nutrition.protein ||
-      !product.nutrition.salt ||
-      !product.nutrition.fiber)
+    (product.nutrition.energy === undefined ||
+      product.nutrition.fat === undefined ||
+      product.nutrition.saturatedFat === undefined ||
+      product.nutrition.carbs === undefined ||
+      product.nutrition.sugar === undefined ||
+      product.nutrition.protein === undefined ||
+      product.nutrition.salt === undefined ||
+      product.nutrition.fiber === undefined)
   ) {
     return res.status(400).send('Nutrition information must be complete')
   }

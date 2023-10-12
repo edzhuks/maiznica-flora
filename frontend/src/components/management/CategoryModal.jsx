@@ -25,7 +25,9 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
-  const name = useField('text')
+  const name_lv = useField('text')
+  const name_en = useField('text')
+  const name_de = useField('text')
   const id = useField('text')
   const image = useField('text')
 
@@ -47,17 +49,27 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   }, [selectedLang, activeCategory])
 
   const clear = () => {
-    name.clear()
+    name_lv.clear()
+    name_en.clear()
+    name_de.clear()
     id.clear()
     image.clear()
     setSelectedCategoryIds([])
   }
 
   const addCategories = () => {
-    if (selectedCategoryIds.length) {
+    if (name_lv.value) {
       categoryService
-        .addExisting({
-          categoriesToAdd: selectedCategoryIds,
+        .addNew({
+          newCategory: {
+            displayName: {
+              lv: name_lv.value,
+              en: name_en.value,
+              de: name_de.value,
+            },
+            id: id.value,
+            image: image.value,
+          },
           parentCategory: activeCategory.id,
         })
         .then(() => {
@@ -66,12 +78,8 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
         })
     } else {
       categoryService
-        .addNew({
-          newCategory: {
-            displayName: name.value,
-            id: id.value,
-            image: image.value,
-          },
+        .addExisting({
+          categoriesToAdd: selectedCategoryIds,
           parentCategory: activeCategory.id,
         })
         .then(() => {
@@ -107,14 +115,31 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             <Form>
               <CompactInputGroup>
                 <Label>
-                  {lang.product_name}
+                  {lang.product_name} lv
                   <StyledInput
                     style={{ marginLeft: 20 }}
-                    {...name}
+                    {...name_lv}
                   />
                 </Label>
               </CompactInputGroup>
-
+              <CompactInputGroup>
+                <Label>
+                  {lang.product_name} en
+                  <StyledInput
+                    style={{ marginLeft: 20 }}
+                    {...name_en}
+                  />
+                </Label>
+              </CompactInputGroup>
+              <CompactInputGroup>
+                <Label>
+                  {lang.product_name} de
+                  <StyledInput
+                    style={{ marginLeft: 20 }}
+                    {...name_de}
+                  />
+                </Label>
+              </CompactInputGroup>
               <CompactInputGroup>
                 <Label>
                   ID

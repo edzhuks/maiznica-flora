@@ -1,6 +1,6 @@
 import productService from '../../services/product'
 import useField from '../../hooks/useField'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   StyledInput,
   TextArea,
@@ -14,6 +14,8 @@ import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { StaticInformation } from '../productPage/TextualInformation'
+import { useParams } from 'react-router-dom'
+import { enIE } from 'date-fns/locale'
 
 const Text = styled.p`
   margin: 3px 0px -5px 0px;
@@ -92,6 +94,7 @@ const ProductTextArea = styled(TextArea)`
 `
 
 const NewProductFrom = () => {
+  const productId = useParams().productId
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allLang = useSelector((state) => state.lang)
   const name_lv = useField('text')
@@ -123,50 +126,87 @@ const NewProductFrom = () => {
   const [addToAll, setAddToAll] = useState(false)
   const [addToNew, setAddToNew] = useState(false)
 
+  useEffect(() => {
+    if (productId) {
+      console.log('blerp')
+      productService.getById(productId).then((product) => {
+        name_lv.changeValue(product.name.lv)
+        name_en.changeValue(product.name.en)
+        name_de.changeValue(product.name.de)
+        setDescription_lv(product.description.lv)
+        setDescription_en(product.description.en)
+        setDescription_de(product.description.de)
+        setIngredients_lv(product.ingredients.lv)
+        setIngredients_en(product.ingredients.en)
+        setIngredients_de(product.ingredients.de)
+        weight.changeValue(product.weight)
+        price.changeValue(product.price)
+        EAN.changeValue(product.EAN)
+        if (product.nutrition) {
+          energy.changeValue(product.nutrition.energy)
+          fat.changeValue(product.nutrition.fat)
+          saturatedFat.changeValue(product.nutrition.saturatedFat)
+          carbs.changeValue(product.nutrition.carbs)
+          sugar.changeValue(product.nutrition.sugar)
+          fiber.changeValue(product.nutrition.fiber)
+          protein.changeValue(product.nutrition.protein)
+          salt.changeValue(product.nutrition.salt)
+        }
+        setImage(product.image)
+        setBio(product.bio)
+      })
+    }
+  }, [productId])
+
   const onSubmit = (event) => {
     event.preventDefault()
-    productService.create({
-      product: {
-        name: { lv: name_lv.value, en: name_en.value, de: name_de.value },
-        weight: weight.value,
-        price: price.value,
-        nutrition:
-          energy.value ||
-          fat.value ||
-          saturatedFat.value ||
-          carbs.value ||
-          sugar.value ||
-          fiber.value ||
-          protein.value ||
-          salt.value
-            ? {
-                energy: energy.value,
-                fat: fat.value,
-                saturatedFat: saturatedFat.value,
-                carbs: carbs.value,
-                sugar: sugar.value,
-                fiber: fiber.value,
-                protein: protein.value,
-                salt: salt.value,
-              }
-            : null,
-        EAN: EAN.value,
-        image: image,
-        description: {
-          lv: description_lv,
-          en: description_en,
-          de: description_de,
-        },
-        ingredients: {
-          lv: ingredients_lv,
-          en: ingredients_en,
-          de: ingredients_de,
-        },
-        bio,
+    const product = {
+      name: { lv: name_lv.value, en: name_en.value, de: name_de.value },
+      weight: weight.value,
+      price: price.value,
+      nutrition:
+        energy.value ||
+        fat.value ||
+        saturatedFat.value ||
+        carbs.value ||
+        sugar.value ||
+        fiber.value ||
+        protein.value ||
+        salt.value
+          ? {
+              energy: energy.value,
+              fat: fat.value,
+              saturatedFat: saturatedFat.value,
+              carbs: carbs.value,
+              sugar: sugar.value,
+              fiber: fiber.value,
+              protein: protein.value,
+              salt: salt.value,
+            }
+          : null,
+      EAN: EAN.value,
+      image: image,
+      description: {
+        lv: description_lv,
+        en: description_en,
+        de: description_de,
       },
-      addToAll,
-      addToNew,
-    })
+      ingredients: {
+        lv: ingredients_lv,
+        en: ingredients_en,
+        de: ingredients_de,
+      },
+      bio,
+    }
+    if (productId) {
+      productService.update(productId, product)
+    } else {
+      productService.create({
+        product,
+        addToAll,
+        addToNew,
+      })
+    }
     name_lv.clear()
     name_en.clear()
     name_de.clear()
@@ -181,6 +221,9 @@ const NewProductFrom = () => {
     protein.clear()
     salt.clear()
     EAN.clear()
+    setImage(
+      'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
+    )
     setDescription_lv('')
     setDescription_en('')
     setDescription_de('')
