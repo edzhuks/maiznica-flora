@@ -100,7 +100,7 @@ const CategoryTab = ({
     <>
       <CategoryItem>
         <Link
-          to={`/category/${category._id}`}
+          to={`/category/${category.id}`}
           style={{ textDecoration: 'none' }}>
           <span>
             {category.displayName[selectedLang] || category.displayName.lv}
