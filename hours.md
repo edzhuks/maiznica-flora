@@ -25,4 +25,5 @@
 | 05.10,10.10  | 4.5   | responsive frontend                                                                                                                                                                   |
 | 11.10        | 8     | localization                                                                                                                                                                          |
 | 12.10        | 4     | localization                                                                                                                                                                          |
-| total        | 83.5  |                                                                                                                                                                                       |
+| 12.10        | 4.5   | data entry and improving data entry and management tools                                                                                                                              |
+| total        | 88    |                                                                                                                                                                                       |

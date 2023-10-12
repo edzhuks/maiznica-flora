@@ -65,7 +65,7 @@ router.delete('/:id', userExtractor, async (req, res) => {
 
 router.put('/:id', userExtractor, productChecker, async (req, res) => {
   if (req.user.admin) {
-    await Product.updateOne({ _id: req.params.id }, req.body)
+    await Product.updateOne({ _id: req.params.id }, req.body.product)
     const product = await Product.findById(req.params.id)
     res.status(200).send(product)
   } else {

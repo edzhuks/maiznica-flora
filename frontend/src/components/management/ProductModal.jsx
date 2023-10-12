@@ -62,6 +62,8 @@ const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
           <SubTitle>{lang.select_existing_products}</SubTitle>
           <div style={{ width: '600px' }}>
             <Select
+              closeMenuOnSelect={false}
+              menuIsOpen={true}
               isMulti
               options={allProducts}
               onChange={(e) =>

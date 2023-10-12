@@ -40,7 +40,7 @@ const ProductItem = styled.li`
   background: #fafafa;
   span::before {
     content: '';
-    height: 1500%;
+    height: 10000%;
     width: 10px;
     border-bottom: 2px solid rgb(69, 148, 30);
     border-left: 2px solid rgb(69, 148, 30);
@@ -148,7 +148,7 @@ const CategoryTab = ({
         {category.categories &&
           category.categories.map((c) => (
             <CategoryTab
-              key={c._id}
+              key={c.id}
               category={c}
               handleCategory={handleCategory}
               handleProduct={handleProduct}

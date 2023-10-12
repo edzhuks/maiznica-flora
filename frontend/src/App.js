@@ -89,7 +89,7 @@ function App() {
                     element={<CategoryManagement />}
                   />
                   <Route
-                    path="new_product"
+                    path="new_product/:productId?"
                     element={<NewProductFrom />}
                   />
                 </Route>

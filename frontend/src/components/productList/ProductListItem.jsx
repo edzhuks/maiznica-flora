@@ -28,7 +28,9 @@ const CardLink = styled(Link)`
     color: #45941e;
   }
   &:hover img {
-    transform: scale(1.1);
+    transform: scale(1.5);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
   margin-bottom: auto;
   flex-grow: 10;
@@ -43,7 +45,7 @@ const CenteredSubTitle = styled(SubTitle)`
   margin-bottom: 0;
 `
 const ImageWrapper = styled.div`
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: white;
   text-align: center;
   width: 100%;
@@ -53,6 +55,8 @@ const ProductImage = styled.img`
   border-radius: 5px;
   transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   object-fit: contain;
+  z-index: 1000;
+  background: white;
 `
 
 const BuyButton = styled(Button)`

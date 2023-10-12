@@ -28,7 +28,7 @@ const deleteProduct = (productId) => {
 }
 const update = (productId, product) => {
   const config = makeConfig()
-  const request = axios.put(`${baseURL}/${productId}`, product, config)
+  const request = axios.put(`${baseURL}/${productId}`, { product }, config)
   return request.then((response) => response.data)
 }
 
