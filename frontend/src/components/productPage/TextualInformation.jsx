@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import { StyledInput, TextArea, NumberInput } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
 import { centsToEuro, gramsToKilos } from '../../util/convert'
+import { useSelector } from 'react-redux'
 
 const Text = styled.p`
   font-family: 'Roboto', sans-serif;
   color: #333333;
   white-space: pre-line;
+  max-width: 700px;
 `
 
 const Title = styled.p`
@@ -51,67 +53,79 @@ const TableRow = styled.tr`
 `
 
 const StaticInformation = ({ product }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
       <Title>
-        {product.name} {gramsToKilos(product.weight)}
+        {product.name[selectedLang] || product.name.lv} &nbsp;
+        {gramsToKilos(product.weight)}
       </Title>
-      {product.rating && <h4>rating: {product.rating}</h4>}
-      {product.description && <Text>{product.description}</Text>}
-      {product.ingredients && <Text>{product.ingredients}</Text>}
+      {product.description && (
+        <Text>
+          {product.description[selectedLang] || product.description.lv}
+        </Text>
+      )}
+      {product.ingredients && (
+        <Text>
+          {product.ingredients[selectedLang] || product.ingredients.lv}
+        </Text>
+      )}
       {product.nutrition && (
         <Table>
           <tbody>
             <TableRow>
               <TableHeader>
-                <b>Nutritional info </b>
+                <b>{lang.nutritional_info} </b>
               </TableHeader>
               <TableHeader>
-                <strong>100g contains</strong>
+                <strong>{lang.g_contains}</strong>
               </TableHeader>
             </TableRow>
             <TableRow>
-              <Cell>Energy content</Cell>
+              <Cell>{lang.energy_content}</Cell>
               <Cell>
                 {Math.round(product.nutrition.energy * 4.184)}kJ/
                 {product.nutrition.energy}kcal
               </Cell>
             </TableRow>
             <TableRow>
-              <Cell>Fat</Cell>
+              <Cell>{lang.fat}</Cell>
               <Cell>{product.nutrition.fat}g</Cell>
             </TableRow>
             <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; Of which saturated fat</Cell>
+              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
               <Cell>{product.nutrition.saturatedFat}g</Cell>
             </TableRow>
 
             <TableRow>
-              <Cell>Carbohydrates</Cell>
+              <Cell>{lang.carbohydrates}</Cell>
               <Cell>{product.nutrition.carbs}g</Cell>
             </TableRow>
             <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; Of which sugars</Cell>
+              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
               <Cell>{product.nutrition.sugar}g</Cell>
             </TableRow>
             {product.nutrition.fiber && (
               <TableRow>
-                <Cell>Fiber</Cell>
+                <Cell>{lang.fiber}</Cell>
                 <Cell>{product.nutrition.fiber}g</Cell>
               </TableRow>
             )}
             <TableRow>
-              <Cell>Protein</Cell>
+              <Cell>{lang.protein}</Cell>
               <Cell>{product.nutrition.protein}g</Cell>
             </TableRow>
             <TableRow>
-              <Cell>Salt</Cell>
+              <Cell>{lang.salt}</Cell>
               <Cell>{product.nutrition.salt}g</Cell>
             </TableRow>
           </tbody>
         </Table>
       )}
-      <Text>EAN code {product.EAN}</Text>
+      <Text>
+        {lang.EAN_code} {product.EAN}
+      </Text>
       <Title>{centsToEuro(product.price)}</Title>
     </div>
   )
@@ -137,6 +151,7 @@ const EditableInformation = ({
   setDescription,
   setIngredients,
 }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
       <StyledInput
@@ -149,7 +164,7 @@ const EditableInformation = ({
         {...weight}
       />
       g<br />
-      <Text>Description</Text>
+      <Text>{lang.description}</Text>
       <TextArea
         rows={10}
         value={description}
@@ -162,7 +177,7 @@ const EditableInformation = ({
         }}
       />
       <br />
-      <Text>Ingredients</Text>
+      <Text>{lang.ingredients}</Text>
       <TextArea
         rows={4}
         value={ingredients}
@@ -179,14 +194,14 @@ const EditableInformation = ({
         <tbody>
           <TableRow>
             <TableHeader>
-              <b>Nutritional info </b>
+              <b>{lang.nutritional_info}</b>
             </TableHeader>
             <TableHeader>
-              <strong>100g contains</strong>
+              <strong>{lang.g_contains}</strong>
             </TableHeader>
           </TableRow>
           <TableRow>
-            <Cell>Energy content</Cell>
+            <Cell>{lang.energy_content}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -196,7 +211,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>Fat</Cell>
+            <Cell>{lang.fat}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -206,7 +221,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>&nbsp;&nbsp;&nbsp; Of which saturated fat</Cell>
+            <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -217,7 +232,7 @@ const EditableInformation = ({
           </TableRow>
 
           <TableRow>
-            <Cell>Carbohydrates</Cell>
+            <Cell>{lang.carbohydrates}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -227,7 +242,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>&nbsp;&nbsp;&nbsp; Of which sugars</Cell>
+            <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -237,7 +252,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>Fiber</Cell>
+            <Cell>{lang.fiber}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -247,7 +262,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>Protein</Cell>
+            <Cell>{lang.protein}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -257,7 +272,7 @@ const EditableInformation = ({
             </Cell>
           </TableRow>
           <TableRow>
-            <Cell>Salt</Cell>
+            <Cell>{lang.salt}</Cell>
             <Cell>
               <NumberInput
                 style={{ color: '#333333' }}
@@ -268,7 +283,7 @@ const EditableInformation = ({
           </TableRow>
         </tbody>
       </Table>
-      EAN
+      {lang.EAN_code}
       <StyledInput
         style={{ marginBottom: 20 }}
         {...EAN}
@@ -341,3 +356,4 @@ const TextualInformation = ({
 }
 
 export default TextualInformation
+export { StaticInformation }

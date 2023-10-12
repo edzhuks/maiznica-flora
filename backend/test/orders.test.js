@@ -25,11 +25,15 @@ const admin = {
 }
 
 const product1 = {
-  name: 'Lielās šķēles Sējas rudzu maize ar briedinātiem rudzu graudiem',
-  description:
-    'Bez pievienota rauga un E vielām.\n\nDaudz šķiedrvielu.\n\nAr zemu piesātināto tauku saturu.\n\nAr plaucējumu gatavota, dabīgi raudzēta maize.\n\nRoku darbs.',
-  ingredients:
-    'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas  sāls, miežu iesala ekstrakts, kviešu klijas.',
+  name: {
+    lv: 'Lielās šķēles Sējas rudzu maize ar briedinātiem rudzu graudiem',
+  },
+  description: {
+    lv: 'Bez pievienota rauga un E vielām.\n\nDaudz šķiedrvielu.\n\nAr zemu piesātināto tauku saturu.\n\nAr plaucējumu gatavota, dabīgi raudzēta maize.\n\nRoku darbs.',
+  },
+  ingredients: {
+    lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas  sāls, miežu iesala ekstrakts, kviešu klijas.',
+  },
   nutrition: {
     energy: 251,
     fat: 3.4,
@@ -42,7 +46,6 @@ const product1 = {
   },
   weight: 280,
   price: 201,
-  reviews: [],
   EAN: '4750271102922',
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
@@ -50,13 +53,13 @@ const product1 = {
 }
 
 const product2 = {
-  name: 'Sējas rudzu maize ar briedinātiem rudzu graudiem',
-  description: 'Ņamma',
-  ingredients:
-    'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas sāls, miežu iesala ekstrakts, kviešu klijas.',
+  name: { lv: 'Sējas rudzu maize ar briedinātiem rudzu graudiem' },
+  description: { lv: 'Ņamma' },
+  ingredients: {
+    lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas sāls, miežu iesala ekstrakts, kviešu klijas.',
+  },
   weight: 300,
   price: 234,
-  reviews: [],
   EAN: '4750271102755',
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',

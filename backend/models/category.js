@@ -14,7 +14,11 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   image: String,
-  displayName: { type: String, required: true },
+  displayName: {
+    lv: { type: String, required: true },
+    en: { type: String, required: false },
+    de: { type: String, required: false },
+  },
   _id: { type: String, required: true },
 })
 

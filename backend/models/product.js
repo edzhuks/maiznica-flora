@@ -1,9 +1,21 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  ingredients: String,
+  name: {
+    lv: { type: String, required: true },
+    en: { type: String, required: false },
+    de: { type: String, required: false },
+  },
+  description: {
+    lv: { type: String, required: false },
+    en: { type: String, required: false },
+    de: { type: String, required: false },
+  },
+  ingredients: {
+    lv: { type: String, required: true },
+    en: { type: String, required: false },
+    de: { type: String, required: false },
+  },
   nutrition: {
     energy: Number,
     fat: Number,
@@ -17,13 +29,6 @@ const productSchema = new mongoose.Schema({
   weight: Number,
   price: Number,
   discountPrice: Number,
-  reviews: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Review',
-    },
-  ],
-  rating: Number,
   EAN: String,
   image: String,
   bio: Boolean,

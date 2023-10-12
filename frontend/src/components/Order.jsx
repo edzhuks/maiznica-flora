@@ -12,7 +12,7 @@ import {
   Radio,
   FormMultiCol,
 } from './styled/base'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../reducers/cartReducer'
 
 const InputGroup = styled.div`
@@ -49,6 +49,7 @@ const Address = styled.div`
 `
 
 const Order = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
 
@@ -101,7 +102,7 @@ const Order = () => {
         <Button
           style={{ alignSelf: 'end' }}
           onClick={order}>
-          Proceed to payment
+          {lang.proceed_to_payment}
         </Button>
       )}
       <div>
@@ -131,7 +132,7 @@ const Order = () => {
         <Form onSubmit={onSubmit}>
           <InputGroup>
             <CompactLabel>
-              City
+              {lang.city}
               <StyledInput
                 {...city}
                 $isonlightbackground
@@ -140,7 +141,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              Street
+              {lang.street}
               <StyledInput
                 {...street}
                 $isonlightbackground
@@ -149,7 +150,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              House
+              {lang.house}
               <StyledInput
                 {...house}
                 $isonlightbackground
@@ -158,7 +159,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              Apt.
+              {lang.apt}
               <StyledInput
                 {...apartment}
                 $isonlightbackground
@@ -167,7 +168,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              Name
+              {lang.name}
               <StyledInput
                 {...name}
                 $isonlightbackground
@@ -176,7 +177,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              Surname
+              {lang.surname}
               <StyledInput
                 {...surname}
                 $isonlightbackground
@@ -185,7 +186,7 @@ const Order = () => {
           </InputGroup>
           <InputGroup>
             <CompactLabel>
-              Phone
+              {lang.phone}
               <StyledInput
                 {...phone}
                 $isonlightbackground
@@ -194,7 +195,9 @@ const Order = () => {
           </InputGroup>
           <InputGroup style={{ display: 'flex' }}>
             <CompactLabel style={{ alignSelf: 'end' }}>
-              <FullWidthButton type="submit">Add new address</FullWidthButton>
+              <FullWidthButton type="submit">
+                {lang.add_new_address}
+              </FullWidthButton>
             </CompactLabel>
           </InputGroup>
         </Form>

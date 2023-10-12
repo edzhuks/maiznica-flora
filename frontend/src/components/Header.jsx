@@ -9,6 +9,7 @@ import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline'
 import { Link } from 'react-router-dom'
 import { clearCart } from '../reducers/cartReducer'
 import MobileContext from '../contexts/mobileContext'
+import { changeLanguage, setLanguage } from '../reducers/languageReducer'
 
 const HeaderSpacer = styled.div`
   height: 130px;
@@ -141,8 +142,42 @@ const Spacer = styled.div`
   flex: 1 1 auto;
 `
 
+const Lang = styled.div`
+  display: flex;
+  flex-direction: column;
+  button {
+    transition: 0.2s;
+
+    &:hover {
+      background: #45941e;
+      color: white;
+    }
+    background: #eee;
+    color: #777;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    margin: -4px 0px 8px 0px;
+    border: 0px solid #45941e;
+    border-radius: 50%;
+    /* margin-left: 7px; */
+    cursor: pointer;
+  }
+`
+
+const MobileLang = styled(Lang)`
+  flex-direction: row;
+  button {
+    margin: 0px 15px;
+    padding: 10px;
+    font-size: 16px;
+  }
+`
+
 const Header = () => {
-  const dispatch = useDispatch(clearCart())
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  console.log(lang)
+  const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
   const [mobile, setIsMobile] = useContext(MobileContext)
   const cart = useSelector((state) => state.cart)
@@ -201,28 +236,52 @@ const Header = () => {
           </MobileHeader>
           {sideMenu && (
             <SideMenu>
-              <SideMenuTab to="/category/all">Products</SideMenuTab>
-              <SideMenuTab to="/about">About</SideMenuTab>
-              <SideMenuTab to="/contact">Contact</SideMenuTab>
+              <SideMenuTab to="/category/all">{lang.products}</SideMenuTab>
+              <SideMenuTab to="/about">{lang.about}</SideMenuTab>
+              <SideMenuTab to="/contact">{lang.contact}</SideMenuTab>
               {user && user.admin && (
                 <>
-                  <SideMenuTab to="/new-product">new product</SideMenuTab>
-                  <SideMenuTab to="/orders">orders</SideMenuTab>
+                  <SideMenuTab to="/management/categories">
+                    {lang.management}
+                  </SideMenuTab>
+                  <SideMenuTab to="/orders">{lang.orders}</SideMenuTab>
                 </>
               )}
               {!user && (
                 <>
-                  <SideMenuTab to="/login">Sign in</SideMenuTab>
-                  <SideMenuTab to="/signup">sign up</SideMenuTab>
+                  <SideMenuTab to="/login">{lang.sign_in}</SideMenuTab>
+                  <SideMenuTab to="/signup">{lang.sign_up}</SideMenuTab>
                 </>
               )}
               {user && (
                 <SideMenuTab
                   as="button"
                   onClick={logout}>
-                  log out
+                  {lang.sign_out}
                 </SideMenuTab>
               )}
+              <SideMenuTab>
+                <MobileLang>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('lv'))
+                    }}>
+                    LV
+                  </button>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('en'))
+                    }}>
+                    EN
+                  </button>
+                  <button
+                    onClick={() => {
+                      dispatch(changeLanguage('de'))
+                    }}>
+                    DE
+                  </button>
+                </MobileLang>
+              </SideMenuTab>
             </SideMenu>
           )}
         </>
@@ -239,9 +298,9 @@ const Header = () => {
                 />
               </a>
 
-              <HeaderTab to="/category/all">Products</HeaderTab>
-              <HeaderTab to="/about">About</HeaderTab>
-              <HeaderTab to="/contact">Contact</HeaderTab>
+              <HeaderTab to="/category/all">{lang.products}</HeaderTab>
+              <HeaderTab to="/about">{lang.about}</HeaderTab>
+              <HeaderTab to="/contact">{lang.contact}</HeaderTab>
 
               <Spacer />
               {user ? (
@@ -262,23 +321,45 @@ const Header = () => {
               )}
               {user && user.admin && (
                 <>
-                  <HeaderTab to="/new-product">new product</HeaderTab>
-                  <HeaderTab to="/orders">orders</HeaderTab>
+                  <HeaderTab to="/management/categories">
+                    {lang.management}
+                  </HeaderTab>
+                  <HeaderTab to="/orders">{lang.orders}</HeaderTab>
                 </>
               )}
               {!user && (
                 <>
-                  <HeaderTab to="/login">Sign in</HeaderTab>
-                  <HeaderTab to="/signup">sign up</HeaderTab>
+                  <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
+                  <HeaderTab to="/signup">{lang.sign_up}</HeaderTab>
                 </>
               )}
               {user && (
                 <HeaderTab
                   as="button"
                   onClick={logout}>
-                  log out
+                  {lang.sign_out}
                 </HeaderTab>
               )}
+              <Lang>
+                <button
+                  onClick={() => {
+                    dispatch(changeLanguage('lv'))
+                  }}>
+                  LV
+                </button>
+                <button
+                  onClick={() => {
+                    dispatch(changeLanguage('en'))
+                  }}>
+                  EN
+                </button>
+                <button
+                  onClick={() => {
+                    dispatch(changeLanguage('de'))
+                  }}>
+                  DE
+                </button>
+              </Lang>
             </Row>
           </Container>
         </DesktopHeader>

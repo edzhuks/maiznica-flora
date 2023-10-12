@@ -34,6 +34,30 @@ const addProducts = ({ productsToAdd, parentCategory }) => {
   return request.then((response) => response.data)
 }
 
+const removeProducts = ({ productId, parentCategory }) => {
+  const config = makeConfig()
+  const request = axios.delete(`${baseUrl}/products`, {
+    headers: config.headers,
+    data: {
+      productId,
+      parentCategory,
+    },
+  })
+  return request.then((response) => response.data)
+}
+
+const removeCategories = ({ categoryId, parentCategory }) => {
+  const config = makeConfig()
+  const request = axios.delete(`${baseUrl}/categories`, {
+    headers: config.headers,
+    data: {
+      categoryId,
+      parentCategory,
+    },
+  })
+  return request.then((response) => response.data)
+}
+
 const getNewProducts = () => {
   const request = axios.get(`${baseUrl}/new`)
   return request.then((response) => response.data)
@@ -74,4 +98,6 @@ export default {
   getNewProducts,
   getDiscountedProducts,
   getCategory,
+  removeProducts,
+  removeCategories,
 }

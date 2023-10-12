@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import {
   Status,
   PlacementDate,
@@ -14,20 +15,14 @@ const OrderHeader = ({
   close,
   expanded,
 }) => {
-  const statusToText = () => {
-    if (status === 'waitingForDelivery') {
-      return 'waiting for delivery'
-    } else {
-      return status
-    }
-  }
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   return (
     <_OrderHeader>
       <Status>
-        <b>{statusToText()}</b>{' '}
+        <b>{lang.order_status[status]}</b>{' '}
         {lastModified
-          ? `last modified by 
+          ? `${lang.last_modified_by}
             ${lastModifiedBy.username} 
             ${formatDistanceToNow(new Date(lastModified))} ago`
           : ''}

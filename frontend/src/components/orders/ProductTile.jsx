@@ -6,6 +6,7 @@ import {
   _ProductTile,
 } from './styledComponents'
 import Input from '../basic/Input'
+import { useSelector } from 'react-redux'
 
 const Checkbox = ({ checked, onChange, src, disabled }) => {
   return (
@@ -21,6 +22,7 @@ const Checkbox = ({ checked, onChange, src, disabled }) => {
   )
 }
 const ProductTile = ({ item, changeItemPacked, disabled }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <_ProductTile>
       <Checkbox
@@ -32,7 +34,7 @@ const ProductTile = ({ item, changeItemPacked, disabled }) => {
       <ProductText>
         <ProductQuantity>{item.quantity}</ProductQuantity>
         <ProductName>
-          {item.product.name} <b>{item.product.weight}g</b>
+          {item.product.name[selectedLang]} <b>{item.product.weight}g</b>
         </ProductName>
       </ProductText>
     </_ProductTile>

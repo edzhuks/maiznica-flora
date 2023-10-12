@@ -10,33 +10,17 @@ import {
   HalfWidth,
   Row,
   FullWidthCancelButton,
+  ProductImage,
+  WrappableRow,
 } from '../styled/base'
 import productService from '../../services/product'
 import TextualInformation from './TextualInformation'
 import useField from '../../hooks/useField'
-
-const Image = styled.img`
-  flex: 50%;
-  width: 100%;
-  height: auto;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  /* transform: scale(0.8); */
-`
-const WrappableRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-  div {
-    flex: 50%;
-  }
-  column-gap: 40px;
-`
+import { useSelector } from 'react-redux'
 
 const Product = () => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [editMode, setEditMode] = useState(false)
 
   const navigate = useNavigate()
@@ -109,13 +93,13 @@ const Product = () => {
   }
 
   const deleteProduct = () => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm(lang.confirm_delete)) {
       productService.deleteProduct(id).then(navigate('/'))
     }
   }
 
   const updateProduct = () => {
-    if (window.confirm('Are you sure you want to save these changes?')) {
+    if (window.confirm(lang.confirm_save_changes)) {
       productService
         .update(id, {
           name: name.value,
@@ -168,12 +152,12 @@ const Product = () => {
               <Row>
                 <HalfWidth>
                   <FullWidthButton onClick={updateProduct}>
-                    Save changes
+                    {lang.save_changes}
                   </FullWidthButton>
                 </HalfWidth>
                 <HalfWidth>
                   <FullWidthCancelButton onClick={discardChanges}>
-                    Discard changes
+                    {lang.discard_changes}
                   </FullWidthCancelButton>
                 </HalfWidth>
               </Row>
@@ -181,12 +165,12 @@ const Product = () => {
               <Row>
                 <HalfWidth>
                   <FullWidthButton onClick={() => setEditMode(true)}>
-                    Edit product
+                    {lang.edit_product}
                   </FullWidthButton>
                 </HalfWidth>
                 <HalfWidth>
                   <FullWidthCancelButton onClick={deleteProduct}>
-                    Delete product
+                    {lang.delete_product}
                   </FullWidthCancelButton>
                 </HalfWidth>
               </Row>
@@ -194,7 +178,7 @@ const Product = () => {
           </>
         )}
         <WrappableRow>
-          <Image src={product.image} />
+          <ProductImage src={product.image} />
           <div>
             <TextualInformation
               product={product}
@@ -224,7 +208,7 @@ const Product = () => {
               onChange={(event) => setQuantity(event.target.value)}
               type="number"
             />
-            <Button onClick={addToCart}>Add to cart</Button>
+            <Button onClick={addToCart}>{lang.add_to_cart}</Button>
 
             {product.bio && (
               <div style={{ paddingTop: 30 }}>

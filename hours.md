@@ -22,4 +22,7 @@
 | 02.10        | 1     | contact and about page                                                                                                                                                                |
 | 02.10        | 3     | deployment pipeline - test and deploy to render                                                                                                                                       |
 | 05.10        | 2     | redux toolkit for cart state management                                                                                                                                               |
-| total        | 67    |                                                                                                                                                                                       |
+| 05.10,10.10  | 4.5   | responsive frontend                                                                                                                                                                   |
+| 11.10        | 8     | localization                                                                                                                                                                          |
+| 12.10        | 4     | localization                                                                                                                                                                          |
+| total        | 83.5  |                                                                                                                                                                                       |
