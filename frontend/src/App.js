@@ -19,6 +19,8 @@ import { loadCart } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
 import Header from './components/Header'
 import { setLanguage } from './reducers/languageReducer'
+import CategoryManagement from './components/management/CategoryManagement'
+import NewProductFrom from './components/management/NewProduct'
 
 function App() {
   const dispatch = useDispatch()
@@ -80,9 +82,17 @@ function App() {
                   element={<Product />}
                 />
                 <Route
-                  path="/new-product"
-                  element={<ManagementPage />}
-                />
+                  path="/management"
+                  element={<ManagementPage />}>
+                  <Route
+                    path="categories"
+                    element={<CategoryManagement />}
+                  />
+                  <Route
+                    path="new_product"
+                    element={<NewProductFrom />}
+                  />
+                </Route>
                 <Route
                   path="/orders"
                   element={<OrderManagementPage />}

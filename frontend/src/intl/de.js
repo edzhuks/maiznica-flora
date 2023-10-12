@@ -4,7 +4,9 @@ const de = {
   contact: 'kontakt',
   sign_in: 'anmelden',
   sign_up: 'anmelden',
-  new_product: 'Verwaltung',
+  new_product: 'Neues Produkt',
+  management: 'Verwaltung',
+  categories: 'Kategorien',
   sign_out: 'abmelden',
   sum: 'Summe',
   paid_delivery: 'bezahlte Lieferung',
@@ -61,6 +63,7 @@ const de = {
   weight: 'Gewicht',
   in_grams: 'in Gramm',
   price: 'Preis (Cent)',
+  in_cents: 'in Cent',
   add_to_all: "Zur Kategorie 'alle' hinzufügen",
   add_to_new: "Zur Kategorie 'new' hinzufügen",
   accept_order: 'Bestellung akzeptieren?',
@@ -99,6 +102,7 @@ const de = {
     'Im April 2012 hat die Bäckerei „Flora“ das Zertifikat zur Herstellung von BIO-Produkten erhalten.',
     'Flora – es ist die ganze unsere Umwelt, die schön, grün, wohlriechend, echt und natürlich ist. Es sind die sonnigen Blumenwiesen Lettlands mit prachtvollem, rotem Mohn und goldenen Getreideähren. Die Natur und ihre Farben sind unsere Inspirationsquellen, die eine wichtige Rolle bei der Entstehung und der Arbeit der Bäckerei „Flora“ spielen. Ähnlich, wie ein Parfümeur die bezauberndsten und reizvollsten Blumengeruche wählt, um ein neues Aroma zu entwickeln, suchen wir die hochwertigsten Rohstoffe und einzigartigsten Zutaten für unsere Backwaren aus. Dank den Kenntnissen und der sorgfältigen Handarbeit unserer Bäcker entstehen die leckeren Produkte der Bäckerei „Flora“! Wir erfreuen unsere Kunden durch einzigartiges Geschmacksvergnügen, das hier in Lettland, in der malerischen Gemeinde Krimulda entstanden ist. Damit die leckeren Backwaren auf Ihrem Tisch das Gefühl der blühenden Wiesen in Ihr Haus bringen!',
   ],
+  create: 'erstellen',
 }
 
 export default de

@@ -21,6 +21,7 @@ import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
@@ -29,15 +30,21 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const image = useField('text')
 
   useEffect(() => {
-    categoryService.getAllIds().then((result) => {
-      setAllCategories(
-        result.map((category) => ({
-          value: category.id,
-          label: category.displayName,
-        }))
-      )
-    })
-  }, [])
+    if (activeCategory) {
+      categoryService.getAllIds().then((result) => {
+        setAllCategories(
+          result
+            .map((category) => ({
+              value: category.id,
+              label:
+                category.displayName[selectedLang] || category.displayName.lv,
+            }))
+            .filter((c) => c.value !== activeCategory.id)
+        )
+        setSelectedCategoryIds(activeCategory.categories.map((c) => c.id))
+      })
+    }
+  }, [selectedLang, activeCategory])
 
   const clear = () => {
     name.clear()
@@ -76,21 +83,23 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
 
   return (
     <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContent style={{ maxWidth: '920px' }}>
+      <ModalContent>
         <BigTitle style={{ marginBottom: 15 }}>{lang.add_category}</BigTitle>
-        <Row>
+        <Row style={{ flexWrap: 'wrap' }}>
           <ModalHalf>
             <SubTitle>{lang.select_existing_categories}</SubTitle>
-            <Select
-              isMulti
-              options={allCategories}
-              onChange={(e) =>
-                setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
-              }
-              value={allCategories.filter((item) =>
-                selectedCategoryIds.includes(item.value)
-              )}
-            />
+            <div style={{ width: '360px' }}>
+              <Select
+                isMulti
+                options={allCategories}
+                onChange={(e) =>
+                  setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
+                }
+                value={allCategories.filter((item) =>
+                  selectedCategoryIds.includes(item.value)
+                )}
+              />
+            </div>
           </ModalHalf>
           <ModalOr>{lang.or}</ModalOr>
           <ModalHalf>

@@ -8,6 +8,7 @@ const Text = styled.p`
   font-family: 'Roboto', sans-serif;
   color: #333333;
   white-space: pre-line;
+  max-width: 700px;
 `
 
 const Title = styled.p`
@@ -52,14 +53,24 @@ const TableRow = styled.tr`
 `
 
 const StaticInformation = ({ product }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
       <Title>
-        {product.name} {gramsToKilos(product.weight)}
+        {product.name[selectedLang] || product.name.lv} &nbsp;
+        {gramsToKilos(product.weight)}
       </Title>
-      {product.description && <Text>{product.description}</Text>}
-      {product.ingredients && <Text>{product.ingredients}</Text>}
+      {product.description && (
+        <Text>
+          {product.description[selectedLang] || product.description.lv}
+        </Text>
+      )}
+      {product.ingredients && (
+        <Text>
+          {product.ingredients[selectedLang] || product.ingredients.lv}
+        </Text>
+      )}
       {product.nutrition && (
         <Table>
           <tbody>
@@ -345,3 +356,4 @@ const TextualInformation = ({
 }
 
 export default TextualInformation
+export { StaticInformation }

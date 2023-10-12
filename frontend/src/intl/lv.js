@@ -4,7 +4,9 @@ const lv = {
   contact: 'kontakti',
   sign_in: 'ienākt',
   sign_up: 'reģistrēties',
-  new_product: 'pārvaldīt',
+  new_product: 'jauns produkts',
+  management: 'pārvaldīt',
+  categories: 'kategorijas',
   sign_out: 'iziet',
   sum: 'kopā',
   paid_delivery: 'maksas piegāde',
@@ -61,6 +63,7 @@ const lv = {
   weight: 'svars',
   in_grams: 'gramos',
   price: 'cena (centos)',
+  in_cents: 'centos',
   add_to_all: "Pievienot 'all' kategorijai",
   add_to_new: "Pievienot 'new' kategorijai",
   accept_order: 'Pieņemt pasūtījumu?',
@@ -114,6 +117,7 @@ const lv = {
     'Mēs godājam kompetentu, priecīgu un meistarīgu darbinieku mijiedarbībā ar zinošu, pārliecinātu un apmierinātu klientu. Mēs ticam, ka, dzīvojot sabiedrībā, kur cilvēks ir vērtība, mēs atstāsim labāku pasauli saviem bērniem.',
   quality_text:
     'Kvalitāte it visā, kam ķeramies klāt. Ko veidojam un radām. Ikkatrā maizes klaipā un cepuma gabaliņā. Un attiecībās. Kvalitāte ik uz soļa, bez kompromisiem. Tas nebūtu iespējams, ja mēs negodātu šo principu – labāk mazāk, bet augstvērtīgi, nekā pavirši un daudz.',
+  create: 'izveidot',
 }
 
 export default lv

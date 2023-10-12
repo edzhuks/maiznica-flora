@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '../styled/base'
+import { Button, InvertedButton } from '../styled/base'
 
 import categoryService from '../../services/category'
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
+import productService from '../../services/product'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -59,13 +60,34 @@ const ProductItem = styled.li`
     left: 0px;
     z-index: -1;
   }
+  span {
+    button {
+      border-radius: 3px;
+      padding: 0px 3px 3px 3px;
+      background: transparent;
+      border: 0px;
+      color: red;
+      &:hover {
+        background: red;
+        color: white;
+      }
+    }
+  }
 `
 const CategoryItem = styled(ProductItem)`
   font-weight: bold;
   margin: 5px 0px;
 `
 
-const CategoryTab = ({ category, handleCategory, handleProduct }) => {
+const CategoryTab = ({
+  category,
+  handleCategory,
+  handleProduct,
+  handleDeleteProduct,
+  handleDeleteCategory,
+  parentCategory,
+}) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   const handleCategoryButton = () => {
@@ -81,8 +103,20 @@ const CategoryTab = ({ category, handleCategory, handleProduct }) => {
         <Link
           to={`/category/${category._id}`}
           style={{ textDecoration: 'none' }}>
-          <span>{category.displayName}</span>
+          <span>
+            {category.displayName[selectedLang] || category.displayName.lv}
+            {category.id !== 'all' && category.id !== 'new' && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleDeleteCategory(category.id, parentCategory.id)
+                }}>
+                ╳
+              </button>
+            )}
+          </span>
         </Link>
+
         <SmallButton onClick={handleProductButton}>
           + {lang.product}
         </SmallButton>
@@ -98,7 +132,14 @@ const CategoryTab = ({ category, handleCategory, handleProduct }) => {
                 to={`/products/${p.id}`}
                 style={{ textDecoration: 'none' }}>
                 <span>
-                  {p.name} {p.weight}g
+                  {p.name[selectedLang] || p.name.lv} {p.weight}g
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleDeleteProduct(p.id, category.id)
+                    }}>
+                    ╳
+                  </button>
                 </span>
               </Link>
             </ProductItem>
@@ -112,6 +153,9 @@ const CategoryTab = ({ category, handleCategory, handleProduct }) => {
               category={c}
               handleCategory={handleCategory}
               handleProduct={handleProduct}
+              handleDeleteProduct={handleDeleteProduct}
+              handleDeleteCategory={handleDeleteCategory}
+              parentCategory={category}
             />
           ))}
       </CategoryList>
@@ -139,6 +183,17 @@ const CategoryManagement = () => {
     setAddingCategory(false)
     setAddingProduct(false)
     refresh()
+  }
+
+  const handleDeleteProduct = (id, parentCategory) => {
+    categoryService
+      .removeProducts({ productId: id, parentCategory })
+      .then(() => refresh())
+  }
+  const handleDeleteCategory = (id, parentCategory) => {
+    categoryService
+      .removeCategories({ categoryId: id, parentCategory })
+      .then(() => refresh())
   }
 
   const refresh = () => {
@@ -171,6 +226,8 @@ const CategoryManagement = () => {
           <CategoryTab
             handleProduct={clickProduct}
             handleCategory={clickCategory}
+            handleDeleteProduct={handleDeleteProduct}
+            handleDeleteCategory={handleDeleteCategory}
             category={catalogue}
           />
         ) : (

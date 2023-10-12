@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { BigTitle, Spacer } from '../styled/base'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const CategoryGroup = styled.div`
   display: flex;
@@ -54,6 +55,7 @@ const CategoryImage = styled.div`
   position: relative;
 `
 const Categories = ({ categories, name }) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <>
       <CategoryGroup>
@@ -67,7 +69,10 @@ const Categories = ({ categories, name }) => {
                 backgroundSize: 'cover',
               }}>
               <CategoryTextBackground>
-                <CategoryText>{category.displayName}</CategoryText>
+                <CategoryText>
+                  {category.displayName[selectedLang] ||
+                    category.displayName.lv}
+                </CategoryText>
               </CategoryTextBackground>
             </CategoryImage>
           </CategoryItem>
@@ -76,7 +81,7 @@ const Categories = ({ categories, name }) => {
         <Spacer />
         <Spacer />
       </CategoryGroup>
-      {name && <BigTitle>{name}</BigTitle>}
+      {name && <BigTitle>{name[selectedLang]}</BigTitle>}
     </>
   )
 }

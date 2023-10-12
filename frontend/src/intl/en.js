@@ -4,7 +4,9 @@ const en = {
   contact: 'contact',
   sign_in: 'sign in',
   sign_up: 'sign up',
-  new_product: 'management',
+  new_product: 'new product',
+  management: 'management',
+  categories: 'categories',
   sign_out: 'sign out',
   sum: 'sum',
   paid_delivery: 'paid delivery',
@@ -61,6 +63,7 @@ const en = {
   weight: 'weight',
   in_grams: 'in grams',
   price: 'price (cents)',
+  in_cents: 'in cents',
   add_to_all: "Add to category 'all'",
   add_to_new: "Add to category 'new'",
   accept_order: 'Accept order?',
@@ -98,6 +101,7 @@ const en = {
     'In April 2012, Flora Bakery received a BIO product production certificate.',
     'Fragrant, organic, natural ingredients are among the core values of Flora Bakery, whereby nature and its colours are the source of inspiration, which created the Flora Bakery. Picture the scenery, Latvia’s blossoming meadows adorned by playful red poppies and golden ears, radiating in the glowing sun. Just as an perfumer takes the most captivating aromas to create perfumes, we seek the highest quality ingredients as well as unique herbs and spices. Flora products are made nurturing the knowledge and know-how of our expert bakers. We offer our customers an intimate bouquet of flavour created right here in the picturesque Latvian parish of Krimulda. May the floral delights blossom on your table!',
   ],
+  create: 'create',
 }
 
 export default en
