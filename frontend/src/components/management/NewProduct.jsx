@@ -120,8 +120,8 @@ const NewProductFrom = () => {
   const [ingredients_de, setIngredients_de] = useState('')
 
   const [bio, setBio] = useState(false)
-  const [addToAll, setAddToAll] = useState(true)
-  const [addToNew, setAddToNew] = useState(true)
+  const [addToAll, setAddToAll] = useState(false)
+  const [addToNew, setAddToNew] = useState(false)
 
   const onSubmit = (event) => {
     event.preventDefault()
@@ -175,6 +175,7 @@ const NewProductFrom = () => {
     energy.clear()
     fat.clear()
     saturatedFat.clear()
+    carbs.clear()
     sugar.clear()
     fiber.clear()
     protein.clear()
@@ -339,13 +340,22 @@ const NewProductFrom = () => {
         />
         <Checkbox
           checked={addToNew}
-          onChange={() => setAddToNew(!setAddToNew)}
+          onChange={() => setAddToNew(!addToNew)}
           label={lang.add_to_new}
         />
       </div>
       <WrappableRow style={{ width: '1350px' }}>
         <ProductImage
-          onDrop={(e) => imageDropped(e)}
+          onDragOver={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+          onDrop={(e) => {
+            console.log(e)
+            e.preventDefault()
+            e.stopPropagation()
+            imageDropped(e)
+          }}
           src={image}
         />
         <div>
