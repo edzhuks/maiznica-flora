@@ -103,6 +103,9 @@ const de = {
     'Flora – es ist die ganze unsere Umwelt, die schön, grün, wohlriechend, echt und natürlich ist. Es sind die sonnigen Blumenwiesen Lettlands mit prachtvollem, rotem Mohn und goldenen Getreideähren. Die Natur und ihre Farben sind unsere Inspirationsquellen, die eine wichtige Rolle bei der Entstehung und der Arbeit der Bäckerei „Flora“ spielen. Ähnlich, wie ein Parfümeur die bezauberndsten und reizvollsten Blumengeruche wählt, um ein neues Aroma zu entwickeln, suchen wir die hochwertigsten Rohstoffe und einzigartigsten Zutaten für unsere Backwaren aus. Dank den Kenntnissen und der sorgfältigen Handarbeit unserer Bäcker entstehen die leckeren Produkte der Bäckerei „Flora“! Wir erfreuen unsere Kunden durch einzigartiges Geschmacksvergnügen, das hier in Lettland, in der malerischen Gemeinde Krimulda entstanden ist. Damit die leckeren Backwaren auf Ihrem Tisch das Gefühl der blühenden Wiesen in Ihr Haus bringen!',
   ],
   create: 'erstellen',
+  verify_email: 'E-Mail bestätigen',
+  verification_instructions:
+    'Öffnen Sie Ihre E-Mail und befolgen Sie die Anweisungen, um Ihre E-Mail-Adresse zu bestätigen und mit dem Einkaufen zu beginnen',
 }
 
 export default de

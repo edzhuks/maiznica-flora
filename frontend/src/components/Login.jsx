@@ -23,12 +23,12 @@ const Login = () => {
 
   const [, setUser] = useContext(UserContext)
 
-  const username = useField('text')
+  const email = useField('email')
   const password = useField('password')
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    const result = await userService.login(username.value, password.value)
+    const result = await userService.login(email.value, password.value)
     console.log(result)
     setUser(result)
     window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
@@ -43,9 +43,9 @@ const Login = () => {
         <Form onSubmit={onSubmit}>
           <InputGroup>
             <Label>
-              {lang.username}
+              {lang.email}
               <StyledInput
-                {...username}
+                {...email}
                 $isonlightbackground
               />
             </Label>

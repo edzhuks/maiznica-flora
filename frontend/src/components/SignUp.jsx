@@ -12,6 +12,7 @@ import {
   Label,
   LoginCard,
   StyledInput,
+  SubTitle,
 } from './styled/base'
 import { useSelector } from 'react-redux'
 
@@ -21,74 +22,62 @@ const SignUp = () => {
 
   const navigate = useNavigate()
 
-  const username = useField('text')
   const email = useField('email')
   const password = useField('password')
 
-  const [admin, setAdmin] = useState(false)
-  const [maintainer, setMaintainer] = useState(false)
+  const [registered, setRegistered] = useState(false)
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    await userService.create({
-      username: username.value,
+    const result = await userService.create({
       email: email.value,
       password: password.value,
-      admin,
-      maintainer,
     })
-    const result = await userService.login(username.value, password.value)
     console.log(result)
-    setUser(result)
-    window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
-    navigate('/')
+    if (result.status === 201) {
+      setRegistered(true)
+      const loginResult = await userService.login(email.value, password.value)
+      window.localStorage.setItem(
+        'maiznicafloraUser',
+        JSON.stringify(loginResult)
+      )
+      setUser(loginResult)
+    }
   }
 
   return (
     <Centerer>
-      <LoginCard>
-        <BigTitle>{lang.sign_up}</BigTitle>
-        <Form onSubmit={onSubmit}>
-          <InputGroup>
-            <Label>
-              {lang.username}
-              <StyledInput
-                {...username}
-                $isonlightbackground
-              />
-            </Label>
-          </InputGroup>
-          <InputGroup>
-            <Label>
-              {lang.email}
-              <StyledInput
-                {...email}
-                $isonlightbackground
-              />
-            </Label>
-          </InputGroup>
-          <InputGroup style={{ marginBottom: '35px' }}>
-            <Label>
-              {lang.password}
-              <StyledInput
-                {...password}
-                $isonlightbackground
-              />
-            </Label>
-          </InputGroup>
-          {/* <Checkbox
-            checked={admin}
-            onChange={() => setAdmin(!admin)}
-            label="Admin"
-          />
-          <Checkbox
-            checked={maintainer}
-            onChange={() => setMaintainer(!maintainer)}
-            label="Maintainer"
-          /> */}
-          <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
-        </Form>
-      </LoginCard>
+      {registered ? (
+        <LoginCard>
+          <BigTitle>{lang.verify_email}</BigTitle>
+          <SubTitle>{lang.verification_instructions}</SubTitle>
+        </LoginCard>
+      ) : (
+        <LoginCard>
+          <BigTitle>{lang.sign_up}</BigTitle>
+          <Form onSubmit={onSubmit}>
+            <InputGroup>
+              <Label>
+                {lang.email}
+                <StyledInput
+                  {...email}
+                  $isonlightbackground
+                />
+              </Label>
+            </InputGroup>
+            <InputGroup style={{ marginBottom: '35px' }}>
+              <Label>
+                {lang.password}
+                <StyledInput
+                  {...password}
+                  $isonlightbackground
+                />
+              </Label>
+            </InputGroup>
+            <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
+          </Form>
+        </LoginCard>
+      )}
     </Centerer>
   )
 }

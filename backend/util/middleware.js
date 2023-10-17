@@ -24,6 +24,20 @@ const userExtractor = async (request, response, next) => {
   next()
 }
 
+const adminRequired = async (request, response, next) => {
+  if (!request.user.admin) {
+    return response.status(403).json({ error: 'Only admins can do that' })
+  }
+  next()
+}
+
+const verificationRequired = async (request, response, next) => {
+  if (!request.user.emailVerified) {
+    return response.status(403).json({ error: 'Email not verified' })
+  }
+  next()
+}
+
 const productChecker = async (req, res, next) => {
   const product = req.body.product
   if (!product) {
@@ -73,4 +87,6 @@ module.exports = {
   tokenExtractor,
   userExtractor,
   productChecker,
+  adminRequired,
+  verificationRequired,
 }
