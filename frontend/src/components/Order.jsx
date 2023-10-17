@@ -13,6 +13,10 @@ import {
 } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../reducers/cartReducer'
+import { MapContainer } from 'react-leaflet/MapContainer'
+import { TileLayer } from 'react-leaflet/TileLayer'
+import { useMap } from 'react-leaflet/hooks'
+import { Marker, Popup, WMSTileLayer } from 'react-leaflet'
 
 const InputGroup = styled.div`
   float: left;
@@ -201,6 +205,27 @@ const Order = () => {
           </InputGroup>
         </Form>
       </Address>
+      <MapContainer
+        style={{ height: '400px' }}
+        center={[57.174112, 24.689709]}
+        zoom={13}
+        scrollWheelZoom={true}>
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {/* <TileLayer
+          // version="1.1.1"
+          // format="image/png"
+          url="https://{s}.kartes.lv/BMCr9bvLi/wgs/15/{z}/{x}/{y}.png"
+          subdomains={['wms', 'wms2', 'wms3', 'wms1', 'wms4']}
+        /> */}
+        <Marker position={[51.505, -0.09]}>
+          <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup>
+        </Marker>
+      </MapContainer>
     </div>
   )
 }
