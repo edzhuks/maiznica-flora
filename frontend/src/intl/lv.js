@@ -118,6 +118,9 @@ const lv = {
   quality_text:
     'Kvalitāte it visā, kam ķeramies klāt. Ko veidojam un radām. Ikkatrā maizes klaipā un cepuma gabaliņā. Un attiecībās. Kvalitāte ik uz soļa, bez kompromisiem. Tas nebūtu iespējams, ja mēs negodātu šo principu – labāk mazāk, bet augstvērtīgi, nekā pavirši un daudz.',
   create: 'izveidot',
+  verify_email: 'Apstipriniet e-pastu',
+  verification_instructions:
+    'Atveriet epastu un sekojiet instrukcijām, lai aktivizētu profilu un sāktu iepirkties',
 }
 
 export default lv
