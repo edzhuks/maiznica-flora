@@ -16,12 +16,14 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
   if (!isPositiveInteger(req.body.discountPrice)) {
     return res
       .status(400)
-      .send('Discounted price must be a positive integer amount in cents')
+      .json({
+        error: 'Discounted price must be a positive integer amount in cents',
+      })
   }
   if (product.price < req.body.discountPrice) {
     return res
       .status(400)
-      .send('Discounted price must be smaller than base price')
+      .json({ error: 'Discounted price must be smaller than base price' })
   }
   product.discountPrice = req.body.discountPrice
   await product.save()

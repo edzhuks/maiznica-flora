@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Input from '../basic/Input'
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   max-width: 1350px;
@@ -30,14 +31,14 @@ const Button = styled.button`
   cursor: pointer;
   border: 0;
   color: white;
-  padding: 5px 20px;
+  padding: 5px 10px;
   border-radius: 2px;
   font-size: 18px;
   font-weight: 600;
   background-color: #45941e;
   transition: 0.3s;
   min-width: 40px;
-  height: 38px;
+  min-height: 38px;
   &:hover {
     background-color: #3f861b;
   }
@@ -94,7 +95,12 @@ const StyledInput = styled(Input)`
   }
   font-size: large;
 `
-
+const BottomTextLink = styled(Link)`
+  text-decoration: none;
+  color: #aaaaaa;
+  margin-top: 40px;
+  margin-bottom: -20px;
+`
 const TextArea = styled.textarea`
   width: 300px;
   border: 1px solid #ffffffff;
@@ -378,7 +384,7 @@ const ProductRow = styled.div`
 const Spacer = styled.div`
   width: calc(100% / 4 - 23px);
   height: 0;
-  min-width: 243px;
+  min-width: 256px;
 `
 
 export {
@@ -420,4 +426,5 @@ export {
   Spacer,
   ProductImage,
   WrappableRow,
+  BottomTextLink,
 }

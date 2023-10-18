@@ -22,7 +22,7 @@ const ProductRow = styled.div`
 `
 
 const EmptyProductItem = styled.div`
-  width: calc(100% / 4 - 23px);
+  width: calc(100% / 4 - 28px);
   height: 0;
 `
 

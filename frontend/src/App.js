@@ -15,15 +15,18 @@ import OrderManagementPage from './components/orders/OrderManagementPage'
 import AboutPage from './components/AboutPage'
 import Contact from './components/Contact'
 import { useDispatch } from 'react-redux'
-import { loadCart } from './reducers/cartReducer'
+import { useCartServiceDispatch } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
 import Header from './components/Header'
 import { setLanguage } from './reducers/languageReducer'
 import CategoryManagement from './components/management/CategoryManagement'
 import NewProductFrom from './components/management/NewProduct'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 
 function App() {
   const dispatch = useDispatch()
+  const { loadCart } = useCartServiceDispatch()
 
   const [user, setUser] = useState(null)
 
@@ -123,6 +126,10 @@ function App() {
         </MobileContext.Provider>
       </UserContext.Provider>
       <Footer />
+      <ToastContainer
+        position="bottom-right"
+        theme="colored"
+      />
     </>
   )
 }

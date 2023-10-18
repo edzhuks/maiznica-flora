@@ -13,13 +13,13 @@ router.get('/', userExtractor, async (req, res) => {
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
   if (!isPositiveInteger(req.body.quantity)) {
-    return res.status(400).send('Cannot add less than 1 item')
+    return res.status(400).json({ error: 'Cannot add less than 1 item' })
   }
   if (!req.body.product) {
-    return res.status(400).send('Product missing')
+    return res.status(400).json({ error: 'Product missing' })
   }
   if (!req.body.product.id) {
-    return res.status(400).send('Product id missing')
+    return res.status(400).json({ error: 'Product id missing' })
   }
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',

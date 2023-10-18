@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { BigTitle } from './styled/base'
 import Categories from './productList/Categories'
 import Carousel from './basic/Carousel'
-import categoryService from '../services/category'
 import ProductList from './productList/ProductList'
 import { useSelector } from 'react-redux'
+import useCategoryService from '../services/category'
 
 const HomePage = () => {
+  const categoryService = useCategoryService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const [newProducts, setNewProducts] = useState({
     products: [],
