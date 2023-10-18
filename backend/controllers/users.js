@@ -5,10 +5,9 @@ const router = express.Router()
 const User = require('../models/user')
 const Address = require('../models/address')
 const Cart = require('../models/cart')
-const { TEST_MODE } = require('../util/config')
+const { TEST_MODE, EMAIL_PASS } = require('../util/config')
 const crypto = require('crypto')
 const nodemailer = require('nodemailer')
-const Transform = require('stream').Transform
 
 const emailHtml = (link) => {
   return `<!DOCTYPE html>
@@ -125,8 +124,7 @@ const emailHtml = (link) => {
         color: #fff;
         opacity: 0;
       ">
-      A preheader is the short summary text that follows the subject line when
-      an email is viewed in the inbox.
+      Follow the instructions to verify your email address.
     </div>
     <!-- end preheader -->
 
@@ -392,7 +390,7 @@ const sendEmail = (email, token) => {
     service: 'Gmail',
     auth: {
       user: 'maiznicaa@gmail.com',
-      pass: 'hout ofxu kgiv xvcj',
+      pass: EMAIL_PASS,
     },
   })
   var mailOptions = {
@@ -405,16 +403,14 @@ const sendEmail = (email, token) => {
   smtpTransport.sendMail(mailOptions, function (error, response) {
     if (error) {
       console.log(error)
-    } else {
-      // res.redirect('/')
     }
   })
 }
 
-router.get('/', async (req, res) => {
-  const users = await User.find()
-  res.send(users)
-})
+// router.get('/', async (req, res) => {
+//   const users = await User.find()
+//   res.send(users)
+// })
 
 router.post('/', async (request, response) => {
   const { password, email, admin, maintainer, emailVerified } = request.body
@@ -428,7 +424,7 @@ router.post('/', async (request, response) => {
 
   let user = await User.findOne({ email })
   if (user) {
-    return response.status(400).send('This email is already used.')
+    return response.status(400).json({ error: 'This email is already used.' })
   }
 
   if (
@@ -457,28 +453,31 @@ router.post('/', async (request, response) => {
     registrationTime: new Date(),
   })
 
-  const savedUser = await user.save()
+  await user.save()
 
   const newCart = new Cart({
     content: [],
-    user: savedUser.id,
+    user: user.id,
   })
   await newCart.save()
   sendEmail(email, emailToken)
-  response.status(201).json(savedUser)
+  response
+    .status(201)
+    .json({
+      email: user.email,
+      admin: user.admin,
+      maintainer: user.maintainer,
+      addresses: user.addresses,
+    })
 })
 
 router.get('/verifyEmail/:token', async (req, res) => {
   const token = req.params.token
-  console.log(token)
   const user = await User.findOne({ emailVerificationToken: token })
-  console.log(user)
-  console.log(Date.now() - user.createdAt < 1000 * 60 * 10)
-  if (user && user.createdAt) {
+  if (user && Date.now() - user.createdAt < 1000 * 60 * 10) {
     user.emailVerified = true
     await user.save()
-    return res.redirect('http://localhost:3000')
-    return res.status(200).send()
+    return res.redirect('http://localhost:3000/emailVerified')
   }
   return res.status(404).send()
 })
@@ -493,7 +492,7 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.house ||
     !req.body.apartment
   ) {
-    return res.status(400).send('Missing required fields')
+    return res.status(400).json({ error: 'Missing required fields' })
   }
   let user = await User.findById(req.user.id)
   const address = new Address(req.body)

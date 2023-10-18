@@ -2,7 +2,7 @@ const de = {
   products: 'produkte',
   about: 'über uns',
   contact: 'kontakt',
-  sign_in: 'anmelden',
+  sign_in: 'einloggen',
   sign_up: 'anmelden',
   new_product: 'Neues Produkt',
   management: 'Verwaltung',
@@ -106,6 +106,23 @@ const de = {
   verify_email: 'E-Mail bestätigen',
   verification_instructions:
     'Öffnen Sie Ihre E-Mail und befolgen Sie die Anweisungen, um Ihre E-Mail-Adresse zu bestätigen und mit dem Einkaufen zu beginnen',
+  password_must: 'Passwort muss',
+  password_8_chars: 'Mindestens 8 Zeichen lang sein',
+  password_contain_digit: 'Mindestens eine Ziffer enthalten',
+  password_contain_special: 'Mindestens eines von !@#$%^&* enthalten',
+  password_contain_letter: 'Mindestens einen Buchstaben enthalten',
+  toast_all_fields_required: 'Alle Felder sind erforderlich',
+  toast_address_added: 'Die Adresse wurde hinzugefügt',
+  toast_sending: 'Werden gesendet',
+  toast_success: 'War erfolgreich!',
+  toast_failed: 'Ausfall',
+  toast_order_successful: 'Ihre Bestellung wurde aufgegeben!',
+  toast_unauthorized: 'Dazu sind Sie nicht berechtigt',
+  email_required: 'E-Mail ist erforderlich',
+  password_required: 'Passwort ist erforderlich',
+  email_already_used: 'Diese E-Mail ist bereits registriert',
+  already_have_account: 'Sie haben bereits ein Konto? Einloggen.',
+  dont_have_account: 'Sie haben noch kein Konto? Anmelden.',
 }
 
 export default de

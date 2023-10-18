@@ -1,4 +1,3 @@
-import productService from '../../services/product'
 import useField from '../../hooks/useField'
 import { useEffect, useState } from 'react'
 import {
@@ -16,6 +15,8 @@ import styled from 'styled-components'
 import { StaticInformation } from '../productPage/TextualInformation'
 import { useParams } from 'react-router-dom'
 import { enIE } from 'date-fns/locale'
+import useCategoryService from '../../services/category'
+import useProductService from '../../services/product'
 
 const Text = styled.p`
   margin: 3px 0px -5px 0px;
@@ -94,6 +95,7 @@ const ProductTextArea = styled(TextArea)`
 `
 
 const NewProductFrom = () => {
+  const productService = useProductService()
   const productId = useParams().productId
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allLang = useSelector((state) => state.lang)

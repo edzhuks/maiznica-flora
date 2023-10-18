@@ -1,9 +1,10 @@
-import orderService from '../../services/order'
 import { useEffect, useState } from 'react'
 import { OrderList } from './styledComponents'
 import Order from './Order'
+import useOrderService from '../../services/order'
 
 const OrderManagementPage = () => {
+  const orderService = useOrderService()
   const [orders, setOrders] = useState([])
   useEffect(() => {
     orderService.getAll().then((o) => setOrders(o))

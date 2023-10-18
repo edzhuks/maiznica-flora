@@ -19,6 +19,7 @@ import {
   addItem,
   changeQuantityOfItem,
   removeItem,
+  useCartServiceDispatch,
 } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'
 
@@ -28,7 +29,7 @@ const CardLink = styled(Link)`
     color: #45941e;
   }
   &:hover img {
-    transform: scale(1.15);
+    transform: scale(1.3) translateY(-40px);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
       rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
@@ -53,7 +54,7 @@ const ImageWrapper = styled.div`
 const ProductImage = styled.img`
   /* transform: scale(0.9); */
   border-radius: 5px;
-  transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: 0.3s cubic-bezier(0.31, 0.27, 0, 1.61);
   object-fit: contain;
   z-index: 1000;
   background: white;
@@ -64,6 +65,7 @@ const BuyButton = styled(Button)`
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {
+  const { addItem, removeItem, changeQuantityOfItem } = useCartServiceDispatch()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user] = useContext(UserContext)

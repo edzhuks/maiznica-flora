@@ -1,8 +1,7 @@
 import UserContext from '../contexts/userContext'
 import { useContext, useState } from 'react'
-import userService from '../services/user'
+import useUserService from '../services/user'
 import useField from '../hooks/useField'
-import orderService from '../services/order'
 import styled from 'styled-components'
 import {
   Button,
@@ -13,6 +12,9 @@ import {
 } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../reducers/cartReducer'
+import { toast } from 'react-toastify'
+import useToast from '../util/promiseToast'
+import useOrderService from '../services/order'
 
 const InputGroup = styled.div`
   float: left;
@@ -48,10 +50,12 @@ const Address = styled.div`
 `
 
 const Order = () => {
+  const userService = useUserService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
-
+  const orderService = useOrderService()
+  const { showPromiseToast } = useToast()
   const [selectedAddress, selectAddress] = useState()
 
   const name = useField('text')
@@ -64,27 +68,57 @@ const Order = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    const newAddress = await userService.addAddress({
-      name: name.value,
-      surname: surname.value,
-      phone: phone.value,
-      city: city.value,
-      street: street.value,
-      house: house.value,
-      apartment: apartment.value,
-    })
-    console.log(newAddress)
-    const newUser = { ...user, addresses: user.addresses.concat(newAddress) }
-    window.localStorage.setItem('maiznicafloraUser', JSON.stringify(newUser))
-    setUser(newUser)
-    selectAddress(newAddress)
-    console.log(user)
+    if (
+      !name.value ||
+      !surname.value ||
+      !phone.value ||
+      !city.value ||
+      !street.value ||
+      !house.value ||
+      !apartment.value
+    ) {
+      toast.error(lang.toast_all_fields_required)
+    } else {
+      const promise = userService.addAddress({
+        name: name.value,
+        surname: surname.value,
+        phone: phone.value,
+        city: city.value,
+        street: street.value,
+        house: house.value,
+        apartment: apartment.value,
+      })
+      showPromiseToast({
+        promise,
+        successMessage: lang.toast_address_added,
+      })
+      promise
+        .then((response) => {
+          const newAddress = response.data
+          const newUser = {
+            ...user,
+            addresses: user.addresses.concat(newAddress),
+          }
+          window.localStorage.setItem(
+            'maiznicafloraUser',
+            JSON.stringify(newUser)
+          )
+          setUser(newUser)
+          selectAddress(newAddress)
+        })
+        .catch((error) => console.log(error.response.data.error))
+    }
   }
 
   const order = async () => {
     if (selectedAddress) {
-      orderService.placeOrder(selectedAddress)
-      dispatch(clearCart())
+      console.log(orderService)
+      const promise = orderService.placeOrder(selectedAddress)
+      showPromiseToast({
+        promise,
+        successMessage: lang.toast_order_successful,
+      })
+      promise.then(dispatch(clearCart()))
     } else {
       console.error('No address selected')
     }
