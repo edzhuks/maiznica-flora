@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import useField from '../hooks/useField'
 import UserContext from '../contexts/userContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useCartServiceDispatch } from '../reducers/cartReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -16,6 +16,7 @@ import {
   BottomTextLink,
 } from './styled/base'
 import useUserService from '../services/user'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const userService = useUserService()
@@ -30,12 +31,24 @@ const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    const result = await userService.login(email.value, password.value)
-    console.log(result)
-    setUser(result)
-    window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
-    dispatch(loadCart())
-    navigate('/')
+    userService
+      .login(email.value, password.value)
+      .then((result) => {
+        console.log(result)
+        setUser(result.data)
+        window.localStorage.setItem(
+          'maiznicafloraUser',
+          JSON.stringify(result.data)
+        )
+        dispatch(loadCart())
+        navigate('/')
+      })
+      .catch((result) => {
+        console.log(result)
+        if (result.response.status === 401) {
+          toast.error(lang.invalid_credentials)
+        }
+      })
   }
 
   return (

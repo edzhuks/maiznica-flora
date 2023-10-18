@@ -122,6 +122,7 @@ const en = {
   email_already_used: 'This email is already registered',
   already_have_account: 'Already have an account? Sign in.',
   dont_have_account: "Don't have an account yet? Sign up.",
+  invalid_credentials: 'Email or password is incorrect',
 }
 
 export default en
