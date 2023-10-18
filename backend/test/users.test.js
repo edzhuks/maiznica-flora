@@ -64,7 +64,7 @@ describe('user creation validation', () => {
   })
 
   test('user with missing email cannot be added', async () => {
-    const newUser = { password: 'secret222!!!' }
+    const newUser = { username: 'tester', password: 'secret222!!!' }
 
     await api.post('/api/users').send(newUser).expect(400)
   })

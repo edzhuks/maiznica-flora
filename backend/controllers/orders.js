@@ -56,7 +56,6 @@ router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   newOrder.status.lastModifiedBy = req.user.id
   newOrder.status.lastModified = new Date()
   newOrder.address = newOrder.address.id
-  const orderr = await Order.findById(req.params.id)
   await Order.updateOne({ _id: req.params.id }, newOrder)
   const order = await Order.findById(req.params.id).populate([
     { path: 'content', populate: { path: 'product' } },

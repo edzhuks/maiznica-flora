@@ -16,11 +16,12 @@ import {
 } from '../styled/base'
 import Select from 'react-select'
 import { useState } from 'react'
-import categoryService from '../../services/category'
+import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const categoryService = useCategoryService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])

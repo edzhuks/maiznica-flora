@@ -19,6 +19,7 @@ body {
 
 #root {
   min-height: 100vh;
+  --toastify-color-success: rgb(69, 148, 30);
 }
 
 button {
