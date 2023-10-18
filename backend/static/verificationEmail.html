@@ -1,17 +1,4 @@
-const bcrypt = require('bcrypt')
-const express = require('express')
-const { userExtractor } = require('../util/middleware')
-const router = express.Router()
-const User = require('../models/user')
-const Address = require('../models/address')
-const Cart = require('../models/cart')
-const { TEST_MODE } = require('../util/config')
-const crypto = require('crypto')
-const nodemailer = require('nodemailer')
-const Transform = require('stream').Transform
-
-const emailHtml = (link) => {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -112,24 +99,6 @@ const emailHtml = (link) => {
     </style>
   </head>
   <body style="background-color: #e9ecef">
-    <!-- start preheader -->
-    <div
-      class="preheader"
-      style="
-        display: none;
-        max-width: 0;
-        max-height: 0;
-        overflow: hidden;
-        font-size: 1px;
-        line-height: 1px;
-        color: #fff;
-        opacity: 0;
-      ">
-      A preheader is the short summary text that follows the subject line when
-      an email is viewed in the inbox.
-    </div>
-    <!-- end preheader -->
-
     <!-- start body -->
     <table
       border="0"
@@ -334,7 +303,7 @@ const emailHtml = (link) => {
                   If that doesn't work, copy and paste the following link in
                   your browser:
                 </p>
-                <p style="margin: 0; font-size:12px;">
+                <p style="margin: 0">
                   <a
                     href="${link}"
                     target="_blank"
@@ -353,154 +322,7 @@ const emailHtml = (link) => {
         </td>
       </tr>
       <!-- end copy block -->
-      <!-- start footer -->
-    <tr>
-      <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
-        <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-
-          
-          <!-- start unsubscribe -->
-          <tr>
-            <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-            </td>
-          </tr>
-          <!-- end unsubscribe -->
-
-        </table>
-        <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-      </td>
-    </tr>
-    <!-- end footer -->
     </table>
     <!-- end body -->
   </body>
 </html>
-`
-}
-
-const sendEmail = (email, token) => {
-  var smtpTransport = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: 'maiznicaa@gmail.com',
-      pass: 'hout ofxu kgiv xvcj',
-    },
-  })
-  var mailOptions = {
-    from: 'maiznica@maiznica.lv',
-    to: email,
-    subject: ' email verification',
-    text: `verify your email by clicking the link below</br>http://localhost:3001/api/users/verifyEmail/${token}`,
-    html: emailHtml(`http://localhost:3001/api/users/verifyEmail/${token}`),
-  }
-  smtpTransport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-    } else {
-      // res.redirect('/')
-    }
-  })
-}
-
-router.get('/', async (req, res) => {
-  const users = await User.find()
-  res.send(users)
-})
-
-router.post('/', async (request, response) => {
-  const { password, email, admin, maintainer, emailVerified } = request.body
-
-  if (!password) {
-    return response.status(400).json({ error: 'password is required' })
-  }
-  if (!email) {
-    return response.status(400).json({ error: 'email is required' })
-  }
-
-  let user = await User.findOne({ email })
-  if (user) {
-    return response.status(400).send('This email is already used.')
-  }
-
-  if (
-    password.length < 8 ||
-    !/\d/.test(password) ||
-    !/[!@#$%^&* ]/.test(password) ||
-    !/[a-zA-Z]/.test(password)
-  ) {
-    return response.status(400).json({
-      error:
-        'Password too weak. Letter, Number and one of !@#$%^&*  is required.',
-    })
-  }
-
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-  const emailToken = crypto.randomBytes(128).toString('base64url')
-  user = new User({
-    passwordHash,
-    email,
-    admin: admin && TEST_MODE ? true : false,
-    maintainer: maintainer && TEST_MODE ? true : false,
-    addresses: [],
-    emailVerified: emailVerified && TEST_MODE ? true : false,
-    emailVerificationToken: emailToken,
-    registrationTime: new Date(),
-  })
-
-  const savedUser = await user.save()
-
-  const newCart = new Cart({
-    content: [],
-    user: savedUser.id,
-  })
-  await newCart.save()
-  sendEmail(email, emailToken)
-  response.status(201).json(savedUser)
-})
-
-router.get('/verifyEmail/:token', async (req, res) => {
-  const token = req.params.token
-  console.log(token)
-  const user = await User.findOne({ emailVerificationToken: token })
-  console.log(user)
-  console.log(Date.now() - user.createdAt < 1000 * 60 * 10)
-  if (user && user.createdAt) {
-    user.emailVerified = true
-    await user.save()
-    return res.redirect('http://localhost:3000')
-    return res.status(200).send()
-  }
-  return res.status(404).send()
-})
-
-router.post('/address', userExtractor, async (req, res) => {
-  if (
-    !req.body.name ||
-    !req.body.surname ||
-    !req.body.phone ||
-    !req.body.city ||
-    !req.body.street ||
-    !req.body.house ||
-    !req.body.apartment
-  ) {
-    return res.status(400).send('Missing required fields')
-  }
-  let user = await User.findById(req.user.id)
-  const address = new Address(req.body)
-  await address.save()
-  user.addresses = user.addresses.concat(address)
-  await user.save()
-  res.status(201).send(address)
-})
-
-module.exports = router

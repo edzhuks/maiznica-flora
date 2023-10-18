@@ -38,7 +38,7 @@ const HomePage = () => {
           'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
         ]}
       />
-      {newProducts.products.length && (
+      {newProducts.products.length > 0 && (
         <div>
           <BigTitle>{newProducts.displayName[selectedLang]}</BigTitle>
           <ProductList products={newProducts.products} />

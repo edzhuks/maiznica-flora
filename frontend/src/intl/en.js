@@ -102,6 +102,9 @@ const en = {
     'Fragrant, organic, natural ingredients are among the core values of Flora Bakery, whereby nature and its colours are the source of inspiration, which created the Flora Bakery. Picture the scenery, Latvia’s blossoming meadows adorned by playful red poppies and golden ears, radiating in the glowing sun. Just as an perfumer takes the most captivating aromas to create perfumes, we seek the highest quality ingredients as well as unique herbs and spices. Flora products are made nurturing the knowledge and know-how of our expert bakers. We offer our customers an intimate bouquet of flavour created right here in the picturesque Latvian parish of Krimulda. May the floral delights blossom on your table!',
   ],
   create: 'create',
+  verify_email: 'Verify email',
+  verification_instructions:
+    'Open your email and follow the instructions to verify your email and start shopping',
 }
 
 export default en

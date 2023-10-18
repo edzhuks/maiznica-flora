@@ -5,9 +5,9 @@ const router = express.Router()
 const User = require('../models/user')
 
 router.post('/', async (request, response) => {
-  const { username, password } = request.body
+  const { email, password } = request.body
 
-  const user = await User.findOne({ username }).populate('addresses')
+  const user = await User.findOne({ email }).populate('addresses')
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash)
 
@@ -18,7 +18,7 @@ router.post('/', async (request, response) => {
   }
 
   const userForToken = {
-    username: user.username,
+    email: user.email,
     id: user._id,
   }
 
@@ -26,7 +26,7 @@ router.post('/', async (request, response) => {
 
   response.status(200).send({
     token,
-    username: user.username,
+    email: user.email,
     admin: user.admin,
     maintainer: user.maintainer,
     addresses: user.addresses,
