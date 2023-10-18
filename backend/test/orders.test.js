@@ -12,16 +12,16 @@ const Order = require('../models/order')
 const Address = require('../models/address')
 
 const notAdmin = {
-  username: 'notadmin',
   password: 'password11!!',
   email: 'email@email.email',
+  emailVerified: true,
 }
 
 const admin = {
-  username: 'admin',
   password: 'password11!!',
   email: 'email2@email.email',
   admin: true,
+  emailVerified: true,
 }
 
 const product1 = {

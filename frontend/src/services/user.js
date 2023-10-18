@@ -6,7 +6,7 @@ const baseURL = `${apiURL}/users`
 
 const create = (newUser) => {
   const request = axios.post(baseURL, newUser)
-  return request.then((response) => response.data)
+  return request.then((response) => response)
 }
 
 const addAddress = (newAddress) => {
@@ -15,9 +15,9 @@ const addAddress = (newAddress) => {
   return request.then((response) => response.data)
 }
 
-const login = (username, password) => {
+const login = (email, password) => {
   const request = axios.post(`${apiURL}/login`, {
-    username,
+    email,
     password,
   })
   return request.then((response) => response.data)

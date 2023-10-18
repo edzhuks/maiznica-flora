@@ -28,7 +28,7 @@ const CardLink = styled(Link)`
     color: #45941e;
   }
   &:hover img {
-    transform: scale(1.5);
+    transform: scale(1.15);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
       rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
@@ -51,9 +51,9 @@ const ImageWrapper = styled.div`
   width: 100%;
 `
 const ProductImage = styled.img`
-  transform: scale(0.9);
+  /* transform: scale(0.9); */
   border-radius: 5px;
-  transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   object-fit: contain;
   z-index: 1000;
   background: white;
@@ -97,8 +97,8 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         <ImageWrapper>
           <ProductImage
             src={product.image}
-            width={260}
-            height={260}
+            width={256}
+            height={256}
           />
         </ImageWrapper>
 

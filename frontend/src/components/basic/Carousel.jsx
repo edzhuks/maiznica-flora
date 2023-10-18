@@ -5,7 +5,6 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 
 const CarouselContainer = styled.div`
   width: 100%;
-  padding: 0px 60px;
   position: relative;
   margin-bottom: 40px;
 `
@@ -21,7 +20,7 @@ const CarouselLeft = styled.div`
   display: flex;
   svg > path {
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.5));
-    color: #f3f3f3;
+    color: #fdfdfd;
   }
 `
 
