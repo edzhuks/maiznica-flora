@@ -105,6 +105,23 @@ const en = {
   verify_email: 'Verify email',
   verification_instructions:
     'Open your email and follow the instructions to verify your email and start shopping',
+  password_must: 'Password must',
+  password_8_chars: 'Be at least 8 characters long',
+  password_contain_digit: 'Contain at least one digit',
+  password_contain_special: 'Contain at least one of !@#$%^&*',
+  password_contain_letter: 'Contain at least one letter',
+  toast_all_fields_required: 'All fields are required',
+  toast_address_added: 'The address has been added',
+  toast_sending: 'Sending',
+  toast_success: 'Success!',
+  toast_failed: 'Failed to do the thing',
+  toast_order_successful: 'Your order has been placed!',
+  toast_unauthorized: 'You are not allowed to do that',
+  email_required: 'Email is required',
+  password_required: 'Password is required',
+  email_already_used: 'This email is already registered',
+  already_have_account: 'Already have an account? Sign in.',
+  dont_have_account: "Don't have an account yet? Sign up.",
 }
 
 export default en

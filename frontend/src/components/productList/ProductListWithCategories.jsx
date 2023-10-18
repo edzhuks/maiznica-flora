@@ -3,9 +3,10 @@ import Categories from './Categories'
 import { useParams } from 'react-router-dom'
 import ProductList from './ProductList'
 import { useEffect } from 'react'
-import categoryService from '../../services/category'
+import useCategoryService from '../../services/category'
 
 const ProductListWithCategories = () => {
+  const categoryService = useCategoryService()
   let { category } = useParams()
   const [categoryData, setCategoryData] = useState({
     categories: [],

@@ -1,40 +1,45 @@
 import axios from 'axios'
-import user from './user'
-import withToken from './token'
 import makeConfig from './token'
 import { apiURL } from '../util/config'
+import useToast from '../util/promiseToast'
 
-const baseURL = `${apiURL}/cart`
+const useCartService = () => {
+  const { showErrorToast } = useToast()
+  const baseURL = `${apiURL}/cart`
 
-const addToCart = (newProduct) => {
-  const config = makeConfig()
-  const request = axios.post(baseURL, newProduct, config)
-  return request.then((response) => response.data.content)
+  const addToCart = (newProduct) => {
+    const config = makeConfig()
+    const request = axios.post(baseURL, newProduct, config)
+    showErrorToast(request)
+    return request
+  }
+
+  const removeFromCart = (product) => {
+    const config = makeConfig()
+    const request = axios.post(baseURL, { product, quantity: 0 }, config)
+    showErrorToast(request)
+    return request
+  }
+
+  const changeQuantity = (newProduct) => {
+    const config = makeConfig()
+    const request = axios.post(baseURL, newProduct, config)
+    showErrorToast(request)
+    return request
+  }
+
+  const getCart = () => {
+    const config = makeConfig()
+
+    const request = axios.get(baseURL, config)
+    return request
+  }
+
+  return {
+    addToCart,
+    getCart,
+    changeQuantity,
+    removeFromCart,
+  }
 }
-
-const removeFromCart = (product) => {
-  const config = makeConfig()
-  const request = axios.post(baseURL, { product, quantity: 0 }, config)
-  return request.then((response) => response.data.content)
-}
-
-const changeQuantity = (newProduct) => {
-  const config = makeConfig()
-
-  const request = axios.post(baseURL, newProduct, config)
-  return request.then((response) => response.data.content)
-}
-
-const getCart = () => {
-  const config = makeConfig()
-
-  const request = axios.get(baseURL, config)
-  return request.then((response) => response.data.content)
-}
-
-export default {
-  addToCart,
-  getCart,
-  changeQuantity,
-  removeFromCart,
-}
+export default useCartService

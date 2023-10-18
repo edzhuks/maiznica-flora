@@ -41,7 +41,7 @@ const verificationRequired = async (request, response, next) => {
 const productChecker = async (req, res, next) => {
   const product = req.body.product
   if (!product) {
-    return res.status(400).end()
+    return res.status(400).json({ error: 'Product missing' })
   }
   if (
     !product.name ||
@@ -54,17 +54,17 @@ const productChecker = async (req, res, next) => {
   ) {
     return res
       .status(400)
-      .send('Missing name, weight, price, ingredients, or image')
+      .json({ error: 'Missing name, weight, price, ingredients, or image' })
   }
   if (!isPositiveInteger(product.weight)) {
     return res
       .status(400)
-      .send('Weight must be a positive integer amount in grams')
+      .json({ error: 'Weight must be a positive integer amount in grams' })
   }
   if (!isPositiveInteger(product.price)) {
     return res
       .status(400)
-      .send('Price must be a positive integer amount in cents')
+      .json({ error: 'Price must be a positive integer amount in cents' })
   }
   if (
     product.nutrition &&
@@ -77,7 +77,9 @@ const productChecker = async (req, res, next) => {
       product.nutrition.salt === undefined ||
       product.nutrition.fiber === undefined)
   ) {
-    return res.status(400).send('Nutrition information must be complete')
+    return res
+      .status(400)
+      .json({ error: 'Nutrition information must be complete' })
   }
 
   next()

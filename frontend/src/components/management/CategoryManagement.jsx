@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '../styled/base'
 
-import categoryService from '../../services/category'
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
+import useCategoryService from '../../services/category'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -163,6 +163,7 @@ const CategoryTab = ({
 }
 
 const CategoryManagement = () => {
+  const categoryService = useCategoryService()
   const [catalogue, setCatalogue] = useState(null)
   const [activeCategory, setActiveCategory] = useState(null)
   const [addingProduct, setAddingProduct] = useState(false)
