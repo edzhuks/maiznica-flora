@@ -9,12 +9,14 @@ import {
 } from '../styled/base'
 import Select from 'react-select'
 import { useState } from 'react'
-import productService from '../../services/product'
-import categoryService from '../../services/category'
+import useCategoryService from '../../services/category'
 import { useSelector } from 'react-redux'
 import { gramsToKilos } from '../../util/convert'
+import useProductService from '../../services/product'
 
 const ProductModal = ({ visible, activeCategory, onClose, catalogue }) => {
+  const categoryService = useCategoryService()
+  const productService = useProductService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allProducts, setAllProducts] = useState([])

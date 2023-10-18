@@ -6,16 +6,16 @@ const api = supertest(app)
 
 const User = require('../models/user')
 const notAdmin = {
-  username: 'notadmin',
   password: 'password11!!',
   email: 'email@email.email',
+  emailVerified: true,
 }
 
 const admin = {
-  username: 'admin',
   password: 'password11!!',
   email: 'email2@email.email',
   admin: true,
+  emailVerified: true,
 }
 
 beforeEach(async () => {
@@ -37,17 +37,16 @@ describe('initial user', () => {
     expect(response.body).toHaveLength(2)
   })
 
-  test('the users have correct usernames', async () => {
+  test('the users have correct emails', async () => {
     const response = await api.get('/api/users')
-    expect(response.body.map((u) => u.username)).toContain(notAdmin.username)
-    expect(response.body.map((u) => u.username)).toContain(admin.username)
+    expect(response.body.map((u) => u.email)).toContain(notAdmin.email)
+    expect(response.body.map((u) => u.email)).toContain(admin.email)
   })
 })
 
 describe('user creation validation', () => {
   test('user with correct data can be added', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret222!!!',
       email: 'user@site.com',
     }
@@ -61,7 +60,6 @@ describe('user creation validation', () => {
     const response = await api.get('/api/users')
     expect(response.body).toHaveLength(3)
 
-    expect(response.body.map((u) => u.username)).toContain('tester')
     expect(response.body.map((u) => u.email)).toContain('user@site.com')
   })
 
@@ -71,21 +69,14 @@ describe('user creation validation', () => {
     await api.post('/api/users').send(newUser).expect(400)
   })
 
-  test('user with missing username cannot be added', async () => {
-    const newUser = { password: 'secret222!!!', email: 'user@site.com' }
-
-    await api.post('/api/users').send(newUser).expect(400)
-  })
-
   test('user with missing password cannot be added', async () => {
-    const newUser = { username: 'secret222!!!', email: 'user@site.com' }
+    const newUser = { email: 'user@site.com' }
 
     await api.post('/api/users').send(newUser).expect(400)
   })
 
   test('user with existing email cannot be added', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret222!!!',
       email: 'email@email.email',
     }
@@ -93,19 +84,8 @@ describe('user creation validation', () => {
     await api.post('/api/users').send(newUser).expect(400)
   })
 
-  test('user with existing username cannot be added', async () => {
-    const newUser = {
-      username: 'notadmin',
-      password: 'secret222!!!',
-      email: 'eeeemail@email.email',
-    }
-
-    await api.post('/api/users').send(newUser).expect(400)
-  })
-
   test('user with weak password cannot be added', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret',
       email: 'eeeemail@email.email',
     }
@@ -117,7 +97,6 @@ describe('user creation validation', () => {
 describe('user creation roles', () => {
   test('user has no special roles by default', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret222!!!',
       email: 'user@site.com',
     }
@@ -126,17 +105,16 @@ describe('user creation roles', () => {
 
     const response = await api.get('/api/users')
     console.log(response.body)
+    expect(response.body.find((u) => u.email === newUser.email).admin).toBe(
+      false
+    )
     expect(
-      response.body.find((u) => u.username === newUser.username).admin
-    ).toBe(false)
-    expect(
-      response.body.find((u) => u.username === newUser.username).maintainer
+      response.body.find((u) => u.email === newUser.email).maintainer
     ).toBe(false)
   })
 
   test('user can be admin', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret222!!!',
       email: 'user@site.com',
       admin: true,
@@ -145,17 +123,16 @@ describe('user creation roles', () => {
     await api.post('/api/users').send(newUser)
 
     const response = await api.get('/api/users')
+    expect(response.body.find((u) => u.email === newUser.email).admin).toBe(
+      true
+    )
     expect(
-      response.body.find((u) => u.username === newUser.username).admin
-    ).toBe(true)
-    expect(
-      response.body.find((u) => u.username === newUser.username).maintainer
+      response.body.find((u) => u.email === newUser.email).maintainer
     ).toBe(false)
   })
 
   test('user can be maintainer', async () => {
     const newUser = {
-      username: 'tester',
       password: 'secret222!!!',
       email: 'user@site.com',
       maintainer: true,
@@ -164,17 +141,17 @@ describe('user creation roles', () => {
     await api.post('/api/users').send(newUser)
 
     const response = await api.get('/api/users')
+    expect(response.body.find((u) => u.email === newUser.email).admin).toBe(
+      false
+    )
     expect(
-      response.body.find((u) => u.username === newUser.username).admin
-    ).toBe(false)
-    expect(
-      response.body.find((u) => u.username === newUser.username).maintainer
+      response.body.find((u) => u.email === newUser.email).maintainer
     ).toBe(true)
   })
 })
 
 describe('login', () => {
-  test('user can log in with username and password', async () => {
+  test('user can log in with email and password', async () => {
     const response = await api
       .post('/api/login')
       .send(notAdmin)
