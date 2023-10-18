@@ -26,5 +26,6 @@
 | 11.10        | 8     | localization                                                                                                                                                                          |
 | 12.10        | 4     | localization                                                                                                                                                                          |
 | 12.10        | 4.5   | data entry and improving data entry and management tools                                                                                                                              |
-| 18.10        | 7     | tried and so far failed to get a latvian map and address API working, waiting for key. Set up email verification                                                                      |
+| 17.10        | 7     | tried and so far failed to get a latvian map and address API working, waiting for key. Set up email verification                                                                      |
+| 18.10        | 7     | error handling in frontend, nice toasts, form validation, security fixes, visual improvements, services are now hooks                                                                 |
 | total        | 95    |                                                                                                                                                                                       |
