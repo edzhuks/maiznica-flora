@@ -1,4 +1,4 @@
-import cartService from '../services/cart'
+import useCartService from '../services/cart'
 import { createSlice } from '@reduxjs/toolkit'
 const initialState = []
 
@@ -17,32 +17,44 @@ const cartSlice = createSlice({
 
 export const { clearCart, setCart } = cartSlice.actions
 
-export const loadCart = () => {
-  return async (dispatch) => {
-    const cart = await cartService.getCart()
-    dispatch(setCart(cart))
+export const useCartServiceDispatch = () => {
+  const cartService = useCartService()
+  const loadCart = () => {
+    return async (dispatch) => {
+      cartService
+        .getCart()
+        .then((response) => dispatch(setCart(response.data.content)))
+        .catch((error) => console.log(error.response.data.error))
+    }
   }
-}
 
-export const addItem = (item) => {
-  return async (dispatch) => {
-    const updatedCart = await cartService.addToCart(item)
-    dispatch(setCart(updatedCart))
+  const addItem = (item) => {
+    return async (dispatch) => {
+      cartService
+        .addToCart(item)
+        .then((response) => dispatch(setCart(response.data.content)))
+        .catch((error) => console.log(error.response.data.error))
+    }
   }
-}
 
-export const removeItem = (item) => {
-  return async (dispatch) => {
-    const updatedCart = await cartService.removeFromCart(item)
-    dispatch(setCart(updatedCart))
+  const removeItem = (item) => {
+    return async (dispatch) => {
+      cartService
+        .removeFromCart(item)
+        .then((response) => dispatch(setCart(response.data.content)))
+        .catch((error) => console.log(error.response.data.error))
+    }
   }
-}
 
-export const changeQuantityOfItem = (item) => {
-  return async (dispatch) => {
-    const updatedCart = await cartService.changeQuantity(item)
-    dispatch(setCart(updatedCart))
+  const changeQuantityOfItem = (item) => {
+    return async (dispatch) => {
+      cartService
+        .changeQuantity(item)
+        .then((response) => dispatch(setCart(response.data.content)))
+        .catch((error) => console.log(error.response.data.error))
+    }
   }
+  return { loadCart, addItem, removeItem, changeQuantityOfItem }
 }
 
 export default cartSlice.reducer

@@ -102,6 +102,26 @@ const en = {
     'Fragrant, organic, natural ingredients are among the core values of Flora Bakery, whereby nature and its colours are the source of inspiration, which created the Flora Bakery. Picture the scenery, Latvia’s blossoming meadows adorned by playful red poppies and golden ears, radiating in the glowing sun. Just as an perfumer takes the most captivating aromas to create perfumes, we seek the highest quality ingredients as well as unique herbs and spices. Flora products are made nurturing the knowledge and know-how of our expert bakers. We offer our customers an intimate bouquet of flavour created right here in the picturesque Latvian parish of Krimulda. May the floral delights blossom on your table!',
   ],
   create: 'create',
+  verify_email: 'Verify email',
+  verification_instructions:
+    'Open your email and follow the instructions to verify your email and start shopping',
+  password_must: 'Password must',
+  password_8_chars: 'Be at least 8 characters long',
+  password_contain_digit: 'Contain at least one digit',
+  password_contain_special: 'Contain at least one of !@#$%^&*',
+  password_contain_letter: 'Contain at least one letter',
+  toast_all_fields_required: 'All fields are required',
+  toast_address_added: 'The address has been added',
+  toast_sending: 'Sending',
+  toast_success: 'Success!',
+  toast_failed: 'Failed to do the thing',
+  toast_order_successful: 'Your order has been placed!',
+  toast_unauthorized: 'You are not allowed to do that',
+  email_required: 'Email is required',
+  password_required: 'Password is required',
+  email_already_used: 'This email is already registered',
+  already_have_account: 'Already have an account? Sign in.',
+  dont_have_account: "Don't have an account yet? Sign up.",
 }
 
 export default en

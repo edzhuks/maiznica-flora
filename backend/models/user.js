@@ -1,31 +1,32 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  passwordHash: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  shoppingCart: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Cart',
-  },
-  admin: Boolean,
-  maintainer: Boolean,
-  addresses: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address',
+const userSchema = new mongoose.Schema(
+  {
+    passwordHash: {
+      type: String,
+      required: true,
     },
-  ],
-})
+    email: {
+      type: String,
+      required: true,
+    },
+    shoppingCart: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Cart',
+    },
+    admin: Boolean,
+    maintainer: Boolean,
+    addresses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
+      },
+    ],
+    emailVerified: Boolean,
+    emailVerificationToken: String,
+  },
+  { timestamps: true }
+)
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {

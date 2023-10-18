@@ -18,10 +18,11 @@ const ProductRow = styled.div`
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 30px;
+  margin-top: 20px;
 `
 
 const EmptyProductItem = styled.div`
-  width: calc(100% / 4 - 23px);
+  width: calc(100% / 4 - 28px);
   height: 0;
 `
 

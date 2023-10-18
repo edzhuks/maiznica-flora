@@ -1,7 +1,7 @@
 const express = require('express')
 const Category = require('../models/category')
 const Product = require('../models/product')
-const { userExtractor } = require('../util/middleware')
+const { userExtractor, adminRequired } = require('../util/middleware')
 const categoryRouter = express.Router()
 
 categoryRouter.get('/ids', async (req, res) => {
@@ -71,75 +71,76 @@ categoryRouter.get('/:category', async (req, res) => {
   res.send(categories)
 })
 
-categoryRouter.post('/init', userExtractor, async (req, res) => {
-  if (req.user.admin) {
-    await Category.deleteMany({})
-    const all = new Category({
-      _id: 'all',
-      categories: [],
-      products: [],
-      image: '',
-      displayName: {
-        lv: 'Visi produkti',
-        en: 'All products',
-        de: 'Alle produkte',
-      },
-    })
-    await all.save()
-    const news = new Category({
-      _id: 'new',
-      categories: [],
-      products: [],
-      image: '',
-      displayName: {
-        lv: 'Jaunie produkti',
-        en: 'New products',
-        de: 'Neue produkte',
-      },
-    })
-    await news.save()
-    res.status(201).end()
-  } else {
-    res.status(403).end()
-  }
+categoryRouter.post('/init', userExtractor, adminRequired, async (req, res) => {
+  await Category.deleteMany({})
+  const all = new Category({
+    _id: 'all',
+    categories: [],
+    products: [],
+    image: '',
+    displayName: {
+      lv: 'Visi produkti',
+      en: 'All products',
+      de: 'Alle produkte',
+    },
+  })
+  await all.save()
+  const news = new Category({
+    _id: 'new',
+    categories: [],
+    products: [],
+    image: '',
+    displayName: {
+      lv: 'Jaunie produkti',
+      en: 'New products',
+      de: 'Neue produkte',
+    },
+  })
+  await news.save()
+  res.status(201).end()
 })
 
-categoryRouter.delete('/products', userExtractor, async (req, res) => {
-  if (req.user.admin) {
+categoryRouter.delete(
+  '/products',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
     if (!req.body.parentCategory) {
-      return res.status(400).send('Parent category msut be defined')
+      return res.status(400).json({ error: 'Parent category must be defined' })
     }
     if (!req.body.productId) {
-      return res.status(400).send('Product id must be given')
+      return res.status(400).json({ error: 'Product id must be given' })
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
     parentCategory.products.pull({ _id: req.body.productId })
     await parentCategory.save()
     res.status(200).send(parentCategory)
-  } else {
-    res.status(403).end()
   }
-})
+)
 
-categoryRouter.delete('/categories', userExtractor, async (req, res) => {
-  if (req.user.admin) {
+categoryRouter.delete(
+  '/categories',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
     if (!req.body.parentCategory) {
-      return res.status(400).send('Parent category msut be defined')
+      return res.status(400).json({ error: 'Parent category must be defined' })
     }
     if (!req.body.categoryId) {
-      return res.status(400).send('Category id must be given')
+      return res.status(400).json({ error: 'Category id must be given' })
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
     parentCategory.categories.pull({ _id: req.body.categoryId })
     await parentCategory.save()
     res.status(200).send(parentCategory)
-  } else {
-    res.status(403).end()
   }
-})
+)
 
-categoryRouter.delete('/:id', userExtractor, async (req, res) => {
-  if (req.user.admin) {
+categoryRouter.delete(
+  '/:id',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
     await Category.deleteOne({ _id: req.params.id })
     const categories = await Category.find()
     for (const c of categories) {
@@ -147,73 +148,70 @@ categoryRouter.delete('/:id', userExtractor, async (req, res) => {
       await c.save()
     }
     res.status(204).end()
-  } else {
-    res.status(403).end()
   }
+)
+
+categoryRouter.post('/', userExtractor, adminRequired, async (req, res) => {
+  if (!req.body.parentCategory) {
+    return res.status(400).json({ error: 'Parent category msut be defined' })
+  }
+  if (!req.body.newCategory) {
+    return res.status(400).json({ error: 'New category missing' })
+  }
+  if (!req.body.newCategory.id) {
+    return res.status(400).json({ error: 'New category id missing' })
+  }
+  if (
+    !req.body.newCategory.displayName ||
+    !req.body.newCategory.displayName.lv
+  ) {
+    return res.status(400).json({ error: 'New category display name missing' })
+  }
+  if (!req.body.newCategory.image) {
+    return res.status(400).json({ error: 'New category image missing' })
+  }
+  const newCategory = new Category({
+    ...req.body.newCategory,
+    _id: req.body.newCategory.id,
+    categories: [],
+    products: [],
+  })
+  await newCategory.save()
+  const parentCategory = await Category.findById(req.body.parentCategory)
+  parentCategory.categories.push(newCategory)
+  await parentCategory.save()
+  res.status(201).send(newCategory)
 })
 
-categoryRouter.post('/', userExtractor, async (req, res) => {
-  if (req.user.admin) {
-    if (!req.body.parentCategory) {
-      return res.status(400).send('Parent category msut be defined')
+categoryRouter.put(
+  '/products',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    if (req.user.admin) {
+      if (!req.body.parentCategory) {
+        return res
+          .status(400)
+          .json({ error: 'Parent category msut be defined' })
+      }
+      const parentCategory = await Category.findById(req.body.parentCategory)
+      parentCategory.products = req.body.productsToAdd
+      await parentCategory.save()
+      res.status(200).send(parentCategory)
+    } else {
+      res.status(403).end()
     }
-    if (!req.body.newCategory) {
-      return res.status(400).send('New category missing')
-    }
-    if (!req.body.newCategory.id) {
-      return res.status(400).send('New category id missing')
-    }
-    if (
-      !req.body.newCategory.displayName ||
-      !req.body.newCategory.displayName.lv
-    ) {
-      return res.status(400).send('New category display name missing')
-    }
-    if (!req.body.newCategory.image) {
-      return res.status(400).send('New category image missing')
-    }
-    const newCategory = new Category({
-      ...req.body.newCategory,
-      _id: req.body.newCategory.id,
-      categories: [],
-      products: [],
-    })
-    await newCategory.save()
-    const parentCategory = await Category.findById(req.body.parentCategory)
-    parentCategory.categories.push(newCategory)
-    await parentCategory.save()
-    res.status(201).send(newCategory)
-  } else {
-    res.status(403).end()
   }
-})
+)
 
-categoryRouter.put('/products', userExtractor, async (req, res) => {
-  if (req.user.admin) {
-    if (!req.body.parentCategory) {
-      return res.status(400).send('Parent category msut be defined')
-    }
-    const parentCategory = await Category.findById(req.body.parentCategory)
-    parentCategory.products = req.body.productsToAdd
-    await parentCategory.save()
-    res.status(200).send(parentCategory)
-  } else {
-    res.status(403).end()
+categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
+  if (!req.body.parentCategory) {
+    return res.status(400).json({ error: 'Parent category msut be defined' })
   }
-})
-
-categoryRouter.put('/', userExtractor, async (req, res) => {
-  if (req.user.admin) {
-    if (!req.body.parentCategory) {
-      return res.status(400).send('Parent category msut be defined')
-    }
-    const parentCategory = await Category.findById(req.body.parentCategory)
-    parentCategory.categories = req.body.categoriesToAdd
-    await parentCategory.save()
-    res.status(200).send(parentCategory)
-  } else {
-    res.status(403).end()
-  }
+  const parentCategory = await Category.findById(req.body.parentCategory)
+  parentCategory.categories = req.body.categoriesToAdd
+  await parentCategory.save()
+  res.status(200).send(parentCategory)
 })
 
 module.exports = { categoryRouter, getCatalogue }

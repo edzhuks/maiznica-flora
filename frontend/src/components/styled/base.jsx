@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Input from '../basic/Input'
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
   max-width: 1350px;
@@ -30,14 +31,14 @@ const Button = styled.button`
   cursor: pointer;
   border: 0;
   color: white;
-  padding: 5px 20px;
+  padding: 5px 10px;
   border-radius: 2px;
   font-size: 18px;
   font-weight: 600;
   background-color: #45941e;
   transition: 0.3s;
   min-width: 40px;
-  height: 38px;
+  min-height: 38px;
   &:hover {
     background-color: #3f861b;
   }
@@ -94,7 +95,12 @@ const StyledInput = styled(Input)`
   }
   font-size: large;
 `
-
+const BottomTextLink = styled(Link)`
+  text-decoration: none;
+  color: #aaaaaa;
+  margin-top: 40px;
+  margin-bottom: -20px;
+`
 const TextArea = styled.textarea`
   width: 300px;
   border: 1px solid #ffffffff;
@@ -209,6 +215,7 @@ const BigTitle = styled.div`
     border-top: 1px solid #333333;
     margin: 0 20px 0 0;
     flex: 1 0 20px;
+    min-width: 50px;
   }
   &::after {
     margin: 0 0 0 20px;
@@ -228,6 +235,9 @@ const LoginCard = styled.div`
   border-radius: 5px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const InputGroup = styled.div`
@@ -356,7 +366,7 @@ const ProductCard = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: calc(100% / 4 - 23px);
-  min-width: 243px;
+  min-width: 256px;
   background-color: #fbfbfb;
   border-radius: 5px;
   display: flex;
@@ -374,7 +384,7 @@ const ProductRow = styled.div`
 const Spacer = styled.div`
   width: calc(100% / 4 - 23px);
   height: 0;
-  min-width: 243px;
+  min-width: 256px;
 `
 
 export {
@@ -416,4 +426,5 @@ export {
   Spacer,
   ProductImage,
   WrappableRow,
+  BottomTextLink,
 }

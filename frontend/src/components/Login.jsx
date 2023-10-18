@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import userService from '../services/user'
 import useField from '../hooks/useField'
 import UserContext from '../contexts/userContext'
 import { useContext } from 'react'
-import { loadCart } from '../reducers/cartReducer'
+import { useCartServiceDispatch } from '../reducers/cartReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   FullWidthButton,
@@ -14,21 +13,24 @@ import {
   LoginCard,
   InputGroup,
   Form,
+  BottomTextLink,
 } from './styled/base'
+import useUserService from '../services/user'
 
 const Login = () => {
+  const userService = useUserService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const { loadCart } = useCartServiceDispatch()
   const [, setUser] = useContext(UserContext)
 
-  const username = useField('text')
+  const email = useField('email')
   const password = useField('password')
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    const result = await userService.login(username.value, password.value)
+    const result = await userService.login(email.value, password.value)
     console.log(result)
     setUser(result)
     window.localStorage.setItem('maiznicafloraUser', JSON.stringify(result))
@@ -43,14 +45,14 @@ const Login = () => {
         <Form onSubmit={onSubmit}>
           <InputGroup>
             <Label>
-              {lang.username}
+              {lang.email}
               <StyledInput
-                {...username}
+                {...email}
                 $isonlightbackground
               />
             </Label>
           </InputGroup>
-          <InputGroup>
+          <InputGroup style={{ marginBottom: '35px' }}>
             <Label>
               {lang.password}
               <StyledInput
@@ -60,12 +62,9 @@ const Login = () => {
             </Label>
           </InputGroup>
 
-          <FullWidthButton
-            style={{ marginTop: '40px' }}
-            type="submit">
-            {lang.sign_in}
-          </FullWidthButton>
+          <FullWidthButton type="submit">{lang.sign_in}</FullWidthButton>
         </Form>
+        <BottomTextLink to="/signup">{lang.dont_have_account}</BottomTextLink>
       </LoginCard>
     </Centerer>
   )

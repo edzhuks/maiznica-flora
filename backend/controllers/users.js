@@ -5,18 +5,419 @@ const router = express.Router()
 const User = require('../models/user')
 const Address = require('../models/address')
 const Cart = require('../models/cart')
-const { TEST_MODE } = require('../util/config')
+const { TEST_MODE, EMAIL_PASS } = require('../util/config')
+const crypto = require('crypto')
+const nodemailer = require('nodemailer')
+
+const emailHtml = (link) => {
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="x-ua-compatible"
+      content="ie=edge" />
+    <title>Email Confirmation</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+      /**
+   * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
+   */
+      @media screen {
+        @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'),
+            url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff)
+              format('woff');
+        }
+        @font-face {
+          font-family: 'Source Sans Pro';
+          font-style: normal;
+          font-weight: 700;
+          src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'),
+            url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff)
+              format('woff');
+        }
+      }
+      /**
+   * Avoid browser level font resizing.
+   * 1. Windows Mobile
+   * 2. iOS / OSX
+   */
+      body,
+      table,
+      td,
+      a {
+        -ms-text-size-adjust: 100%; /* 1 */
+        -webkit-text-size-adjust: 100%; /* 2 */
+      }
+      /**
+   * Remove extra space added to tables and cells in Outlook.
+   */
+      table,
+      td {
+        mso-table-rspace: 0pt;
+        mso-table-lspace: 0pt;
+      }
+      /**
+   * Better fluid images in Internet Explorer.
+   */
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
+      /**
+   * Remove blue links for iOS devices.
+   */
+      a[x-apple-data-detectors] {
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        color: inherit !important;
+        text-decoration: none !important;
+      }
+      /**
+   * Fix centering issues in Android 4.4.
+   */
+      div[style*='margin: 16px 0;'] {
+        margin: 0 !important;
+      }
+      body {
+        width: 100% !important;
+        height: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      /**
+   * Collapse table borders to avoid space between cells.
+   */
+      table {
+        border-collapse: collapse !important;
+      }
+      a {
+        color: #1a82e2;
+      }
+      img {
+        height: auto;
+        line-height: 100%;
+        text-decoration: none;
+        border: 0;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body style="background-color: #e9ecef">
+    <!-- start preheader -->
+    <div
+      class="preheader"
+      style="
+        display: none;
+        max-width: 0;
+        max-height: 0;
+        overflow: hidden;
+        font-size: 1px;
+        line-height: 1px;
+        color: #fff;
+        opacity: 0;
+      ">
+      Follow the instructions to verify your email address.
+    </div>
+    <!-- end preheader -->
+
+    <!-- start body -->
+    <table
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      width="100%">
+      <!-- start logo -->
+      <tr>
+        <td
+          align="center"
+          bgcolor="#e9ecef">
+          <!--[if (gte mso 9)|(IE)]>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+        <td align="center" valign="top" width="600">
+        <![endif]-->
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px">
+            <tr>
+              <td
+                align="center"
+                valign="top"
+                style="padding: 36px 24px">
+                <a
+                  href="https://maiznica-flora.onrender.com"
+                  target="_blank"
+                  style="display: inline-block">
+                  <img
+                    src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
+                    alt="Logo"
+                    border="0"
+                    width="48"
+                    style="
+                      display: block;
+                      width: 48px;
+                      max-width: 48px;
+                      min-width: 48px;
+                    " />
+                </a>
+              </td>
+            </tr>
+          </table>
+          <!--[if (gte mso 9)|(IE)]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+        </td>
+      </tr>
+      <!-- end logo -->
+
+      <!-- start hero -->
+      <tr>
+        <td
+          align="center"
+          bgcolor="#e9ecef">
+          <!--[if (gte mso 9)|(IE)]>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+        <td align="center" valign="top" width="600">
+        <![endif]-->
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px">
+            <tr>
+              <td
+                align="left"
+                bgcolor="#ffffff"
+                style="
+                  padding: 36px 24px 0;
+                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                  border-top: 3px solid #d4dadf;
+                ">
+                <h1
+                  style="
+                    margin: 0;
+                    font-size: 32px;
+                    font-weight: 700;
+                    letter-spacing: -1px;
+                    line-height: 48px;
+                  ">
+                  Confirm Your Email Address
+                </h1>
+              </td>
+            </tr>
+          </table>
+          <!--[if (gte mso 9)|(IE)]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+        </td>
+      </tr>
+      <!-- end hero -->
+
+      <!-- start copy block -->
+      <tr>
+        <td
+          align="center"
+          bgcolor="#e9ecef">
+          <!--[if (gte mso 9)|(IE)]>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+        <td align="center" valign="top" width="600">
+        <![endif]-->
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px">
+            <!-- start copy -->
+            <tr>
+              <td
+                align="left"
+                bgcolor="#ffffff"
+                style="
+                  padding: 24px;
+                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                  font-size: 16px;
+                  line-height: 24px;
+                ">
+                <p style="margin: 0">
+                  Tap the button below to confirm your email address. If you
+                  didn't create an account with
+                  <a href="https://maiznica-flora.onrender.com/"
+                    >Maiznica Flora</a
+                  >, you can safely delete this email.
+                </p>
+              </td>
+            </tr>
+            <!-- end copy -->
+
+            <!-- start button -->
+            <tr>
+              <td
+                align="left"
+                bgcolor="#ffffff">
+                <table
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  width="100%">
+                  <tr>
+                    <td
+                      align="center"
+                      bgcolor="#ffffff"
+                      style="padding: 12px">
+                      <table
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0">
+                        <tr>
+                          <td
+                            align="center"
+                            bgcolor="#1a82e2"
+                            style="border-radius: 6px">
+                            <a
+                              href="${link}"
+                              target="_blank"
+                              style="
+                                display: inline-block;
+                                padding: 16px 36px;
+                                font-family: 'Source Sans Pro', Helvetica, Arial,
+                                  sans-serif;
+                                font-size: 16px;
+                                color: #ffffff;
+                                text-decoration: none;
+                                border-radius: 6px;
+                              "
+                              >Verify Email</a
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- end button -->
+
+            <!-- start copy -->
+            <tr>
+              <td
+                align="left"
+                bgcolor="#ffffff"
+                style="
+                  padding: 24px;
+                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                  font-size: 16px;
+                  line-height: 24px;
+                ">
+                <p style="margin: 0">
+                  If that doesn't work, copy and paste the following link in
+                  your browser:
+                </p>
+                <p style="margin: 0; font-size:12px;">
+                  <a
+                    href="${link}"
+                    target="_blank"
+                    >${link}</a
+                  >
+                </p>
+              </td>
+            </tr>
+            <!-- end copy -->
+          </table>
+          <!--[if (gte mso 9)|(IE)]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+        </td>
+      </tr>
+      <!-- end copy block -->
+      <!-- start footer -->
+    <tr>
+      <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
+        <!--[if (gte mso 9)|(IE)]>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+        <td align="center" valign="top" width="600">
+        <![endif]-->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+
+          
+          <!-- start unsubscribe -->
+          <tr>
+            <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+            </td>
+          </tr>
+          <!-- end unsubscribe -->
+
+        </table>
+        <!--[if (gte mso 9)|(IE)]>
+        </td>
+        </tr>
+        </table>
+        <![endif]-->
+      </td>
+    </tr>
+    <!-- end footer -->
+    </table>
+    <!-- end body -->
+  </body>
+</html>
+`
+}
+
+const sendEmail = (email, token) => {
+  var smtpTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'maiznicaa@gmail.com',
+      pass: EMAIL_PASS,
+    },
+  })
+  var mailOptions = {
+    from: 'maiznica@maiznica.lv',
+    to: email,
+    subject: ' email verification',
+    text: `verify your email by clicking the link below</br>http://localhost:3001/api/users/verifyEmail/${token}`,
+    html: emailHtml(`http://localhost:3001/api/users/verifyEmail/${token}`),
+  }
+  smtpTransport.sendMail(mailOptions, function (error, response) {
+    if (error) {
+      console.log(error)
+    }
+  })
+}
 
 router.get('/', async (req, res) => {
-  const users = await User.find()
-  res.send(users)
+  if (TEST_MODE) {
+    const users = await User.find()
+    return res.send(users)
+  }
+  return res.status(404)
 })
 
 router.post('/', async (request, response) => {
-  const { username, password, email, admin, maintainer } = request.body
-  if (!username) {
-    return response.status(400).json({ error: 'username is required' })
-  }
+  const { password, email, admin, maintainer, emailVerified } = request.body
+
   if (!password) {
     return response.status(400).json({ error: 'password is required' })
   }
@@ -24,14 +425,9 @@ router.post('/', async (request, response) => {
     return response.status(400).json({ error: 'email is required' })
   }
 
-  let user = await User.findOne({ username })
+  let user = await User.findOne({ email })
   if (user) {
-    return response.status(400).json({ error: 'Username already taken.' })
-  }
-
-  user = await User.findOne({ email })
-  if (user) {
-    return response.status(400).send('This email is already used.')
+    return response.status(400).json({ error: 'This email is already used.' })
   }
 
   if (
@@ -48,25 +444,44 @@ router.post('/', async (request, response) => {
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
-
+  const emailToken = crypto.randomBytes(128).toString('base64url')
   user = new User({
-    username,
     passwordHash,
     email,
     admin: admin && TEST_MODE ? true : false,
     maintainer: maintainer && TEST_MODE ? true : false,
     addresses: [],
+    emailVerified: emailVerified && TEST_MODE ? true : false,
+    emailVerificationToken: emailToken,
+    registrationTime: new Date(),
   })
 
-  const savedUser = await user.save()
+  await user.save()
 
   const newCart = new Cart({
     content: [],
-    user: savedUser.id,
+    user: user.id,
   })
   await newCart.save()
+  sendEmail(email, emailToken)
+  response.status(201).json({
+    email: user.email,
+    admin: user.admin,
+    maintainer: user.maintainer,
+    addresses: user.addresses,
+    id: user.id,
+  })
+})
 
-  response.status(201).json(savedUser)
+router.get('/verifyEmail/:token', async (req, res) => {
+  const token = req.params.token
+  const user = await User.findOne({ emailVerificationToken: token })
+  if (user && Date.now() - user.createdAt < 1000 * 60 * 10) {
+    user.emailVerified = true
+    await user.save()
+    return res.redirect('http://localhost:3000/emailVerified')
+  }
+  return res.status(404).send()
 })
 
 router.post('/address', userExtractor, async (req, res) => {
@@ -79,7 +494,7 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.house ||
     !req.body.apartment
   ) {
-    return res.status(400).send('Missing required fields')
+    return res.status(400).json({ error: 'Missing required fields' })
   }
   let user = await User.findById(req.user.id)
   const address = new Address(req.body)

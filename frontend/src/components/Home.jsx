@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { BigTitle } from './styled/base'
 import Categories from './productList/Categories'
 import Carousel from './basic/Carousel'
-import categoryService from '../services/category'
 import ProductList from './productList/ProductList'
 import { useSelector } from 'react-redux'
+import useCategoryService from '../services/category'
 
 const HomePage = () => {
+  const categoryService = useCategoryService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const [newProducts, setNewProducts] = useState({
     products: [],
@@ -38,7 +39,7 @@ const HomePage = () => {
           'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
         ]}
       />
-      {newProducts.products.length && (
+      {newProducts.products.length > 0 && (
         <div>
           <BigTitle>{newProducts.displayName[selectedLang]}</BigTitle>
           <ProductList products={newProducts.products} />

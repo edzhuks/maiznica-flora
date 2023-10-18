@@ -118,6 +118,26 @@ const lv = {
   quality_text:
     'Kvalitāte it visā, kam ķeramies klāt. Ko veidojam un radām. Ikkatrā maizes klaipā un cepuma gabaliņā. Un attiecībās. Kvalitāte ik uz soļa, bez kompromisiem. Tas nebūtu iespējams, ja mēs negodātu šo principu – labāk mazāk, bet augstvērtīgi, nekā pavirši un daudz.',
   create: 'izveidot',
+  verify_email: 'Apstipriniet e-pastu',
+  verification_instructions:
+    'Atveriet epastu un sekojiet instrukcijām, lai aktivizētu profilu un sāktu iepirkties',
+  password_must: 'Parolei obligāti',
+  password_8_chars: 'Jābūt vismaz 8 simbolus garai',
+  password_contain_digit: 'Jāsatur ciparu',
+  password_contain_special: 'Jāsatur vismaz vienu no !@#$%^&*',
+  password_contain_letter: 'Jāsatur burtu',
+  toast_all_fields_required: 'Visi lauki ir obligāti',
+  toast_address_added: 'Adrese pievienota!',
+  toast_sending: 'Tiek sūtīts',
+  toast_success: 'Izdevās!',
+  toast_failed: 'Neizdevās',
+  toast_order_successful: 'Pasūtījums ir saņemts!',
+  toast_unauthorized: 'Tev nav piekļuves šai darbībai',
+  email_required: 'E-pasts ir obligāts',
+  password_required: 'Parole ir obligāta',
+  email_already_used: 'Jau eksistē konts ar šādu e-pasta adresi',
+  already_have_account: 'Tev jau ir konts? Ienāc šeit',
+  dont_have_account: 'Tev vēl nav konta? Reģistrējies šeit',
 }
 
 export default lv

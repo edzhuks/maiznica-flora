@@ -1,6 +1,6 @@
 const express = require('express')
 const Cart = require('../models/cart')
-const { userExtractor } = require('../util/middleware')
+const { userExtractor, verificationRequired } = require('../util/middleware')
 const { isPositiveInteger } = require('../util/functions')
 const router = express.Router()
 
@@ -11,15 +11,15 @@ router.get('/', userExtractor, async (req, res) => {
   res.send(cart)
 })
 
-router.post('/', userExtractor, async (req, res) => {
+router.post('/', userExtractor, verificationRequired, async (req, res) => {
   if (!isPositiveInteger(req.body.quantity)) {
-    return res.status(400).send('Cannot add less than 1 item')
+    return res.status(400).json({ error: 'Cannot add less than 1 item' })
   }
   if (!req.body.product) {
-    return res.status(400).send('Product missing')
+    return res.status(400).json({ error: 'Product missing' })
   }
   if (!req.body.product.id) {
-    return res.status(400).send('Product id missing')
+    return res.status(400).json({ error: 'Product id missing' })
   }
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',
@@ -30,7 +30,7 @@ router.post('/', userExtractor, async (req, res) => {
       user: req.user.id,
     })
   }
-  if (req.body.quantity === 0) {
+  if (Number(req.body.quantity) === 0) {
     cart.content = cart.content.filter(
       (item) => !item.product.equals(req.body.product.id)
     )

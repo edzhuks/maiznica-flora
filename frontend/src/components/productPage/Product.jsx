@@ -9,15 +9,17 @@ import {
   ProductImage,
   WrappableRow,
 } from '../styled/base'
-import productService from '../../services/product'
+import useProductService from '../../services/product'
 import TextualInformation from './TextualInformation'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem } from '../../reducers/cartReducer'
+import { useCartServiceDispatch } from '../../reducers/cartReducer'
 
 const Product = () => {
+  const productService = useProductService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   const navigate = useNavigate()
+  const { addItem } = useCartServiceDispatch()
 
   const [user, setUser] = useContext(UserContext)
 
