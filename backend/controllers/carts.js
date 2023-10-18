@@ -30,7 +30,7 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
       user: req.user.id,
     })
   }
-  if (req.body.quantity === 0) {
+  if (Number(req.body.quantity) === 0) {
     cart.content = cart.content.filter(
       (item) => !item.product.equals(req.body.product.id)
     )
