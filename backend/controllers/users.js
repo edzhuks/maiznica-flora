@@ -407,10 +407,13 @@ const sendEmail = (email, token) => {
   })
 }
 
-// router.get('/', async (req, res) => {
-//   const users = await User.find()
-//   res.send(users)
-// })
+router.get('/', async (req, res) => {
+  if (TEST_MODE) {
+    const users = await User.find()
+    return res.send(users)
+  }
+  return res.status(404)
+})
 
 router.post('/', async (request, response) => {
   const { password, email, admin, maintainer, emailVerified } = request.body
@@ -461,14 +464,13 @@ router.post('/', async (request, response) => {
   })
   await newCart.save()
   sendEmail(email, emailToken)
-  response
-    .status(201)
-    .json({
-      email: user.email,
-      admin: user.admin,
-      maintainer: user.maintainer,
-      addresses: user.addresses,
-    })
+  response.status(201).json({
+    email: user.email,
+    admin: user.admin,
+    maintainer: user.maintainer,
+    addresses: user.addresses,
+    id: user.id,
+  })
 })
 
 router.get('/verifyEmail/:token', async (req, res) => {
