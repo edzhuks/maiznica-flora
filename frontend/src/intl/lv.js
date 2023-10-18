@@ -138,6 +138,7 @@ const lv = {
   email_already_used: 'Jau eksistē konts ar šādu e-pasta adresi',
   already_have_account: 'Tev jau ir konts? Ienāc šeit',
   dont_have_account: 'Tev vēl nav konta? Reģistrējies šeit',
+  invalid_credentials: 'Nepareizs e-pasts vai parole',
 }
 
 export default lv

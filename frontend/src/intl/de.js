@@ -123,6 +123,7 @@ const de = {
   email_already_used: 'Diese E-Mail ist bereits registriert',
   already_have_account: 'Sie haben bereits ein Konto? Einloggen.',
   dont_have_account: 'Sie haben noch kein Konto? Anmelden.',
+  invalid_credentials: 'E-Mail oder Passwort ist falsch',
 }
 
 export default de

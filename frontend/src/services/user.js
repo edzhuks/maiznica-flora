@@ -21,7 +21,7 @@ const useUserService = () => {
       email,
       password,
     })
-    return request.then((response) => response.data)
+    return request
   }
 
   return {
