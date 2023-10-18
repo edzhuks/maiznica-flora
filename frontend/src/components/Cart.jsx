@@ -18,6 +18,7 @@ const ProductRow = styled.div`
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 30px;
+  margin-top: 20px;
 `
 
 const EmptyProductItem = styled.div`

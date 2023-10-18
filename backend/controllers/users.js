@@ -417,7 +417,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (request, response) => {
-  const { password, email, admin, maintainer } = request.body
+  const { password, email, admin, maintainer, emailVerified } = request.body
 
   if (!password) {
     return response.status(400).json({ error: 'password is required' })
@@ -425,11 +425,6 @@ router.post('/', async (request, response) => {
   if (!email) {
     return response.status(400).json({ error: 'email is required' })
   }
-
-  // let user = await User.findOne({ username })
-  // if (user) {
-  // return response.status(400).json({ error: 'Username already taken.' })
-  // }
 
   let user = await User.findOne({ email })
   if (user) {
@@ -457,7 +452,7 @@ router.post('/', async (request, response) => {
     admin: admin && TEST_MODE ? true : false,
     maintainer: maintainer && TEST_MODE ? true : false,
     addresses: [],
-    emailVerified: false,
+    emailVerified: emailVerified && TEST_MODE ? true : false,
     emailVerificationToken: emailToken,
     registrationTime: new Date(),
   })
