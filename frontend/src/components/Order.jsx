@@ -34,18 +34,14 @@ const Form = styled.form`
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-around;
+  box-shadow: ${(props) => props.theme.shadow};
+  background-color: ${(props) => props.theme.card};
+  padding: 18px;
 `
 
 const AddressChoice = styled(Radio)`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  background-color: #fbfbfb;
-  padding: 18px;
-`
-const Address = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  background-color: #fbfbfb;
+  box-shadow: ${(props) => props.theme.shadow};
+  background-color: ${(props) => props.theme.card};
   padding: 18px;
 `
 
@@ -161,80 +157,78 @@ const Order = () => {
           </label>
         ))}
       </div>
-      <Address>
-        <Form onSubmit={onSubmit}>
-          <InputGroup>
-            <CompactLabel>
-              {lang.city}
-              <StyledInput
-                {...city}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.street}
-              <StyledInput
-                {...street}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.house}
-              <StyledInput
-                {...house}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.apt}
-              <StyledInput
-                {...apartment}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.name}
-              <StyledInput
-                {...name}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.surname}
-              <StyledInput
-                {...surname}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup>
-            <CompactLabel>
-              {lang.phone}
-              <StyledInput
-                {...phone}
-                $isonlightbackground
-              />
-            </CompactLabel>
-          </InputGroup>
-          <InputGroup style={{ display: 'flex' }}>
-            <CompactLabel style={{ alignSelf: 'end' }}>
-              <FullWidthButton type="submit">
-                {lang.add_new_address}
-              </FullWidthButton>
-            </CompactLabel>
-          </InputGroup>
-        </Form>
-      </Address>
+      <Form onSubmit={onSubmit}>
+        <InputGroup>
+          <CompactLabel>
+            {lang.city}
+            <StyledInput
+              {...city}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.street}
+            <StyledInput
+              {...street}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.house}
+            <StyledInput
+              {...house}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.apt}
+            <StyledInput
+              {...apartment}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.name}
+            <StyledInput
+              {...name}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.surname}
+            <StyledInput
+              {...surname}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup>
+          <CompactLabel>
+            {lang.phone}
+            <StyledInput
+              {...phone}
+              $isonlightbackground
+            />
+          </CompactLabel>
+        </InputGroup>
+        <InputGroup style={{ display: 'flex' }}>
+          <CompactLabel style={{ alignSelf: 'end' }}>
+            <FullWidthButton type="submit">
+              {lang.add_new_address}
+            </FullWidthButton>
+          </CompactLabel>
+        </InputGroup>
+      </Form>
     </div>
   )
 }

@@ -20,7 +20,7 @@ const CheckBox = styled(Radio)`
     top: 5px;
     width: 8px;
     height: 13px;
-    border: solid white;
+    border: solid ${(props) => props.theme.white};
     border-width: 0 3px 3px 0;
     border-radius: 0;
     -webkit-transform: rotate(45deg);

@@ -9,29 +9,25 @@ import {
   Title,
   SubTitle,
   ProductCard,
+  Price,
+  BigProductTitle,
 } from '../styled/base'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
 import { centsToEuro, gramsToKilos, addVat } from '../../util/convert'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  addItem,
-  changeQuantityOfItem,
-  removeItem,
-  useCartServiceDispatch,
-} from '../../reducers/cartReducer'
+import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'
 
 const CardLink = styled(Link)`
   text-decoration: none;
   &:hover p {
-    color: #45941e;
+    color: ${(props) => props.theme.main};
   }
   &:hover img {
     transform: scale(1.3) translateY(-40px);
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    box-shadow: ${(props) => props.theme.shadow};
   }
   margin-bottom: auto;
   flex-grow: 10;
@@ -40,14 +36,13 @@ const CenteredTitle = styled(Title)`
   text-align: center;
 `
 
-const CenteredSubTitle = styled(SubTitle)`
+const CenteredSubTitle = styled.div`
   text-align: center;
-  margin-top: auto;
-  margin-bottom: 0;
+  margin: -10px 0px;
 `
 const ImageWrapper = styled.div`
   /* overflow: hidden; */
-  background-color: white;
+  background-color: ${(props) => props.theme.white};
   text-align: center;
   width: 100%;
 `
@@ -57,11 +52,50 @@ const ProductImage = styled.img`
   transition: 0.3s cubic-bezier(0.31, 0.27, 0, 1.61);
   object-fit: contain;
   z-index: 1000;
-  background: white;
+  background: ${(props) => props.theme.white};
 `
 
 const BuyButton = styled(Button)`
   max-width: 50%;
+`
+
+const PriceText = styled.h1`
+  font-size: 28px;
+  color: ${(props) => props.theme.error};
+  strong {
+    color: ${(props) => props.theme.main};
+    /* text-decoration: line-through 3px; */
+    position: relative;
+  }
+  strong::before {
+    content: '';
+    border-top: 5px solid ${(props) => props.theme.main};
+    width: 70px;
+    display: block;
+    transform: rotate(-20deg);
+    left: 0;
+    top: 14px;
+    position: absolute;
+  }
+`
+const KiloPriceText = styled.p`
+  font-size: 18px;
+  color: ${(props) => props.theme.error};
+  strong {
+    color: ${(props) => props.theme.main};
+    position: relative;
+    font-weight: normal;
+  }
+  strong::before {
+    content: '';
+    border-top: 3px solid ${(props) => props.theme.main};
+    width: 50px;
+    display: block;
+    transform: rotate(-20deg);
+    left: 0;
+    top: 10px;
+    position: absolute;
+  }
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {
@@ -105,13 +139,48 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         </ImageWrapper>
 
         <CenteredTitle style={{ marginLeft: 20, marginRight: 20 }}>
-          {product.name[selectedLang] || product.name.lv}
+          {product.name[selectedLang] || product.name.lv}{' '}
+          {gramsToKilos(product.weight)}
         </CenteredTitle>
       </CardLink>
       <CenteredSubTitle>
-        {gramsToKilos(product.weight)}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {centsToEuro(addVat(product.price))}
+        <Price style={{ margin: '0px' }}>
+          {product.discountPrice ? (
+            <>
+              <PriceText>
+                <strong>{centsToEuro(addVat(product.price))}</strong>
+                &nbsp;&nbsp;
+                {centsToEuro(addVat(product.discountPrice))}
+                <span>{lang.with_VAT}</span>
+              </PriceText>
+              <KiloPriceText>
+                <strong>
+                  {centsToEuro((addVat(product.price) / product.weight) * 1000)}
+                </strong>
+                &nbsp;&nbsp;
+                {centsToEuro(
+                  (addVat(product.discountPrice) / product.weight) * 1000
+                ).substring(1)}{' '}
+                € / kg
+              </KiloPriceText>
+            </>
+          ) : (
+            <>
+              <BigProductTitle>
+                {centsToEuro(addVat(product.price))}
+                {product.discountPrice}
+                <span>{lang.with_VAT}</span>
+              </BigProductTitle>
+
+              <KiloPriceText>
+                {centsToEuro(
+                  (addVat(product.price) / product.weight) * 1000
+                ).substring(1)}{' '}
+                € / kg
+              </KiloPriceText>
+            </>
+          )}
+        </Price>
       </CenteredSubTitle>
       {inCart ? (
         <RowSpaceBetween style={{ margin: 20, alignItems: 'center' }}>

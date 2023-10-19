@@ -1,7 +1,14 @@
 import styled from 'styled-components'
 import Input from '../basic/Input'
 import { Link } from 'react-router-dom'
+const Card = styled.div`
+  box-shadow: ${(props) => props.theme.shadow};
 
+  background-color: ${(props) => props.theme.card};
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+`
 const Container = styled.div`
   max-width: 1350px;
   margin: auto;
@@ -30,31 +37,31 @@ const RowSpaceEvenly = styled(Row)`
 const Button = styled.button`
   cursor: pointer;
   border: 0;
-  color: white;
+  color: ${(props) => props.theme.white};
   padding: 5px 10px;
   border-radius: 2px;
   font-size: 18px;
   font-weight: 600;
-  background-color: #45941e;
+  background-color: ${(props) => props.theme.main};
   transition: 0.3s;
   min-width: 40px;
   min-height: 38px;
   &:hover {
-    background-color: white;
-    color: #45941e;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.main};
   }
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
   font-family: 'Roboto Slab', serif;
   letter-spacing: 1px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
 const CancelButton = styled(Button)`
-  background-color: red;
+  background-color: ${(props) => props.theme.error};
   &:hover {
-    background-color: darkred;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.error};
   }
 `
 
@@ -63,9 +70,10 @@ const FullWidthButton = styled(Button)`
 `
 
 const FullWidthCancelButton = styled(FullWidthButton)`
-  background-color: red;
+  background-color: ${(props) => props.theme.error};
   &:hover {
-    background-color: darkred;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.error};
   }
 `
 const InvertedButton = styled(Button)`
@@ -73,52 +81,54 @@ const InvertedButton = styled(Button)`
   background-color: transparent;
   box-shadow: none;
   font-weight: bold;
-  color: #999999;
+  color: ${(props) => props.theme.main};
   &:hover {
-    background-color: transparent;
-    color: #45941e;
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
   }
 `
 
 const StyledInput = styled(Input)`
   height: 38px;
   border: 0px;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   border-radius: 2px;
-  border: 1px solid
-    ${(props) => (props.$isonlightbackground ? '#f1f1f1' : 'white')};
+  padding: 0;
+  border: 0px solid
+    ${(props) =>
+      props.$isonlightbackground ? props.theme.lighter : props.theme.white};
   background-color: ${(props) =>
-    props.$isonlightbackground ? '#f1f1f1' : 'white'};
+    props.$isonlightbackground ? props.theme.lighter : props.theme.white};
   &:focus {
-    outline: none;
-    border: 1px solid #e5e5e5;
-    border-color: #45941e;
+    outline: 1px solid ${(props) => props.theme.main};
   }
   font-size: large;
 `
+const ShadowInput = styled(StyledInput)`
+  box-shadow: ${(props) => props.theme.shadow};
+`
 const BottomTextLink = styled(Link)`
   text-decoration: none;
-  color: #aaaaaa;
+  color: ${(props) => props.theme.light};
   margin-top: 40px;
   margin-bottom: -20px;
 `
 const TextArea = styled.textarea`
   width: 300px;
-  border: 1px solid #ffffffff;
-  color: #888888;
+  border: 1px solid ${(props) => props.theme.white};
+  color: ${(props) => props.theme.text};
   border-radius: 2px;
   font-size: 16;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   font-family: 'Roboto';
   &:focus {
     outline: none;
-    border-color: #45941e;
+    border-color: ${(props) => props.theme.main};
   }
   font-size: medium;
   &:focus {
     outline: none;
-    border: 1px solid #e5e5e5;
-    border-color: #45941e;
+    border: 1px solid ${(props) => props.theme.main};
   }
 `
 
@@ -151,8 +161,7 @@ const ProductImage = styled.img`
   width: 100%;
   max-width: 600px;
   height: auto;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 const WrappableRow = styled.div`
   display: flex;
@@ -168,7 +177,7 @@ const WrappableRow = styled.div`
 `
 
 const Title = styled.p`
-  color: #333333;
+  color: ${(props) => props.theme.text};
   font-size: 18px;
   text-decoration: none;
   margin: 20px 0px;
@@ -176,7 +185,7 @@ const Title = styled.p`
 `
 
 const SubTitle = styled.p`
-  color: #777777;
+  color: ${(props) => props.theme.text};
   font-size: 18px;
   text-decoration: none;
   margin: 20px 0px;
@@ -187,11 +196,11 @@ const Right = styled.span`
 `
 
 const ColoredText = styled.span`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
 `
 
 const Label = styled.label`
-  color: #555555;
+  color: ${(props) => props.theme.text};
   display: block;
   line-height: 40px;
   text-transform: none;
@@ -213,7 +222,7 @@ const BigTitle = styled.div`
   &::before,
   ::after {
     content: '';
-    border-top: 1px solid #333333;
+    border-top: 1px solid ${(props) => props.theme.text};
     margin: 0 20px 0 0;
     flex: 1 0 20px;
     min-width: 50px;
@@ -230,14 +239,8 @@ const Centerer = styled.div`
   height: 100%;
 `
 
-const LoginCard = styled.div`
-  background-color: white;
+const LoginCard = styled(Card)`
   padding: 58px;
-  border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
 `
 
@@ -283,18 +286,18 @@ const Radio = styled.label`
     left: 20px;
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color: ${(props) => props.theme.lighter};
     border-radius: 50%;
   }
 
   /* On mouse-over, add a grey background color */
   &:hover input ~ span {
-    background-color: #ccc;
+    background-color: ${(props) => props.theme.main};
   }
 
   /* When the radio button is checked, add a blue background */
   input:checked ~ span {
-    background-color: #45941e;
+    background-color: ${(props) => props.theme.main};
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -316,7 +319,7 @@ const Radio = styled.label`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: white;
+    background: ${(props) => props.theme.white};
   }
 `
 
@@ -331,10 +334,13 @@ const ModalContainer = styled.div`
   background-color: #474e5da9;
   padding-top: 50px;
 `
-const ModalContent = styled.div`
-  background-color: #f8f8f8;
+
+const ProductCard = styled(Card)`
+  width: calc(100% / 4 - 23px);
+  min-width: 256px;
+`
+const ModalContent = styled(Card)`
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
   max-width: 1020px; /* Could be more or less, depending on screen size */
   width: fit-content;
   overflow: visible;
@@ -348,7 +354,7 @@ const ModalHalf = styled.div`
 const ModalOr = styled.div`
   padding: 80px 40px;
   font-size: 30px;
-  color: #777777;
+  color: ${(props) => props.theme.dark};
   text-align: center;
   text-transform: uppercase;
 `
@@ -363,32 +369,131 @@ const ContactText = styled.p`
   line-height: 1.5;
 `
 
-const ProductCard = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  width: calc(100% / 4 - 23px);
-  min-width: 256px;
-  background-color: #fbfbfb;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-`
-
-const ProductRow = styled.div`
-  display: flex;
-  align-items: stretch;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 30px;
-`
-
 const Spacer = styled.div`
   width: calc(100% / 4 - 23px);
   height: 0;
   min-width: 256px;
 `
 
+const ProductText = styled.p`
+  font-family: 'Roboto', sans-serif;
+  white-space: pre-line;
+  max-width: 700px;
+  margin: 30px 0px;
+`
+
+const BigProductTitle = styled.h1`
+  font-family: 'Roboto Slab', serif;
+  font-size: 28px;
+  color: ${(props) => props.theme.main};
+  font-weight: 400;
+`
+
+const NutritionTableHeader = styled.th`
+  text-align: left;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  font-weight: 400;
+  padding: 5px 10px;
+  &:nth-child(2) {
+    text-align: end;
+    border-width: 0px 0px 1px 1px;
+  }
+`
+
+const NutritionTable = styled.table`
+  border-collapse: collapse;
+`
+
+const NutritionTableCell = styled.td`
+  padding: 2px 10px;
+  &:nth-child(2) {
+    text-align: end;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+  }
+`
+
+const NutritionTableRow = styled.tr`
+  background-color: ${(props) => props.theme.white};
+  &:nth-child(odd) {
+    background-color: ${(props) => props.theme.background};
+  }
+`
+const Badges = styled.div`
+  margin: 20px 0px 30px 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  row-gap: 10px;
+  span {
+    color: ${(props) => props.theme.white};
+    padding: 5px 15px;
+    background-color: ${(props) => props.theme.main};
+    border-radius: 20px;
+    box-shadow: ${(props) => props.theme.shadow};
+  }
+`
+const Toggle = styled.button`
+  /* padding: 0px; */
+  border-radius: 2px;
+  box-shadow: ${(props) => props.theme.shadow};
+  border: 0;
+  font-size: 16px;
+  padding: 0;
+  span:nth-child(2) {
+    padding: 10px 10px;
+    background-color: ${(props) =>
+      !props.true ? props.theme.main : props.theme.white};
+    color: ${(props) => (!props.true ? 'white' : props.theme.main)};
+    display: inline-block;
+  }
+  span:nth-child(1) {
+    background-color: ${(props) =>
+      props.true ? props.theme.main : props.theme.white};
+    color: ${(props) => (props.true ? props.theme.white : props.theme.main)};
+    padding: 10px 10px;
+  }
+  &:hover {
+    background: none;
+  }
+`
+const CardRow = styled(Row)`
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 30px;
+  margin-bottom: 20px;
+`
+const Price = styled.div`
+  span {
+    color: ${(props) => props.theme.light};
+    font-size: 14px;
+    margin-left: 10px;
+    font-weight: normal;
+  }
+  p {
+    margin-top: 0px;
+    margin-left: 20px;
+  }
+  h1 {
+    margin-bottom: 0;
+    margin-top: 0;
+    font-weight: bold;
+  }
+`
 export {
+  Price,
+  ProductText,
+  ShadowInput,
+  CardRow,
+  Toggle,
+  Badges,
+  NutritionTable,
+  NutritionTableCell,
+  NutritionTableHeader,
+  NutritionTableRow,
+  BigProductTitle,
   Container,
   FullHeightContainer,
   Row,
@@ -422,8 +527,8 @@ export {
   HalfWidth,
   ContactText,
   RowSpaceEvenly,
+  Card,
   ProductCard,
-  ProductRow,
   Spacer,
   ProductImage,
   WrappableRow,

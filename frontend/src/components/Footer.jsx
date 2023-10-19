@@ -7,8 +7,7 @@ const FooterContainer = styled.div`
   background-repeat: repeat;
   background-position: center;
   background-attachment: fixed;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px inset,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px inset;
+  box-shadow: ${(props) => props.theme.shadowInset};
 `
 
 const Footer = () => {

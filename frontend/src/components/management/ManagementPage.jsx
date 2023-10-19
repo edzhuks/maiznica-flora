@@ -13,6 +13,9 @@ const ManagementPage = () => {
         <Link to="new_product">
           <Button>{lang.new_product}</Button>
         </Link>
+        <Link to="discounts">
+          <Button>{lang.discounts}</Button>
+        </Link>
       </Row>
 
       <Outlet />
