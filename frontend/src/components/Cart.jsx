@@ -8,7 +8,7 @@ import {
   ProductCard,
   Spacer,
 } from './styled/base'
-import { centsToEuro } from '../util/convert'
+import { centsToEuro, addVat } from '../util/convert'
 import { useSelector } from 'react-redux'
 import MobileContext from '../contexts/mobileContext'
 
@@ -64,7 +64,7 @@ const CartSummary = ({ total, deliveryCost }) => {
         <CostInformation>
           <b>{lang.sum}</b>
         </CostInformation>
-        <CostNumber>{centsToEuro(total)}</CostNumber>
+        <CostNumber>{centsToEuro(addVat(total))}</CostNumber>
       </CostTile>
       <CostTile>
         <CostInformation>
@@ -78,7 +78,7 @@ const CartSummary = ({ total, deliveryCost }) => {
           <b>{lang.total}</b>
         </CostInformation>
         <CostNumber>
-          <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
+          <ColoredText>{centsToEuro(addVat(total) + deliveryCost)}</ColoredText>
         </CostNumber>
       </CostTile>
       <OrderButton>

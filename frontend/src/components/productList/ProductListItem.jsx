@@ -13,7 +13,7 @@ import {
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
-import { centsToEuro, gramsToKilos } from '../../util/convert'
+import { centsToEuro, gramsToKilos, addVat } from '../../util/convert'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   addItem,
@@ -111,7 +111,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
       <CenteredSubTitle>
         {gramsToKilos(product.weight)}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {centsToEuro(product.price)}
+        {centsToEuro(addVat(product.price))}
       </CenteredSubTitle>
       {inCart ? (
         <RowSpaceBetween style={{ margin: 20, alignItems: 'center' }}>

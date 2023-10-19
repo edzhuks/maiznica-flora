@@ -123,6 +123,11 @@ const en = {
   already_have_account: 'Already have an account? Sign in.',
   dont_have_account: "Don't have an account yet? Sign up.",
   invalid_credentials: 'Email or password is incorrect',
+  with_VAT: 'VAT included',
+  expiration_time: 'Product is good for',
+  after_opening: 'After opening use within',
+  days: 'days',
+  months: 'months',
 }
 
 export default en

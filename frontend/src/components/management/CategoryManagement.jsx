@@ -7,6 +7,8 @@ import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
 import useCategoryService from '../../services/category'
+import { Edit } from '@styled-icons/evaicons-solid/Edit'
+import { Cross } from '@styled-icons/entypo/Cross'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -60,22 +62,46 @@ const ProductItem = styled.li`
     z-index: -1;
   }
   span {
-    button {
-      border-radius: 3px;
-      padding: 0px 3px 3px 3px;
-      background: transparent;
-      border: 0px;
-      color: red;
-      &:hover {
-        background: red;
-        color: white;
-      }
-    }
+  }
+
+  button {
+  }
+`
+const RemoveButton = styled.button`
+  border-radius: 3px;
+  padding: 3px;
+  background: transparent;
+  border: 0px;
+  color: red;
+  &:hover {
+    background: red;
+    color: white;
+  }
+`
+const EditButton = styled(RemoveButton)`
+  color: rgb(69, 148, 30);
+  &:hover {
+    background: rgb(69, 148, 30);
+    color: white;
   }
 `
 const CategoryItem = styled(ProductItem)`
   font-weight: bold;
   margin: 5px 0px;
+  button {
+    border-radius: 3px;
+    padding: 0px 3px 3px 3px;
+    background: transparent;
+    border: 0px;
+    color: rgb(69, 148, 30);
+    &:hover {
+      background: rgb(69, 148, 30);
+      color: white;
+    }
+  }
+  span::after {
+    height: 43px;
+  }
 `
 
 const CategoryTab = ({
@@ -110,7 +136,7 @@ const CategoryTab = ({
                   e.preventDefault()
                   handleDeleteCategory(category.id, parentCategory.id)
                 }}>
-                ╳
+                <Cross />
               </button>
             )}
           </span>
@@ -132,14 +158,19 @@ const CategoryTab = ({
                 style={{ textDecoration: 'none' }}>
                 <span>
                   {p.name[selectedLang] || p.name.lv} {p.weight}g
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleDeleteProduct(p.id, category.id)
-                    }}>
-                    ╳
-                  </button>
                 </span>
+              </Link>
+              <RemoveButton
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleDeleteProduct(p.id, category.id)
+                }}>
+                <Cross size="20px" />
+              </RemoveButton>
+              <Link to={`/management/new_product/${p.id}`}>
+                <EditButton>
+                  <Edit size="20px" />
+                </EditButton>
               </Link>
             </ProductItem>
           ))}
