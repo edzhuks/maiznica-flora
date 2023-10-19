@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import { Container, Row } from './styled/base'
+import { Card, Container, Row } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { useContext, useState } from 'react'
 import UserContext from '../contexts/userContext'
@@ -16,8 +16,7 @@ const HeaderSpacer = styled.div`
 `
 
 const DesktopHeader = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   width: 100%;
   height: 110px;
   position: fixed;
@@ -34,7 +33,7 @@ const MobileHeader = styled(DesktopHeader)`
 const HeaderTab = styled(Link)`
   padding: 0 30px;
   text-transform: uppercase;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   font-size: 22px;
   background-color: transparent;
@@ -46,7 +45,7 @@ const HeaderTab = styled(Link)`
   justify-content: center;
   transition: 0.3s;
   &:hover {
-    color: rgb(69, 148, 30);
+    color: ${(props) => props.theme.main};
   }
 `
 
@@ -58,14 +57,14 @@ const pop = keyframes`
     transform: scale(80%);
   }
   20%{
-    color: rgb(69, 148, 30);
+    color: ${(props) => props.theme.main};
 
   }
   50%{
     transform: scale(200%);
   }
   80%{
-    color: rgb(69, 148, 30);
+    color: ${(props) => props.theme.main};
 
   }90%{
     transform: scale(90%);
@@ -90,7 +89,7 @@ const CartBadge = styled.div`
   bottom: 0;
   margin-right: -15px;
   margin-bottom: -15px;
-  background: rgb(69, 148, 30);
+  background: ${(props) => props.theme.main};
   width: 30px;
   height: 30px;
   border-radius: 100%;
@@ -98,7 +97,7 @@ const CartBadge = styled.div`
     display: inline-block;
     text-align: center;
     width: 100%;
-    color: white;
+    color: ${(props) => props.theme.white};
     margin-top: 2px;
   }
 `
@@ -110,18 +109,13 @@ from {
     transform: translateY(0);
 }`
 
-const SideMenu = styled.div`
+const SideMenu = styled(Card)`
   position: fixed;
   right: 0;
   top: 110px;
   z-index: 3;
   width: 100%;
-  display: flex;
-  background-color: #fffdfd;
   align-items: end;
-  flex-direction: column;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   padding: 30px 0px;
   animation: ${slideInFromTop} 0.2s;
 `
@@ -129,7 +123,7 @@ const SideMenu = styled.div`
 const SideMenuTab = styled(Link)`
   flex: 0 1 auto;
   text-transform: uppercase;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   font-size: 22px;
   padding: 20px 80px 20px 0px;
@@ -148,16 +142,16 @@ const Lang = styled.div`
     transition: 0.2s;
 
     &:hover {
-      background: #45941e;
-      color: white;
+      background: ${(props) => props.theme.main};
+      color: ${(props) => props.theme.white};
     }
-    background: #eee;
-    color: #777;
+    background: ${(props) => props.theme.lighter};
+    color: ${(props) => props.theme.dark};
     font-size: 12px;
     font-weight: bold;
     padding: 5px;
     margin: -4px 0px 8px 0px;
-    border: 0px solid #45941e;
+    border: 0px solid ${(props) => props.theme.main};
     border-radius: 50%;
     /* margin-left: 7px; */
     cursor: pointer;

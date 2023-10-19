@@ -19,7 +19,7 @@ const CategoryList = styled.ul`
 `
 
 const Clearer = styled.div`
-  background: #fafafa;
+  background: ${(props) => props.theme.background};
   z-index: -1;
   position: absolute;
   height: 170px;
@@ -39,13 +39,13 @@ const ProductItem = styled.li`
     color: black;
   }
   position: relative;
-  background: #fafafa;
+  background: ${(props) => props.theme.background};
   span::before {
     content: '';
     height: 10000%;
     width: 10px;
-    border-bottom: 2px solid rgb(69, 148, 30);
-    border-left: 2px solid rgb(69, 148, 30);
+    border-bottom: 2px solid ${(props) => props.theme.main};
+    border-left: 2px solid ${(props) => props.theme.main};
     position: absolute;
     bottom: 10px;
     left: -10px;
@@ -55,7 +55,7 @@ const ProductItem = styled.li`
     content: '';
     height: 33px;
     width: 400px;
-    background: #fafafa;
+    background: ${(props) => props.theme.background};
     position: absolute;
     bottom: 10px;
     left: 0px;
@@ -75,14 +75,14 @@ const RemoveButton = styled.button`
   color: red;
   &:hover {
     background: red;
-    color: white;
+    color: ${(props) => props.theme.white};
   }
 `
 const EditButton = styled(RemoveButton)`
-  color: rgb(69, 148, 30);
+  color: ${(props) => props.theme.main};
   &:hover {
-    background: rgb(69, 148, 30);
-    color: white;
+    background: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
   }
 `
 const CategoryItem = styled(ProductItem)`
@@ -93,10 +93,10 @@ const CategoryItem = styled(ProductItem)`
     padding: 0px 3px 3px 3px;
     background: transparent;
     border: 0px;
-    color: rgb(69, 148, 30);
+    color: ${(props) => props.theme.main};
     &:hover {
-      background: rgb(69, 148, 30);
-      color: white;
+      background: ${(props) => props.theme.main};
+      color: ${(props) => props.theme.white};
     }
   }
   span::after {
@@ -249,7 +249,6 @@ const CategoryManagement = () => {
         visible={addingProduct}
         activeCategory={activeCategory}
         onClose={onModalClose}
-        catalogue={catalogue}
       />
       <ul style={{ listStyle: 'none' }}>
         <Clearer />

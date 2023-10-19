@@ -1,28 +1,25 @@
 import styled from 'styled-components'
-import { BigTitle, Spacer } from '../styled/base'
+import { BigTitle, Spacer, CardRow } from '../styled/base'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-const CategoryGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 30px;
-  margin-bottom: 20px;
-`
 
 const CategoryTextBackground = styled.div`
   width: 100%;
   position: absolute;
   bottom: 0;
-  background: rgba(69, 148, 30, 0.6);
+  background-color: color-mix(
+    in hsl,
+    ${(props) => props.theme.main} calc(100% * 0.6),
+    #45941e00
+  );
+  /* background: ${(props) => props.theme.main}; */
   transition: height 0.5s;
   height: 90px;
 `
 
 const CategoryText = styled.div`
   margin: 0px;
-  color: #fff;
+  color: ${(props) => props.theme.white};
   font-family: 'Roboto Slab', serif;
   font-size: 22px;
   text-transform: uppercase;
@@ -38,8 +35,7 @@ const CategoryText = styled.div`
   height: 100%;
 `
 const CategoryItem = styled(Link)`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   width: calc(100% / 4 - 23px);
   min-width: 243px;
   aspect-ratio: 1;
@@ -58,7 +54,7 @@ const Categories = ({ categories, name }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <>
-      <CategoryGroup>
+      <CardRow>
         {categories.map((category) => (
           <CategoryItem
             to={`/category/${category.id}`}
@@ -80,7 +76,7 @@ const Categories = ({ categories, name }) => {
         <Spacer />
         <Spacer />
         <Spacer />
-      </CategoryGroup>
+      </CardRow>
       {name && <BigTitle>{name[selectedLang]}</BigTitle>}
     </>
   )

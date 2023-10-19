@@ -19,8 +19,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 const ValidationFailed = styled.div`
-  color: #bd5757;
-
+  color: ${(props) => props.theme.error};
   ul {
     font-size: 14px;
     margin: 0;
@@ -37,7 +36,7 @@ const ValidationFailed = styled.div`
   margin-bottom: 20px;
 `
 const ValidPassword = styled(ValidationFailed)`
-  color: rgb(69, 148, 30);
+  color: ${(props) => props.theme.main};
 `
 
 const SignUp = () => {

@@ -1,4 +1,4 @@
-import { BigTitle } from './styled/base'
+import { BigTitle, Card } from './styled/base'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
@@ -7,8 +7,6 @@ const BigImage = styled.div`
   margin-top: -40px;
   margin-bottom: 40px;
   &::before {
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px inset,
-      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px inset;
     z-index: -1;
     content: '';
     position: absolute;
@@ -32,7 +30,7 @@ const BiggerTitle = styled.h1`
   text-transform: uppercase;
   text-align: center;
   font-family: 'Roboto Slab';
-  color: white;
+  color: ${(props) => props.theme.white};
   font-size: 38px;
   margin: 0;
   padding: 120px 100px 100px 100px;
@@ -43,7 +41,7 @@ const BigText = styled.p`
   font-family: 'Roboto Slab', serif;
   font-size: 20px;
   line-height: 36px;
-  color: #fff;
+  color: ${(props) => props.theme.white};
   /* margin: 0; */
   width: 80%;
   margin: -40px auto 40px auto;
@@ -53,7 +51,6 @@ const BigText = styled.p`
 const Text = styled.p`
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  color: #333333;
   font-weight: 400;
   line-height: 1.5;
   max-width: 1000px;
@@ -75,61 +72,45 @@ const ValueRow = styled.div`
   justify-content: space-evenly;
 `
 
-const ValueCard = styled.div`
-  div {
-    /* width: 50%; */
-    background-color: white;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-
-    img {
-      margin-bottom: 24px;
-      color: #45931e;
-      height: 64px;
-      width: 64px;
-    }
-    span {
-      font-size: 22px;
-      text-transform: uppercase;
-      color: #333333;
-    }
+const ValueCard = styled(Card)`
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    margin-bottom: 24px;
+    color: ${(props) => props.theme.main};
+    height: 64px;
+    width: 64px;
   }
-  /* flex: 33.3333%; */
+  span {
+    font-size: 22px;
+    text-transform: uppercase;
+  }
 `
 const BigValueCard = styled(ValueCard)`
   max-width: 410px;
-  padding: 0;
+  padding: 20px;
+  padding: 20px;
   div {
-    height: 100%;
-    width: auto;
-    display: block;
-    padding: 20px;
-    div {
+    align-self: flex-start;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    img {
+      width: 70px;
       height: auto;
-      box-shadow: none;
-      padding: 0;
-      display: flex;
-      flex-direction: row;
-      img {
-        width: 70px;
-        height: auto;
-        margin-bottom: 0;
-        margin-right: 30px;
-      }
-      span {
-        font-weight: bolder;
-      }
+      margin-bottom: 0;
+      margin-right: 30px;
     }
-    p {
-      margin-top: 20px;
-      color: #333;
-      line-height: 1.5;
+    span {
+      font-weight: bolder;
     }
+  }
+  p {
+    margin-top: 20px;
+    line-height: 1.5;
   }
 `
 const AboutTextList = styled.ul`
@@ -142,7 +123,6 @@ const AboutTextList = styled.ul`
     margin-bottom: 20px;
     line-height: 1.5;
     span {
-      color: #333;
       font-size: 16px;
     }
   }
@@ -155,8 +135,8 @@ const AboutTextList = styled.ul`
     margin: 5px 10px;
     line-height: 20px;
     transition: all 0.2s;
-    color: #ffffff;
-    background: #45941e;
+    color: ${(props) => props.theme.white};
+    background: ${(props) => props.theme.main};
     width: 25px;
     height: 25px;
     border-radius: 50%;
@@ -165,8 +145,7 @@ const AboutTextList = styled.ul`
 `
 
 const YoutubePanel = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
@@ -184,22 +163,18 @@ const Value = ({ image, title, text }) => {
   if (!lang[text]) {
     return (
       <ValueCard>
-        <div>
-          <img src={image}></img>
-          <span>{lang[title]}</span>
-        </div>
+        <img src={image}></img>
+        <span>{lang[title]}</span>
       </ValueCard>
     )
   } else {
     return (
       <BigValueCard>
         <div>
-          <div>
-            <img src={image}></img>
-            <span>{lang[title]}</span>
-          </div>
-          <p>{lang[text]}</p>
+          <img src={image}></img>
+          <span>{lang[title]}</span>
         </div>
+        <p>{lang[text]}</p>
       </BigValueCard>
     )
   }

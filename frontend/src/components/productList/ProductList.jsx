@@ -1,9 +1,9 @@
-import { ProductRow, Spacer } from '../styled/base'
+import { CardRow, Spacer } from '../styled/base'
 import ProductListItem from './ProductListItem'
 
 const ProductList = ({ products }) => {
   return (
-    <ProductRow>
+    <CardRow>
       {products.map((product) => (
         <ProductListItem
           product={product}
@@ -14,7 +14,7 @@ const ProductList = ({ products }) => {
       <Spacer />
       <Spacer />
       <Spacer />
-    </ProductRow>
+    </CardRow>
   )
 }
 

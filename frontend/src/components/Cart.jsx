@@ -43,7 +43,7 @@ const CostNumber = styled.span`
 
 const CostTile = styled.div`
   height: 28%;
-  border-bottom: 4px #dddddd dashed;
+  border-bottom: 3px ${(props) => props.theme.light} dashed;
   position: relative;
   padding: 10px;
 `
