@@ -63,7 +63,7 @@ const en = {
   weight: 'weight',
   in_grams: 'in grams',
   price: 'price (cents)',
-  in_cents: 'in cents',
+  in_cents: 'cents',
   add_to_all: "Add to category 'all'",
   add_to_new: "Add to category 'new'",
   accept_order: 'Accept order?',
@@ -128,6 +128,19 @@ const en = {
   after_opening: 'After opening use within',
   days: 'days',
   months: 'months',
+  save: 'Save changes',
+  new: 'New product',
+  vegan: 'Vegan',
+  high_protein: 'High in protein',
+  high_fiber: 'High in fiber',
+  handmade: 'Handmade',
+  no_added_yeast: 'No added yeast',
+  no_conservants: 'No added conservants',
+  vitamin_d: 'Source of vitamin D',
+  iodine: 'Source of iodine',
+  d3: 'vitamin D3',
+  toast_changes_saved: 'Changes have been saved!',
+  toast_product_created: 'The product has been created!',
 }
 
 export default en
