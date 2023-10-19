@@ -25,9 +25,7 @@ const productSchema = new mongoose.Schema({
     fiber: Number,
     protein: Number,
     salt: Number,
-    vitamins: {
-      d3: Number,
-    },
+    d3: Number,
   },
   weight: Number,
   price: Number,

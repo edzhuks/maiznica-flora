@@ -9,8 +9,7 @@ const useProductService = () => {
   const create = (newProduct) => {
     const config = makeConfig()
     const request = axios.post(baseURL, newProduct, config)
-    showErrorToast(request)
-    return request.then((response) => response.data)
+    return request
   }
 
   const getAll = () => {
@@ -32,7 +31,6 @@ const useProductService = () => {
   const update = (productId, product) => {
     const config = makeConfig()
     const request = axios.put(`${baseURL}/${productId}`, { product }, config)
-    showErrorToast(request)
     return request.then((response) => response.data)
   }
 

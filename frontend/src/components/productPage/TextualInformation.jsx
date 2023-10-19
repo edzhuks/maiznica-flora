@@ -110,10 +110,10 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
         {product.name[selectedLang] || product.name.lv} &nbsp;
         {gramsToKilos(product.weight)}
       </Title>
-      {product.badges && (
+      {product.badges && product.badges.length > 0 && (
         <Badges>
           {product.badges.map((b) => (
-            <span key={b}>{b}</span>
+            <span key={b}>{lang[b]}</span>
           ))}
         </Badges>
       )}
@@ -239,16 +239,26 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
               <Cell>{lang.salt}</Cell>
               <Cell>{product.nutrition.salt}g</Cell>
             </TableRow>
+            {product.nutrition.d3 !== 0 &&
+              product.nutrition.d3 !== '0' &&
+              product.nutrition.d3 && (
+                <TableRow>
+                  <Cell>{lang.d3}</Cell>
+                  <Cell>{product.nutrition.d3}µg</Cell>
+                </TableRow>
+              )}
           </tbody>
         </Table>
       )}
-      <Text>
-        <Barcode
-          size={30}
-          style={{ marginRight: '10px' }}
-        />
-        {product.EAN}
-      </Text>
+      {product.EAN && (
+        <Text>
+          <Barcode
+            size={30}
+            style={{ marginRight: '10px' }}
+          />
+          {product.EAN}
+        </Text>
+      )}
     </div>
   )
 }
