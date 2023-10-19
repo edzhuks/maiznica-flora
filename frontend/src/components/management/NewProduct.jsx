@@ -12,7 +12,7 @@ import {
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { StaticInformation } from '../productPage/TextualInformation'
+import StaticInformation from '../productPage/TextualInformation'
 import { useParams } from 'react-router-dom'
 import { enIE } from 'date-fns/locale'
 import useCategoryService from '../../services/category'
