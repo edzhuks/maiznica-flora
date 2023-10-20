@@ -14,9 +14,11 @@ import {
   InputGroup,
   Form,
   BottomTextLink,
+  PaddedForm,
 } from './styled/base'
 import useUserService from '../services/user'
 import { toast } from 'react-toastify'
+import styled from 'styled-components'
 
 const Login = () => {
   const userService = useUserService()
@@ -55,7 +57,7 @@ const Login = () => {
     <Centerer>
       <LoginCard>
         <BigTitle>{lang.sign_in}</BigTitle>
-        <Form onSubmit={onSubmit}>
+        <PaddedForm onSubmit={onSubmit}>
           <InputGroup>
             <Label>
               {lang.email}
@@ -65,7 +67,7 @@ const Login = () => {
               />
             </Label>
           </InputGroup>
-          <InputGroup style={{ marginBottom: '35px' }}>
+          <InputGroup>
             <Label>
               {lang.password}
               <StyledInput
@@ -76,7 +78,7 @@ const Login = () => {
           </InputGroup>
 
           <FullWidthButton type="submit">{lang.sign_in}</FullWidthButton>
-        </Form>
+        </PaddedForm>
         <BottomTextLink to="/signup">{lang.dont_have_account}</BottomTextLink>
       </LoginCard>
     </Centerer>

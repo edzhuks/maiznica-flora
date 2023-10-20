@@ -11,9 +11,9 @@ import {
   NutritionTableHeader,
   NutritionTableCell,
   Badges,
-  Price,
 } from '../styled/base'
 import { Barcode } from '@styled-icons/icomoon/Barcode'
+import Price from '../styled/Price'
 
 const ShadowDiv = styled.div`
   box-shadow: ${(props) => props.theme.shadow};
@@ -33,7 +33,7 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <div>
+    <div style={{ maxWidth: '800px' }}>
       <BigProductTitle>
         {product.name[selectedLang] || product.name.lv} &nbsp;
         {gramsToKilos(product.weight)}
@@ -45,19 +45,11 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
           ))}
         </Badges>
       )}
-      <Price>
-        <BigProductTitle>
-          {centsToEuro(addVat(product.price))}
-          <span>{lang.with_VAT}</span>
-        </BigProductTitle>
-
-        <p>
-          {centsToEuro(
-            (addVat(product.price) / product.weight) * 1000
-          ).substring(1)}{' '}
-          € / kg
-        </p>
-      </Price>
+      <Price
+        price={product.price}
+        discountPrice={product.discountPrice}
+        weight={product.weight}
+      />
       <ShadowDiv>
         <NumberInput
           value={quantity}

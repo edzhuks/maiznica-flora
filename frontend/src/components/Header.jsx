@@ -10,28 +10,40 @@ import { Link } from 'react-router-dom'
 import { clearCart } from '../reducers/cartReducer'
 import MobileContext from '../contexts/mobileContext'
 import { changeLanguage } from '../reducers/languageReducer'
+import { ScrewdriverWrench } from '@styled-icons/fa-solid/ScrewdriverWrench'
+import { DocumentBulletListClock } from '@styled-icons/fluentui-system-filled/DocumentBulletListClock'
 
 const HeaderSpacer = styled.div`
-  height: 130px;
+  height: calc(
+    ${(props) => props.theme.headerHeight} + ${(props) => props.theme.padding}
+  );
+`
+const HeaderContainer = styled(Container)`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
 `
 
 const DesktopHeader = styled.div`
   box-shadow: ${(props) => props.theme.shadow};
-  width: 100%;
-  height: 110px;
+  width: 100vw;
+  height: ${(props) => props.theme.headerHeight};
   position: fixed;
   top: 0;
-  padding-top: 18px;
+  /* padding-top: 18px; */
   background-color: #fffdfd;
   z-index: 4;
 `
 
 const MobileHeader = styled(DesktopHeader)`
-  padding: 20px 40px;
+  padding: 10px 10px;
+  display: flex;
+  align-items: center;
 `
 
 const HeaderTab = styled(Link)`
-  padding: 0 30px;
+  padding: 0 clamp(10px, 20px, 30px);
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
@@ -41,6 +53,7 @@ const HeaderTab = styled(Link)`
   display: flex;
   align-items: center;
   border: 0;
+  white-space: nowrap;
   cursor: pointer;
   justify-content: center;
   transition: 0.3s;
@@ -85,20 +98,21 @@ const AnimatedShoppingCart = styled.div`
 const CartBadge = styled.div`
   display: ${(props) => (props.number > 0 ? 'block' : 'none')};
   position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-right: -15px;
-  margin-bottom: -15px;
+  right: -0.7rem;
+  bottom: -0.7rem;
+  /* margin-right: -15px; */
+  /* margin-bottom: -15px; */
   background: ${(props) => props.theme.main};
-  width: 30px;
-  height: 30px;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 100%;
   span {
-    display: inline-block;
+    display: block;
     text-align: center;
     width: 100%;
     color: ${(props) => props.theme.white};
-    margin-top: 2px;
+    margin-top: 3px;
+    font-size: 1rem;
   }
 `
 
@@ -111,12 +125,12 @@ from {
 
 const SideMenu = styled(Card)`
   position: fixed;
-  right: 0;
-  top: 110px;
+  left: 0;
+  top: ${(props) => props.theme.headerHeight};
   z-index: 3;
-  width: 100%;
+  width: 100vw;
   align-items: end;
-  padding: 30px 0px;
+  padding: 20px 0px 0px 0px;
   animation: ${slideInFromTop} 0.2s;
 `
 
@@ -125,10 +139,13 @@ const SideMenuTab = styled(Link)`
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
-  font-size: 22px;
-  padding: 20px 80px 20px 0px;
+  font-size: 1rem;
+  padding: 0.7rem 2rem 0.7rem 0px;
   background-color: transparent;
   border: 0;
+  border-bottom: 1px solid ${(props) => props.theme.lighter};
+  width: 100%;
+  text-align: right;
 `
 
 const Spacer = styled.div`
@@ -137,7 +154,7 @@ const Spacer = styled.div`
 
 const Lang = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   button {
     transition: 0.2s;
 
@@ -150,7 +167,7 @@ const Lang = styled.div`
     font-size: 12px;
     font-weight: bold;
     padding: 5px;
-    margin: -4px 0px 8px 0px;
+    margin: 0px 3px;
     border: 0px solid ${(props) => props.theme.main};
     border-radius: 50%;
     /* margin-left: 7px; */
@@ -160,11 +177,16 @@ const Lang = styled.div`
 
 const MobileLang = styled(Lang)`
   flex-direction: row;
+  justify-content: end;
   button {
-    margin: 0px 15px;
-    padding: 10px;
-    font-size: 16px;
+    margin: 0px 0px 0px 15px;
+    padding: 7px;
+    font-size: 0.7rem;
   }
+`
+
+const Logo = styled.img`
+  height: calc(${(props) => props.theme.headerHeight} - 10px);
 `
 
 const Header = () => {
@@ -191,41 +213,38 @@ const Header = () => {
       {mobile ? (
         <>
           <MobileHeader>
-            <Row>
-              <a href="/">
-                <img
-                  src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
-                  width={93}
-                  height={73}
-                  style={{ marginRight: 20 }}
-                />
-              </a>
+            <a href="/">
+              <Logo
+                src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
+                style={{ marginRight: 20 }}
+                alt="logo"
+              />
+            </a>
 
-              <Spacer />
-              {user ? (
-                <HeaderTab to="/cart">
-                  <AnimatedShoppingCart
-                    cart={cart}
-                    key={JSON.stringify(cart)}>
-                    <ShoppingCart size={50} />
-                    <CartBadge number={productCount}>
-                      <span>{productCount}</span>
-                    </CartBadge>
-                  </AnimatedShoppingCart>
-                </HeaderTab>
-              ) : (
-                <HeaderTab to="/login">
-                  <ShoppingCart size={50} />
-                </HeaderTab>
-              )}
-
-              <HeaderTab
-                style={{ padding: 0 }}
-                as="button"
-                onClick={() => setSideMenu(!sideMenu)}>
-                {sideMenu ? <CloseOutline size={70} /> : <Menu size={70} />}
+            <Spacer />
+            {user ? (
+              <HeaderTab to="/cart">
+                <AnimatedShoppingCart
+                  cart={cart}
+                  key={JSON.stringify(cart)}>
+                  <ShoppingCart size="2rem" />
+                  <CartBadge number={productCount}>
+                    <span>{productCount}</span>
+                  </CartBadge>
+                </AnimatedShoppingCart>
               </HeaderTab>
-            </Row>
+            ) : (
+              <HeaderTab to="/login">
+                <ShoppingCart size="2rem" />
+              </HeaderTab>
+            )}
+
+            <HeaderTab
+              style={{ padding: 0 }}
+              as="button"
+              onClick={() => setSideMenu(!sideMenu)}>
+              {sideMenu ? <CloseOutline size="3rem" /> : <Menu size="3rem" />}
+            </HeaderTab>
           </MobileHeader>
           {sideMenu && (
             <SideMenu>
@@ -253,7 +272,7 @@ const Header = () => {
                   {lang.sign_out}
                 </SideMenuTab>
               )}
-              <SideMenuTab>
+              <SideMenuTab style={{ border: '0' }}>
                 <MobileLang>
                   <button
                     onClick={() => {
@@ -279,15 +298,14 @@ const Header = () => {
           )}
         </>
       ) : (
-        <DesktopHeader>
-          <Container>
-            <Row>
+        <>
+          <DesktopHeader>
+            <HeaderContainer>
               <a href="/">
-                <img
+                <Logo
                   src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
-                  width={93}
-                  height={73}
                   style={{ marginRight: 20 }}
+                  alt="logo"
                 />
               </a>
 
@@ -301,7 +319,7 @@ const Header = () => {
                   <AnimatedShoppingCart
                     cart={cart}
                     key={JSON.stringify(cart)}>
-                    <ShoppingCart size={50} />
+                    <ShoppingCart size="2.2rem" />
                     <CartBadge number={productCount}>
                       <span>{productCount}</span>
                     </CartBadge>
@@ -309,15 +327,17 @@ const Header = () => {
                 </HeaderTab>
               ) : (
                 <HeaderTab to="/login">
-                  <ShoppingCart size={40} />
+                  <ShoppingCart size="2.2rem" />
                 </HeaderTab>
               )}
               {user && user.admin && (
                 <>
                   <HeaderTab to="/management/categories">
-                    {lang.management}
+                    <ScrewdriverWrench size="2rem" />
                   </HeaderTab>
-                  <HeaderTab to="/orders">{lang.orders}</HeaderTab>
+                  <HeaderTab to="/orders">
+                    <DocumentBulletListClock size="2rem" />
+                  </HeaderTab>
                 </>
               )}
               {!user && (
@@ -353,9 +373,9 @@ const Header = () => {
                   DE
                 </button>
               </Lang>
-            </Row>
-          </Container>
-        </DesktopHeader>
+            </HeaderContainer>
+          </DesktopHeader>
+        </>
       )}
     </div>
   )

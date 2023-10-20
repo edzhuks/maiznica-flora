@@ -3,90 +3,92 @@ import { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
+  CardRow,
   ColoredText,
   FullWidthButton,
-  ProductCard,
+  Card,
   Spacer,
+  Item,
+  Button,
 } from './styled/base'
 import { centsToEuro, addVat } from '../util/convert'
 import { useSelector } from 'react-redux'
 import MobileContext from '../contexts/mobileContext'
 
-const ProductRow = styled.div`
-  display: flex;
-  align-items: stretch;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-top: 20px;
-`
-
-const EmptyProductItem = styled.div`
-  width: calc(100% / 4 - 28px);
-  height: 0;
-`
-
-const SummaryCard = styled(ProductCard)``
-
 const CostInformation = styled.span`
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: calc(${(props) => props.theme.padding} / 2);
+  left: ${(props) => props.theme.padding};
 `
 
 const CostNumber = styled.span`
-  font-size: 40px;
+  font-size: 1.8rem;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 0px;
+  right: ${(props) => props.theme.padding};
 `
 
 const CostTile = styled.div`
-  height: 28%;
+  height: 25%;
   border-bottom: 3px ${(props) => props.theme.light} dashed;
   position: relative;
   padding: 10px;
 `
 
 const OrderButton = styled.div`
-  height: calc(100% - 28 * 3%);
+  height: 25%;
   display: flex;
-  flex-direction: column;
-  padding: 0 40px;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  /* padding: 0 100px; */
+  justify-content: end;
+  padding: ${(props) => props.theme.padding};
+`
+
+const ReverseRow = styled(CardRow)`
+  flex-direction: row-reverse;
+`
+
+const SummaryItem = styled.div`
+  margin: calc(${(props) => props.theme.padding} / 2);
+  width: clamp(350px, 380px, 380px);
 `
 
 const CartSummary = ({ total, deliveryCost }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <SummaryCard>
-      <CostTile>
-        <CostInformation>
-          <b>{lang.sum}</b>
-        </CostInformation>
-        <CostNumber>{centsToEuro(addVat(total))}</CostNumber>
-      </CostTile>
-      <CostTile>
-        <CostInformation>
-          <b>{lang.paid_delivery}</b>
-          <br />({lang.under_30})
-        </CostInformation>
-        <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
-      </CostTile>
-      <CostTile>
-        <CostInformation>
-          <b>{lang.total}</b>
-        </CostInformation>
-        <CostNumber>
-          <ColoredText>{centsToEuro(addVat(total) + deliveryCost)}</ColoredText>
-        </CostNumber>
-      </CostTile>
-      <OrderButton>
-        <Link to="/order">
-          <FullWidthButton>{lang.order}</FullWidthButton>
-        </Link>
-      </OrderButton>
-    </SummaryCard>
+    <SummaryItem>
+      <Card style={{ height: '200px' }}>
+        <CostTile>
+          <CostInformation>
+            <b>{lang.sum}</b>
+          </CostInformation>
+          <CostNumber>{centsToEuro(addVat(total))}</CostNumber>
+        </CostTile>
+        <CostTile>
+          <CostInformation>
+            <b>{lang.paid_delivery}</b>
+            <br />({lang.under_30})
+          </CostInformation>
+          <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
+        </CostTile>
+        <CostTile>
+          <CostInformation>
+            <b>{lang.total}</b>
+          </CostInformation>
+          <CostNumber>
+            <ColoredText>
+              {centsToEuro(addVat(total) + deliveryCost)}
+            </ColoredText>
+          </CostNumber>
+        </CostTile>
+        <OrderButton>
+          <Link to="/order">
+            <Button>{lang.order}</Button>
+          </Link>
+        </OrderButton>
+      </Card>
+    </SummaryItem>
   )
 }
 
@@ -118,58 +120,23 @@ const Cart = () => {
       {cart && (
         <div>
           {cart.length > 0 ? (
-            <ProductRow>
+            <ReverseRow>
+              <CartSummary
+                total={total}
+                deliveryCost={deliveryCost}
+              />
               {cart.map((item, index) => (
-                <Fragment key={index}>
-                  <ProductListItem
-                    inCart
-                    quantity={item.quantity}
-                    product={item.product}
-                    key={item.product.id}
-                  />
-                  {mobile && index === 0 && (
-                    <CartSummary
-                      total={total}
-                      deliveryCost={deliveryCost}
-                    />
-                  )}
-                  {!mobile && index === 2 && (
-                    <CartSummary
-                      total={total}
-                      deliveryCost={deliveryCost}
-                    />
-                  )}
-                  {!mobile && index === 1 && cart.length === 2 && (
-                    <>
-                      <EmptyProductItem />
-                      <CartSummary
-                        total={total}
-                        deliveryCost={deliveryCost}
-                      />
-                    </>
-                  )}
-                  {!mobile && index === 0 && cart.length === 1 && (
-                    <>
-                      <EmptyProductItem />
-                      <EmptyProductItem />
-                      <CartSummary
-                        total={total}
-                        deliveryCost={deliveryCost}
-                      />
-                    </>
-                  )}
-                </Fragment>
+                <ProductListItem
+                  inCart
+                  quantity={item.quantity}
+                  product={item.product}
+                  key={item.product.id}
+                />
               ))}
-              <Spacer />
-              <Spacer />
-              <Spacer />
-            </ProductRow>
+            </ReverseRow>
           ) : (
             <p>{lang.empty_cart}</p>
           )}
-          {/* <CartSummary>
-            
-          </CartSummary> */}
         </div>
       )}
     </>

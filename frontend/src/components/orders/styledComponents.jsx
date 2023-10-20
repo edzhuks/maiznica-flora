@@ -219,23 +219,6 @@ const CheckBox = styled.label`
   input:checked ~ span:after {
     display: block;
   }
-
-  span:after {
-    z-index: 9999;
-    content: '';
-    position: absolute;
-    display: none;
-    background: transparent;
-    left: 30px;
-    top: 5px;
-    width: 60px;
-    height: 97px;
-    border-width: 0 15px 15px 0;
-    border-radius: 0;
-    -webkit-transform: rotate(30deg);
-    -ms-transform: rotate(30deg);
-    transform: rotate(40deg);
-  }
 `
 
 const ActionTile = styled(_ProductTile)`

@@ -11,9 +11,9 @@ const ProductList = ({ products }) => {
         />
       ))}
 
-      <Spacer />
-      <Spacer />
-      <Spacer />
+      {/* <Spacer /> */}
+      {/* <Spacer /> */}
+      {/* <Spacer /> */}
     </CardRow>
   )
 }

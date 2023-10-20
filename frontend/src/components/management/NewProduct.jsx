@@ -81,6 +81,10 @@ const BadgeButton = styled.button`
   font-size: 16px;
 `
 
+const ShortLabel = styled(Label)`
+  line-height: normal;
+`
+
 const NewProductFrom = () => {
   const productService = useProductService()
   const productId = useParams().productId
@@ -430,19 +434,19 @@ const NewProductFrom = () => {
           value={description_de}
           onChange={(event) => setDescription_de(event.target.value)}
         /> */}
-        <ProductText>{allLang.lv.ingredients}</ProductText>
+        <ShortLabel>{allLang.lv.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_lv}
           onChange={(event) => setIngredients_lv(event.target.value)}
         />
-        <ProductText>{allLang.en.ingredients}</ProductText>
+        <ShortLabel>{allLang.en.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_en}
           onChange={(event) => setIngredients_en(event.target.value)}
         />
-        <ProductText>{allLang.de.ingredients}</ProductText>
+        <ShortLabel>{allLang.de.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_de}

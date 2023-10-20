@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 const BigImage = styled.div`
   position: relative;
   margin-top: -40px;
-  margin-bottom: 40px;
   &::before {
     z-index: -1;
     content: '';
@@ -31,16 +30,16 @@ const BiggerTitle = styled.h1`
   text-align: center;
   font-family: 'Roboto Slab';
   color: ${(props) => props.theme.white};
-  font-size: 38px;
+  font-size: 3rem;
   margin: 0;
-  padding: 120px 100px 100px 100px;
+  padding: 120px 0px 100px 0px;
 `
 const BigText = styled.p`
   display: block;
   text-align: center;
   font-family: 'Roboto Slab', serif;
-  font-size: 20px;
-  line-height: 36px;
+  font-size: 1.5rem;
+  line-height: 2.2rem;
   color: ${(props) => props.theme.white};
   /* margin: 0; */
   width: 80%;
@@ -54,12 +53,13 @@ const Text = styled.p`
   font-weight: 400;
   line-height: 1.5;
   max-width: 1000px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto calc(${(props) => props.theme.padding}*1) auto;
+  padding: ${(props) => props.theme.padding};
 `
 
 const AboutTextGroup = styled.div`
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin-bottom: calc(${(props) => props.theme.padding}*2);
+  margin-top: calc(${(props) => props.theme.padding}*2);
 `
 
 const ValueRow = styled.div`
@@ -73,7 +73,7 @@ const ValueRow = styled.div`
 `
 
 const ValueCard = styled(Card)`
-  padding: 50px;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,7 +84,7 @@ const ValueCard = styled(Card)`
     width: 64px;
   }
   span {
-    font-size: 22px;
+    font-size: 1.5rem;
     text-transform: uppercase;
   }
 `
@@ -116,14 +116,14 @@ const BigValueCard = styled(ValueCard)`
 const AboutTextList = styled.ul`
   width: 70%;
   margin: 0 auto;
-  padding: 45px 0px 40px 0px;
+  padding: 0px 0px 10px 0px;
   position: relative;
   li {
     list-style: none;
     margin-bottom: 20px;
     line-height: 1.5;
     span {
-      font-size: 16px;
+      font-size: 1rem;
     }
   }
   li::before {

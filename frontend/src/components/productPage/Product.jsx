@@ -13,6 +13,14 @@ import useProductService from '../../services/product'
 import StaticInformation from './TextualInformation'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from '../../reducers/cartReducer'
+import styled from 'styled-components'
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-shrink: 10;
+`
 
 const Product = () => {
   const productService = useProductService()
@@ -75,15 +83,15 @@ const Product = () => {
           </Row>
         )}
         <WrappableRow>
-          <ProductImage src={product.image} />
-          <div>
-            <StaticInformation
-              product={product}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              onOrder={addToCart}
-            />
-          </div>
+          <Center>
+            <ProductImage src={product.image} />
+          </Center>
+          <StaticInformation
+            product={product}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            onOrder={addToCart}
+          />
         </WrappableRow>
       </>
     )
