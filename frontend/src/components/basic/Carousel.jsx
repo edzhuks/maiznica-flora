@@ -6,7 +6,7 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 const CarouselContainer = styled.div`
   width: 100%;
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: ${(props) => props.theme.padding};
 `
 
 const CarouselLeft = styled.div`

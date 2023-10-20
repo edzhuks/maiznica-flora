@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BigTitle, Spacer, CardRow } from '../styled/base'
+import { BigTitle, Spacer, CardRow, Item } from '../styled/base'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -14,14 +14,17 @@ const CategoryTextBackground = styled.div`
   );
   /* background: ${(props) => props.theme.main}; */
   transition: height 0.5s;
-  height: 90px;
+  height: 25%;
 `
 
 const CategoryText = styled.div`
   margin: 0px;
   color: ${(props) => props.theme.white};
   font-family: 'Roboto Slab', serif;
-  font-size: 22px;
+  font-size: 1.1rem;
+  @media (max-width: 960px) {
+    font-size: 0.8rem;
+  }
   text-transform: uppercase;
   text-align: center;
   padding: 15px;
@@ -34,11 +37,13 @@ const CategoryText = styled.div`
   flex-direction: column;
   height: 100%;
 `
-const CategoryItem = styled(Link)`
-  box-shadow: ${(props) => props.theme.shadow};
-  width: calc(100% / 4 - 23px);
-  min-width: 243px;
+const CategoryItem = styled(Item)`
   aspect-ratio: 1;
+  padding: calc(${(props) => props.theme.padding} / 2);
+`
+const CategoryCard = styled(Link)`
+  box-shadow: ${(props) => props.theme.shadow};
+  display: block;
   &:hover {
     ${CategoryTextBackground} {
       aspect-ratio: 1/1;
@@ -54,29 +59,33 @@ const Categories = ({ categories, name }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <>
-      <CardRow>
-        {categories.map((category) => (
-          <CategoryItem
-            to={`/category/${category.id}`}
-            key={category.id}>
-            <CategoryImage
-              style={{
-                background: `url(${category.image}) center center`,
-                backgroundSize: 'cover',
-              }}>
-              <CategoryTextBackground>
-                <CategoryText>
-                  {category.displayName[selectedLang] ||
-                    category.displayName.lv}
-                </CategoryText>
-              </CategoryTextBackground>
-            </CategoryImage>
-          </CategoryItem>
-        ))}
-        <Spacer />
-        <Spacer />
-        <Spacer />
-      </CardRow>
+      {categories.length > 0 && (
+        <CardRow>
+          {categories.map((category) => (
+            <CategoryItem>
+              <CategoryCard
+                to={`/category/${category.id}`}
+                key={category.id}>
+                <CategoryImage
+                  style={{
+                    background: `url(${category.image}) center center`,
+                    backgroundSize: 'cover',
+                  }}>
+                  <CategoryTextBackground>
+                    <CategoryText>
+                      {category.displayName[selectedLang] ||
+                        category.displayName.lv}
+                    </CategoryText>
+                  </CategoryTextBackground>
+                </CategoryImage>
+              </CategoryCard>
+            </CategoryItem>
+          ))}
+          {/* <Spacer /> */}
+          {/* <Spacer /> */}
+          {/* <Spacer /> */}
+        </CardRow>
+      )}
       {name && <BigTitle>{name[selectedLang]}</BigTitle>}
     </>
   )

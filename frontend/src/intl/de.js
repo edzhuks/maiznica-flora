@@ -124,7 +124,7 @@ const de = {
   already_have_account: 'Sie haben bereits ein Konto? Einloggen.',
   dont_have_account: 'Sie haben noch kein Konto? Anmelden.',
   invalid_credentials: 'E-Mail oder Passwort ist falsch',
-  with_VAT: 'Inklusive MwSt.',
+  with_VAT: 'Inkl. MwSt.',
   expiration_time: 'Produkt ist gut für',
   after_opening: 'Nach dem Öffnen gut für',
   days: 'Tage',

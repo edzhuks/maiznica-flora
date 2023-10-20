@@ -9,10 +9,32 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
 `
+const Item = styled.div`
+  max-width: 300px;
+  width: calc(100% / 6);
+  @media (max-width: 1500px) {
+    width: calc(100% / 3);
+  }
+  @media (max-width: 960px) {
+    width: calc(100% / 3);
+  }
+  /* width: clamp(180px, 270px, ${(props) =>
+    props.theme.preferredCardItemWidth}); */
+  /* width: 13rem; */
+  /* padding: calc(${(props) => props.theme.padding} / 2); */
+`
 const Container = styled.div`
-  max-width: 1350px;
+  max-width: 1600px;
+  @media (max-width: 2000px) {
+    max-width: 80%;
+  }
+  @media (max-width: 960px) {
+    max-width: 100%;
+  }
   margin: auto;
-  padding: 0 18px;
+`
+const Padding = styled.div`
+  padding: ${(props) => props.theme.padding};
 `
 const FullHeightContainer = styled(Container)`
   min-height: 100vh;
@@ -40,12 +62,12 @@ const Button = styled.button`
   color: ${(props) => props.theme.white};
   padding: 5px 10px;
   border-radius: 2px;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 600;
   background-color: ${(props) => props.theme.main};
   transition: 0.3s;
   min-width: 40px;
-  min-height: 38px;
+  min-height: 2rem;
   &:hover {
     background-color: ${(props) => props.theme.white};
     color: ${(props) => props.theme.main};
@@ -81,19 +103,20 @@ const InvertedButton = styled(Button)`
   background-color: transparent;
   box-shadow: none;
   font-weight: bold;
-  color: ${(props) => props.theme.main};
+  color: ${(props) => props.theme.dark};
   &:hover {
-    background-color: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.white};
+    /* background-color: ${(props) => props.theme.main}; */
+    color: ${(props) => props.theme.main};
   }
 `
 
 const StyledInput = styled(Input)`
-  height: 38px;
+  height: 2rem;
   border: 0px;
   color: ${(props) => props.theme.text};
   border-radius: 2px;
-  padding: 0;
+  padding: ${(props) => props.theme.padding} 0px
+    ${(props) => props.theme.padding} ${(props) => props.theme.padding};
   border: 0px solid
     ${(props) =>
       props.$isonlightbackground ? props.theme.lighter : props.theme.white};
@@ -102,7 +125,7 @@ const StyledInput = styled(Input)`
   &:focus {
     outline: 1px solid ${(props) => props.theme.main};
   }
-  font-size: large;
+  font-size: 1rem;
 `
 const ShadowInput = styled(StyledInput)`
   box-shadow: ${(props) => props.theme.shadow};
@@ -157,10 +180,14 @@ const Form = styled.form`
 `
 
 const ProductImage = styled.img`
-  flex: 50%;
-  width: 100%;
-  max-width: 600px;
+  /* flex: 50%; */
+  /* width: 50%; */
+  /* max-width: 400px; */
+  width: 20rem;
+  /* aspect-ratio: 1; */
   height: auto;
+  align-self: flex-start;
+  justify-self: center;
   box-shadow: ${(props) => props.theme.shadow};
 `
 const WrappableRow = styled.div`
@@ -170,18 +197,7 @@ const WrappableRow = styled.div`
   @media (max-width: 800px) {
     flex-direction: column;
   }
-  div {
-    flex: 50%;
-  }
   column-gap: 40px;
-`
-
-const Title = styled.p`
-  color: ${(props) => props.theme.text};
-  font-size: 18px;
-  text-decoration: none;
-  margin: 20px 0px;
-  transition: 0.3s;
 `
 
 const SubTitle = styled.p`
@@ -210,10 +226,10 @@ const Label = styled.label`
 `
 const BigTitle = styled.div`
   font-family: 'Roboto Slab', serif;
-  font-size: 28px;
+  font-size: 1.5rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin: 20px 0px 50px 0px;
+  margin: ${(props) => props.theme.padding};
   display: flex;
   width: 100%;
   justify-content: center;
@@ -240,10 +256,15 @@ const Centerer = styled.div`
 `
 
 const LoginCard = styled(Card)`
-  padding: 58px;
+  padding: calc(${(props) => props.theme.padding}*2)
+    calc(${(props) => props.theme.padding}*4)
+    calc(${(props) => props.theme.padding}*5)
+    calc(${(props) => props.theme.padding}*4);
   align-items: center;
 `
-
+const PaddedForm = styled(Form)`
+  padding: ${(props) => props.theme.padding} 0px 0px 0px;
+`
 const InputGroup = styled.div`
   margin-bottom: 15px;
 `
@@ -335,10 +356,6 @@ const ModalContainer = styled.div`
   padding-top: 50px;
 `
 
-const ProductCard = styled(Card)`
-  width: calc(100% / 4 - 23px);
-  min-width: 256px;
-`
 const ModalContent = styled(Card)`
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   max-width: 1020px; /* Could be more or less, depending on screen size */
@@ -369,10 +386,9 @@ const ContactText = styled.p`
   line-height: 1.5;
 `
 
-const Spacer = styled.div`
-  width: calc(100% / 4 - 23px);
+const Spacer = styled(Item)`
   height: 0;
-  min-width: 256px;
+  padding: 0;
 `
 
 const ProductText = styled.p`
@@ -384,7 +400,7 @@ const ProductText = styled.p`
 
 const BigProductTitle = styled.h1`
   font-family: 'Roboto Slab', serif;
-  font-size: 28px;
+  font-size: 1.5rem;
   color: ${(props) => props.theme.main};
   font-weight: 400;
 `
@@ -461,29 +477,11 @@ const Toggle = styled.button`
 `
 const CardRow = styled(Row)`
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 30px;
-  margin-bottom: 20px;
+  justify-content: center;
 `
-const Price = styled.div`
-  span {
-    color: ${(props) => props.theme.light};
-    font-size: 14px;
-    margin-left: 10px;
-    font-weight: normal;
-  }
-  p {
-    margin-top: 0px;
-    margin-left: 20px;
-  }
-  h1 {
-    margin-bottom: 0;
-    margin-top: 0;
-    font-weight: bold;
-  }
-`
+
 export {
-  Price,
+  Item,
   ProductText,
   ShadowInput,
   CardRow,
@@ -507,7 +505,6 @@ export {
   Label,
   NumberInput,
   WideNumberInput,
-  Title,
   SubTitle,
   Right,
   ColoredText,
@@ -528,9 +525,10 @@ export {
   ContactText,
   RowSpaceEvenly,
   Card,
-  ProductCard,
   Spacer,
   ProductImage,
   WrappableRow,
   BottomTextLink,
+  Padding,
+  PaddedForm,
 }

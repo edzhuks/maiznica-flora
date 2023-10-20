@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 const WrappableRow = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   @media (max-width: 800px) {
     flex-direction: column;
   }
@@ -26,7 +26,7 @@ const WrappableRow = styled.div`
 `
 
 const Half = styled.div`
-  padding: 30px;
+  /* padding: 30px; */
 `
 
 const Contact = () => {
@@ -39,13 +39,13 @@ const Contact = () => {
           <InputGroup>
             <Label>
               {lang.name}
-              <StyledInput style={{ width: '400px' }} />
+              <StyledInput />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               {lang.email}
-              <StyledInput style={{ width: '400px' }} />
+              <StyledInput />
             </Label>
           </InputGroup>
           <InputGroup>
@@ -53,7 +53,7 @@ const Contact = () => {
               {lang.message}
               <TextArea
                 rows={5}
-                style={{ width: '400px' }}
+                style={{ width: '100%' }}
               />
             </Label>
           </InputGroup>
