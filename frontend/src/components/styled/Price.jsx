@@ -6,7 +6,7 @@ const PriceContainer = styled.div`
   display: block;
 `
 const BigPriceText = styled.span`
-  font-size: ${(props) => (props.theme.isSmall ? '1.3rem' : '1.9rem')};
+  font-size: ${(props) => (props.isSmall ? '1.3rem' : '1.9rem')};
   color: ${(props) => props.theme.error};
   strong {
     color: ${(props) => props.theme.main};
@@ -22,7 +22,7 @@ const BigPriceText = styled.span`
         display: block;
         transform: rotate(-20deg);
         left: 0;
-        top: ${(props) => (props.theme.isSmall ? '0.65rem' : '1rem')};
+        top: ${(props) => (props.isSmall ? '0.65rem' : '1rem')};
         position: absolute;
       }
       strong {
