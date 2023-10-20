@@ -10,7 +10,7 @@ import {
   WrappableRow,
 } from '../styled/base'
 import useProductService from '../../services/product'
-import TextualInformation from './TextualInformation'
+import StaticInformation from './TextualInformation'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from '../../reducers/cartReducer'
 
@@ -77,14 +77,12 @@ const Product = () => {
         <WrappableRow>
           <ProductImage src={product.image} />
           <div>
-            <TextualInformation product={product} />
-            <NumberInput
-              style={{ marginRight: 20 }}
-              value={quantity}
-              onChange={(event) => setQuantity(event.target.value)}
-              type="number"
+            <StaticInformation
+              product={product}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              onOrder={addToCart}
             />
-            <Button onClick={addToCart}>{lang.add_to_cart}</Button>
           </div>
         </WrappableRow>
       </>
