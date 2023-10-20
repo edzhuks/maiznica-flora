@@ -29,4 +29,5 @@
 | 17.10        | 7     | tried and so far failed to get a latvian map and address API working, waiting for key. Set up email verification                                                                      |
 | 18.10        | 7     | error handling in frontend, nice toasts, form validation, security fixes, visual improvements, services are now hooks                                                                 |
 | 19.10        | 8.5   | more product data, refactoring                                                                                                                                                        |
+| 20.10        | 8     | mostly css, making the site more responsive, showing discounts                                                                                                                        |
 | total        | 110.5 |                                                                                                                                                                                       |
