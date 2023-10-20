@@ -44,6 +44,7 @@ const product1 = {
     protein: 8.3,
     salt: 0.7,
   },
+  badges: [],
   weight: 280,
   price: 201,
   EAN: '4750271102922',
@@ -55,6 +56,7 @@ const product1 = {
 const product2 = {
   name: { lv: 'Sējas rudzu maize ar briedinātiem rudzu graudiem' },
   description: { lv: 'Ņamma' },
+  badges: [],
   ingredients: {
     lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas sāls, miežu iesala ekstrakts, kviešu klijas.',
   },
