@@ -41,6 +41,7 @@ const goodProduct = {
     protein: 8.3,
     salt: 0.7,
   },
+  badges:[],
   weight: 280,
   price: 201,
   EAN: '4750271102922',

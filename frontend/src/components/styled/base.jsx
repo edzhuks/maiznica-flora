@@ -40,7 +40,8 @@ const Button = styled.button`
   min-width: 40px;
   min-height: 38px;
   &:hover {
-    background-color: #3f861b;
+    background-color: white;
+    color: #45941e;
   }
   text-transform: uppercase;
   text-rendering: optimizeLegibility;

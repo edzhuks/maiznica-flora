@@ -4,7 +4,7 @@ import { Radio } from '../styled/base'
 
 const CheckBox = styled(Radio)`
   padding: 0;
-  margin-bottom: 38px;
+  margin-bottom: 15px;
   p {
     color: #777777;
     font-size: 16px;
