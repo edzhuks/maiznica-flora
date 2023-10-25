@@ -155,6 +155,15 @@ const de = {
     'Sind Sie sicher, dass Sie den Rabatt entfernen möchten?',
   toast_discount_created: 'Der Rabatt wurde erstellt!',
   toast_discount_removed: 'Der Rabatt wurde entfernt!',
+  eu_projects: 'EU Projekte',
+  sales: 'Verkauf',
+  production: 'Produktion',
+  distance_agreement: 'Entfernungsvereinbarung',
+  sales_manager: 'Verkaufsleiter',
+  deputy_sales_manager: 'Stellvertretender Verkaufsleiter',
+  export_manager: 'Leiter der Exportabteilung',
+  bread_manager: 'Leiter der Brotproduktion und -qualität',
+  pastry_manager: 'Leiter der Backwarenproduktion und -qualität',
 }
 
 export default de

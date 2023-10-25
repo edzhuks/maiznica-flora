@@ -249,12 +249,12 @@ const WrappableRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  ${Centerer} {
+  & > div {
     width: fit-content;
   }
   @media (max-width: 800px) {
     flex-direction: column;
-    ${Centerer} {
+    & > div {
       width: 100%;
     }
   }

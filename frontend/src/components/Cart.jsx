@@ -94,7 +94,6 @@ const CartSummary = ({ total, deliveryCost }) => {
 
 const Cart = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [mobile, setIsMobile] = useContext(MobileContext)
 
   const cart = useSelector((state) => state.cart)
   const total = useSelector((state) =>

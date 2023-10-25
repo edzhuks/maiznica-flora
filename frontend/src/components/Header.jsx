@@ -50,7 +50,7 @@ const DesktopHeader = styled.div`
   top: 0;
   /* padding-top: 18px; */
   background-color: #fffdfd;
-  z-index: 4;
+  z-index: 16;
 `
 
 const MobileHeader = styled(DesktopHeader)`
@@ -144,7 +144,7 @@ const SideMenu = styled(Card)`
   position: fixed;
   left: 0;
   top: ${(props) => props.theme.headerHeight};
-  z-index: 3;
+  z-index: 13;
   width: 100vw;
   align-items: end;
   padding: 20px 0px 0px 0px;

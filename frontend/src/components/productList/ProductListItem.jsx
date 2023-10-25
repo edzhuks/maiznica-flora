@@ -30,7 +30,7 @@ const CardLink = styled(Link)`
     transform: scale(1.3) translateY(-40px) translateX(-20px);
     box-shadow: ${(props) => props.theme.shadow};
   }
-  z-index: 1;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   height: 100%;
