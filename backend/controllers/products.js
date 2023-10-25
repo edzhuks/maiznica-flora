@@ -13,21 +13,40 @@ const router = express.Router()
 
 router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
   const product = await Product.findById(req.params.id)
-  if (!isPositiveInteger(req.body.discountPrice)) {
-    return res
-      .status(400)
-      .json({
-        error: 'Discounted price must be a positive integer amount in cents',
-      })
+  if (!req.body.discount) {
+    return res.status(400).json({
+      error: 'No discount in request body',
+    })
   }
-  if (product.price < req.body.discountPrice) {
+  if (!isPositiveInteger(req.body.discount.discountPrice)) {
+    return res.status(400).json({
+      error: 'Discounted price must be a positive integer amount in cents',
+    })
+  }
+  if (product.price < req.body.discount.discountPrice) {
     return res
       .status(400)
       .json({ error: 'Discounted price must be smaller than base price' })
   }
-  product.discountPrice = req.body.discountPrice
-  await product.save()
-  res.send(product)
+  const discount = {
+    discountPrice: req.body.discount.discountPrice,
+    startDate: new Date(req.body.discount.startDate),
+    endDate: new Date(req.body.discount.endDate),
+  }
+  discount.endDate.setHours(23, 59, 59, 999)
+  if (discount.endDate < discount.startDate) {
+    return res.status(400).json({
+      error: 'End date can not be earlier than start date',
+    })
+  }
+  const newProduct = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      discount: discount,
+    },
+    { new: 'true' }
+  )
+  res.status(200).send(newProduct)
 })
 
 router.delete(
@@ -36,9 +55,9 @@ router.delete(
   adminRequired,
   async (req, res) => {
     const product = await Product.findById(req.params.id)
-    product.discountPrice = undefined
+    product.discount = undefined
     await product.save()
-    res.status(204).send(product)
+    res.status(200).send(product)
   }
 )
 

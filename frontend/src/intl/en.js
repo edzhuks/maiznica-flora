@@ -123,7 +123,7 @@ const en = {
   already_have_account: 'Already have an account? Sign in.',
   dont_have_account: "Don't have an account yet? Sign up.",
   invalid_credentials: 'Email or password is incorrect',
-  with_VAT: 'VAT included',
+  with_VAT: 'VAT incl.',
   expiration_time: 'Product is good for',
   after_opening: 'After opening use within',
   days: 'days',
@@ -141,6 +141,18 @@ const en = {
   d3: 'vitamin D3',
   toast_changes_saved: 'Changes have been saved!',
   toast_product_created: 'The product has been created!',
+  discounts: 'Discounts',
+  found_categories: 'Found categories',
+  found_products: 'Found products',
+  create_discount: 'Discount',
+  remove_discount: 'Remove discount',
+  discount_price: 'Discounted price',
+  start_date: 'Start date',
+  end_date: 'End date',
+  without_vat_cents: 'without VAT, in cents',
+  confirm_remove_discount: 'Are you sure you want to remove the discount?',
+  toast_discount_created: 'The discount has been created!',
+  toast_discount_removed: 'The discount has been removed!',
 }
 
 export default en

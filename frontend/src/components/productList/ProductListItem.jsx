@@ -6,62 +6,102 @@ import {
   InvertedButton,
   NumberInput,
   RowSpaceBetween,
-  Title,
   SubTitle,
-  ProductCard,
+  Card,
+  BigProductTitle,
+  Item,
 } from '../styled/base'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
 import { centsToEuro, gramsToKilos, addVat } from '../../util/convert'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  addItem,
-  changeQuantityOfItem,
-  removeItem,
-  useCartServiceDispatch,
-} from '../../reducers/cartReducer'
+import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'
+import Price from '../styled/Price'
+import MobileContext from '../../contexts/mobileContext'
 
 const CardLink = styled(Link)`
   text-decoration: none;
   &:hover p {
-    color: #45941e;
+    color: ${(props) => props.theme.main};
   }
   &:hover img {
-    transform: scale(1.3) translateY(-40px);
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    transform: scale(1.3) translateY(-40px) translateX(-20px);
+    box-shadow: ${(props) => props.theme.shadow};
   }
-  margin-bottom: auto;
-  flex-grow: 10;
-`
-const CenteredTitle = styled(Title)`
-  text-align: center;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `
 
-const CenteredSubTitle = styled(SubTitle)`
+const Title = styled.p`
+  text-align: 'left';
+  color: ${(props) => props.theme.text};
+  font-size: 1rem;
+  text-decoration: none;
+  transition: 0.3s;
+  margin: 0;
+`
+
+const CenteredPrice = styled.div`
   text-align: center;
-  margin-top: auto;
-  margin-bottom: 0;
+  margin: ${(props) => props.theme.padding} 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 10;
 `
 const ImageWrapper = styled.div`
-  /* overflow: hidden; */
-  background-color: white;
+  background-color: ${(props) => props.theme.white};
   text-align: center;
-  width: 100%;
+  width: 10rem;
+  height: 100%;
+  display: flex;
 `
 const ProductImage = styled.img`
-  /* transform: scale(0.9); */
   border-radius: 5px;
   transition: 0.3s cubic-bezier(0.31, 0.27, 0, 1.61);
   object-fit: contain;
-  z-index: 1000;
-  background: white;
+  background: ${(props) => props.theme.white};
+  width: 10rem;
+  aspect-ratio: 1;
 `
 
 const BuyButton = styled(Button)`
   max-width: 50%;
+  margin-left: ${(props) => props.theme.padding};
+`
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: ${(props) => props.theme.padding};
+  width: 100%;
+`
+
+const MobileCard = styled(Card)`
+  flex-direction: row;
+  margin: calc(${(props) => props.theme.padding} / 2);
+  width: clamp(350px, 380px, 380px);
+`
+
+const ButtonRow = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 100%;
+`
+
+const CartButtonRow = styled(ButtonRow)`
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Quantity = styled.span`
+  font-size: 1.3rem;
+  color: ${(props) => props.theme.dark};
 `
 
 const ProductListItem = ({ inCart, product, quantity }) => {
@@ -72,7 +112,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [quantityToAdd, setQuantityToAdd] = useState(1)
-
+  const [isMobile] = useContext(MobileContext)
   const addToCart = () => {
     if (!user) {
       navigate('/login')
@@ -94,50 +134,56 @@ const ProductListItem = ({ inCart, product, quantity }) => {
   }
 
   return (
-    <ProductCard>
-      <CardLink to={`/products/${product.id}`}>
-        <ImageWrapper>
-          <ProductImage
-            src={product.image}
-            width={256}
-            height={256}
-          />
-        </ImageWrapper>
-
-        <CenteredTitle style={{ marginLeft: 20, marginRight: 20 }}>
-          {product.name[selectedLang] || product.name.lv}
-        </CenteredTitle>
-      </CardLink>
-      <CenteredSubTitle>
-        {gramsToKilos(product.weight)}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {centsToEuro(addVat(product.price))}
-      </CenteredSubTitle>
-      {inCart ? (
-        <RowSpaceBetween style={{ margin: 20, alignItems: 'center' }}>
-          <InvertedButton onClick={removeSome}>
-            <Minus />
-          </InvertedButton>
-          <SubTitle style={{ margin: 0 }}>{quantity}</SubTitle>
-          <InvertedButton onClick={addMore}>
-            <Plus />
-          </InvertedButton>
-          <InvertedButton onClick={removeFromCart}>
-            <Trash />
-          </InvertedButton>
-        </RowSpaceBetween>
-      ) : (
-        <RowSpaceBetween style={{ margin: 20 }}>
-          <NumberInput
-            value={quantityToAdd}
-            onChange={(event) => setQuantityToAdd(event.target.value)}
-            type="number"
-            $isonlightbackground
-          />
-          <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
-        </RowSpaceBetween>
-      )}
-    </ProductCard>
+    <>
+      <MobileCard>
+        <CardLink to={`/products/${product.id}`}>
+          <ImageWrapper>
+            <ProductImage src={product.image} />
+          </ImageWrapper>
+        </CardLink>
+        <Column>
+          <CardLink to={`/products/${product.id}`}>
+            <Title>
+              {product.name[selectedLang] || product.name.lv}{' '}
+              {gramsToKilos(product.weight)}
+            </Title>
+            <CenteredPrice>
+              <Price
+                price={product.price}
+                discount={product.discount}
+                weight={product.weight}
+                isSmall
+              />
+            </CenteredPrice>
+          </CardLink>
+          {inCart ? (
+            <CartButtonRow>
+              <InvertedButton onClick={removeSome}>
+                <Minus />
+              </InvertedButton>
+              <Quantity>{quantity}</Quantity>
+              <InvertedButton onClick={addMore}>
+                <Plus />
+              </InvertedButton>
+              <InvertedButton onClick={removeFromCart}>
+                <Trash />
+              </InvertedButton>
+            </CartButtonRow>
+          ) : (
+            <ButtonRow>
+              <NumberInput
+                value={quantityToAdd}
+                onChange={(event) => setQuantityToAdd(event.target.value)}
+                type="number"
+                style={{ maxWidth: '5rem' }}
+                $isonlightbackground
+              />
+              <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
+            </ButtonRow>
+          )}
+        </Column>
+      </MobileCard>
+    </>
   )
 }
 

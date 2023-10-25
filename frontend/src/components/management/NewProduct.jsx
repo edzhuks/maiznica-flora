@@ -1,104 +1,55 @@
 import useField from '../../hooks/useField'
 import { useEffect, useState } from 'react'
 import {
-  StyledInput,
+  ShadowInput,
   TextArea,
   NumberInput,
   Row,
   Button,
   ProductImage,
   WrappableRow,
-  InputGroup,
   Label,
+  BigProductTitle,
+  ProductText,
+  NutritionTable,
+  NutritionTableRow,
+  NutritionTableHeader,
+  NutritionTableCell,
+  Toggle,
+  ShadowTextArea,
 } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import StaticInformation from '../productPage/TextualInformation'
 import { useParams } from 'react-router-dom'
-import { enIE } from 'date-fns/locale'
-import useCategoryService from '../../services/category'
 import useProductService from '../../services/product'
 import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
 import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
-import { toast } from 'react-toastify'
 import useToast from '../../util/promiseToast'
-
-const Text = styled.p`
-  margin: 3px 0px -5px 0px;
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-  white-space: pre-line;
-`
-
-const Title = styled.span`
-  font-family: 'Roboto Slab', serif;
-  font-size: 28px;
-  color: #45941e;
-  font-weight: 400;
-`
-
-const TableHeader = styled.th`
-  text-align: left;
-  border-width: 0px 0px 1px 0px;
-  border-color: #333333;
-  border-style: solid;
-  font-weight: 400;
-  padding: 5px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 1px 1px;
-  }
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-`
-
-const Cell = styled.td`
-  padding: 2px 10px;
-  &:nth-child(2) {
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: #333333;
-  }
-`
-
-const TableRow = styled.tr`
-  background-color: f9f9f9;
-  &:nth-child(odd) {
-    background-color: white;
-    input {
-      background-color: #f0f0f0;
-    }
-  }
-`
-
-const ShadowInput = styled(StyledInput)`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-`
+import { Badges } from '../styled/base'
 
 const NameInput = styled(ShadowInput)`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
   width: 300px;
   margin: 5px 0px;
 `
 
 const GreenNumberInput = styled(NumberInput)`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
   width: 100px;
   margin: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
-const ProductTextArea = styled(TextArea)`
+const ProductTextArea = styled(ShadowTextArea)`
   width: 420px;
   font-size: small;
   margin: 5px 0px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+`
+
+const EditableBadges = styled(Badges)`
+  max-width: 450px;
 `
 
 const EditTab = styled.div`
@@ -106,8 +57,7 @@ const EditTab = styled.div`
   left: ${(props) => (props.editTabOpen ? '00px' : '-485px')};
   background: #ffffffaa;
 
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   padding: 30px;
   transition: 0.5s;
 `
@@ -120,49 +70,19 @@ const EditTabButton = styled(Button)`
   top: -0px;
 `
 
-const Badges = styled.div`
-  max-width: 400px;
-  margin: 20px 0px 30px 0px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  row-gap: 10px;
-`
-
 const BadgeButton = styled.button`
-  color: ${(props) => (props.selected ? 'white' : '#45941e')};
+  color: ${(props) => (props.selected ? props.theme.white : props.theme.main)};
   padding: 5px 15px;
-  background-color: ${(props) => (props.selected ? '#45941e' : 'white')};
+  background-color: ${(props) =>
+    props.selected ? props.theme.main : props.theme.white};
   border-radius: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   border: 0;
   font-size: 16px;
 `
 
-const DayMonthToggle = styled.button`
-  /* padding: 0px; */
-  border-radius: 2px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  border: 0;
-  font-size: 16px;
-  padding: 0;
-  span:nth-child(2) {
-    padding: 10px 10px;
-    background-color: ${(props) => (!props.true ? '#45941e' : 'white')};
-    color: ${(props) => (!props.true ? 'white' : '#45941e')};
-    display: inline-block;
-  }
-  span:nth-child(1) {
-    background-color: ${(props) => (props.true ? '#45941e' : 'white')};
-    color: ${(props) => (props.true ? 'white' : '#45941e')};
-    padding: 10px 10px;
-  }
-  &:hover {
-    background: none;
-  }
+const ShortLabel = styled(Label)`
+  line-height: normal;
 `
 
 const NewProductFrom = () => {
@@ -415,9 +335,9 @@ const NewProductFrom = () => {
             <NameInput {...name_de} />
           </div>
           <GreenNumberInput {...weight} />
-          <Title>g</Title>
+          <BigProductTitle>g</BigProductTitle>
         </Row>
-        <Badges>
+        <EditableBadges>
           <BadgeButton
             selected={badges.find((b) => b === 'vegan')}
             onClick={() => badgeClicked('vegan')}>
@@ -458,7 +378,7 @@ const NewProductFrom = () => {
             onClick={() => badgeClicked('iodine')}>
             {lang.iodine}
           </BadgeButton>
-        </Badges>
+        </EditableBadges>
         <GreenNumberInput {...price} />
         {lang.in_cents}
         <Checkbox
@@ -479,24 +399,24 @@ const NewProductFrom = () => {
         <Label>
           {lang.expiration_time}
           <GreenNumberInput {...expiryTime} />
-          <DayMonthToggle
+          <Toggle
             onClick={() => setExpiryTimeDays(!expiryTimeDays)}
             true={expiryTimeDays}>
             <span>{lang.days}</span>
             <span>{lang.months}</span>
-          </DayMonthToggle>
+          </Toggle>
         </Label>
         <Label>
           {lang.after_opening}
           <GreenNumberInput {...expiryTimeAfter} />
-          <DayMonthToggle
+          <Toggle
             onClick={() => setExpiryTimeDaysAfter(!expiryTimeDaysAfter)}
             true={expiryTimeDaysAfter}>
             <span>{lang.days}</span>
             <span>{lang.months}</span>
-          </DayMonthToggle>
+          </Toggle>
         </Label>
-        <Text>{allLang.lv.description}</Text>
+        <ProductText>{allLang.lv.description}</ProductText>
         <ProductTextArea
           rows={12}
           value={description_lv}
@@ -514,93 +434,97 @@ const NewProductFrom = () => {
           value={description_de}
           onChange={(event) => setDescription_de(event.target.value)}
         /> */}
-        <Text>{allLang.lv.ingredients}</Text>
+        <ShortLabel>{allLang.lv.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_lv}
           onChange={(event) => setIngredients_lv(event.target.value)}
         />
-        <Text>{allLang.en.ingredients}</Text>
+        <ShortLabel>{allLang.en.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_en}
           onChange={(event) => setIngredients_en(event.target.value)}
         />
-        <Text>{allLang.de.ingredients}</Text>
+        <ShortLabel>{allLang.de.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_de}
           onChange={(event) => setIngredients_de(event.target.value)}
         />
-        <Table style={{ marginBottom: '20px', marginTop: '20px' }}>
+        <NutritionTable style={{ marginBottom: '20px', marginTop: '20px' }}>
           <tbody>
-            <TableRow>
-              <TableHeader>
+            <NutritionTableRow>
+              <NutritionTableHeader>
                 <b>{lang.nutritional_info}</b>
-              </TableHeader>
-              <TableHeader>
+              </NutritionTableHeader>
+              <NutritionTableHeader>
                 <strong>{lang.g_contains}</strong>
-              </TableHeader>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.energy_content}</Cell>
-              <Cell>
+              </NutritionTableHeader>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...energy} />
                 kcal
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fat}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fat}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...fat} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
+              </NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...saturatedFat} />g
-              </Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
 
-            <TableRow>
-              <Cell>{lang.carbohydrates}</Cell>
-              <Cell>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...carbs} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
+              </NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...sugar} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fiber}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fiber}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...fiber} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.protein}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.protein}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...protein} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.salt}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.salt}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...salt} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.d3}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.d3}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...d3} />
                 µg
-              </Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
           </tbody>
-        </Table>
+        </NutritionTable>
         {lang.EAN_code}
         <ShadowInput
           style={{ marginBottom: 20, marginLeft: '20px' }}
@@ -622,7 +546,7 @@ const NewProductFrom = () => {
           </div>
         )}
       </EditTab>
-      <WrappableRow style={{ width: '1350px' }}>
+      <WrappableRow style={{ justifyContent: 'end' }}>
         <ProductImage
           onDragOver={(e) => {
             e.stopPropagation()

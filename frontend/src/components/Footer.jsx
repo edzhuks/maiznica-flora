@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Container } from './styled/base'
+import { Container, Padding } from './styled/base'
 import Contact from './Contact'
 
 const FooterContainer = styled.div`
@@ -7,16 +7,18 @@ const FooterContainer = styled.div`
   background-repeat: repeat;
   background-position: center;
   background-attachment: fixed;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px inset,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px inset;
+  box-shadow: ${(props) => props.theme.shadowInset};
+  width: 100vw;
 `
 
 const Footer = () => {
   return (
     <FooterContainer>
-      <Container>
-        <Contact />
-      </Container>
+      <Padding>
+        <Container>
+          <Contact />
+        </Container>
+      </Padding>
     </FooterContainer>
   )
 }

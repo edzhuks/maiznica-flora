@@ -39,17 +39,17 @@ const HomePage = () => {
           'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
         ]}
       />
-      {newProducts.products.length > 0 && (
-        <div>
-          <BigTitle>{newProducts.displayName[selectedLang]}</BigTitle>
-          <ProductList products={newProducts.products} />
-        </div>
-      )}
 
       {discountedProducts.products.length > 0 && (
         <div>
           <BigTitle>{discountedProducts.displayName[selectedLang]}</BigTitle>
           <ProductList products={discountedProducts.products} />
+        </div>
+      )}
+      {newProducts.products.length > 0 && (
+        <div>
+          <BigTitle>{newProducts.displayName[selectedLang]}</BigTitle>
+          <ProductList products={newProducts.products} />
         </div>
       )}
 
