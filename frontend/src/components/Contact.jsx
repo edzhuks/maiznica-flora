@@ -3,18 +3,18 @@ import {
   BigTitle,
   Form,
   InputGroup,
-  StyledInput,
   Label,
-  TextArea,
   Button,
   ContactText,
+  ShadowInput,
+  ShadowTextArea,
 } from './styled/base'
 import { useSelector } from 'react-redux'
 
 const WrappableRow = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   @media (max-width: 800px) {
     flex-direction: column;
   }
@@ -26,7 +26,7 @@ const WrappableRow = styled.div`
 `
 
 const Half = styled.div`
-  padding: 30px;
+  /* padding: 30px; */
 `
 
 const Contact = () => {
@@ -39,21 +39,21 @@ const Contact = () => {
           <InputGroup>
             <Label>
               {lang.name}
-              <StyledInput style={{ width: '400px' }} />
+              <ShadowInput />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               {lang.email}
-              <StyledInput style={{ width: '400px' }} />
+              <ShadowInput />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               {lang.message}
-              <TextArea
+              <ShadowTextArea
                 rows={5}
-                style={{ width: '400px' }}
+                style={{ width: '70%' }}
               />
             </Label>
           </InputGroup>

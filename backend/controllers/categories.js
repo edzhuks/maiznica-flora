@@ -52,9 +52,13 @@ const getCatalogue = async () => {
 }
 
 categoryRouter.get('/discount', async (req, res) => {
-  const products = await Product.find({ discountPrice: { $exists: true } })
+  const products = await Product.find({ discount: { $exists: true } })
   res.send({
-    products,
+    products: products.filter(
+      (p) =>
+        Date.parse(p.discount.startDate) <= new Date() &&
+        Date.parse(p.discount.endDate) >= new Date()
+    ),
     displayName: { lv: 'Atlaides', en: 'Discounts', de: 'Rabatt' },
   })
 })
@@ -212,6 +216,11 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
   parentCategory.categories = req.body.categoriesToAdd
   await parentCategory.save()
   res.status(200).send(parentCategory)
+})
+
+categoryRouter.get('/', async (req, res) => {
+  let allIds = await Category.find({})
+  res.send(allIds)
 })
 
 module.exports = { categoryRouter, getCatalogue }

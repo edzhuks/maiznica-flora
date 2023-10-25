@@ -34,12 +34,29 @@ const useProductService = () => {
     return request.then((response) => response.data)
   }
 
+  const makeDiscount = (productId, discount) => {
+    const config = makeConfig()
+    const request = axios.put(
+      `${baseURL}/discount/${productId}`,
+      { discount },
+      config
+    )
+    return request
+  }
+  const removeDiscount = (productId, discount) => {
+    const config = makeConfig()
+    const request = axios.delete(`${baseURL}/discount/${productId}`, config)
+    return request
+  }
+
   return {
     create,
     getAll,
     getById,
     deleteProduct,
     update,
+    makeDiscount,
+    removeDiscount,
   }
 }
 export default useProductService

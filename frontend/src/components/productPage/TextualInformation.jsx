@@ -1,94 +1,22 @@
 import styled from 'styled-components'
 import { addVat, centsToEuro, gramsToKilos } from '../../util/convert'
 import { useSelector } from 'react-redux'
-import { NumberInput, Button } from '../styled/base'
+import {
+  NumberInput,
+  Button,
+  BigProductTitle,
+  ProductText,
+  NutritionTable,
+  NutritionTableRow,
+  NutritionTableHeader,
+  NutritionTableCell,
+  Badges,
+} from '../styled/base'
 import { Barcode } from '@styled-icons/icomoon/Barcode'
-const Text = styled.p`
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-  white-space: pre-line;
-  max-width: 700px;
-  margin: 30px 0px;
-`
+import Price from '../styled/Price'
 
-const Title = styled.h1`
-  font-family: 'Roboto Slab', serif;
-  font-size: 28px;
-  color: #45941e;
-  font-weight: 400;
-`
-
-const TableHeader = styled.th`
-  text-align: left;
-  border-width: 0px 0px 1px 0px;
-  border-color: #333333;
-  border-style: solid;
-  font-weight: 400;
-  padding: 5px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 1px 1px;
-  }
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-`
-
-const Cell = styled.td`
-  padding: 2px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: #333333;
-  }
-`
-
-const TableRow = styled.tr`
-  background-color: white;
-  &:nth-child(odd) {
-    background-color: #f9f9f9;
-  }
-`
-
-const Badges = styled.div`
-  margin: 20px 0px 30px 0px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  row-gap: 10px;
-  span {
-    color: white;
-    padding: 5px 15px;
-    background-color: #45941e;
-    border-radius: 20px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  }
-`
-const Price = styled.div`
-  margin: 30px 0px;
-  span {
-    color: #aaaaaa;
-    font-size: 14px;
-    margin-left: 10px;
-    font-weight: normal;
-  }
-  p {
-    margin-top: 0px;
-    margin-left: 20px;
-    color: #45941e;
-  }
-  h1 {
-    margin-bottom: 0;
-    font-weight: bold;
-  }
-`
 const ShadowDiv = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   width: fit-content;
   button {
     box-shadow: none;
@@ -105,11 +33,11 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <div>
-      <Title>
+    <div style={{ maxWidth: '800px' }}>
+      <BigProductTitle>
         {product.name[selectedLang] || product.name.lv} &nbsp;
         {gramsToKilos(product.weight)}
-      </Title>
+      </BigProductTitle>
       {product.badges && product.badges.length > 0 && (
         <Badges>
           {product.badges.map((b) => (
@@ -117,19 +45,11 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
           ))}
         </Badges>
       )}
-      <Price>
-        <Title>
-          {centsToEuro(addVat(product.price))}
-          <span>{lang.with_VAT}</span>
-        </Title>
-
-        <p>
-          {centsToEuro(
-            (addVat(product.price) / product.weight) * 1000
-          ).substring(1)}{' '}
-          € / kg
-        </p>
-      </Price>
+      <Price
+        price={product.price}
+        discount={product.discount}
+        weight={product.weight}
+      />
       <ShadowDiv>
         <NumberInput
           value={quantity}
@@ -161,20 +81,20 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
       )}
       {product.expiration && (
         <>
-          <Text>
+          <ProductText>
             {lang.expiration_time}{' '}
             <strong>
               {product.expiration.number} {lang[product.expiration.word]}
             </strong>
-          </Text>
+          </ProductText>
           {product.expiration.afterOpening && (
-            <Text style={{ marginTop: '-20px' }}>
+            <ProductText style={{ marginTop: '-20px' }}>
               {lang.after_opening}{' '}
               <strong>
                 {product.expiration.afterOpening.number}{' '}
                 {lang[product.expiration.afterOpening.word]}
               </strong>
-            </Text>
+            </ProductText>
           )}
         </>
       )}
@@ -184,80 +104,96 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
         </Text>
       )} */}
       {product.ingredients && (
-        <Text>
+        <ProductText>
           {product.ingredients[selectedLang] || product.ingredients.lv}
-        </Text>
+        </ProductText>
       )}
       {product.nutrition && (
-        <Table>
+        <NutritionTable>
           <tbody>
-            <TableRow>
-              <TableHeader>
+            <NutritionTableRow>
+              <NutritionTableHeader>
                 <b>{lang.nutritional_info} </b>
-              </TableHeader>
-              <TableHeader>
+              </NutritionTableHeader>
+              <NutritionTableHeader>
                 <strong>{lang.g_contains}</strong>
-              </TableHeader>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.energy_content}</Cell>
-              <Cell>
+              </NutritionTableHeader>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
+              <NutritionTableCell>
                 {Math.round(product.nutrition.energy * 4.184)}kJ/
                 {product.nutrition.energy}kcal
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fat}</Cell>
-              <Cell>{product.nutrition.fat}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
-              <Cell>{product.nutrition.saturatedFat}g</Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fat}</NutritionTableCell>
+              <NutritionTableCell>{product.nutrition.fat}g</NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
+              </NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.saturatedFat}g
+              </NutritionTableCell>
+            </NutritionTableRow>
 
-            <TableRow>
-              <Cell>{lang.carbohydrates}</Cell>
-              <Cell>{product.nutrition.carbs}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
-              <Cell>{product.nutrition.sugar}g</Cell>
-            </TableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.carbs}g
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
+              </NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.sugar}g
+              </NutritionTableCell>
+            </NutritionTableRow>
             {product.nutrition.fiber !== 0 &&
               product.nutrition.fiber !== '0' &&
               product.nutrition.fiber && (
-                <TableRow>
-                  <Cell>{lang.fiber}</Cell>
-                  <Cell>{product.nutrition.fiber}g</Cell>
-                </TableRow>
+                <NutritionTableRow>
+                  <NutritionTableCell>{lang.fiber}</NutritionTableCell>
+                  <NutritionTableCell>
+                    {product.nutrition.fiber}g
+                  </NutritionTableCell>
+                </NutritionTableRow>
               )}
-            <TableRow>
-              <Cell>{lang.protein}</Cell>
-              <Cell>{product.nutrition.protein}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.salt}</Cell>
-              <Cell>{product.nutrition.salt}g</Cell>
-            </TableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.protein}</NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.protein}g
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.salt}</NutritionTableCell>
+              <NutritionTableCell>{product.nutrition.salt}g</NutritionTableCell>
+            </NutritionTableRow>
             {product.nutrition.d3 !== 0 &&
               product.nutrition.d3 !== '0' &&
               product.nutrition.d3 && (
-                <TableRow>
-                  <Cell>{lang.d3}</Cell>
-                  <Cell>{product.nutrition.d3}µg</Cell>
-                </TableRow>
+                <NutritionTableRow>
+                  <NutritionTableCell>{lang.d3}</NutritionTableCell>
+                  <NutritionTableCell>
+                    {product.nutrition.d3}µg
+                  </NutritionTableCell>
+                </NutritionTableRow>
               )}
           </tbody>
-        </Table>
+        </NutritionTable>
       )}
       {product.EAN && (
-        <Text>
+        <ProductText>
           <Barcode
             size={30}
             style={{ marginRight: '10px' }}
           />
           {product.EAN}
-        </Text>
+        </ProductText>
       )}
     </div>
   )

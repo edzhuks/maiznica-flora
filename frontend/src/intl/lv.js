@@ -157,6 +157,18 @@ const lv = {
   d3: 'vitamīns D3',
   toast_changes_saved: 'Izmaiņas saglabātas!',
   toast_product_created: 'Produkts izveidots!',
+  discounts: 'Atlaides',
+  found_categories: 'Atrastās kategorijas',
+  found_products: 'Atrastie produkti',
+  create_discount: 'Izveidot atlaidi',
+  remove_discount: 'Noņemt atlaidi',
+  discount_price: 'Cena ar atlaidi',
+  start_date: 'Sākuma datums',
+  end_date: 'Beigu datums',
+  without_vat_cents: 'Bez pvn, centos',
+  confirm_remove_discount: 'Vai tiešām dzēst šo atlaidi?',
+  toast_discount_created: 'Atlaide izveidota!',
+  toast_discount_removed: 'Atlaide dzēsta!',
 }
 
 export default lv

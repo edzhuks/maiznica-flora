@@ -48,6 +48,7 @@ const goodProduct = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
+  badges: [],
 }
 let token
 let adminToken
@@ -546,45 +547,90 @@ describe('an admin user can', () => {
       const response = await api
         .put(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ discountPrice: 100 })
+        .send({
+          discount: {
+            discountPrice: 100,
+            endDate: '2022-10-26T20:59:59.999Z',
+            startDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
         .expect(200)
-      expect(response.body.discountPrice).toBe(100)
+      expect(response.body.discount.discountPrice).toBe(100)
       const response2 = await api.get(`/api/products/${product.id}`)
-      expect(response2.body.discountPrice).toBe(100)
+      expect(response2.body.discount.discountPrice).toBe(100)
     })
     test('and remove it', async () => {
       await api
         .delete(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .expect(204)
+        .expect(200)
       const response = await api.get(`/api/products/${product.id}`)
-      expect(response.body.discountPrice).toBeUndefined()
+      expect(response.body.discount).toBeUndefined()
     })
     test('but not with a bigger price', async () => {
       await api
         .put(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ discountPrice: 1000 })
+        .send({
+          discount: {
+            discountPrice: 1000,
+            endDate: '2022-10-26T20:59:59.999Z',
+            startDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
         .expect(400)
       const response2 = await api.get(`/api/products/${product.id}`)
-      expect(response2.body.discountPrice).toBeUndefined()
+      expect(response2.body.discount).toBeUndefined()
     })
     test('and not with a wrong price', async () => {
       await api
         .put(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ discountPrice: 1.1 })
+        .send({
+          discount: {
+            discountPrice: 1.1,
+            endDate: '2022-10-26T20:59:59.999Z',
+            startDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
         .expect(400)
       await api
         .put(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ discountPrice: -11 })
+        .send({
+          discount: {
+            discountPrice: -11,
+            endDate: '2022-10-26T20:59:59.999Z',
+            startDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
         .expect(400)
       await api
         .put(`/api/products/discount/${product.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
-        .send({ discountPrice: 'free' })
+        .send({
+          discount: {
+            discountPrice: 'free',
+            endDate: '2022-10-26T20:59:59.999Z',
+            startDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
         .expect(400)
+    })
+    test('not with negative date range', async () => {
+      await api
+        .put(`/api/products/discount/${product.id}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          discount: {
+            discountPrice: 100,
+            startDate: '2022-10-26T20:59:59.999Z',
+            endDate: '2020-10-26T20:59:59.999Z',
+          },
+        })
+        .expect(400)
+      const response2 = await api.get(`/api/products/${product.id}`)
+      expect(response2.body.discount).toBeUndefined()
     })
   })
   describe('delete a product', () => {
