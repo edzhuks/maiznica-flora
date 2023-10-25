@@ -92,7 +92,7 @@ const en = {
   edit_product: 'edit product',
   delete_product: 'delete product',
   empty_cart: 'Your shopping cart is empty.',
-  orders: 'orders',
+  orders: 'Orders',
   username: 'username',
   password: 'password',
   about_text: [
@@ -153,6 +153,15 @@ const en = {
   confirm_remove_discount: 'Are you sure you want to remove the discount?',
   toast_discount_created: 'The discount has been created!',
   toast_discount_removed: 'The discount has been removed!',
+  eu_projects: 'EU Projects',
+  distance_agreement: 'Distance agreement',
+  sales: 'Sales',
+  production: 'Production',
+  sales_manager: 'Sales Manager',
+  deputy_sales_manager: 'Deputy Sales Manager',
+  export_manager: 'Export Manager',
+  bread_manager: 'Bread Production and Quality Manager',
+  pastry_manager: 'Pastry Production and Quality Manager',
 }
 
 export default en
