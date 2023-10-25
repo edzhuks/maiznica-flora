@@ -141,6 +141,18 @@ const en = {
   d3: 'vitamin D3',
   toast_changes_saved: 'Changes have been saved!',
   toast_product_created: 'The product has been created!',
+  discounts: 'Discounts',
+  found_categories: 'Found categories',
+  found_products: 'Found products',
+  create_discount: 'Discount',
+  remove_discount: 'Remove discount',
+  discount_price: 'Discounted price',
+  start_date: 'Start date',
+  end_date: 'End date',
+  without_vat_cents: 'without VAT, in cents',
+  confirm_remove_discount: 'Are you sure you want to remove the discount?',
+  toast_discount_created: 'The discount has been created!',
+  toast_discount_removed: 'The discount has been removed!',
 }
 
 export default en

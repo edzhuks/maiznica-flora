@@ -47,7 +47,7 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
       )}
       <Price
         price={product.price}
-        discountPrice={product.discountPrice}
+        discount={product.discount}
         weight={product.weight}
       />
       <ShadowDiv>

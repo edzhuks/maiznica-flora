@@ -24,6 +24,7 @@ import NewProductFrom from './components/management/NewProduct'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ThemeProvider } from 'styled-components'
+import SearchPage from './components/SearchPage'
 
 const baseTheme = {
   main: '#45941e',
@@ -114,12 +115,17 @@ function App() {
                       element={<Product />}
                     />
                     <Route
+                      path="/search"
+                      element={<SearchPage />}
+                    />
+                    <Route
                       path="/management"
                       element={<ManagementPage />}>
                       <Route
                         path="categories"
                         element={<CategoryManagement />}
                       />
+
                       <Route
                         path="new_product/:productId?"
                         element={<NewProductFrom />}
