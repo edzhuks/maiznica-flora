@@ -169,6 +169,15 @@ const lv = {
   confirm_remove_discount: 'Vai tiešām dzēst šo atlaidi?',
   toast_discount_created: 'Atlaide izveidota!',
   toast_discount_removed: 'Atlaide dzēsta!',
+  eu_projects: 'ES Projekti',
+  distance_agreement: 'Distances līgums',
+  sales: 'Tirdzniecība',
+  production: 'Ražošana',
+  sales_manager: 'Tirdzniecības vadītājs',
+  deputy_sales_manager: 'Tirdzniecības vadītāja vietniece',
+  export_manager: 'Eksporta projektu vadītāja',
+  bread_manager: 'Maizes ražošanas un kvalitātes vadītāja',
+  pastry_manager: 'Konditorejas ražošanas un kvalitātes vadītāja',
 }
 
 export default lv

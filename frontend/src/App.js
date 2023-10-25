@@ -13,7 +13,7 @@ import ProductListWithCategories from './components/productList/ProductListWithC
 import Footer from './components/Footer'
 import OrderManagementPage from './components/orders/OrderManagementPage'
 import AboutPage from './components/AboutPage'
-import Contact from './components/Contact'
+import ContactPage from './components/contact/ContactPage'
 import { useDispatch } from 'react-redux'
 import { useCartServiceDispatch } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
@@ -25,6 +25,8 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { ThemeProvider } from 'styled-components'
 import SearchPage from './components/SearchPage'
+import EuProjects from './components/EU_Projects'
+import DistanceAgreementPage from './components/DistanceAgreementPage'
 
 const baseTheme = {
   main: '#45941e',
@@ -149,19 +151,27 @@ function App() {
                     />
                     <Route
                       path="/contact"
-                      element={<Contact />}
+                      element={<ContactPage />}
                     />
                     <Route
                       path="/about"
                       element={<AboutPage />}
                     />
+                    <Route
+                      path="/EU_projects"
+                      element={<EuProjects />}
+                    />
+                    <Route
+                      path="/distance_agreement"
+                      element={<DistanceAgreementPage />}
+                    />
                   </Routes>
                 </FullHeightContainer>
               </Padding>
+              <Footer />
             </Router>
           </MobileContext.Provider>
         </UserContext.Provider>
-        <Footer />
         <ToastContainer
           position="bottom-right"
           theme="colored"
