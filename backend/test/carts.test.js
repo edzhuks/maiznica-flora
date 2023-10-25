@@ -48,6 +48,7 @@ const product1 = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
+  badges: [],
 }
 
 const product2 = {
@@ -62,6 +63,7 @@ const product2 = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',
   bio: false,
+  badges: [],
 }
 
 let token
