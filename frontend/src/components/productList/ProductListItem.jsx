@@ -147,39 +147,45 @@ const ProductListItem = ({ inCart, product, quantity }) => {
               {product.name[selectedLang] || product.name.lv}{' '}
               {gramsToKilos(product.weight)}
             </Title>
-            <CenteredPrice>
-              <Price
-                price={product.price}
-                discount={product.discount}
-                weight={product.weight}
-                isSmall
-              />
-            </CenteredPrice>
+            {!product.outOfStock && (
+              <CenteredPrice>
+                <Price
+                  price={product.price}
+                  discount={product.discount}
+                  weight={product.weight}
+                  isSmall
+                />
+              </CenteredPrice>
+            )}
           </CardLink>
-          {inCart ? (
-            <CartButtonRow>
-              <InvertedButton onClick={removeSome}>
-                <Minus />
-              </InvertedButton>
-              <Quantity>{quantity}</Quantity>
-              <InvertedButton onClick={addMore}>
-                <Plus />
-              </InvertedButton>
-              <InvertedButton onClick={removeFromCart}>
-                <Trash />
-              </InvertedButton>
-            </CartButtonRow>
-          ) : (
-            <ButtonRow>
-              <NumberInput
-                value={quantityToAdd}
-                onChange={(event) => setQuantityToAdd(event.target.value)}
-                type="number"
-                style={{ maxWidth: '5rem' }}
-                $isonlightbackground
-              />
-              <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
-            </ButtonRow>
+          {!product.outOfStock && (
+            <>
+              {inCart ? (
+                <CartButtonRow>
+                  <InvertedButton onClick={removeSome}>
+                    <Minus />
+                  </InvertedButton>
+                  <Quantity>{quantity}</Quantity>
+                  <InvertedButton onClick={addMore}>
+                    <Plus />
+                  </InvertedButton>
+                  <InvertedButton onClick={removeFromCart}>
+                    <Trash />
+                  </InvertedButton>
+                </CartButtonRow>
+              ) : (
+                <ButtonRow>
+                  <NumberInput
+                    value={quantityToAdd}
+                    onChange={(event) => setQuantityToAdd(event.target.value)}
+                    type="number"
+                    style={{ maxWidth: '5rem' }}
+                    $isonlightbackground
+                  />
+                  <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
+                </ButtonRow>
+              )}
+            </>
           )}
         </Column>
       </MobileCard>

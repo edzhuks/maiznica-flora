@@ -45,19 +45,26 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
           ))}
         </Badges>
       )}
-      <Price
-        price={product.price}
-        discount={product.discount}
-        weight={product.weight}
-      />
-      <ShadowDiv>
-        <NumberInput
-          value={quantity}
-          onChange={(event) => setQuantity(event.target.value)}
-          type="number"
-        />
-        <Button onClick={onOrder}>{lang.add_to_cart}</Button>
-      </ShadowDiv>
+      {!product.outOfStock ? (
+        <>
+          <Price
+            price={product.price}
+            discount={product.discount}
+            weight={product.weight}
+          />
+          <ShadowDiv>
+            <NumberInput
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              type="number"
+            />
+            <Button onClick={onOrder}>{lang.add_to_cart}</Button>
+          </ShadowDiv>
+        </>
+      ) : (
+        <p></p>
+      )}
+
       {product.bio && (
         <CertImg
           src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"

@@ -45,6 +45,8 @@ const productSchema = new mongoose.Schema({
     afterOpeneing: { number: Number, word: String },
   },
   badges: [{ type: String }],
+  outOfStock: Boolean,
+  invisible: Boolean,
 })
 
 productSchema.set('toJSON', {
