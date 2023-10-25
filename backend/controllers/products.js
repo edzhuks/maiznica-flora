@@ -13,6 +13,11 @@ const router = express.Router()
 
 router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
   const product = await Product.findById(req.params.id)
+  if (!req.body.discount) {
+    return res.status(400).json({
+      error: 'No discount in request body',
+    })
+  }
   if (!isPositiveInteger(req.body.discount.discountPrice)) {
     return res.status(400).json({
       error: 'Discounted price must be a positive integer amount in cents',
@@ -25,10 +30,15 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
   }
   const discount = {
     discountPrice: req.body.discount.discountPrice,
-    startDate: Date.parse(req.body.discount.startDate),
+    startDate: new Date(req.body.discount.startDate),
     endDate: new Date(req.body.discount.endDate),
   }
   discount.endDate.setHours(23, 59, 59, 999)
+  if (discount.endDate < discount.startDate) {
+    return res.status(400).json({
+      error: 'End date can not be earlier than start date',
+    })
+  }
   const newProduct = await Product.findByIdAndUpdate(
     req.params.id,
     {
@@ -36,7 +46,7 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
     },
     { new: 'true' }
   )
-  res.send(newProduct)
+  res.status(200).send(newProduct)
 })
 
 router.delete(
@@ -47,7 +57,7 @@ router.delete(
     const product = await Product.findById(req.params.id)
     product.discount = undefined
     await product.save()
-    res.send(product)
+    res.status(200).send(product)
   }
 )
 

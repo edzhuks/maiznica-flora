@@ -142,6 +142,19 @@ const de = {
   d3: 'Vitamin D3',
   toast_changes_saved: 'Änderungen wurden gespeichert!',
   toast_product_created: 'Das Produkt wurde erstellt!',
+  discounts: 'Rabatte',
+  found_categories: 'Gefundene Kategorien',
+  found_products: 'Gefundene Produkte',
+  create_discount: 'Rabatt erstellen',
+  remove_discount: 'Rabatt entfernen',
+  discount_price: 'Rabattierter Preis',
+  start_date: 'Startdatum',
+  end_date: 'Enddatum',
+  without_vat_cents: 'ohne Mehrwertsteuer, in Cents',
+  confirm_remove_discount:
+    'Sind Sie sicher, dass Sie den Rabatt entfernen möchten?',
+  toast_discount_created: 'Der Rabatt wurde erstellt!',
+  toast_discount_removed: 'Der Rabatt wurde entfernt!',
 }
 
 export default de
