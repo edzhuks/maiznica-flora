@@ -18,17 +18,13 @@ const Item = styled.div`
   @media (max-width: 960px) {
     width: calc(100% / 3);
   }
-  /* width: clamp(180px, 270px, ${(props) =>
-    props.theme.preferredCardItemWidth}); */
-  /* width: 13rem; */
-  /* padding: calc(${(props) => props.theme.padding} / 2); */
 `
 const Container = styled.div`
   max-width: 1600px;
   @media (max-width: 2000px) {
     max-width: 80%;
   }
-  @media (max-width: 960px) {
+  @media (max-width: 1200px) {
     max-width: 100%;
   }
   margin: auto;
@@ -155,6 +151,10 @@ const TextArea = styled.textarea`
   }
 `
 
+const ShadowTextArea = styled(TextArea)`
+  box-shadow: ${(props) => props.theme.shadow};
+`
+
 const NumberInput = styled(StyledInput)`
   width: 100px;
 `
@@ -190,15 +190,6 @@ const ProductImage = styled.img`
   justify-self: center;
   box-shadow: ${(props) => props.theme.shadow};
 `
-const WrappableRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-  column-gap: 40px;
-`
 
 const SubTitle = styled.p`
   color: ${(props) => props.theme.text};
@@ -229,7 +220,7 @@ const BigTitle = styled.div`
   font-size: 1.5rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin: ${(props) => props.theme.padding};
+  margin: ${(props) => props.theme.padding} 0;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -254,7 +245,21 @@ const Centerer = styled.div`
   align-items: center;
   height: 100%;
 `
-
+const WrappableRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  ${Centerer} {
+    width: fit-content;
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
+    ${Centerer} {
+      width: 100%;
+    }
+  }
+  column-gap: 40px;
+`
 const LoginCard = styled(Card)`
   padding: calc(${(props) => props.theme.padding}*2)
     calc(${(props) => props.theme.padding}*4)
@@ -303,8 +308,8 @@ const Radio = styled.label`
   /* Create a custom radio button */
   span {
     position: absolute;
-    top: 25px;
-    left: 20px;
+    top: calc(${(props) => props.theme.padding}*2);
+    left: calc(${(props) => props.theme.padding}*2);
     height: 25px;
     width: 25px;
     background-color: ${(props) => props.theme.lighter};
@@ -515,6 +520,7 @@ export {
   CompactInputGroup,
   Radio,
   TextArea,
+  ShadowTextArea,
   Form,
   ModalContainer,
   ModalContent,

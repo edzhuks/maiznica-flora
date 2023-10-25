@@ -1,17 +1,34 @@
 import styled, { css, keyframes } from 'styled-components'
-import { Card, Container, Row } from './styled/base'
+import {
+  Button,
+  Card,
+  Container,
+  InvertedButton,
+  Row,
+  ShadowInput,
+  StyledInput,
+} from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import UserContext from '../contexts/userContext'
 import { ShoppingCart } from '@styled-icons/entypo/ShoppingCart'
 import { Menu } from '@styled-icons/evaicons-solid/Menu'
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline'
-import { Link } from 'react-router-dom'
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 import { clearCart } from '../reducers/cartReducer'
 import MobileContext from '../contexts/mobileContext'
 import { changeLanguage } from '../reducers/languageReducer'
 import { ScrewdriverWrench } from '@styled-icons/fa-solid/ScrewdriverWrench'
 import { DocumentBulletListClock } from '@styled-icons/fluentui-system-filled/DocumentBulletListClock'
+import { Exit } from '@styled-icons/icomoon/Exit'
+import { Enter } from '@styled-icons/icomoon/Enter'
+import { AccountCircle } from '@styled-icons/material/AccountCircle'
+import Search from './basic/Search'
 
 const HeaderSpacer = styled.div`
   height: calc(
@@ -43,7 +60,7 @@ const MobileHeader = styled(DesktopHeader)`
 `
 
 const HeaderTab = styled(Link)`
-  padding: 0 clamp(10px, 20px, 30px);
+  padding: 0 12px;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
@@ -154,7 +171,6 @@ const Spacer = styled.div`
 
 const Lang = styled.div`
   display: flex;
-  /* flex-direction: column; */
   button {
     transition: 0.2s;
 
@@ -170,7 +186,6 @@ const Lang = styled.div`
     margin: 0px 3px;
     border: 0px solid ${(props) => props.theme.main};
     border-radius: 50%;
-    /* margin-left: 7px; */
     cursor: pointer;
   }
 `
@@ -191,7 +206,6 @@ const Logo = styled.img`
 
 const Header = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  console.log(lang)
   const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
   const [mobile, setIsMobile] = useContext(MobileContext)
@@ -207,6 +221,20 @@ const Header = () => {
     window.localStorage.removeItem('maiznicafloraUser')
     setUser(null)
   }
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchQuery, setSearchQuery] = useState('')
+  const search = () => {
+    navigate(`/search/?query=${searchQuery}`)
+  }
+  let [_, setSearchParams] = useSearchParams()
+  const handleSearchChange = (newValue) => {
+    setSearchQuery(newValue)
+    if (location.pathname === '/search/') {
+      setSearchParams({ query: newValue })
+    }
+  }
+
   return (
     <div>
       <HeaderSpacer />
@@ -248,28 +276,64 @@ const Header = () => {
           </MobileHeader>
           {sideMenu && (
             <SideMenu>
-              <SideMenuTab to="/category/all">{lang.products}</SideMenuTab>
-              <SideMenuTab to="/about">{lang.about}</SideMenuTab>
-              <SideMenuTab to="/contact">{lang.contact}</SideMenuTab>
+              <Search
+                value={searchQuery}
+                onChange={(value) => handleSearchChange(value)}
+                onEnter={search}
+                onClear={() => handleSearchChange('')}
+                onSearch={() => {
+                  search()
+                  setSideMenu(false)
+                }}
+              />
+              <SideMenuTab
+                onClick={() => setSideMenu(false)}
+                to="/category/all">
+                {lang.products}
+              </SideMenuTab>
+              <SideMenuTab
+                onClick={() => setSideMenu(false)}
+                to="/about">
+                {lang.about}
+              </SideMenuTab>
+              <SideMenuTab
+                onClick={() => setSideMenu(false)}
+                to="/contact">
+                {lang.contact}
+              </SideMenuTab>
               {user && user.admin && (
                 <>
-                  <SideMenuTab to="/management/categories">
+                  <SideMenuTab
+                    onClick={() => setSideMenu(false)}
+                    to="/management/categories">
                     {lang.management}
                   </SideMenuTab>
-                  <SideMenuTab to="/orders">{lang.orders}</SideMenuTab>
+                  <SideMenuTab
+                    onClick={() => setSideMenu(false)}
+                    to="/orders">
+                    {lang.orders}
+                  </SideMenuTab>
                 </>
               )}
               {!user && (
                 <>
-                  <SideMenuTab to="/login">{lang.sign_in}</SideMenuTab>
-                  <SideMenuTab to="/signup">{lang.sign_up}</SideMenuTab>
+                  <SideMenuTab
+                    onClick={() => setSideMenu(false)}
+                    to="/login">
+                    {lang.sign_in}
+                  </SideMenuTab>
+                  <SideMenuTab
+                    onClick={() => setSideMenu(false)}
+                    to="/signup">
+                    {lang.sign_up}
+                  </SideMenuTab>
                 </>
               )}
               {user && (
                 <SideMenuTab
                   as="button"
                   onClick={logout}>
-                  {lang.sign_out}
+                  {lang.sign_out}{' '}
                 </SideMenuTab>
               )}
               <SideMenuTab style={{ border: '0' }}>
@@ -312,6 +376,16 @@ const Header = () => {
               <HeaderTab to="/category/all">{lang.products}</HeaderTab>
               <HeaderTab to="/about">{lang.about}</HeaderTab>
               <HeaderTab to="/contact">{lang.contact}</HeaderTab>
+              <Search
+                value={searchQuery}
+                onChange={(value) => handleSearchChange(value)}
+                onEnter={search}
+                onClear={() => handleSearchChange('')}
+                onSearch={() => {
+                  search()
+                  setSideMenu(false)
+                }}
+              />
 
               <Spacer />
               {user ? (
@@ -342,15 +416,19 @@ const Header = () => {
               )}
               {!user && (
                 <>
-                  <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
-                  <HeaderTab to="/signup">{lang.sign_up}</HeaderTab>
+                  <HeaderTab to="/login">
+                    <Enter size="2rem" />
+                  </HeaderTab>
+                  <HeaderTab to="/signup">
+                    <AccountCircle size="2.2rem" />
+                  </HeaderTab>
                 </>
               )}
               {user && (
                 <HeaderTab
                   as="button"
                   onClick={logout}>
-                  {lang.sign_out}
+                  <Exit size="2rem" />
                 </HeaderTab>
               )}
               <Lang>

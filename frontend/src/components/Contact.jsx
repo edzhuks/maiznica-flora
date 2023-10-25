@@ -3,11 +3,11 @@ import {
   BigTitle,
   Form,
   InputGroup,
-  StyledInput,
   Label,
-  TextArea,
   Button,
   ContactText,
+  ShadowInput,
+  ShadowTextArea,
 } from './styled/base'
 import { useSelector } from 'react-redux'
 
@@ -39,21 +39,21 @@ const Contact = () => {
           <InputGroup>
             <Label>
               {lang.name}
-              <StyledInput />
+              <ShadowInput />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               {lang.email}
-              <StyledInput />
+              <ShadowInput />
             </Label>
           </InputGroup>
           <InputGroup>
             <Label>
               {lang.message}
-              <TextArea
+              <ShadowTextArea
                 rows={5}
-                style={{ width: '100%' }}
+                style={{ width: '70%' }}
               />
             </Label>
           </InputGroup>

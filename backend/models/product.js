@@ -29,7 +29,11 @@ const productSchema = new mongoose.Schema({
   },
   weight: Number,
   price: Number,
-  discountPrice: Number,
+  discount: {
+    discountPrice: Number,
+    startDate: Date,
+    endDate: Date,
+  },
   EAN: String,
   image: String,
   bio: Boolean,

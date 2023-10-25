@@ -150,7 +150,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             <CenteredPrice>
               <Price
                 price={product.price}
-                discountPrice={product.discountPrice}
+                discount={product.discount}
                 weight={product.weight}
                 isSmall
               />

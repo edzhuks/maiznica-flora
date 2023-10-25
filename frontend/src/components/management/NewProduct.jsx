@@ -16,6 +16,7 @@ import {
   NutritionTableHeader,
   NutritionTableCell,
   Toggle,
+  ShadowTextArea,
 } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
@@ -41,11 +42,10 @@ const GreenNumberInput = styled(NumberInput)`
   box-shadow: ${(props) => props.theme.shadow};
 `
 
-const ProductTextArea = styled(TextArea)`
+const ProductTextArea = styled(ShadowTextArea)`
   width: 420px;
   font-size: small;
   margin: 5px 0px;
-  box-shadow: ${(props) => props.theme.shadow};
 `
 
 const EditableBadges = styled(Badges)`
@@ -546,7 +546,7 @@ const NewProductFrom = () => {
           </div>
         )}
       </EditTab>
-      <WrappableRow style={{ width: '1350px' }}>
+      <WrappableRow style={{ justifyContent: 'end' }}>
         <ProductImage
           onDragOver={(e) => {
             e.stopPropagation()

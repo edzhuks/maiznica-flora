@@ -54,7 +54,13 @@ const TipText = styled.span`
   font-weight: normal;
 `
 
-const Price = ({ price, discountPrice, weight, isSmall }) => {
+const Price = ({ price, discount, weight, isSmall }) => {
+  const discountPrice =
+    discount &&
+    Date.parse(discount.startDate) <= new Date() &&
+    Date.parse(discount.endDate) >= new Date()
+      ? discount.discountPrice
+      : undefined
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <PriceContainer>

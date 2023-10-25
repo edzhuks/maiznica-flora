@@ -18,7 +18,7 @@ import useOrderService from '../services/order'
 
 const InputGroup = styled.div`
   float: left;
-  margin: 10px;
+  margin: ${(props) => props.theme.padding};
   width: 23%;
   min-width: 230px;
   input {
@@ -27,6 +27,7 @@ const InputGroup = styled.div`
 `
 const CompactLabel = styled(Label)`
   width: auto;
+  line-height: 1rem;
 `
 
 const Form = styled.form`
@@ -42,7 +43,7 @@ const Form = styled.form`
 const AddressChoice = styled(Radio)`
   box-shadow: ${(props) => props.theme.shadow};
   background-color: ${(props) => props.theme.card};
-  padding: 18px;
+  padding: ${(props) => props.theme.padding};
 `
 
 const Order = () => {
