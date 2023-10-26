@@ -87,7 +87,8 @@ const useCategoryService = () => {
   }
 
   const getFullCatalogue = () => {
-    const request = axios.get(`${baseUrl}/complete`)
+    const config = makeConfig()
+    const request = axios.get(`${baseUrl}/complete`, config)
     return request.then((response) => response.data)
   }
 

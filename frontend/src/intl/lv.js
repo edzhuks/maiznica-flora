@@ -178,6 +178,7 @@ const lv = {
   export_manager: 'Eksporta projektu vadītāja',
   bread_manager: 'Maizes ražošanas un kvalitātes vadītāja',
   pastry_manager: 'Konditorejas ražošanas un kvalitātes vadītāja',
+  currently_unavailable: 'Pašreiz nav pārdošanā',
 }
 
 export default lv

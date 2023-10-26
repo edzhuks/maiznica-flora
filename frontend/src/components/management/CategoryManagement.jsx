@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux'
 import useCategoryService from '../../services/category'
 import { Edit } from '@styled-icons/evaicons-solid/Edit'
 import { Cross } from '@styled-icons/entypo/Cross'
+import { BoxSeam } from '@styled-icons/bootstrap/BoxSeam'
+import useProductService from '../../services/product'
+import { Eye } from '@styled-icons/heroicons-solid/Eye'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -36,7 +39,8 @@ const SmallButton = styled(Button)`
 
 const ProductItem = styled.li`
   span {
-    color: black;
+    color: ${(props) => (props.outOfStock ? props.theme.light : 'black')};
+    text-decoration: ${(props) => (props.invisible ? 'line-through' : 'none')};
   }
   position: relative;
   background: ${(props) => props.theme.background};
@@ -85,6 +89,7 @@ const EditButton = styled(RemoveButton)`
     color: ${(props) => props.theme.white};
   }
 `
+
 const CategoryItem = styled(ProductItem)`
   font-weight: bold;
   margin: 5px 0px;
@@ -111,6 +116,10 @@ const CategoryTab = ({
   handleDeleteProduct,
   handleDeleteCategory,
   parentCategory,
+  handleHideProduct,
+  handleShowProduct,
+  handleInStockProduct,
+  handleOutOfStockProduct,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -152,7 +161,10 @@ const CategoryTab = ({
       <CategoryList>
         {category.categories &&
           category.products.map((p) => (
-            <ProductItem key={p.id}>
+            <ProductItem
+              key={p.id}
+              invisible={p.invisible}
+              outOfStock={p.outOfStock}>
               <Link
                 to={`/products/${p.id}`}
                 style={{ textDecoration: 'none' }}>
@@ -167,6 +179,26 @@ const CategoryTab = ({
                 }}>
                 <Cross size="20px" />
               </RemoveButton>
+              <EditButton
+                onClick={() => {
+                  if (p.invisible) {
+                    handleShowProduct(p.id)
+                  } else {
+                    handleHideProduct(p.id)
+                  }
+                }}>
+                <Eye size="18px" />
+              </EditButton>
+              <EditButton
+                onClick={() => {
+                  if (p.outOfStock) {
+                    handleInStockProduct(p.id)
+                  } else {
+                    handleOutOfStockProduct(p.id)
+                  }
+                }}>
+                <BoxSeam size="18px" />
+              </EditButton>
               <Link to={`/management/new_product/${p.id}`}>
                 <EditButton>
                   <Edit size="20px" />
@@ -184,6 +216,10 @@ const CategoryTab = ({
               handleCategory={handleCategory}
               handleProduct={handleProduct}
               handleDeleteProduct={handleDeleteProduct}
+              handleShowProduct={handleShowProduct}
+              handleHideProduct={handleHideProduct}
+              handleInStockProduct={handleInStockProduct}
+              handleOutOfStockProduct={handleOutOfStockProduct}
               handleDeleteCategory={handleDeleteCategory}
               parentCategory={category}
             />
@@ -195,6 +231,7 @@ const CategoryTab = ({
 
 const CategoryManagement = () => {
   const categoryService = useCategoryService()
+  const productService = useProductService()
   const [catalogue, setCatalogue] = useState(null)
   const [activeCategory, setActiveCategory] = useState(null)
   const [addingProduct, setAddingProduct] = useState(false)
@@ -226,7 +263,18 @@ const CategoryManagement = () => {
       .removeCategories({ categoryId: id, parentCategory })
       .then(() => refresh())
   }
-
+  const handleHideProduct = (id) => {
+    productService.hideProduct(id).then(() => refresh())
+  }
+  const handleShowProduct = (id) => {
+    productService.showProduct(id).then(() => refresh())
+  }
+  const handleInStockProduct = (id) => {
+    productService.inStock(id).then(() => refresh())
+  }
+  const handleOutOfStockProduct = (id) => {
+    productService.outOfStock(id).then(() => refresh())
+  }
   const refresh = () => {
     categoryService.getFullCatalogue().then((result) => {
       setCatalogue(result)
@@ -258,6 +306,10 @@ const CategoryManagement = () => {
             handleCategory={clickCategory}
             handleDeleteProduct={handleDeleteProduct}
             handleDeleteCategory={handleDeleteCategory}
+            handleShowProduct={handleShowProduct}
+            handleHideProduct={handleHideProduct}
+            handleInStockProduct={handleInStockProduct}
+            handleOutOfStockProduct={handleOutOfStockProduct}
             category={catalogue}
           />
         ) : (
