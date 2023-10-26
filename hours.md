@@ -30,4 +30,6 @@
 | 18.10        | 7     | error handling in frontend, nice toasts, form validation, security fixes, visual improvements, services are now hooks                                                                 |
 | 19.10        | 8.5   | more product data, refactoring                                                                                                                                                        |
 | 20.10        | 8     | mostly css, making the site more responsive, showing discounts                                                                                                                        |
-| total        | 118.5 |                                                                                                                                                                                       |
+| 25.10        | 12    | finished discounts, better contacts page, EU project page, search                                                                                                                     |
+| 26.10        | 2     | hiding products, distance agreement                                                                                                                                                   |
+| total        | 130.5 |                                                                                                                                                                                       |
