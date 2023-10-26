@@ -103,7 +103,12 @@ const Quantity = styled.span`
   font-size: 1.3rem;
   color: ${(props) => props.theme.dark};
 `
-
+const UnavailableText = styled.p`
+  font-size: 0.9rem;
+  color: ${(props) => props.theme.light};
+  text-align: right;
+  margin-bottom: 0;
+`
 const ProductListItem = ({ inCart, product, quantity }) => {
   const { addItem, removeItem, changeQuantityOfItem } = useCartServiceDispatch()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
@@ -147,39 +152,47 @@ const ProductListItem = ({ inCart, product, quantity }) => {
               {product.name[selectedLang] || product.name.lv}{' '}
               {gramsToKilos(product.weight)}
             </Title>
-            <CenteredPrice>
-              <Price
-                price={product.price}
-                discount={product.discount}
-                weight={product.weight}
-                isSmall
-              />
-            </CenteredPrice>
+            {!product.outOfStock && (
+              <CenteredPrice>
+                <Price
+                  price={product.price}
+                  discount={product.discount}
+                  weight={product.weight}
+                  isSmall
+                />
+              </CenteredPrice>
+            )}
           </CardLink>
-          {inCart ? (
-            <CartButtonRow>
-              <InvertedButton onClick={removeSome}>
-                <Minus />
-              </InvertedButton>
-              <Quantity>{quantity}</Quantity>
-              <InvertedButton onClick={addMore}>
-                <Plus />
-              </InvertedButton>
-              <InvertedButton onClick={removeFromCart}>
-                <Trash />
-              </InvertedButton>
-            </CartButtonRow>
+          {!product.outOfStock ? (
+            <>
+              {inCart ? (
+                <CartButtonRow>
+                  <InvertedButton onClick={removeSome}>
+                    <Minus />
+                  </InvertedButton>
+                  <Quantity>{quantity}</Quantity>
+                  <InvertedButton onClick={addMore}>
+                    <Plus />
+                  </InvertedButton>
+                  <InvertedButton onClick={removeFromCart}>
+                    <Trash />
+                  </InvertedButton>
+                </CartButtonRow>
+              ) : (
+                <ButtonRow>
+                  <NumberInput
+                    value={quantityToAdd}
+                    onChange={(event) => setQuantityToAdd(event.target.value)}
+                    type="number"
+                    style={{ maxWidth: '5rem' }}
+                    $isonlightbackground
+                  />
+                  <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
+                </ButtonRow>
+              )}
+            </>
           ) : (
-            <ButtonRow>
-              <NumberInput
-                value={quantityToAdd}
-                onChange={(event) => setQuantityToAdd(event.target.value)}
-                type="number"
-                style={{ maxWidth: '5rem' }}
-                $isonlightbackground
-              />
-              <BuyButton onClick={addToCart}>{lang.buy}</BuyButton>
-            </ButtonRow>
+            <UnavailableText>{lang.currently_unavailable}</UnavailableText>
           )}
         </Column>
       </MobileCard>

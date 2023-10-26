@@ -322,7 +322,7 @@ describe('an admin user can', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ product: goodProduct, addToAll: true })
         .expect(201)
-      const response = await api.get('/api/categories/complete')
+      const response = await api.get('/api/categories/all')
       expect(response.body.products[0]).toStrictEqual({
         ...goodProduct,
         id: productResponse.body.id,

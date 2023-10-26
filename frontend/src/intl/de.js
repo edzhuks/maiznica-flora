@@ -164,6 +164,7 @@ const de = {
   export_manager: 'Leiter der Exportabteilung',
   bread_manager: 'Leiter der Brotproduktion und -qualität',
   pastry_manager: 'Leiter der Backwarenproduktion und -qualität',
+  currently_unavailable: 'Derzeit nicht verfügbar',
 }
 
 export default de
