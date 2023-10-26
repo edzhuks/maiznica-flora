@@ -103,7 +103,12 @@ const Quantity = styled.span`
   font-size: 1.3rem;
   color: ${(props) => props.theme.dark};
 `
-
+const UnavailableText = styled.p`
+  font-size: 0.9rem;
+  color: ${(props) => props.theme.light};
+  text-align: right;
+  margin-bottom: 0;
+`
 const ProductListItem = ({ inCart, product, quantity }) => {
   const { addItem, removeItem, changeQuantityOfItem } = useCartServiceDispatch()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
@@ -158,7 +163,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
               </CenteredPrice>
             )}
           </CardLink>
-          {!product.outOfStock && (
+          {!product.outOfStock ? (
             <>
               {inCart ? (
                 <CartButtonRow>
@@ -186,6 +191,8 @@ const ProductListItem = ({ inCart, product, quantity }) => {
                 </ButtonRow>
               )}
             </>
+          ) : (
+            <UnavailableText>{lang.currently_unavailable}</UnavailableText>
           )}
         </Column>
       </MobileCard>

@@ -52,7 +52,10 @@ const getCatalogue = async () => {
 }
 
 categoryRouter.get('/discount', async (req, res) => {
-  const products = await Product.find({ discount: { $exists: true } })
+  const products = await Product.find({
+    discount: { $exists: true },
+    invisible: { $ne: true },
+  })
   res.send({
     products: products.filter(
       (p) =>
@@ -63,14 +66,19 @@ categoryRouter.get('/discount', async (req, res) => {
   })
 })
 
-categoryRouter.get('/complete', async (req, res) => {
-  let catalogue = await getCatalogue()
-  res.send(catalogue)
-})
+categoryRouter.get(
+  '/complete',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let catalogue = await getCatalogue()
+    res.send(catalogue)
+  }
+)
 
 categoryRouter.get('/:category', async (req, res) => {
   let categories = await Category.findById(req.params.category)
-    .populate('products')
+    .populate({ path: 'products', match: { invisible: { $ne: true } } })
     .populate('categories')
   res.send(categories)
 })

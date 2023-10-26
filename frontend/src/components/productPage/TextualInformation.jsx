@@ -29,6 +29,13 @@ const CertImg = styled.img`
   height: 70px;
   margin: 0px 20px 0px 0px;
 `
+
+const UnavailableText = styled.p`
+  font-size: 1.1rem;
+  color: ${(props) => props.theme.light};
+  margin-top: 25px;
+`
+
 const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -62,7 +69,7 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
           </ShadowDiv>
         </>
       ) : (
-        <p></p>
+        <UnavailableText>{lang.currently_unavailable}</UnavailableText>
       )}
 
       {product.bio && (

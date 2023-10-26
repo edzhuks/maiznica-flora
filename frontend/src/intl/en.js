@@ -162,6 +162,7 @@ const en = {
   export_manager: 'Export Manager',
   bread_manager: 'Bread Production and Quality Manager',
   pastry_manager: 'Pastry Production and Quality Manager',
+  currently_unavailable: 'Out of stock',
 }
 
 export default en

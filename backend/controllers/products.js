@@ -1,6 +1,7 @@
 const express = require('express')
 const Product = require('../models/product')
 const Category = require('../models/category')
+const Cart = require('../models/cart')
 const { getCatalogue } = require('./categories')
 const {
   userExtractor,
@@ -66,12 +67,18 @@ router.delete(
 )
 
 router.get('/', async (req, res) => {
-  const products = await Product.find()
+  const products = await Product.find({ invisible: { $ne: true } })
   res.send(products)
 })
 
 router.get('/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findOne({
+    _id: req.params.id,
+    invisible: { $ne: true },
+  })
+  if (!product) {
+    return res.status(404).json({ error: 'The product does not exist' })
+  }
   res.send(product)
 })
 
@@ -84,6 +91,46 @@ router.delete('/:id', userExtractor, adminRequired, async (req, res) => {
   }
   res.status(204).end()
 })
+
+router.put('/hide/:id', userExtractor, adminRequired, async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  product.invisible = true
+  await product.save()
+  const carts = await Cart.find()
+  for (const c of carts) {
+    c.content.pull({ product: req.params.id })
+    await c.save()
+  }
+  res.status(201).send(product)
+})
+router.put('/show/:id', userExtractor, adminRequired, async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  product.invisible = false
+  await product.save()
+  res.status(201).send(product)
+})
+router.put('/inStock/:id', userExtractor, adminRequired, async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  product.outOfStock = false
+  await product.save()
+  res.status(201).send(product)
+})
+router.put(
+  '/outOfStock/:id',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    const product = await Product.findById(req.params.id)
+    product.outOfStock = true
+    await product.save()
+    const carts = await Cart.find()
+    for (const c of carts) {
+      c.content.pull({ product: req.params.id })
+      await c.save()
+    }
+    res.status(201).send(product)
+  }
+)
 
 router.put(
   '/:id',
