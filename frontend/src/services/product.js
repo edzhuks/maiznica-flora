@@ -49,6 +49,26 @@ const useProductService = () => {
     return request
   }
 
+  const hideProduct = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/hide/${productId}`, {}, config)
+    return request
+  }
+  const showProduct = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/show/${productId}`, {}, config)
+    return request
+  }
+  const inStock = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/inStock/${productId}`, {}, config)
+    return request
+  }
+  const outOfStock = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/outOfStock/${productId}`, {}, config)
+    return request
+  }
   return {
     create,
     getAll,
@@ -57,6 +77,10 @@ const useProductService = () => {
     update,
     makeDiscount,
     removeDiscount,
+    hideProduct,
+    showProduct,
+    inStock,
+    outOfStock,
   }
 }
 export default useProductService
