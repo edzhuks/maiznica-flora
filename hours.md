@@ -33,4 +33,4 @@
 | 25.10        | 12    | finished discounts, better contacts page, EU project page, search                                                                                                                     |
 | 26.10        | 2     | hiding products, distance agreement                                                                                                                                                   |
 | 27.10        | 5     | password reset, privacy policy, change password                                                                                                                                       |
-| total        | 136.5 |                                                                                                                                                                                       |
+| total        | 137.5 |                                                                                                                                                                                       |
