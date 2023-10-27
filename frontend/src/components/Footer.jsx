@@ -46,6 +46,9 @@ const Footer = () => {
               <FooterLink to="/distance_agreement">
                 {lang.distance_agreement}
               </FooterLink>
+              <FooterLink to="/privacy_policy">
+                {lang.privacy_policy}
+              </FooterLink>
             </Column>
           </WrappableRow>
         </Container>

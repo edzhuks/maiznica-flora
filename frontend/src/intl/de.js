@@ -174,6 +174,7 @@ const de = {
   password_match: 'Passwörter müssen übereinstimmen',
   email_not_registered: 'Mit dieser E-Mail-Adresse ist kein Konto verbunden',
   toast_password_reset: 'Das Passwort wurde geändert',
+  privacy_policy: 'Datenschutzbestimmungen',
 }
 
 export default de
