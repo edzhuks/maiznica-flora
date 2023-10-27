@@ -29,6 +29,7 @@ import EuProjects from './components/EU_Projects'
 import DistanceAgreementPage from './components/DistanceAgreementPage'
 import ForgotPassword from './components/user/ForgotPassword'
 import ResetPassword from './components/user/ResetPassword'
+import PrivacyPolicyPage from './components/PrivacyPolicyPage'
 
 const baseTheme = {
   main: '#45941e',
@@ -174,6 +175,10 @@ function App() {
                     <Route
                       path="/distance_agreement"
                       element={<DistanceAgreementPage />}
+                    />
+                    <Route
+                      path="/privacy_policy"
+                      element={<PrivacyPolicyPage />}
                     />
                   </Routes>
                 </FullHeightContainer>

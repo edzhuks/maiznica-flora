@@ -32,4 +32,5 @@
 | 20.10        | 8     | mostly css, making the site more responsive, showing discounts                                                                                                                        |
 | 25.10        | 12    | finished discounts, better contacts page, EU project page, search                                                                                                                     |
 | 26.10        | 2     | hiding products, distance agreement                                                                                                                                                   |
-| total        | 132.5 |                                                                                                                                                                                       |
+| 27.10        | 4     | password reset, privacy policy                                                                                                                                                        |
+| total        | 136.5 |                                                                                                                                                                                       |
