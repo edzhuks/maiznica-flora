@@ -7,7 +7,7 @@ const de = {
   new_product: 'Neues Produkt',
   management: 'Verwaltung',
   categories: 'Kategorien',
-  sign_out: 'abmelden',
+  sign_out: 'Abmelden',
   sum: 'Summe',
   paid_delivery: 'bezahlte Lieferung',
   under_30: 'unter 30 €',
@@ -175,6 +175,14 @@ const de = {
   email_not_registered: 'Mit dieser E-Mail-Adresse ist kein Konto verbunden',
   toast_password_reset: 'Das Passwort wurde geändert',
   privacy_policy: 'Datenschutzbestimmungen',
+  profile: 'Konto',
+  previous_orders: 'Bestellungen',
+  change_password: 'Passwort ändern',
+  account_information: 'Meine Info.',
+  addresses: 'Adressen',
+  previous_password: 'Vorheriges Passwort',
+  vorheriges_passwort_erforderlich: 'Vorheriges Passwort ist erforderlich',
+  previous_password_incorrect: 'Vorheriges Passwort ist falsch',
 }
 
 export default de

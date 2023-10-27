@@ -7,7 +7,7 @@ const en = {
   new_product: 'new product',
   management: 'management',
   categories: 'categories',
-  sign_out: 'sign out',
+  sign_out: 'Sign out',
   sum: 'sum',
   paid_delivery: 'paid delivery',
   under_30: 'under €30',
@@ -173,6 +173,14 @@ const en = {
     'There is no account associated with this email address',
   toast_password_reset: 'Password has been changed',
   privacy_policy: 'Privacy policy',
+  profile: 'Account',
+  previous_orders: 'Previous orders',
+  change_password: 'Change password',
+  account_information: 'Personal information',
+  addresses: 'Addresses',
+  previous_password: 'Previous password',
+  previous_password_required: 'Previous password is required',
+  previous_password_incorrect: 'Previous password is wrong',
 }
 
 export default en

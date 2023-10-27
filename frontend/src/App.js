@@ -30,6 +30,8 @@ import DistanceAgreementPage from './components/DistanceAgreementPage'
 import ForgotPassword from './components/user/ForgotPassword'
 import ResetPassword from './components/user/ResetPassword'
 import PrivacyPolicyPage from './components/PrivacyPolicyPage'
+import AccountPage from './components/user/AccountPage'
+import ChangePassword from './components/user/ChangePassword'
 
 const baseTheme = {
   main: '#45941e',
@@ -180,6 +182,14 @@ function App() {
                       path="/privacy_policy"
                       element={<PrivacyPolicyPage />}
                     />
+                    <Route
+                      path="/account"
+                      element={<AccountPage />}>
+                      <Route
+                        path="change_password"
+                        element={<ChangePassword />}
+                      />
+                    </Route>
                   </Routes>
                 </FullHeightContainer>
               </Padding>

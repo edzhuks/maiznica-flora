@@ -14,31 +14,13 @@ import {
   PaddedForm,
   StyledInput,
   SubTitle,
+  ValidPassword,
+  ValidationFailed,
 } from '../styled/base'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-
-const ValidationFailed = styled.div`
-  color: ${(props) => props.theme.error};
-  ul {
-    font-size: 14px;
-    margin: 0;
-    list-style: '●  ';
-  }
-  h3 {
-    font-weight: normal;
-    margin: 0;
-    margin-bottom: 5px;
-    width: 100%;
-  }
-  line-height: 1.5;
-  margin-top: -20px;
-  margin-bottom: 20px;
-`
-const ValidPassword = styled(ValidationFailed)`
-  color: ${(props) => props.theme.main};
-`
+import PasswordWithValidation from '../basic/PasswordValidation'
 
 const SignUp = () => {
   const userService = useUserService()
@@ -50,23 +32,21 @@ const SignUp = () => {
   const password2 = useField('password')
   const [registered, setRegistered] = useState(false)
 
-  const [emailRequiredReminderVisisble, setEmailRequiredReminderVisisble] =
+  const [emailRequiredReminderVisible, setEmailRequiredReminderVisible] =
     useState(false)
-  const [
-    passwordRequiredReminderVisisble,
-    setPasswordRequiredReminderVisisble,
-  ] = useState(false)
-  const [emailUsedReminderVisisble, setEmailUsedReminderVisisble] =
+  const [passwordRequiredReminderVisible, setPasswordRequiredReminderVisible] =
+    useState(false)
+  const [emailUsedReminderVisible, setEmailUsedReminderVisible] =
     useState(false)
 
   const onSubmit = async (event) => {
     event.preventDefault()
     if (email.value.length < 1 || password1.value.length < 1) {
       if (email.value.length < 1) {
-        setEmailRequiredReminderVisisble(true)
+        setEmailRequiredReminderVisible(true)
       }
       if (password1.value.length < 1 || password2.value.length < 1) {
-        setPasswordRequiredReminderVisisble(true)
+        setPasswordRequiredReminderVisible(true)
       }
     } else {
       userService
@@ -92,14 +72,14 @@ const SignUp = () => {
             error.response.status === 400 &&
             error.response.data.error === 'This email is already used.'
           ) {
-            setEmailUsedReminderVisisble(true)
+            setEmailUsedReminderVisible(true)
           }
         })
     }
     setTimeout(() => {
-      setEmailRequiredReminderVisisble(false)
-      setPasswordRequiredReminderVisisble(false)
-      setEmailUsedReminderVisisble(false)
+      setEmailRequiredReminderVisible(false)
+      setPasswordRequiredReminderVisible(false)
+      setEmailUsedReminderVisible(false)
     }, 3000)
   }
 
@@ -124,69 +104,17 @@ const SignUp = () => {
               </Label>
             </InputGroup>
 
-            <InputGroup>
-              <Label>
-                {lang.password}
-                <StyledInput
-                  {...password1}
-                  $isonlightbackground
-                />
-              </Label>
-            </InputGroup>
-            <InputGroup>
-              <Label>
-                {lang.confirm_password}
-                <StyledInput
-                  {...password2}
-                  $isonlightbackground
-                />
-              </Label>
-            </InputGroup>
-            {password1.value.length > 0 && (
-              <div>
-                {password1.value.length >= 8 &&
-                /\d/.test(password1.value) &&
-                /[!@#$%^&* ]/.test(password1.value) &&
-                /[a-zA-Z]/.test(password1.value) &&
-                password1.value === password2.value ? (
-                  <ValidPassword>
-                    <h3>✔ Valid password</h3>
-                  </ValidPassword>
-                ) : (
-                  <ValidationFailed>
-                    <h3>{lang.password_must}</h3>
-                    <ul>
-                      {password1.value.length < 8 && (
-                        <li>{lang.password_8_chars}</li>
-                      )}
-                      {!/\d/.test(password1.value) && (
-                        <li>{lang.password_contain_digit}</li>
-                      )}
-                      {!/[!@#$%^&* ]/.test(password1.value) && (
-                        <li>{lang.password_contain_special}</li>
-                      )}
-                      {!/[a-zA-Z]/.test(password1.value) && (
-                        <li>{lang.password_contain_letter}</li>
-                      )}
-                      {password1.value !== password2.value && (
-                        <li>{lang.password_match}</li>
-                      )}
-                    </ul>
-                  </ValidationFailed>
-                )}
-              </div>
-            )}
-            {emailRequiredReminderVisisble && (
+            <PasswordWithValidation
+              password1={password1}
+              password2={password2}
+              passwordRequiredReminderVisible={passwordRequiredReminderVisible}
+            />
+            {emailRequiredReminderVisible && (
               <ValidationFailed>
                 <h3>{lang.email_required}</h3>
               </ValidationFailed>
             )}
-            {passwordRequiredReminderVisisble && (
-              <ValidationFailed>
-                <h3>{lang.password_required}</h3>
-              </ValidationFailed>
-            )}
-            {emailUsedReminderVisisble && (
+            {emailUsedReminderVisible && (
               <ValidationFailed>
                 <h3>{lang.email_already_used}</h3>
               </ValidationFailed>

@@ -38,13 +38,25 @@ const useUserService = () => {
     })
     return request
   }
-
+  const changePassword = ({ oldPassword, newPassword }) => {
+    const config = makeConfig()
+    const request = axios.post(
+      `${baseURL}/change_password`,
+      {
+        oldPassword,
+        newPassword,
+      },
+      config
+    )
+    return request
+  }
   return {
     create,
     login,
     addAddress,
     forgotPassword,
     resetPassword,
+    changePassword,
   }
 }
 export default useUserService

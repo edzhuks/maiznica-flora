@@ -156,4 +156,31 @@ router.post('/reset_password', async (request, response) => {
   return response.status(400).json({ error: 'The token has expired' })
 })
 
+router.post('/change_password', userExtractor, async (request, response) => {
+  const { oldPassword, newPassword } = request.body
+
+  if (!oldPassword) {
+    return response.status(400).json({ error: 'Previous password is required' })
+  }
+  if (!newPassword) {
+    return response.status(400).json({ error: 'New password is required' })
+  }
+  let user = await User.findById(request.user.id)
+  if (!user) {
+    return response
+      .status(404)
+      .json({ error: 'Cannot find a user with that token.' })
+  }
+  const passwordCorrect = await bcrypt.compare(oldPassword, user.passwordHash)
+
+  if (passwordCorrect) {
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds)
+    user.passwordHash = passwordHash
+    await user.save()
+    return response.status(200).send()
+  }
+  return response.status(400).json({ error: 'Previous password incorrect.' })
+})
+
 module.exports = router
