@@ -1,8 +1,8 @@
 import UserContext from './contexts/userContext'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Product from './components/productPage/Product'
-import Login from './components/Login'
-import SignUp from './components/SignUp'
+import Login from './components/user/Login'
+import SignUp from './components/user/SignUp'
 import { useState, useEffect } from 'react'
 import Cart from './components/Cart'
 import Order from './components/Order'
@@ -27,6 +27,8 @@ import { ThemeProvider } from 'styled-components'
 import SearchPage from './components/SearchPage'
 import EuProjects from './components/EU_Projects'
 import DistanceAgreementPage from './components/DistanceAgreementPage'
+import ForgotPassword from './components/user/ForgotPassword'
+import ResetPassword from './components/user/ResetPassword'
 
 const baseTheme = {
   main: '#45941e',
@@ -144,6 +146,14 @@ function App() {
                     <Route
                       path="/signup"
                       element={<SignUp />}
+                    />
+                    <Route
+                      path="/forgot_password"
+                      element={<ForgotPassword />}
+                    />
+                    <Route
+                      path="/finish_reset_password"
+                      element={<ResetPassword />}
                     />
                     <Route
                       path="/"

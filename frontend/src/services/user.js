@@ -24,10 +24,27 @@ const useUserService = () => {
     return request
   }
 
+  const forgotPassword = (email) => {
+    const request = axios.post(`${baseURL}/initiate_reset_password`, {
+      email,
+    })
+    return request
+  }
+
+  const resetPassword = ({ token, password }) => {
+    const request = axios.post(`${baseURL}/reset_password`, {
+      token,
+      password,
+    })
+    return request
+  }
+
   return {
     create,
     login,
     addAddress,
+    forgotPassword,
+    resetPassword,
   }
 }
 export default useUserService
