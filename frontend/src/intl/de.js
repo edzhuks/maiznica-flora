@@ -165,6 +165,15 @@ const de = {
   bread_manager: 'Leiter der Brotproduktion und -qualität',
   pastry_manager: 'Leiter der Backwarenproduktion und -qualität',
   currently_unavailable: 'Derzeit nicht verfügbar',
+  forgot_password: 'Haben Sie Ihr Passwort vergessen?',
+  reset_password: 'Passwort zurücksetzen',
+  send_reset_instructions: 'E-Mail senden',
+  toast_reset_email_sent:
+    'E-Mail zum Zurücksetzen des Kennworts wurde gesendet!',
+  confirm_password: 'Passwort bestätigen',
+  password_match: 'Passwörter müssen übereinstimmen',
+  email_not_registered: 'Mit dieser E-Mail-Adresse ist kein Konto verbunden',
+  toast_password_reset: 'Das Passwort wurde geändert',
 }
 
 export default de

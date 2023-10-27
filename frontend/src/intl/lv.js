@@ -179,6 +179,14 @@ const lv = {
   bread_manager: 'Maizes ražošanas un kvalitātes vadītāja',
   pastry_manager: 'Konditorejas ražošanas un kvalitātes vadītāja',
   currently_unavailable: 'Pašreiz nav pārdošanā',
+  forgot_password: 'Aizmirsi paroli? Spied šeit.',
+  reset_password: 'Atjaunot paroli',
+  send_reset_instructions: 'Sūtīt atjaunošanas e-pastu',
+  toast_reset_email_sent: 'Epasts nosūtīts!',
+  confirm_password: 'Parole vēlreiz',
+  password_match: 'Parolēm jābūt vienādām',
+  email_not_registered: 'Nav konta ar šādu epasta adresi',
+  toast_password_reset: 'Parole nomainīta',
 }
 
 export default lv
