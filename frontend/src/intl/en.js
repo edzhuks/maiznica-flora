@@ -171,7 +171,7 @@ const en = {
   password_match: 'Passwords must match',
   email_not_registered:
     'There is no account associated with this email address',
-  toast_password_reset: 'Password has been reset',
+  toast_password_reset: 'Password has been changed',
 }
 
 export default en
