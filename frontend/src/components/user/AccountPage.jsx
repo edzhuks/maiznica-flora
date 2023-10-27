@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import UserContext from '../../contexts/userContext'
 import { clearCart } from '../../reducers/cartReducer'
@@ -12,13 +12,15 @@ const SideMenuList = styled.ul`
   padding: 0;
 `
 const SideMenuItem = styled.li`
-  padding: ${(props) => props.theme.padding};
   border: 0;
   border-bottom: 1px solid ${(props) => props.theme.lighter};
   text-align: right;
   width: 100%;
+
+  height: fit-content;
 `
-const SideMenuLink = styled(Link)`
+const SideMenuLink = styled(NavLink)`
+  display: inline-block;
   text-decoration: none;
   color: ${(props) => props.theme.text};
   &:hover {
@@ -28,8 +30,14 @@ const SideMenuLink = styled(Link)`
   background-color: transparent;
   border: 0;
   font-size: 1rem;
-  padding: 0;
+  padding: ${(props) => props.theme.padding};
   letter-spacing: 0.8px;
+  &.active {
+    background-color: ${(props) => props.theme.main};
+    &:hover {
+      color: ${(props) => props.theme.white};
+    }
+  }
 `
 
 const ReversibleRow = styled.div`
