@@ -1,7 +1,7 @@
-import useUserService from '../services/user'
-import useField from '../hooks/useField'
+import useUserService from '../../services/user'
+import useField from '../../hooks/useField'
 import { useContext, useState } from 'react'
-import UserContext from '../contexts/userContext'
+import UserContext from '../../contexts/userContext'
 import {
   BigTitle,
   BottomTextLink,
@@ -14,7 +14,7 @@ import {
   PaddedForm,
   StyledInput,
   SubTitle,
-} from './styled/base'
+} from '../styled/base'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'

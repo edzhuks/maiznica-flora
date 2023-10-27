@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import useField from '../hooks/useField'
-import UserContext from '../contexts/userContext'
+import useField from '../../hooks/useField'
+import UserContext from '../../contexts/userContext'
 import { useContext, useState } from 'react'
-import { useCartServiceDispatch } from '../reducers/cartReducer'
+import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   FullWidthButton,
@@ -15,8 +15,8 @@ import {
   Form,
   BottomTextLink,
   PaddedForm,
-} from './styled/base'
-import useUserService from '../services/user'
+} from '../styled/base'
+import useUserService from '../../services/user'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
@@ -80,6 +80,9 @@ const Login = () => {
           <FullWidthButton type="submit">{lang.sign_in}</FullWidthButton>
         </PaddedForm>
         <BottomTextLink to="/signup">{lang.dont_have_account}</BottomTextLink>
+        <BottomTextLink to="/forgot_password">
+          {lang.forgot_password}
+        </BottomTextLink>
       </LoginCard>
     </Centerer>
   )
