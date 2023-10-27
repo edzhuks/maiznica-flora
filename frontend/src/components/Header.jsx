@@ -16,6 +16,7 @@ import { Menu } from '@styled-icons/evaicons-solid/Menu'
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline'
 import {
   Link,
+  NavLink,
   useLocation,
   useNavigate,
   useSearchParams,
@@ -59,7 +60,7 @@ const MobileHeader = styled(DesktopHeader)`
   align-items: center;
 `
 
-const HeaderTab = styled(Link)`
+const HeaderTab = styled(NavLink)`
   padding: 0 12px;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
@@ -77,6 +78,13 @@ const HeaderTab = styled(Link)`
   &:hover {
     color: ${(props) => props.theme.main};
   }
+  &.active {
+    background-color: ${(props) => props.theme.main};
+    &:hover {
+      color: ${(props) => props.theme.white};
+    }
+  }
+  height: 100%;
 `
 
 const pop = keyframes`
