@@ -46,7 +46,8 @@ const SignUp = () => {
   const [, setUser] = useContext(UserContext)
 
   const email = useField('email')
-  const password = useField('password')
+  const password1 = useField('password')
+  const password2 = useField('password')
   const [registered, setRegistered] = useState(false)
 
   const [emailRequiredReminderVisisble, setEmailRequiredReminderVisisble] =
@@ -60,28 +61,30 @@ const SignUp = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    if (email.value.length < 1 || password.value.length < 1) {
+    if (email.value.length < 1 || password1.value.length < 1) {
       if (email.value.length < 1) {
         setEmailRequiredReminderVisisble(true)
       }
-      if (password.value.length < 1) {
+      if (password1.value.length < 1 || password2.value.length < 1) {
         setPasswordRequiredReminderVisisble(true)
       }
     } else {
       userService
         .create({
           email: email.value,
-          password: password.value,
+          password: password1.value,
         })
         .then(() => {
           setRegistered(true)
-          userService.login(email.value, password.value).then((loginResult) => {
-            window.localStorage.setItem(
-              'maiznicafloraUser',
-              JSON.stringify(loginResult.data)
-            )
-            setUser(loginResult.data)
-          })
+          userService
+            .login(email.value, password1.value)
+            .then((loginResult) => {
+              window.localStorage.setItem(
+                'maiznicafloraUser',
+                JSON.stringify(loginResult.data)
+              )
+              setUser(loginResult.data)
+            })
         })
         .catch((error) => {
           console.log(error)
@@ -125,17 +128,27 @@ const SignUp = () => {
               <Label>
                 {lang.password}
                 <StyledInput
-                  {...password}
+                  {...password1}
                   $isonlightbackground
                 />
               </Label>
             </InputGroup>
-            {password.value.length > 0 && (
+            <InputGroup>
+              <Label>
+                {lang.confirm_password}
+                <StyledInput
+                  {...password2}
+                  $isonlightbackground
+                />
+              </Label>
+            </InputGroup>
+            {password1.value.length > 0 && (
               <div>
-                {password.value.length > 8 &&
-                /\d/.test(password.value) &&
-                /[!@#$%^&* ]/.test(password.value) &&
-                /[a-zA-Z]/.test(password.value) ? (
+                {password1.value.length >= 8 &&
+                /\d/.test(password1.value) &&
+                /[!@#$%^&* ]/.test(password1.value) &&
+                /[a-zA-Z]/.test(password1.value) &&
+                password1.value === password2.value ? (
                   <ValidPassword>
                     <h3>✔ Valid password</h3>
                   </ValidPassword>
@@ -143,17 +156,20 @@ const SignUp = () => {
                   <ValidationFailed>
                     <h3>{lang.password_must}</h3>
                     <ul>
-                      {password.value.length < 8 && (
+                      {password1.value.length < 8 && (
                         <li>{lang.password_8_chars}</li>
                       )}
-                      {!/\d/.test(password.value) && (
+                      {!/\d/.test(password1.value) && (
                         <li>{lang.password_contain_digit}</li>
                       )}
-                      {!/[!@#$%^&* ]/.test(password.value) && (
+                      {!/[!@#$%^&* ]/.test(password1.value) && (
                         <li>{lang.password_contain_special}</li>
                       )}
-                      {!/[a-zA-Z]/.test(password.value) && (
+                      {!/[a-zA-Z]/.test(password1.value) && (
                         <li>{lang.password_contain_letter}</li>
+                      )}
+                      {password1.value !== password2.value && (
+                        <li>{lang.password_match}</li>
                       )}
                     </ul>
                   </ValidationFailed>
