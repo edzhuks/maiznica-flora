@@ -187,6 +187,7 @@ const lv = {
   password_match: 'Parolēm jābūt vienādām',
   email_not_registered: 'Nav konta ar šādu epasta adresi',
   toast_password_reset: 'Parole nomainīta',
+  privacy_policy: 'Privātuma politika',
 }
 
 export default lv

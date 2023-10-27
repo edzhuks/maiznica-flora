@@ -172,6 +172,7 @@ const en = {
   email_not_registered:
     'There is no account associated with this email address',
   toast_password_reset: 'Password has been changed',
+  privacy_policy: 'Privacy policy',
 }
 
 export default en
