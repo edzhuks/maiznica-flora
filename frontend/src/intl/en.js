@@ -121,7 +121,7 @@ const en = {
   password_required: 'Password is required',
   email_already_used: 'This email is already registered',
   already_have_account: 'Already have an account? Sign in.',
-  dont_have_account: "Don't have an account yet? Sign up.",
+  dont_have_account: "Don't have an account yet? Sign up here.",
   invalid_credentials: 'Email or password is incorrect',
   with_VAT: 'VAT incl.',
   expiration_time: 'Product is good for',
@@ -163,6 +163,15 @@ const en = {
   bread_manager: 'Bread Production and Quality Manager',
   pastry_manager: 'Pastry Production and Quality Manager',
   currently_unavailable: 'Out of stock',
+  forgot_password: 'Forgot your password? Click here.',
+  reset_password: 'Reset password',
+  send_reset_instructions: 'Send reset email',
+  toast_reset_email_sent: 'Password reset email has been sent!',
+  confirm_password: 'Confirm password',
+  password_match: 'Passwords must match',
+  email_not_registered:
+    'There is no account associated with this email address',
+  toast_password_reset: 'Password has been reset',
 }
 
 export default en
