@@ -7,7 +7,7 @@ const OrderList = styled.ul`
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
-  background: #fafafa;
+  background: ${(props) => props.theme.background};
   gap: 20px;
   row-gap: 20px;
   padding: 20px;
@@ -37,8 +37,7 @@ const statusToColor = (status) => {
 const OrderBase = styled.li`
   flex-grow: 1;
   display: flex;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
   padding: 20px;
   background: ${(props) => statusToColor(props.status)};
 `
@@ -59,7 +58,6 @@ const Status = styled.span`
   color: grey;
   width: 50%;
   & > b {
-    color: #333333;
     text-transform: uppercase;
     font-weight: bold;
   }
@@ -131,7 +129,7 @@ const CloseButton = styled.a`
     content: ' ';
     height: 33px;
     width: 2px;
-    background-color: #333;
+    background-color: ${(props) => props.theme.text};
   }
   &:before {
     transform: rotate(45deg);
@@ -194,7 +192,7 @@ const CheckBox = styled.label`
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.white};
   }
 
   /* On mouse-over, add a grey background color */
@@ -220,24 +218,6 @@ const CheckBox = styled.label`
   }
   input:checked ~ span:after {
     display: block;
-  }
-
-  span:after {
-    z-index: 9999;
-    content: '';
-    position: absolute;
-    display: none;
-    background: transparent;
-    left: 30px;
-    top: 5px;
-    width: 60px;
-    height: 97px;
-    border: solid #333333;
-    border-width: 0 15px 15px 0;
-    border-radius: 0;
-    -webkit-transform: rotate(30deg);
-    -ms-transform: rotate(30deg);
-    transform: rotate(40deg);
   }
 `
 

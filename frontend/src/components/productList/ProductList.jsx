@@ -1,20 +1,23 @@
-import { ProductRow, Spacer } from '../styled/base'
+import { CardRow, Spacer, StyledInput } from '../styled/base'
 import ProductListItem from './ProductListItem'
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, withSearch }) => {
   return (
-    <ProductRow>
-      {products.map((product) => (
-        <ProductListItem
-          product={product}
-          key={product.id}
-        />
-      ))}
+    <>
+      {withSearch && <StyledInput />}
+      <CardRow>
+        {products.map((product) => (
+          <ProductListItem
+            product={product}
+            key={product.id}
+          />
+        ))}
 
-      <Spacer />
-      <Spacer />
-      <Spacer />
-    </ProductRow>
+        {/* <Spacer /> */}
+        {/* <Spacer /> */}
+        {/* <Spacer /> */}
+      </CardRow>
+    </>
   )
 }
 

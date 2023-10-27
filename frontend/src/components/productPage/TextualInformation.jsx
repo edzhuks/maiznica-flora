@@ -1,152 +1,216 @@
 import styled from 'styled-components'
-import { centsToEuro, gramsToKilos } from '../../util/convert'
+import { addVat, centsToEuro, gramsToKilos } from '../../util/convert'
 import { useSelector } from 'react-redux'
+import {
+  NumberInput,
+  Button,
+  BigProductTitle,
+  ProductText,
+  NutritionTable,
+  NutritionTableRow,
+  NutritionTableHeader,
+  NutritionTableCell,
+  Badges,
+} from '../styled/base'
+import { Barcode } from '@styled-icons/icomoon/Barcode'
+import Price from '../styled/Price'
 
-const Text = styled.p`
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-  white-space: pre-line;
-  max-width: 700px;
-`
-
-const Title = styled.p`
-  font-family: 'Roboto Slab', serif;
-  font-size: 28px;
-  color: #45941e;
-  font-weight: 400;
-`
-
-const TableHeader = styled.th`
-  text-align: left;
-  border-width: 0px 0px 1px 0px;
-  border-color: #333333;
-  border-style: solid;
-  font-weight: 400;
-  padding: 5px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 1px 1px;
+const ShadowDiv = styled.div`
+  box-shadow: ${(props) => props.theme.shadow};
+  width: fit-content;
+  button {
+    box-shadow: none;
   }
+  margin: 30px 0px 40px 0px;
 `
 
-const Table = styled.table`
-  border-collapse: collapse;
+const CertImg = styled.img`
+  width: auto;
+  height: 70px;
+  margin: 0px 20px 0px 0px;
 `
 
-const Cell = styled.td`
-  padding: 2px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: #333333;
-  }
+const UnavailableText = styled.p`
+  font-size: 1.1rem;
+  color: ${(props) => props.theme.light};
+  margin-top: 25px;
 `
 
-const TableRow = styled.tr`
-  background-color: white;
-  &:nth-child(odd) {
-    background-color: #f9f9f9;
-  }
-`
-
-const StaticInformation = ({ product }) => {
+const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <div>
-      <Title>
+    <div style={{ maxWidth: '800px' }}>
+      <BigProductTitle>
         {product.name[selectedLang] || product.name.lv} &nbsp;
         {gramsToKilos(product.weight)}
-      </Title>
-      {product.description && (
+      </BigProductTitle>
+      {product.badges && product.badges.length > 0 && (
+        <Badges>
+          {product.badges.map((b) => (
+            <span key={b}>{lang[b]}</span>
+          ))}
+        </Badges>
+      )}
+      {!product.outOfStock ? (
+        <>
+          <Price
+            price={product.price}
+            discount={product.discount}
+            weight={product.weight}
+          />
+          <ShadowDiv>
+            <NumberInput
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              type="number"
+            />
+            <Button onClick={onOrder}>{lang.add_to_cart}</Button>
+          </ShadowDiv>
+        </>
+      ) : (
+        <UnavailableText>{lang.currently_unavailable}</UnavailableText>
+      )}
+
+      {product.bio && (
+        <CertImg
+          src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"
+          width={100}
+          height={66}
+        />
+      )}
+      {product.spoonRed && (
+        <CertImg
+          src="http://karotite.lv/img/bordo-intro-logo.png"
+          width={100}
+          height={66}
+        />
+      )}
+      {product.spoonGreen && (
+        <CertImg
+          src="http://karotite.lv/img/green-intro-logo.png"
+          width={100}
+          height={66}
+        />
+      )}
+      {product.expiration && (
+        <>
+          <ProductText>
+            {lang.expiration_time}{' '}
+            <strong>
+              {product.expiration.number} {lang[product.expiration.word]}
+            </strong>
+          </ProductText>
+          {product.expiration.afterOpening && (
+            <ProductText style={{ marginTop: '-20px' }}>
+              {lang.after_opening}{' '}
+              <strong>
+                {product.expiration.afterOpening.number}{' '}
+                {lang[product.expiration.afterOpening.word]}
+              </strong>
+            </ProductText>
+          )}
+        </>
+      )}
+      {/* {product.description && (
         <Text>
           {product.description[selectedLang] || product.description.lv}
         </Text>
-      )}
+      )} */}
       {product.ingredients && (
-        <Text>
+        <ProductText>
           {product.ingredients[selectedLang] || product.ingredients.lv}
-        </Text>
+        </ProductText>
       )}
       {product.nutrition && (
-        <Table>
+        <NutritionTable>
           <tbody>
-            <TableRow>
-              <TableHeader>
+            <NutritionTableRow>
+              <NutritionTableHeader>
                 <b>{lang.nutritional_info} </b>
-              </TableHeader>
-              <TableHeader>
+              </NutritionTableHeader>
+              <NutritionTableHeader>
                 <strong>{lang.g_contains}</strong>
-              </TableHeader>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.energy_content}</Cell>
-              <Cell>
+              </NutritionTableHeader>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
+              <NutritionTableCell>
                 {Math.round(product.nutrition.energy * 4.184)}kJ/
                 {product.nutrition.energy}kcal
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fat}</Cell>
-              <Cell>{product.nutrition.fat}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
-              <Cell>{product.nutrition.saturatedFat}g</Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fat}</NutritionTableCell>
+              <NutritionTableCell>{product.nutrition.fat}g</NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
+              </NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.saturatedFat}g
+              </NutritionTableCell>
+            </NutritionTableRow>
 
-            <TableRow>
-              <Cell>{lang.carbohydrates}</Cell>
-              <Cell>{product.nutrition.carbs}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
-              <Cell>{product.nutrition.sugar}g</Cell>
-            </TableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.carbs}g
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
+              </NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.sugar}g
+              </NutritionTableCell>
+            </NutritionTableRow>
             {product.nutrition.fiber !== 0 &&
               product.nutrition.fiber !== '0' &&
               product.nutrition.fiber && (
-                <TableRow>
-                  <Cell>{lang.fiber}</Cell>
-                  <Cell>{product.nutrition.fiber}g</Cell>
-                </TableRow>
+                <NutritionTableRow>
+                  <NutritionTableCell>{lang.fiber}</NutritionTableCell>
+                  <NutritionTableCell>
+                    {product.nutrition.fiber}g
+                  </NutritionTableCell>
+                </NutritionTableRow>
               )}
-            <TableRow>
-              <Cell>{lang.protein}</Cell>
-              <Cell>{product.nutrition.protein}g</Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.salt}</Cell>
-              <Cell>{product.nutrition.salt}g</Cell>
-            </TableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.protein}</NutritionTableCell>
+              <NutritionTableCell>
+                {product.nutrition.protein}g
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.salt}</NutritionTableCell>
+              <NutritionTableCell>{product.nutrition.salt}g</NutritionTableCell>
+            </NutritionTableRow>
+            {product.nutrition.d3 !== 0 &&
+              product.nutrition.d3 !== '0' &&
+              product.nutrition.d3 && (
+                <NutritionTableRow>
+                  <NutritionTableCell>{lang.d3}</NutritionTableCell>
+                  <NutritionTableCell>
+                    {product.nutrition.d3}µg
+                  </NutritionTableCell>
+                </NutritionTableRow>
+              )}
           </tbody>
-        </Table>
+        </NutritionTable>
       )}
-      <Text>
-        {lang.EAN_code} {product.EAN}
-      </Text>
-      <Title>{centsToEuro(product.price)}</Title>
-      {product.bio && (
-        <div style={{ paddingBottom: 30 }}>
-          <img
-            src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"
-            width={100}
-            height={66}
+      {product.EAN && (
+        <ProductText>
+          <Barcode
+            size={30}
+            style={{ marginRight: '10px' }}
           />
-        </div>
+          {product.EAN}
+        </ProductText>
       )}
     </div>
   )
 }
 
-const TextualInformation = ({ product }) => {
-  return (
-    <div>
-      <StaticInformation product={product} />
-    </div>
-  )
-}
-
-export default TextualInformation
-export { StaticInformation }
+export default StaticInformation

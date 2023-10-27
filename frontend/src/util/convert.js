@@ -6,6 +6,9 @@ const centsToEuro = (cents) => {
   })
   return euros.format(cents / 100)
 }
+const addVat = (cents) => {
+  return cents * 1.21
+}
 const gramsToKilos = (grams) => {
   const kilos = new Intl.NumberFormat('en-EU', {
     minimumFractionDigits: 1,
@@ -13,4 +16,4 @@ const gramsToKilos = (grams) => {
   return grams < 1000 ? `${grams}g` : `${kilos.format(grams / 1000)}kg`
 }
 
-export { centsToEuro, gramsToKilos }
+export { centsToEuro, gramsToKilos, addVat }
