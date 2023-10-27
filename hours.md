@@ -28,4 +28,8 @@
 | 12.10        | 4.5   | data entry and improving data entry and management tools                                                                                                                              |
 | 17.10        | 7     | tried and so far failed to get a latvian map and address API working, waiting for key. Set up email verification                                                                      |
 | 18.10        | 7     | error handling in frontend, nice toasts, form validation, security fixes, visual improvements, services are now hooks                                                                 |
-| total        | 102   |                                                                                                                                                                                       |
+| 19.10        | 8.5   | more product data, refactoring                                                                                                                                                        |
+| 20.10        | 8     | mostly css, making the site more responsive, showing discounts                                                                                                                        |
+| 25.10        | 12    | finished discounts, better contacts page, EU project page, search                                                                                                                     |
+| 26.10        | 2     | hiding products, distance agreement                                                                                                                                                   |
+| total        | 132.5 |                                                                                                                                                                                       |
