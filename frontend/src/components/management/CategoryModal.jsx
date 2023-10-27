@@ -19,6 +19,7 @@ import { useState } from 'react'
 import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
+import BaseModal from './BaseModal'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const categoryService = useCategoryService()
@@ -91,92 +92,84 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   }
 
   return (
-    <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContent>
-        <BigTitle style={{ marginBottom: 15 }}>{lang.add_category}</BigTitle>
-        <Row style={{ flexWrap: 'wrap' }}>
-          <ModalHalf>
-            <SubTitle>{lang.select_existing_categories}</SubTitle>
-            <div style={{ width: '360px' }}>
-              <Select
-                isMulti
-                options={allCategories}
-                onChange={(e) =>
-                  setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
-                }
-                value={allCategories.filter((item) =>
-                  selectedCategoryIds.includes(item.value)
-                )}
-              />
-            </div>
-          </ModalHalf>
-          <ModalOr>{lang.or}</ModalOr>
-          <ModalHalf>
-            <SubTitle>{lang.add_new_category}</SubTitle>
-            <Form>
-              <CompactInputGroup>
-                <Label>
-                  {lang.product_name} lv
-                  <StyledInput
-                    style={{ marginLeft: 20 }}
-                    {...name_lv}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.product_name} en
-                  <StyledInput
-                    style={{ marginLeft: 20 }}
-                    {...name_en}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.product_name} de
-                  <StyledInput
-                    style={{ marginLeft: 20 }}
-                    {...name_de}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  ID
-                  <StyledInput
-                    style={{ marginLeft: 20 }}
-                    {...id}
-                  />
-                </Label>
-              </CompactInputGroup>
-              <CompactInputGroup>
-                <Label>
-                  {lang.image_url}
-                  <StyledInput
-                    style={{ marginLeft: 20 }}
-                    {...image}
-                  />
-                </Label>
-              </CompactInputGroup>
-            </Form>
-          </ModalHalf>
-        </Row>
-        <CancelButton
-          onClick={() => {
-            clear()
-            onClose(catalogue)
-          }}
-          style={{ margin: 20 }}>
-          {lang.cancel}
-        </CancelButton>
-        <Button
-          style={{ margin: 20, float: 'right' }}
-          onClick={addCategories}>
-          {lang.add}
-        </Button>
-      </ModalContent>
-    </ModalContainer>
+    <BaseModal
+      visible={visible}
+      title={lang.add_category}
+      onClose={() => {
+        clear()
+        onClose()
+      }}
+      onSubmit={() => addCategories()}
+      padding="20px 20px">
+      <Row style={{ flexWrap: 'wrap' }}>
+        <ModalHalf>
+          <SubTitle>{lang.select_existing_categories}</SubTitle>
+          <div style={{ width: '360px' }}>
+            <Select
+              isMulti
+              options={allCategories}
+              onChange={(e) =>
+                setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
+              }
+              value={allCategories.filter((item) =>
+                selectedCategoryIds.includes(item.value)
+              )}
+            />
+          </div>
+        </ModalHalf>
+        <ModalOr>{lang.or}</ModalOr>
+        <ModalHalf>
+          <SubTitle>{lang.add_new_category}</SubTitle>
+          <Form>
+            <CompactInputGroup>
+              <Label>
+                {lang.product_name} lv
+                <StyledInput
+                  $isonlightbackground
+                  {...name_lv}
+                />
+              </Label>
+            </CompactInputGroup>
+            <CompactInputGroup>
+              <Label>
+                {lang.product_name} en
+                <StyledInput
+                  $isonlightbackground
+                  {...name_en}
+                />
+              </Label>
+            </CompactInputGroup>
+            <CompactInputGroup>
+              <Label>
+                {lang.product_name} de
+                <StyledInput
+                  $isonlightbackground
+                  {...name_de}
+                />
+              </Label>
+            </CompactInputGroup>
+            <CompactInputGroup>
+              <Label>
+                ID
+                <StyledInput
+                  $isonlightbackground
+                  {...id}
+                />
+              </Label>
+            </CompactInputGroup>
+            <CompactInputGroup>
+              <Label>
+                {lang.image_url}
+                <StyledInput
+                  $isonlightbackground
+                  {...image}
+                />
+              </Label>
+            </CompactInputGroup>
+          </Form>
+        </ModalHalf>
+      </Row>
+    </BaseModal>
   )
 }
 

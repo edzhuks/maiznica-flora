@@ -463,7 +463,9 @@ router.post('/', async (request, response) => {
     user: user.id,
   })
   await newCart.save()
-  sendEmail(email, emailToken)
+  if (!TEST_MODE) {
+    sendEmail(email, emailToken)
+  }
   response.status(201).json({
     email: user.email,
     admin: user.admin,

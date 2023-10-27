@@ -1,11 +1,36 @@
 import styled from 'styled-components'
 import Input from '../basic/Input'
 import { Link } from 'react-router-dom'
+const Card = styled.div`
+  box-shadow: ${(props) => props.theme.shadow};
 
+  background-color: ${(props) => props.theme.card};
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+`
+const Item = styled.div`
+  max-width: 300px;
+  width: calc(100% / 6);
+  @media (max-width: 1500px) {
+    width: calc(100% / 3);
+  }
+  @media (max-width: 960px) {
+    width: calc(100% / 3);
+  }
+`
 const Container = styled.div`
-  max-width: 1350px;
+  max-width: 1600px;
+  @media (max-width: 2000px) {
+    max-width: 80%;
+  }
+  @media (max-width: 1200px) {
+    max-width: 100%;
+  }
   margin: auto;
-  padding: 0 18px;
+`
+const Padding = styled.div`
+  padding: ${(props) => props.theme.padding};
 `
 const FullHeightContainer = styled(Container)`
   min-height: 100vh;
@@ -30,30 +55,31 @@ const RowSpaceEvenly = styled(Row)`
 const Button = styled.button`
   cursor: pointer;
   border: 0;
-  color: white;
+  color: ${(props) => props.theme.white};
   padding: 5px 10px;
   border-radius: 2px;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 600;
-  background-color: #45941e;
+  background-color: ${(props) => props.theme.main};
   transition: 0.3s;
   min-width: 40px;
-  min-height: 38px;
+  min-height: 2rem;
   &:hover {
-    background-color: #3f861b;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.main};
   }
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
   font-family: 'Roboto Slab', serif;
   letter-spacing: 1px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
 const CancelButton = styled(Button)`
-  background-color: red;
+  background-color: ${(props) => props.theme.error};
   &:hover {
-    background-color: darkred;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.error};
   }
 `
 
@@ -62,9 +88,10 @@ const FullWidthButton = styled(Button)`
 `
 
 const FullWidthCancelButton = styled(FullWidthButton)`
-  background-color: red;
+  background-color: ${(props) => props.theme.error};
   &:hover {
-    background-color: darkred;
+    background-color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.error};
   }
 `
 const InvertedButton = styled(Button)`
@@ -72,53 +99,60 @@ const InvertedButton = styled(Button)`
   background-color: transparent;
   box-shadow: none;
   font-weight: bold;
-  color: #999999;
+  color: ${(props) => props.theme.dark};
   &:hover {
-    background-color: transparent;
-    color: #45941e;
+    /* background-color: ${(props) => props.theme.main}; */
+    color: ${(props) => props.theme.main};
   }
 `
 
 const StyledInput = styled(Input)`
-  height: 38px;
+  height: 2rem;
   border: 0px;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   border-radius: 2px;
-  border: 1px solid
-    ${(props) => (props.$isonlightbackground ? '#f1f1f1' : 'white')};
+  padding: ${(props) => props.theme.padding} 0px
+    ${(props) => props.theme.padding} ${(props) => props.theme.padding};
+  border: 0px solid
+    ${(props) =>
+      props.$isonlightbackground ? props.theme.lighter : props.theme.white};
   background-color: ${(props) =>
-    props.$isonlightbackground ? '#f1f1f1' : 'white'};
+    props.$isonlightbackground ? props.theme.lighter : props.theme.white};
   &:focus {
-    outline: none;
-    border: 1px solid #e5e5e5;
-    border-color: #45941e;
+    outline: 1px solid ${(props) => props.theme.main};
   }
-  font-size: large;
+  font-size: 1rem;
+`
+const ShadowInput = styled(StyledInput)`
+  box-shadow: ${(props) => props.theme.shadow};
 `
 const BottomTextLink = styled(Link)`
   text-decoration: none;
-  color: #aaaaaa;
+  color: ${(props) => props.theme.light};
   margin-top: 40px;
   margin-bottom: -20px;
 `
 const TextArea = styled.textarea`
   width: 300px;
-  border: 1px solid #ffffffff;
-  color: #888888;
+  border: 1px solid ${(props) => props.theme.white};
+  color: ${(props) => props.theme.text};
   border-radius: 2px;
   font-size: 16;
-  color: #333333;
+  color: ${(props) => props.theme.text};
   font-family: 'Roboto';
   &:focus {
     outline: none;
-    border-color: #45941e;
+    border-color: ${(props) => props.theme.main};
   }
   font-size: medium;
   &:focus {
     outline: none;
-    border: 1px solid #e5e5e5;
-    border-color: #45941e;
+    border: 1px solid ${(props) => props.theme.main};
   }
+`
+
+const ShadowTextArea = styled(TextArea)`
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
 const NumberInput = styled(StyledInput)`
@@ -146,36 +180,19 @@ const Form = styled.form`
 `
 
 const ProductImage = styled.img`
-  flex: 50%;
-  width: 100%;
-  max-width: 600px;
+  /* flex: 50%; */
+  /* width: 50%; */
+  /* max-width: 400px; */
+  width: 20rem;
+  /* aspect-ratio: 1; */
   height: auto;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-`
-const WrappableRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-  div {
-    flex: 50%;
-  }
-  column-gap: 40px;
-`
-
-const Title = styled.p`
-  color: #333333;
-  font-size: 18px;
-  text-decoration: none;
-  margin: 20px 0px;
-  transition: 0.3s;
+  align-self: flex-start;
+  justify-self: center;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
 const SubTitle = styled.p`
-  color: #777777;
+  color: ${(props) => props.theme.text};
   font-size: 18px;
   text-decoration: none;
   margin: 20px 0px;
@@ -186,11 +203,11 @@ const Right = styled.span`
 `
 
 const ColoredText = styled.span`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
 `
 
 const Label = styled.label`
-  color: #555555;
+  color: ${(props) => props.theme.text};
   display: block;
   line-height: 40px;
   text-transform: none;
@@ -200,10 +217,10 @@ const Label = styled.label`
 `
 const BigTitle = styled.div`
   font-family: 'Roboto Slab', serif;
-  font-size: 28px;
+  font-size: 1.5rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin: 20px 0px 50px 0px;
+  margin: ${(props) => props.theme.padding} 0;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -212,7 +229,7 @@ const BigTitle = styled.div`
   &::before,
   ::after {
     content: '';
-    border-top: 1px solid #333333;
+    border-top: 1px solid ${(props) => props.theme.text};
     margin: 0 20px 0 0;
     flex: 1 0 20px;
     min-width: 50px;
@@ -228,18 +245,31 @@ const Centerer = styled.div`
   align-items: center;
   height: 100%;
 `
-
-const LoginCard = styled.div`
-  background-color: white;
-  padding: 58px;
-  border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+const WrappableRow = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  & > div {
+    width: fit-content;
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
+    & > div {
+      width: 100%;
+    }
+  }
+  column-gap: 40px;
+`
+const LoginCard = styled(Card)`
+  padding: calc(${(props) => props.theme.padding}*2)
+    calc(${(props) => props.theme.padding}*4)
+    calc(${(props) => props.theme.padding}*5)
+    calc(${(props) => props.theme.padding}*4);
   align-items: center;
 `
-
+const PaddedForm = styled(Form)`
+  padding: ${(props) => props.theme.padding} 0px 0px 0px;
+`
 const InputGroup = styled.div`
   margin-bottom: 15px;
 `
@@ -278,22 +308,22 @@ const Radio = styled.label`
   /* Create a custom radio button */
   span {
     position: absolute;
-    top: 25px;
-    left: 20px;
+    top: calc(${(props) => props.theme.padding}*2);
+    left: calc(${(props) => props.theme.padding}*2);
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color: ${(props) => props.theme.lighter};
     border-radius: 50%;
   }
 
   /* On mouse-over, add a grey background color */
   &:hover input ~ span {
-    background-color: #ccc;
+    background-color: ${(props) => props.theme.main};
   }
 
   /* When the radio button is checked, add a blue background */
   input:checked ~ span {
-    background-color: #45941e;
+    background-color: ${(props) => props.theme.main};
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -315,7 +345,7 @@ const Radio = styled.label`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: white;
+    background: ${(props) => props.theme.white};
   }
 `
 
@@ -330,10 +360,9 @@ const ModalContainer = styled.div`
   background-color: #474e5da9;
   padding-top: 50px;
 `
-const ModalContent = styled.div`
-  background-color: #f8f8f8;
+
+const ModalContent = styled(Card)`
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
   max-width: 1020px; /* Could be more or less, depending on screen size */
   width: fit-content;
   overflow: visible;
@@ -347,7 +376,7 @@ const ModalHalf = styled.div`
 const ModalOr = styled.div`
   padding: 80px 40px;
   font-size: 30px;
-  color: #777777;
+  color: ${(props) => props.theme.dark};
   text-align: center;
   text-transform: uppercase;
 `
@@ -362,32 +391,112 @@ const ContactText = styled.p`
   line-height: 1.5;
 `
 
-const ProductCard = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  width: calc(100% / 4 - 23px);
-  min-width: 256px;
-  background-color: #fbfbfb;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-`
-
-const ProductRow = styled.div`
-  display: flex;
-  align-items: stretch;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 30px;
-`
-
-const Spacer = styled.div`
-  width: calc(100% / 4 - 23px);
+const Spacer = styled(Item)`
   height: 0;
-  min-width: 256px;
+  padding: 0;
+`
+
+const ProductText = styled.p`
+  font-family: 'Roboto', sans-serif;
+  white-space: pre-line;
+  max-width: 700px;
+  margin: 30px 0px;
+`
+
+const BigProductTitle = styled.h1`
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.5rem;
+  color: ${(props) => props.theme.main};
+  font-weight: 400;
+`
+
+const NutritionTableHeader = styled.th`
+  text-align: left;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  font-weight: 400;
+  padding: 5px 10px;
+  &:nth-child(2) {
+    text-align: end;
+    border-width: 0px 0px 1px 1px;
+  }
+`
+
+const NutritionTable = styled.table`
+  border-collapse: collapse;
+`
+
+const NutritionTableCell = styled.td`
+  padding: 2px 10px;
+  &:nth-child(2) {
+    text-align: end;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+  }
+`
+
+const NutritionTableRow = styled.tr`
+  background-color: ${(props) => props.theme.white};
+  &:nth-child(odd) {
+    background-color: ${(props) => props.theme.background};
+  }
+`
+const Badges = styled.div`
+  margin: 20px 0px 30px 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  row-gap: 10px;
+  span {
+    color: ${(props) => props.theme.white};
+    padding: 5px 15px;
+    background-color: ${(props) => props.theme.main};
+    border-radius: 20px;
+    box-shadow: ${(props) => props.theme.shadow};
+  }
+`
+const Toggle = styled.button`
+  /* padding: 0px; */
+  border-radius: 2px;
+  box-shadow: ${(props) => props.theme.shadow};
+  border: 0;
+  font-size: 16px;
+  padding: 0;
+  span:nth-child(2) {
+    padding: 10px 10px;
+    background-color: ${(props) =>
+      !props.true ? props.theme.main : props.theme.white};
+    color: ${(props) => (!props.true ? 'white' : props.theme.main)};
+    display: inline-block;
+  }
+  span:nth-child(1) {
+    background-color: ${(props) =>
+      props.true ? props.theme.main : props.theme.white};
+    color: ${(props) => (props.true ? props.theme.white : props.theme.main)};
+    padding: 10px 10px;
+  }
+  &:hover {
+    background: none;
+  }
+`
+const CardRow = styled(Row)`
+  flex-wrap: wrap;
+  justify-content: center;
 `
 
 export {
+  Item,
+  ProductText,
+  ShadowInput,
+  CardRow,
+  Toggle,
+  Badges,
+  NutritionTable,
+  NutritionTableCell,
+  NutritionTableHeader,
+  NutritionTableRow,
+  BigProductTitle,
   Container,
   FullHeightContainer,
   Row,
@@ -401,7 +510,6 @@ export {
   Label,
   NumberInput,
   WideNumberInput,
-  Title,
   SubTitle,
   Right,
   ColoredText,
@@ -412,6 +520,7 @@ export {
   CompactInputGroup,
   Radio,
   TextArea,
+  ShadowTextArea,
   Form,
   ModalContainer,
   ModalContent,
@@ -421,10 +530,11 @@ export {
   HalfWidth,
   ContactText,
   RowSpaceEvenly,
-  ProductCard,
-  ProductRow,
+  Card,
   Spacer,
   ProductImage,
   WrappableRow,
   BottomTextLink,
+  Padding,
+  PaddedForm,
 }

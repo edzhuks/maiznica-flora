@@ -52,21 +52,33 @@ const getCatalogue = async () => {
 }
 
 categoryRouter.get('/discount', async (req, res) => {
-  const products = await Product.find({ discountPrice: { $exists: true } })
+  const products = await Product.find({
+    discount: { $exists: true },
+    invisible: { $ne: true },
+  })
   res.send({
-    products,
+    products: products.filter(
+      (p) =>
+        Date.parse(p.discount.startDate) <= new Date() &&
+        Date.parse(p.discount.endDate) >= new Date()
+    ),
     displayName: { lv: 'Atlaides', en: 'Discounts', de: 'Rabatt' },
   })
 })
 
-categoryRouter.get('/complete', async (req, res) => {
-  let catalogue = await getCatalogue()
-  res.send(catalogue)
-})
+categoryRouter.get(
+  '/complete',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let catalogue = await getCatalogue()
+    res.send(catalogue)
+  }
+)
 
 categoryRouter.get('/:category', async (req, res) => {
   let categories = await Category.findById(req.params.category)
-    .populate('products')
+    .populate({ path: 'products', match: { invisible: { $ne: true } } })
     .populate('categories')
   res.send(categories)
 })
@@ -212,6 +224,11 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
   parentCategory.categories = req.body.categoriesToAdd
   await parentCategory.save()
   res.status(200).send(parentCategory)
+})
+
+categoryRouter.get('/', async (req, res) => {
+  let allIds = await Category.find({})
+  res.send(allIds)
 })
 
 module.exports = { categoryRouter, getCatalogue }

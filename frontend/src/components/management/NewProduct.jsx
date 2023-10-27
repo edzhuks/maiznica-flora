@@ -1,97 +1,88 @@
 import useField from '../../hooks/useField'
 import { useEffect, useState } from 'react'
 import {
-  StyledInput,
+  ShadowInput,
   TextArea,
   NumberInput,
   Row,
   Button,
   ProductImage,
   WrappableRow,
+  Label,
+  BigProductTitle,
+  ProductText,
+  NutritionTable,
+  NutritionTableRow,
+  NutritionTableHeader,
+  NutritionTableCell,
+  Toggle,
+  ShadowTextArea,
 } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { StaticInformation } from '../productPage/TextualInformation'
+import StaticInformation from '../productPage/TextualInformation'
 import { useParams } from 'react-router-dom'
-import { enIE } from 'date-fns/locale'
-import useCategoryService from '../../services/category'
 import useProductService from '../../services/product'
-
-const Text = styled.p`
-  margin: 3px 0px -5px 0px;
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-  white-space: pre-line;
-`
-
-const Title = styled.span`
-  font-family: 'Roboto Slab', serif;
-  font-size: 28px;
-  color: #45941e;
-  font-weight: 400;
-`
-
-const TableHeader = styled.th`
-  text-align: left;
-  border-width: 0px 0px 1px 0px;
-  border-color: #333333;
-  border-style: solid;
-  font-weight: 400;
-  padding: 5px 10px;
-  &:nth-child(2) {
-    text-align: end;
-    border-width: 0px 0px 1px 1px;
-  }
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-`
-
-const Cell = styled.td`
-  padding: 2px 10px;
-  &:nth-child(2) {
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: #333333;
-  }
-`
-
-const TableRow = styled.tr`
-  background-color: f9f9f9;
-  &:nth-child(odd) {
-    background-color: white;
-    input {
-      background-color: #f0f0f0;
-    }
-  }
-`
-
-const ShadowInput = styled(StyledInput)`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-`
+import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
+import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
+import useToast from '../../util/promiseToast'
+import { Badges } from '../styled/base'
 
 const NameInput = styled(ShadowInput)`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
   width: 300px;
   margin: 5px 0px;
 `
 
 const GreenNumberInput = styled(NumberInput)`
-  color: #45941e;
+  color: ${(props) => props.theme.main};
   width: 100px;
   margin: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow: ${(props) => props.theme.shadow};
 `
 
-const ProductTextArea = styled(TextArea)`
+const ProductTextArea = styled(ShadowTextArea)`
   width: 420px;
+  font-size: small;
   margin: 5px 0px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+`
+
+const EditableBadges = styled(Badges)`
+  max-width: 450px;
+`
+
+const EditTab = styled.div`
+  position: absolute;
+  left: ${(props) => (props.editTabOpen ? '00px' : '-485px')};
+  background: #ffffffaa;
+
+  box-shadow: ${(props) => props.theme.shadow};
+  padding: 30px;
+  transition: 0.5s;
+`
+
+const EditTabButton = styled(Button)`
+  position: absolute;
+  right: -50px;
+  width: 50px;
+  height: 50px;
+  top: -0px;
+`
+
+const BadgeButton = styled.button`
+  color: ${(props) => (props.selected ? props.theme.white : props.theme.main)};
+  padding: 5px 15px;
+  background-color: ${(props) =>
+    props.selected ? props.theme.main : props.theme.white};
+  border-radius: 20px;
+  box-shadow: ${(props) => props.theme.shadow};
+  border: 0;
+  font-size: 16px;
+`
+
+const ShortLabel = styled(Label)`
+  line-height: normal;
 `
 
 const NewProductFrom = () => {
@@ -112,6 +103,9 @@ const NewProductFrom = () => {
   const fiber = useField('number')
   const protein = useField('number')
   const salt = useField('number')
+  const d3 = useField('number')
+  const expiryTime = useField('number')
+  const expiryTimeAfter = useField('number')
   const EAN = useField('text')
   const [image, setImage] = useState(
     'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
@@ -123,10 +117,18 @@ const NewProductFrom = () => {
   const [ingredients_lv, setIngredients_lv] = useState('')
   const [ingredients_en, setIngredients_en] = useState('')
   const [ingredients_de, setIngredients_de] = useState('')
-
+  const [badges, setBadges] = useState([])
   const [bio, setBio] = useState(false)
+  const [spoonGreen, setSpoonGreen] = useState(false)
+  const [expiryTimeDays, setExpiryTimeDays] = useState(true)
+  const [expiryTimeDaysAfter, setExpiryTimeDaysAfter] = useState(true)
+  const [spoonRed, setSpoonRed] = useState(false)
   const [addToAll, setAddToAll] = useState(false)
   const [addToNew, setAddToNew] = useState(false)
+
+  const [editTabOpen, setEditTabOpen] = useState(true)
+
+  const { showPromiseToast } = useToast()
 
   useEffect(() => {
     if (productId) {
@@ -153,41 +155,30 @@ const NewProductFrom = () => {
           fiber.changeValue(product.nutrition.fiber)
           protein.changeValue(product.nutrition.protein)
           salt.changeValue(product.nutrition.salt)
+          d3.changeValue(product.nutrition.d3)
         }
+        setBadges(product.badges ? product.badges : [])
         setImage(product.image)
         setBio(product.bio)
+        setSpoonGreen(product.spoonGreen)
+        setSpoonRed(product.spoonRed)
+        if (product.expiration) {
+          setExpiryTimeDays(product.expiration.word === 'days')
+          expiryTime.changeValue(product.expiration.number)
+          if (product.expiration.afterOpening) {
+            expiryTimeAfter.changeValue(product.expiration.afterOpening.number)
+            setExpiryTimeDaysAfter(
+              product.expiration.afterOpening.word === 'days'
+            )
+          }
+        }
       })
     }
   }, [productId])
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    const product = {
+  const formProduct = () => {
+    return {
       name: { lv: name_lv.value, en: name_en.value, de: name_de.value },
-      weight: weight.value,
-      price: price.value,
-      nutrition:
-        energy.value ||
-        fat.value ||
-        saturatedFat.value ||
-        carbs.value ||
-        sugar.value ||
-        fiber.value ||
-        protein.value ||
-        salt.value
-          ? {
-              energy: energy.value,
-              fat: fat.value,
-              saturatedFat: saturatedFat.value,
-              carbs: carbs.value,
-              sugar: sugar.value,
-              fiber: fiber.value,
-              protein: protein.value,
-              salt: salt.value,
-            }
-          : null,
-      EAN: EAN.value,
-      image: image,
       description: {
         lv: description_lv,
         en: description_en,
@@ -198,43 +189,98 @@ const NewProductFrom = () => {
         en: ingredients_en,
         de: ingredients_de,
       },
+      nutrition:
+        energy.value ||
+        fat.value ||
+        saturatedFat.value ||
+        carbs.value ||
+        sugar.value ||
+        fiber.value ||
+        protein.value ||
+        d3.value ||
+        salt.value
+          ? {
+              energy: energy.value,
+              fat: fat.value,
+              saturatedFat: saturatedFat.value,
+              carbs: carbs.value,
+              sugar: sugar.value,
+              fiber: fiber.value,
+              protein: protein.value,
+              salt: salt.value,
+              d3: d3.value,
+            }
+          : null,
+      price: price.value,
+      EAN: EAN.value,
       bio,
+      spoonGreen,
+      spoonRed,
+      weight: weight.value,
+      badges,
+      expiration: expiryTime.value && {
+        number: expiryTime.value,
+        word: expiryTimeDays ? 'days' : 'months',
+        afterOpening: expiryTimeAfter.value
+          ? {
+              number: expiryTimeAfter.value,
+              word: expiryTimeDaysAfter ? 'days' : 'months',
+            }
+          : undefined,
+      },
     }
+  }
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+    const product = formProduct()
+    product.image = image
     if (productId) {
-      productService.update(productId, product)
+      const promise = productService.update(productId, product)
+      showPromiseToast({ promise, successMessage: lang.toast_changes_saved })
     } else {
-      productService.create({
+      const promise = productService.create({
         product,
         addToAll,
         addToNew,
       })
+      showPromiseToast({ promise, successMessage: lang.toast_product_created })
+      promise.then((reponse) => {
+        name_lv.clear()
+        name_en.clear()
+        name_de.clear()
+        weight.clear()
+        price.clear()
+        energy.clear()
+        fat.clear()
+        saturatedFat.clear()
+        carbs.clear()
+        sugar.clear()
+        fiber.clear()
+        protein.clear()
+        salt.clear()
+        d3.clear()
+        expiryTime.clear()
+        expiryTimeAfter.clear()
+        setExpiryTimeDays(true)
+        setExpiryTimeDaysAfter(true)
+        setSpoonGreen(false)
+        setSpoonRed(false)
+        EAN.clear()
+        setImage(
+          'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
+        )
+        setDescription_lv('')
+        setDescription_en('')
+        setDescription_de('')
+        setIngredients_lv('')
+        setIngredients_en('')
+        setIngredients_de('')
+        setBio(false)
+        setAddToAll(false)
+        setAddToNew(false)
+      })
     }
-    name_lv.clear()
-    name_en.clear()
-    name_de.clear()
-    weight.clear()
-    price.clear()
-    energy.clear()
-    fat.clear()
-    saturatedFat.clear()
-    carbs.clear()
-    sugar.clear()
-    fiber.clear()
-    protein.clear()
-    salt.clear()
-    EAN.clear()
-    setImage(
-      'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
-    )
-    setDescription_lv('')
-    setDescription_en('')
-    setDescription_de('')
-    setIngredients_lv('')
-    setIngredients_en('')
-    setIngredients_de('')
-    setBio(false)
-    setAddToAll(false)
-    setAddToNew(false)
   }
 
   const imageDropped = (event) => {
@@ -246,6 +292,14 @@ const NewProductFrom = () => {
     setImage(src)
   }
 
+  const badgeClicked = (name) => {
+    if (badges.find((b) => b === name)) {
+      setBadges(badges.filter((b) => b !== name))
+    } else {
+      setBadges(badges.concat(name))
+    }
+  }
+
   return (
     <div
       style={{
@@ -254,7 +308,24 @@ const NewProductFrom = () => {
         position: 'relative',
         minHeight: '2500px',
       }}>
-      <div style={{ position: 'absolute', left: '-450px' }}>
+      <EditTab editTabOpen={editTabOpen}>
+        <EditTabButton>
+          {editTabOpen ? (
+            <BoxArrowLeft
+              onClick={(e) => {
+                e.preventDefault()
+                setEditTabOpen(false)
+              }}
+            />
+          ) : (
+            <BoxArrowRight
+              onClick={(e) => {
+                e.preventDefault()
+                setEditTabOpen(true)
+              }}
+            />
+          )}
+        </EditTabButton>
         <Row>
           <div>
             <NameInput {...name_lv} />
@@ -264,15 +335,94 @@ const NewProductFrom = () => {
             <NameInput {...name_de} />
           </div>
           <GreenNumberInput {...weight} />
-          <Title>g</Title>
+          <BigProductTitle>g</BigProductTitle>
         </Row>
-        <Text>{allLang.lv.description}</Text>
+        <EditableBadges>
+          <BadgeButton
+            selected={badges.find((b) => b === 'vegan')}
+            onClick={() => badgeClicked('vegan')}>
+            {lang.vegan}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'high_protein')}
+            onClick={() => badgeClicked('high_protein')}>
+            {lang.high_protein}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'high_fiber')}
+            onClick={() => badgeClicked('high_fiber')}>
+            {lang.high_fiber}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'handmade')}
+            onClick={() => badgeClicked('handmade')}>
+            {lang.handmade}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'no_added_yeast')}
+            onClick={() => badgeClicked('no_added_yeast')}>
+            {lang.no_added_yeast}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'no_conservants')}
+            onClick={() => badgeClicked('no_conservants')}>
+            {lang.no_conservants}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'vitamin_d')}
+            onClick={() => badgeClicked('vitamin_d')}>
+            {lang.vitamin_d}
+          </BadgeButton>
+          <BadgeButton
+            selected={badges.find((b) => b === 'iodine')}
+            onClick={() => badgeClicked('iodine')}>
+            {lang.iodine}
+          </BadgeButton>
+        </EditableBadges>
+        <GreenNumberInput {...price} />
+        {lang.in_cents}
+        <Checkbox
+          checked={bio}
+          onChange={() => setBio(!bio)}
+          label="BIO"
+        />
+        <Checkbox
+          checked={spoonRed}
+          onChange={() => setSpoonRed(!spoonRed)}
+          label="Sarkanā karotīte"
+        />
+        <Checkbox
+          checked={spoonGreen}
+          onChange={() => setSpoonGreen(!spoonGreen)}
+          label="Zaļā karotīte"
+        />
+        <Label>
+          {lang.expiration_time}
+          <GreenNumberInput {...expiryTime} />
+          <Toggle
+            onClick={() => setExpiryTimeDays(!expiryTimeDays)}
+            true={expiryTimeDays}>
+            <span>{lang.days}</span>
+            <span>{lang.months}</span>
+          </Toggle>
+        </Label>
+        <Label>
+          {lang.after_opening}
+          <GreenNumberInput {...expiryTimeAfter} />
+          <Toggle
+            onClick={() => setExpiryTimeDaysAfter(!expiryTimeDaysAfter)}
+            true={expiryTimeDaysAfter}>
+            <span>{lang.days}</span>
+            <span>{lang.months}</span>
+          </Toggle>
+        </Label>
+        <ProductText>{allLang.lv.description}</ProductText>
         <ProductTextArea
-          rows={7}
+          rows={12}
           value={description_lv}
           onChange={(event) => setDescription_lv(event.target.value)}
         />
-        <Text>{allLang.en.description}</Text>
+        {/* <Text>{allLang.en.description}</Text>
         <ProductTextArea
           rows={7}
           value={description_en}
@@ -283,113 +433,120 @@ const NewProductFrom = () => {
           rows={7}
           value={description_de}
           onChange={(event) => setDescription_de(event.target.value)}
-        />
-        <Text>{allLang.lv.ingredients}</Text>
+        /> */}
+        <ShortLabel>{allLang.lv.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_lv}
           onChange={(event) => setIngredients_lv(event.target.value)}
         />
-        <Text>{allLang.en.ingredients}</Text>
+        <ShortLabel>{allLang.en.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_en}
           onChange={(event) => setIngredients_en(event.target.value)}
         />
-        <Text>{allLang.de.ingredients}</Text>
+        <ShortLabel>{allLang.de.ingredients}</ShortLabel>
         <ProductTextArea
           rows={4}
           value={ingredients_de}
           onChange={(event) => setIngredients_de(event.target.value)}
         />
-        <Table style={{ marginBottom: '20px', marginTop: '20px' }}>
+        <NutritionTable style={{ marginBottom: '20px', marginTop: '20px' }}>
           <tbody>
-            <TableRow>
-              <TableHeader>
+            <NutritionTableRow>
+              <NutritionTableHeader>
                 <b>{lang.nutritional_info}</b>
-              </TableHeader>
-              <TableHeader>
+              </NutritionTableHeader>
+              <NutritionTableHeader>
                 <strong>{lang.g_contains}</strong>
-              </TableHeader>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.energy_content}</Cell>
-              <Cell>
+              </NutritionTableHeader>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...energy} />
                 kcal
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fat}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fat}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...fat} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
+              </NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...saturatedFat} />g
-              </Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
 
-            <TableRow>
-              <Cell>{lang.carbohydrates}</Cell>
-              <Cell>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...carbs} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>
+                &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
+              </NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...sugar} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.fiber}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.fiber}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...fiber} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.protein}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.protein}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...protein} />g
-              </Cell>
-            </TableRow>
-            <TableRow>
-              <Cell>{lang.salt}</Cell>
-              <Cell>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.salt}</NutritionTableCell>
+              <NutritionTableCell>
                 <NumberInput {...salt} />g
-              </Cell>
-            </TableRow>
+              </NutritionTableCell>
+            </NutritionTableRow>
+            <NutritionTableRow>
+              <NutritionTableCell>{lang.d3}</NutritionTableCell>
+              <NutritionTableCell>
+                <NumberInput {...d3} />
+                µg
+              </NutritionTableCell>
+            </NutritionTableRow>
           </tbody>
-        </Table>
+        </NutritionTable>
         {lang.EAN_code}
         <ShadowInput
           style={{ marginBottom: 20, marginLeft: '20px' }}
           {...EAN}
         />
         <br />
-        <GreenNumberInput {...price} />
-        {lang.in_cents}
-        <br />
-        <Checkbox
-          checked={bio}
-          onChange={() => setBio(!bio)}
-          label="bio"
-        />
-        <Checkbox
-          checked={addToAll}
-          onChange={() => setAddToAll(!addToAll)}
-          label={lang.add_to_all}
-        />
-        <Checkbox
-          checked={addToNew}
-          onChange={() => setAddToNew(!addToNew)}
-          label={lang.add_to_new}
-        />
-      </div>
-      <WrappableRow style={{ width: '1350px' }}>
+        {!productId && (
+          <div>
+            <Checkbox
+              checked={addToAll}
+              onChange={() => setAddToAll(!addToAll)}
+              label={lang.add_to_all}
+            />
+            <Checkbox
+              checked={addToNew}
+              onChange={() => setAddToNew(!addToNew)}
+              label={lang.add_to_new}
+            />
+          </div>
+        )}
+      </EditTab>
+      <WrappableRow style={{ justifyContent: 'end' }}>
         <ProductImage
           onDragOver={(e) => {
             e.stopPropagation()
@@ -404,46 +561,10 @@ const NewProductFrom = () => {
           src={image}
         />
         <div>
-          <StaticInformation
-            product={{
-              name: { lv: name_lv.value, en: name_en.value, de: name_de.value },
-              description: {
-                lv: description_lv,
-                en: description_en,
-                de: description_de,
-              },
-              ingredients: {
-                lv: ingredients_lv,
-                en: ingredients_en,
-                de: ingredients_de,
-              },
-              nutrition:
-                energy.value ||
-                fat.value ||
-                saturatedFat.value ||
-                carbs.value ||
-                sugar.value ||
-                fiber.value ||
-                protein.value ||
-                salt.value
-                  ? {
-                      energy: energy.value,
-                      fat: fat.value,
-                      saturatedFat: saturatedFat.value,
-                      carbs: carbs.value,
-                      sugar: sugar.value,
-                      fiber: fiber.value,
-                      protein: protein.value,
-                      salt: salt.value,
-                    }
-                  : null,
-              price: price.value,
-              EAN: EAN.value,
-              bio: bio,
-              weight: weight.value,
-            }}
-          />
-          <Button onClick={onSubmit}>{lang.create}</Button>
+          <StaticInformation product={formProduct()} />
+          <Button onClick={onSubmit}>
+            {productId ? lang.save : lang.create}
+          </Button>
         </div>
       </WrappableRow>
     </div>

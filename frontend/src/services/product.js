@@ -9,8 +9,7 @@ const useProductService = () => {
   const create = (newProduct) => {
     const config = makeConfig()
     const request = axios.post(baseURL, newProduct, config)
-    showErrorToast(request)
-    return request.then((response) => response.data)
+    return request
   }
 
   const getAll = () => {
@@ -32,16 +31,56 @@ const useProductService = () => {
   const update = (productId, product) => {
     const config = makeConfig()
     const request = axios.put(`${baseURL}/${productId}`, { product }, config)
-    showErrorToast(request)
     return request.then((response) => response.data)
   }
 
+  const makeDiscount = (productId, discount) => {
+    const config = makeConfig()
+    const request = axios.put(
+      `${baseURL}/discount/${productId}`,
+      { discount },
+      config
+    )
+    return request
+  }
+  const removeDiscount = (productId, discount) => {
+    const config = makeConfig()
+    const request = axios.delete(`${baseURL}/discount/${productId}`, config)
+    return request
+  }
+
+  const hideProduct = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/hide/${productId}`, {}, config)
+    return request
+  }
+  const showProduct = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/show/${productId}`, {}, config)
+    return request
+  }
+  const inStock = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/inStock/${productId}`, {}, config)
+    return request
+  }
+  const outOfStock = (productId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/outOfStock/${productId}`, {}, config)
+    return request
+  }
   return {
     create,
     getAll,
     getById,
     deleteProduct,
     update,
+    makeDiscount,
+    removeDiscount,
+    hideProduct,
+    showProduct,
+    inStock,
+    outOfStock,
   }
 }
 export default useProductService

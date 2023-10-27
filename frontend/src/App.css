@@ -1,6 +1,14 @@
 html {
   box-sizing: border-box;
   min-height: 100vh;
+  font-size: 16px;
+
+  @media (max-width: 2000px) {
+    font-size: 16px;
+  }
+  @media (max-width: 960px) {
+    font-size: 13px;
+  }
 }
 *,
 *:before,
@@ -15,6 +23,7 @@ body {
   padding: 0px;
   box-sizing: border-box;
   min-height: 100vh;
+  color: #333333;
 }
 
 #root {
@@ -24,4 +33,15 @@ body {
 
 button {
   cursor: pointer;
+}
+
+.leaflet-control {
+  z-index: 0 !important;
+}
+.leaflet-pane {
+  z-index: 0 !important;
+}
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 0 !important;
 }

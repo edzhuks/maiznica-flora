@@ -44,17 +44,20 @@ const product1 = {
     protein: 8.3,
     salt: 0.7,
   },
+  badges: [],
   weight: 280,
   price: 201,
   EAN: '4750271102922',
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
+  badges: [],
 }
 
 const product2 = {
   name: { lv: 'Sējas rudzu maize ar briedinātiem rudzu graudiem' },
   description: { lv: 'Ņamma' },
+  badges: [],
   ingredients: {
     lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas sāls, miežu iesala ekstrakts, kviešu klijas.',
   },
@@ -64,6 +67,7 @@ const product2 = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',
   bio: false,
+  badges: [],
 }
 
 const goodAddress = {

@@ -7,6 +7,11 @@ import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
 import useCategoryService from '../../services/category'
+import { Edit } from '@styled-icons/evaicons-solid/Edit'
+import { Cross } from '@styled-icons/entypo/Cross'
+import { BoxSeam } from '@styled-icons/bootstrap/BoxSeam'
+import useProductService from '../../services/product'
+import { Eye } from '@styled-icons/heroicons-solid/Eye'
 
 const CategoryList = styled.ul`
   list-style: none;
@@ -17,7 +22,7 @@ const CategoryList = styled.ul`
 `
 
 const Clearer = styled.div`
-  background: #fafafa;
+  background: ${(props) => props.theme.background};
   z-index: -1;
   position: absolute;
   height: 170px;
@@ -34,16 +39,17 @@ const SmallButton = styled(Button)`
 
 const ProductItem = styled.li`
   span {
-    color: black;
+    color: ${(props) => (props.outOfStock ? props.theme.light : 'black')};
+    text-decoration: ${(props) => (props.invisible ? 'line-through' : 'none')};
   }
   position: relative;
-  background: #fafafa;
+  background: ${(props) => props.theme.background};
   span::before {
     content: '';
     height: 10000%;
     width: 10px;
-    border-bottom: 2px solid rgb(69, 148, 30);
-    border-left: 2px solid rgb(69, 148, 30);
+    border-bottom: 2px solid ${(props) => props.theme.main};
+    border-left: 2px solid ${(props) => props.theme.main};
     position: absolute;
     bottom: 10px;
     left: -10px;
@@ -53,29 +59,54 @@ const ProductItem = styled.li`
     content: '';
     height: 33px;
     width: 400px;
-    background: #fafafa;
+    background: ${(props) => props.theme.background};
     position: absolute;
     bottom: 10px;
     left: 0px;
     z-index: -1;
   }
   span {
-    button {
-      border-radius: 3px;
-      padding: 0px 3px 3px 3px;
-      background: transparent;
-      border: 0px;
-      color: red;
-      &:hover {
-        background: red;
-        color: white;
-      }
-    }
+  }
+
+  button {
   }
 `
+const RemoveButton = styled.button`
+  border-radius: 3px;
+  padding: 3px;
+  background: transparent;
+  border: 0px;
+  color: red;
+  &:hover {
+    background: red;
+    color: ${(props) => props.theme.white};
+  }
+`
+const EditButton = styled(RemoveButton)`
+  color: ${(props) => props.theme.main};
+  &:hover {
+    background: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
+  }
+`
+
 const CategoryItem = styled(ProductItem)`
   font-weight: bold;
   margin: 5px 0px;
+  button {
+    border-radius: 3px;
+    padding: 0px 3px 3px 3px;
+    background: transparent;
+    border: 0px;
+    color: ${(props) => props.theme.main};
+    &:hover {
+      background: ${(props) => props.theme.main};
+      color: ${(props) => props.theme.white};
+    }
+  }
+  span::after {
+    height: 43px;
+  }
 `
 
 const CategoryTab = ({
@@ -85,6 +116,10 @@ const CategoryTab = ({
   handleDeleteProduct,
   handleDeleteCategory,
   parentCategory,
+  handleHideProduct,
+  handleShowProduct,
+  handleInStockProduct,
+  handleOutOfStockProduct,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -110,7 +145,7 @@ const CategoryTab = ({
                   e.preventDefault()
                   handleDeleteCategory(category.id, parentCategory.id)
                 }}>
-                ╳
+                <Cross />
               </button>
             )}
           </span>
@@ -126,20 +161,48 @@ const CategoryTab = ({
       <CategoryList>
         {category.categories &&
           category.products.map((p) => (
-            <ProductItem key={p.id}>
+            <ProductItem
+              key={p.id}
+              invisible={p.invisible}
+              outOfStock={p.outOfStock}>
               <Link
                 to={`/products/${p.id}`}
                 style={{ textDecoration: 'none' }}>
                 <span>
                   {p.name[selectedLang] || p.name.lv} {p.weight}g
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleDeleteProduct(p.id, category.id)
-                    }}>
-                    ╳
-                  </button>
                 </span>
+              </Link>
+              <RemoveButton
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleDeleteProduct(p.id, category.id)
+                }}>
+                <Cross size="20px" />
+              </RemoveButton>
+              <EditButton
+                onClick={() => {
+                  if (p.invisible) {
+                    handleShowProduct(p.id)
+                  } else {
+                    handleHideProduct(p.id)
+                  }
+                }}>
+                <Eye size="18px" />
+              </EditButton>
+              <EditButton
+                onClick={() => {
+                  if (p.outOfStock) {
+                    handleInStockProduct(p.id)
+                  } else {
+                    handleOutOfStockProduct(p.id)
+                  }
+                }}>
+                <BoxSeam size="18px" />
+              </EditButton>
+              <Link to={`/management/new_product/${p.id}`}>
+                <EditButton>
+                  <Edit size="20px" />
+                </EditButton>
               </Link>
             </ProductItem>
           ))}
@@ -153,6 +216,10 @@ const CategoryTab = ({
               handleCategory={handleCategory}
               handleProduct={handleProduct}
               handleDeleteProduct={handleDeleteProduct}
+              handleShowProduct={handleShowProduct}
+              handleHideProduct={handleHideProduct}
+              handleInStockProduct={handleInStockProduct}
+              handleOutOfStockProduct={handleOutOfStockProduct}
               handleDeleteCategory={handleDeleteCategory}
               parentCategory={category}
             />
@@ -164,6 +231,7 @@ const CategoryTab = ({
 
 const CategoryManagement = () => {
   const categoryService = useCategoryService()
+  const productService = useProductService()
   const [catalogue, setCatalogue] = useState(null)
   const [activeCategory, setActiveCategory] = useState(null)
   const [addingProduct, setAddingProduct] = useState(false)
@@ -195,7 +263,18 @@ const CategoryManagement = () => {
       .removeCategories({ categoryId: id, parentCategory })
       .then(() => refresh())
   }
-
+  const handleHideProduct = (id) => {
+    productService.hideProduct(id).then(() => refresh())
+  }
+  const handleShowProduct = (id) => {
+    productService.showProduct(id).then(() => refresh())
+  }
+  const handleInStockProduct = (id) => {
+    productService.inStock(id).then(() => refresh())
+  }
+  const handleOutOfStockProduct = (id) => {
+    productService.outOfStock(id).then(() => refresh())
+  }
   const refresh = () => {
     categoryService.getFullCatalogue().then((result) => {
       setCatalogue(result)
@@ -218,7 +297,6 @@ const CategoryManagement = () => {
         visible={addingProduct}
         activeCategory={activeCategory}
         onClose={onModalClose}
-        catalogue={catalogue}
       />
       <ul style={{ listStyle: 'none' }}>
         <Clearer />
@@ -228,6 +306,10 @@ const CategoryManagement = () => {
             handleCategory={clickCategory}
             handleDeleteProduct={handleDeleteProduct}
             handleDeleteCategory={handleDeleteCategory}
+            handleShowProduct={handleShowProduct}
+            handleHideProduct={handleHideProduct}
+            handleInStockProduct={handleInStockProduct}
+            handleOutOfStockProduct={handleOutOfStockProduct}
             category={catalogue}
           />
         ) : (

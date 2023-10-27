@@ -32,6 +32,7 @@ const product1 = {
   ingredients: {
     lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas  sāls, miežu iesala ekstrakts, kviešu klijas.',
   },
+  badges: [],
   nutrition: {
     energy: 251,
     fat: 3.4,
@@ -48,11 +49,13 @@ const product1 = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
+  badges: [],
 }
 
 const product2 = {
   name: { lv: 'Sējas rudzu maize ar briedinātiem rudzu graudiem' },
   description: { lv: 'Ņamma' },
+  badges: [],
   ingredients: {
     lv: 'Sastāvdaļas: rudzu milti 34%, ūdens, briedināti rudzu graudi 20%, kviešu milti, linsēklas, rafinētais sīrups, rudzu iesals, cukurs, ķimeņu sēklas, pārtikas sāls, miežu iesala ekstrakts, kviešu klijas.',
   },
@@ -62,6 +65,7 @@ const product2 = {
   image:
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',
   bio: false,
+  badges: [],
 }
 
 let token

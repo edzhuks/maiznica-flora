@@ -25,13 +25,28 @@ const productSchema = new mongoose.Schema({
     fiber: Number,
     protein: Number,
     salt: Number,
+    d3: Number,
   },
   weight: Number,
   price: Number,
-  discountPrice: Number,
+  discount: {
+    discountPrice: Number,
+    startDate: Date,
+    endDate: Date,
+  },
   EAN: String,
   image: String,
   bio: Boolean,
+  spoonRed: Boolean,
+  spoonGreen: Boolean,
+  expiration: {
+    number: Number,
+    word: String,
+    afterOpeneing: { number: Number, word: String },
+  },
+  badges: [{ type: String }],
+  outOfStock: Boolean,
+  invisible: Boolean,
 })
 
 productSchema.set('toJSON', {

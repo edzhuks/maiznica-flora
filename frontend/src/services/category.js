@@ -81,8 +81,14 @@ const useCategoryService = () => {
     return request.then((response) => response.data)
   }
 
+  const getAll = () => {
+    const request = axios.get(`${baseUrl}/`)
+    return request.then((response) => response.data)
+  }
+
   const getFullCatalogue = () => {
-    const request = axios.get(`${baseUrl}/complete`)
+    const config = makeConfig()
+    const request = axios.get(`${baseUrl}/complete`, config)
     return request.then((response) => response.data)
   }
 
@@ -108,6 +114,7 @@ const useCategoryService = () => {
     getCategory,
     removeProducts,
     removeCategories,
+    getAll,
   }
 }
 export default useCategoryService

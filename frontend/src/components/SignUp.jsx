@@ -11,6 +11,7 @@ import {
   InputGroup,
   Label,
   LoginCard,
+  PaddedForm,
   StyledInput,
   SubTitle,
 } from './styled/base'
@@ -19,8 +20,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 const ValidationFailed = styled.div`
-  color: #bd5757;
-
+  color: ${(props) => props.theme.error};
   ul {
     font-size: 14px;
     margin: 0;
@@ -37,7 +37,7 @@ const ValidationFailed = styled.div`
   margin-bottom: 20px;
 `
 const ValidPassword = styled(ValidationFailed)`
-  color: rgb(69, 148, 30);
+  color: ${(props) => props.theme.main};
 `
 
 const SignUp = () => {
@@ -110,7 +110,7 @@ const SignUp = () => {
       ) : (
         <LoginCard>
           <BigTitle>{lang.sign_up}</BigTitle>
-          <Form onSubmit={onSubmit}>
+          <PaddedForm onSubmit={onSubmit}>
             <InputGroup>
               <Label>
                 {lang.email}
@@ -121,7 +121,7 @@ const SignUp = () => {
               </Label>
             </InputGroup>
 
-            <InputGroup style={{ marginBottom: '35px' }}>
+            <InputGroup>
               <Label>
                 {lang.password}
                 <StyledInput
@@ -176,7 +176,7 @@ const SignUp = () => {
               </ValidationFailed>
             )}
             <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
-          </Form>
+          </PaddedForm>
           <BottomTextLink to="/login">
             {lang.already_have_account}
           </BottomTextLink>
