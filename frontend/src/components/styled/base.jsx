@@ -484,7 +484,26 @@ const CardRow = styled(Row)`
   flex-wrap: wrap;
   justify-content: center;
 `
-
+const ValidationFailed = styled.div`
+  color: ${(props) => props.theme.error};
+  ul {
+    font-size: 14px;
+    margin: 0;
+    list-style: '●  ';
+  }
+  h3 {
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  line-height: 1.5;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`
+const ValidPassword = styled(ValidationFailed)`
+  color: ${(props) => props.theme.main};
+`
 export {
   Item,
   ProductText,
@@ -537,4 +556,6 @@ export {
   BottomTextLink,
   Padding,
   PaddedForm,
+  ValidationFailed,
+  ValidPassword,
 }

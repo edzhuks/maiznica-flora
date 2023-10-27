@@ -333,7 +333,7 @@ const Header = () => {
                 <SideMenuTab
                   as="button"
                   onClick={logout}>
-                  {lang.sign_out}{' '}
+                  {lang.sign_out}
                 </SideMenuTab>
               )}
               <SideMenuTab style={{ border: '0' }}>
@@ -416,21 +416,10 @@ const Header = () => {
               )}
               {!user && (
                 <>
-                  <HeaderTab to="/login">
-                    <Enter size="2rem" />
-                  </HeaderTab>
-                  <HeaderTab to="/signup">
-                    <AccountCircle size="2.2rem" />
-                  </HeaderTab>
+                  <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
                 </>
               )}
-              {user && (
-                <HeaderTab
-                  as="button"
-                  onClick={logout}>
-                  <Exit size="2rem" />
-                </HeaderTab>
-              )}
+              {user && <HeaderTab to="/account">{lang.profile}</HeaderTab>}
               <Lang>
                 <button
                   onClick={() => {

@@ -7,7 +7,7 @@ const lv = {
   new_product: 'jauns produkts',
   management: 'pārvaldīt',
   categories: 'kategorijas',
-  sign_out: 'iziet',
+  sign_out: 'Iziet',
   sum: 'kopā',
   paid_delivery: 'maksas piegāde',
   under_30: 'zem €30',
@@ -188,6 +188,14 @@ const lv = {
   email_not_registered: 'Nav konta ar šādu epasta adresi',
   toast_password_reset: 'Parole nomainīta',
   privacy_policy: 'Privātuma politika',
+  profile: 'Profils',
+  previous_orders: 'Pasūtījumi',
+  change_password: 'Mainit paroli',
+  account_information: 'Klienta dati',
+  addresses: 'Adreses',
+  previous_password: 'Iepriekšējā parole',
+  previous_password_required: 'Iepriekšējā parole ir obligāta',
+  previous_password_incorrect: 'Iepriekšējā parole ir nepareiza',
 }
 
 export default lv
