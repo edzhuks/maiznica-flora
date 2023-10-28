@@ -62,10 +62,8 @@ const Categories = ({ categories, name }) => {
       {categories.length > 0 && (
         <CardRow>
           {categories.map((category) => (
-            <CategoryItem>
-              <CategoryCard
-                to={`/category/${category.id}`}
-                key={category.id}>
+            <CategoryItem key={category.id}>
+              <CategoryCard to={`/category/${category.id}`}>
                 <CategoryImage
                   style={{
                     background: `url(${category.image}) center center`,

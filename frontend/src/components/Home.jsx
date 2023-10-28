@@ -5,6 +5,7 @@ import Carousel from './basic/Carousel'
 import ProductList from './productList/ProductList'
 import { useSelector } from 'react-redux'
 import useCategoryService from '../services/category'
+import { ScrollRestoration } from 'react-router-dom'
 
 const HomePage = () => {
   const categoryService = useCategoryService()

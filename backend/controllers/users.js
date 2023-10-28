@@ -93,9 +93,7 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.surname ||
     !req.body.phone ||
     !req.body.city ||
-    !req.body.street ||
-    !req.body.house ||
-    !req.body.apartment
+    !req.body.street
   ) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
@@ -104,6 +102,26 @@ router.post('/address', userExtractor, async (req, res) => {
   await address.save()
   user.addresses = user.addresses.concat(address)
   await user.save()
+  res.status(201).send(address)
+})
+
+router.put('/address', userExtractor, async (req, res) => {
+  if (
+    !req.body.name ||
+    !req.body.surname ||
+    !req.body.phone ||
+    !req.body.city ||
+    !req.body.street ||
+    !req.body.id
+  ) {
+    return res.status(400).json({ error: 'Missing required fields or id' })
+  }
+  await Address.updateOne({ _id: req.body.id }, req.body)
+  const address = await Address.findById(req.body.id)
+  res.status(201).send(address)
+})
+router.delete('/address/:id', userExtractor, async (req, res) => {
+  const address = await Address.findByIdAndDelete(req.params.id)
   res.status(201).send(address)
 })
 

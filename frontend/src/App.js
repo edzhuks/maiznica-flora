@@ -1,9 +1,15 @@
 import UserContext from './contexts/userContext'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  ScrollRestoration,
+} from 'react-router-dom'
 import Product from './components/productPage/Product'
 import Login from './components/user/Login'
 import SignUp from './components/user/SignUp'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import Cart from './components/Cart'
 import Order from './components/Order'
 import { FullHeightContainer, Padding } from './components/styled/base'
@@ -32,6 +38,7 @@ import ResetPassword from './components/user/ResetPassword'
 import PrivacyPolicyPage from './components/PrivacyPolicyPage'
 import AccountPage from './components/user/AccountPage'
 import ChangePassword from './components/user/ChangePassword'
+import Addresses from './components/user/Adresses'
 
 const baseTheme = {
   main: '#45941e',
@@ -188,6 +195,10 @@ function App() {
                       <Route
                         path="change_password"
                         element={<ChangePassword />}
+                      />
+                      <Route
+                        path="addresses"
+                        element={<Addresses />}
                       />
                     </Route>
                   </Routes>
