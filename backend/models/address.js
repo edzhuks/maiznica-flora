@@ -23,11 +23,9 @@ const addressSchema = new mongoose.Schema({
   },
   house: {
     type: String,
-    required: true,
   },
   apartment: {
     type: String,
-    required: true,
   },
 })
 

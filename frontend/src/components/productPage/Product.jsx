@@ -131,6 +131,7 @@ const Product = () => {
   }
   useEffect(() => {
     refresh()
+    window.scrollTo(0, 0)
   }, [id])
 
   const addToCart = () => {
@@ -166,7 +167,7 @@ const Product = () => {
         successMessage: lang.toast_discount_removed,
       })
       promise.then((r) => {
-        setProduct(r.data)
+        setProduct(r)
       })
     }
   }

@@ -183,6 +183,13 @@ const de = {
   previous_password: 'Vorheriges Passwort',
   vorheriges_passwort_erforderlich: 'Vorheriges Passwort ist erforderlich',
   previous_password_incorrect: 'Vorheriges Passwort ist falsch',
+  edit: 'Bearbeiten',
+  delete: 'Löschen',
+  toast_address_edited: 'Die Adresse wurde bearbeitet',
+  toast_address_deleted: 'Die Adresse wurde gelöscht',
+  confirm_delete_address:
+    'Sind Sie sicher, dass Sie diese Adresse löschen wollen?',
+  save_short: 'Speichern',
 }
 
 export default de

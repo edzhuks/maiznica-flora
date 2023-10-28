@@ -181,6 +181,12 @@ const en = {
   previous_password: 'Previous password',
   previous_password_required: 'Previous password is required',
   previous_password_incorrect: 'Previous password is wrong',
+  edit: 'Edit',
+  delete: 'Delete',
+  toast_address_edited: 'The address has been edited',
+  toast_address_deleted: 'The address has been deleted',
+  confirm_delete_address: 'Are you sure you want to delete this address?',
+  save_short: 'Save',
 }
 
 export default en

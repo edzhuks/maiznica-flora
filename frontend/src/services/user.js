@@ -15,7 +15,16 @@ const useUserService = () => {
     const request = axios.post(`${baseURL}/address`, newAddress, config)
     return request
   }
-
+  const editAddress = (newAddress) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/address`, newAddress, config)
+    return request
+  }
+  const deleteAddress = (id) => {
+    const config = makeConfig()
+    const request = axios.delete(`${baseURL}/address/${id}`, config)
+    return request
+  }
   const login = (email, password) => {
     const request = axios.post(`${apiURL}/login`, {
       email,
@@ -57,6 +66,8 @@ const useUserService = () => {
     forgotPassword,
     resetPassword,
     changePassword,
+    editAddress,
+    deleteAddress,
   }
 }
 export default useUserService

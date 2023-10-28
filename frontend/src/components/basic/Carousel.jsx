@@ -40,8 +40,21 @@ const CarouselImage = styled.img`
   max-width: 100%;
   max-height: 100%;
   height: auto;
-  display: ${(props) => (props.active ? 'block' : 'none')};
-  transition: 0.5s;
+  /* display: ${(props) => (props.active ? 'block' : 'none')}; */
+  display: block;
+  position: absolute;
+  height: 100%;
+  /* transition: 0.5s; */
+  opacity: 0;
+  transition: all 1000ms linear 0s;
+  &.fade-in {
+    opacity: 1;
+  }
+`
+
+const PlaceholderImage = styled(CarouselImage)`
+  height: auto;
+  position: static;
 `
 
 const CarouselIndicators = styled.div`
@@ -65,7 +78,8 @@ const CarouselItem = ({ image, active }) => {
   return (
     <CarouselImage
       src={image}
-      active={active}></CarouselImage>
+      active={active}
+      className={active && 'fade-in'}></CarouselImage>
   )
 }
 
@@ -76,7 +90,7 @@ const Carousel = ({ images }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveImage((activeImage) => (activeImage + 1) % images.length)
-    }, 3000)
+    }, 4000)
     setInt(interval)
 
     return () => clearInterval(interval)
@@ -101,6 +115,7 @@ const Carousel = ({ images }) => {
             active={index === activeImage}
           />
         ))}
+        <PlaceholderImage src={images[0]} />
       </CarouselImages>
       <CarouselRight
         onClick={() => {

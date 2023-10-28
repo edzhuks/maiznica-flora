@@ -55,7 +55,7 @@ const DesktopHeader = styled.div`
 `
 
 const MobileHeader = styled(DesktopHeader)`
-  padding: 10px 10px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
 `
@@ -80,8 +80,9 @@ const HeaderTab = styled(NavLink)`
   }
   &.active {
     background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
     &:hover {
-      color: ${(props) => props.theme.white};
+      color: ${(props) => props.theme.text};
     }
   }
   height: 100%;
@@ -159,7 +160,7 @@ const SideMenu = styled(Card)`
   animation: ${slideInFromTop} 0.2s;
 `
 
-const SideMenuTab = styled(Link)`
+const SideMenuTab = styled(NavLink)`
   flex: 0 1 auto;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
@@ -171,6 +172,10 @@ const SideMenuTab = styled(Link)`
   border-bottom: 1px solid ${(props) => props.theme.lighter};
   width: 100%;
   text-align: right;
+  &.active {
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
+  }
 `
 
 const Spacer = styled.div`
@@ -339,12 +344,21 @@ const Header = () => {
               )}
               {user && (
                 <SideMenuTab
+                  to="/account"
+                  onClick={() => setSideMenu(false)}>
+                  {lang.profile}
+                </SideMenuTab>
+              )}
+              {user && (
+                <SideMenuTab
                   as="button"
                   onClick={logout}>
                   {lang.sign_out}
                 </SideMenuTab>
               )}
-              <SideMenuTab style={{ border: '0' }}>
+              <SideMenuTab
+                as="div"
+                style={{ border: '0' }}>
                 <MobileLang>
                   <button
                     onClick={() => {

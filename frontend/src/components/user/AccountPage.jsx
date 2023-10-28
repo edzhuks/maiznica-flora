@@ -14,12 +14,13 @@ const SideMenuList = styled.ul`
 const SideMenuItem = styled.li`
   border: 0;
   border-bottom: 1px solid ${(props) => props.theme.lighter};
-  text-align: right;
   width: 100%;
 
   height: fit-content;
 `
 const SideMenuLink = styled(NavLink)`
+  width: 100%;
+  text-align: right;
   display: inline-block;
   text-decoration: none;
   color: ${(props) => props.theme.text};
@@ -34,10 +35,14 @@ const SideMenuLink = styled(NavLink)`
   letter-spacing: 0.8px;
   &.active {
     background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
     &:hover {
-      color: ${(props) => props.theme.white};
+      color: ${(props) => props.theme.text};
     }
   }
+`
+const Spacer = styled.div`
+  flex: 1 1 auto;
 `
 
 const ReversibleRow = styled.div`
@@ -88,7 +93,9 @@ const AccountPageSideMenu = () => {
 const AccountPage = () => {
   return (
     <ReversibleRow>
+      <Spacer />
       <Outlet />
+      <Spacer />
       <AccountPageSideMenu />
     </ReversibleRow>
   )

@@ -89,7 +89,7 @@ const ValueCard = styled(Card)`
   }
 `
 const BigValueCard = styled(ValueCard)`
-  max-width: 410px;
+  max-width: 350px;
   padding: 20px;
   padding: 20px;
   div {
