@@ -16,6 +16,7 @@ import { Menu } from '@styled-icons/evaicons-solid/Menu'
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline'
 import {
   Link,
+  NavLink,
   useLocation,
   useNavigate,
   useSearchParams,
@@ -54,17 +55,18 @@ const DesktopHeader = styled.div`
 `
 
 const MobileHeader = styled(DesktopHeader)`
-  padding: 10px 10px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
 `
 
-const HeaderTab = styled(Link)`
+const HeaderTab = styled(NavLink)`
+  font-family: 'Roboto Slab', serif;
   padding: 0 12px;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
-  font-size: 22px;
+  font-size: 18px;
   background-color: transparent;
   flex: 0 1 auto;
   display: flex;
@@ -77,6 +79,14 @@ const HeaderTab = styled(Link)`
   &:hover {
     color: ${(props) => props.theme.main};
   }
+  &.active {
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
+    &:hover {
+      color: ${(props) => props.theme.text};
+    }
+  }
+  height: 100%;
 `
 
 const pop = keyframes`
@@ -128,7 +138,7 @@ const CartBadge = styled.div`
     text-align: center;
     width: 100%;
     color: ${(props) => props.theme.white};
-    margin-top: 3px;
+    margin-top: 1px;
     font-size: 1rem;
   }
 `
@@ -151,7 +161,8 @@ const SideMenu = styled(Card)`
   animation: ${slideInFromTop} 0.2s;
 `
 
-const SideMenuTab = styled(Link)`
+const SideMenuTab = styled(NavLink)`
+  font-family: 'Roboto Slab', serif;
   flex: 0 1 auto;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
@@ -163,6 +174,10 @@ const SideMenuTab = styled(Link)`
   border-bottom: 1px solid ${(props) => props.theme.lighter};
   width: 100%;
   text-align: right;
+  &.active {
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.white};
+  }
 `
 
 const Spacer = styled.div`
@@ -331,12 +346,21 @@ const Header = () => {
               )}
               {user && (
                 <SideMenuTab
-                  as="button"
-                  onClick={logout}>
-                  {lang.sign_out}{' '}
+                  to="/account/previous_orders"
+                  onClick={() => setSideMenu(false)}>
+                  {lang.profile}
                 </SideMenuTab>
               )}
-              <SideMenuTab style={{ border: '0' }}>
+              {user && (
+                <SideMenuTab
+                  as="button"
+                  onClick={logout}>
+                  {lang.sign_out}
+                </SideMenuTab>
+              )}
+              <SideMenuTab
+                as="div"
+                style={{ border: '0' }}>
                 <MobileLang>
                   <button
                     onClick={() => {
@@ -416,19 +440,12 @@ const Header = () => {
               )}
               {!user && (
                 <>
-                  <HeaderTab to="/login">
-                    <Enter size="2rem" />
-                  </HeaderTab>
-                  <HeaderTab to="/signup">
-                    <AccountCircle size="2.2rem" />
-                  </HeaderTab>
+                  <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
                 </>
               )}
               {user && (
-                <HeaderTab
-                  as="button"
-                  onClick={logout}>
-                  <Exit size="2rem" />
+                <HeaderTab to="/account/previous_orders">
+                  {lang.profile}
                 </HeaderTab>
               )}
               <Lang>

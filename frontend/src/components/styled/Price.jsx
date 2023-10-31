@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { addVat, centsToEuro } from '../../util/convert'
+import { ProductText, Row } from './base'
 
 const { default: styled, css } = require('styled-components')
 const PriceContainer = styled.div`
@@ -54,7 +55,14 @@ const TipText = styled.span`
   font-weight: normal;
 `
 
-const Price = ({ price, discount, weight, isSmall }) => {
+const Price = ({
+  price,
+  bulkPrice,
+  bulkThreshold,
+  discount,
+  weight,
+  isSmall,
+}) => {
   const discountPrice =
     discount &&
     Date.parse(discount.startDate) <= new Date() &&
@@ -64,24 +72,108 @@ const Price = ({ price, discount, weight, isSmall }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <PriceContainer>
-      <BigPriceText
-        isSmall={isSmall}
-        discountPrice={discountPrice}>
-        <strong>{centsToEuro(addVat(price))}</strong>
-        {discountPrice && <span>{centsToEuro(addVat(discountPrice))}</span>}
-      </BigPriceText>
-      <TipText>{lang.with_VAT}</TipText>
-      <br />
-      <SmallPriceText discountPrice={discountPrice}>
-        <strong>{centsToEuro((addVat(price) / weight) * 1000)}</strong>
+      {isSmall ? (
+        <>
+          {!discountPrice ? (
+            <>
+              {bulkPrice ? (
+                <>
+                  <TipText>
+                    {`${lang.when_buying} ${bulkThreshold} ${lang.or_more} `}
+                    &nbsp;&nbsp;&nbsp;
+                  </TipText>
+                  <BigPriceText isSmall={isSmall}>
+                    <strong>{centsToEuro(bulkPrice)}</strong>
+                  </BigPriceText>
+                  <br />
+                  <TipText>
+                    {`${lang.when_buying} 1`}
+                    &nbsp;&nbsp;&nbsp;
+                  </TipText>
+                  <SmallPriceText>
+                    <strong>{centsToEuro(price)}</strong>
+                  </SmallPriceText>
+                </>
+              ) : (
+                <>
+                  <BigPriceText isSmall={isSmall}>
+                    <strong>{centsToEuro(price)}</strong>
+                  </BigPriceText>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <BigPriceText
+                isSmall={isSmall}
+                discountPrice={discountPrice}>
+                <strong>{centsToEuro(price)}</strong>
+                {discountPrice && <span>{centsToEuro(discountPrice)}</span>}
+              </BigPriceText>
+            </>
+          )}
+        </>
+      ) : (
+        <>
+          {bulkPrice ? (
+            <>
+              <Row>
+                <ProductText style={{ margin: '20px 0px' }}>
+                  {`${lang.when_buying} ${bulkThreshold} ${lang.or_more}`}
+                  <br />
+                  <BigPriceText isSmall={isSmall}>
+                    <strong>{centsToEuro(bulkPrice)}</strong>
+                  </BigPriceText>
+                  <TipText>{lang.with_VAT}</TipText>
+                  <br />
+                  <SmallPriceText>
+                    <strong>{centsToEuro((bulkPrice / weight) * 1000)}</strong>
+                  </SmallPriceText>
+                  <TipText>€ / kg</TipText>
+                </ProductText>
+                <ProductText style={{ margin: '20px 50px' }}>
+                  {`${lang.when_buying} 1`}
+                  <br />
+                  <BigPriceText isSmall={isSmall}>
+                    <strong>{centsToEuro(price)}</strong>
+                  </BigPriceText>
+                  <TipText>{lang.with_VAT}</TipText>
+                  <br />
+                  <SmallPriceText>
+                    <strong>{centsToEuro((price / weight) * 1000)}</strong>
+                  </SmallPriceText>
+                  <TipText>€ / kg</TipText>
+                </ProductText>
+              </Row>
+            </>
+          ) : (
+            <>
+              <BigPriceText
+                isSmall={isSmall}
+                discountPrice={discountPrice}>
+                <strong>{centsToEuro(addVat(price))}</strong>
+                {discountPrice && (
+                  <span>{centsToEuro(addVat(discountPrice))}</span>
+                )}
+              </BigPriceText>
+              <TipText>{lang.with_VAT}</TipText>
+              <br />
+              <SmallPriceText discountPrice={discountPrice}>
+                <strong>{centsToEuro((addVat(price) / weight) * 1000)}</strong>
 
-        {discountPrice && (
-          <span>
-            {centsToEuro((addVat(discountPrice) / weight) * 1000).substring(1)}
-          </span>
-        )}
-      </SmallPriceText>
-      <TipText>€ / kg</TipText>
+                {discountPrice && (
+                  <span>
+                    {centsToEuro(
+                      (addVat(discountPrice) / weight) * 1000
+                    ).substring(1)}
+                  </span>
+                )}
+              </SmallPriceText>
+              <TipText>€ / kg</TipText>
+            </>
+          )}
+        </>
+      )}
     </PriceContainer>
   )
 }

@@ -5,11 +5,13 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 
 const CarouselContainer = styled.div`
   width: 100%;
+  /* min-width: 450px; */
   position: relative;
   margin-bottom: ${(props) => props.theme.padding};
 `
 
 const CarouselLeft = styled.div`
+  z-index: 2;
   width: 60px;
   cursor: pointer;
   position: absolute;
@@ -30,18 +32,28 @@ const CarouselRight = styled(CarouselLeft)`
 `
 
 const CarouselImages = styled.div`
-  width: inherit;
-  height: inherit;
   box-shadow: ${(props) => props.theme.shadow};
 `
 
 const CarouselImage = styled.img`
   width: 100%;
   max-width: 100%;
-  max-height: 100%;
+  /* max-height: 100%; */
   height: auto;
-  display: ${(props) => (props.active ? 'block' : 'none')};
-  transition: 0.5s;
+  /* display: ${(props) => (props.active ? 'block' : 'none')}; */
+  display: block;
+  position: absolute;
+  height: auto;
+  /* transition: 0.5s; */
+  opacity: 0;
+  transition: all 1000ms linear 0s;
+  &.fade-in {
+    opacity: 1;
+  }
+`
+
+const PlaceholderImage = styled(CarouselImage)`
+  position: static;
 `
 
 const CarouselIndicators = styled.div`
@@ -61,11 +73,18 @@ const CarouselIndicator = styled.div`
   transition: 0.5s;
 `
 
+const Center = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`
+
 const CarouselItem = ({ image, active }) => {
   return (
     <CarouselImage
       src={image}
-      active={active}></CarouselImage>
+      active={active}
+      className={active && 'fade-in'}></CarouselImage>
   )
 }
 
@@ -76,7 +95,7 @@ const Carousel = ({ images }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveImage((activeImage) => (activeImage + 1) % images.length)
-    }, 3000)
+    }, 6000)
     setInt(interval)
 
     return () => clearInterval(interval)
@@ -101,6 +120,7 @@ const Carousel = ({ images }) => {
             active={index === activeImage}
           />
         ))}
+        <PlaceholderImage src={images[0]} />
       </CarouselImages>
       <CarouselRight
         onClick={() => {

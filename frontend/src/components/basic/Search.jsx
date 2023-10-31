@@ -9,6 +9,7 @@ const SearchInput = styled.div`
   position: relative;
   ${StyledInput} {
     box-shadow: ${(props) => props.theme.shadowInset};
+    background-color: ${(props) => props.theme.lighter};
   }
   ${InvertedButton} {
     position: absolute;

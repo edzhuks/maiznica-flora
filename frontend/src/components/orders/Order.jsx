@@ -2,7 +2,7 @@ import { useState } from 'react'
 import ExpandedOrder from './ExpandedOrder'
 import CompactOrder from './CompactOrder'
 
-const Order = ({ order, updateOrder }) => {
+const Order = ({ order, updateOrder, fixed }) => {
   const [expanded, setExpanded] = useState(false)
   const [closing, setClosing] = useState(false)
 
@@ -21,6 +21,7 @@ const Order = ({ order, updateOrder }) => {
         status={order.status?.status}
         closing={closing}
         order={order}
+        fixed={fixed}
       />
     )
   } else {

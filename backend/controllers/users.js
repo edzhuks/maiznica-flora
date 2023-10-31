@@ -93,9 +93,7 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.surname ||
     !req.body.phone ||
     !req.body.city ||
-    !req.body.street ||
-    !req.body.house ||
-    !req.body.apartment
+    !req.body.street
   ) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
@@ -104,6 +102,26 @@ router.post('/address', userExtractor, async (req, res) => {
   await address.save()
   user.addresses = user.addresses.concat(address)
   await user.save()
+  res.status(201).send(address)
+})
+
+router.put('/address', userExtractor, async (req, res) => {
+  if (
+    !req.body.name ||
+    !req.body.surname ||
+    !req.body.phone ||
+    !req.body.city ||
+    !req.body.street ||
+    !req.body.id
+  ) {
+    return res.status(400).json({ error: 'Missing required fields or id' })
+  }
+  await Address.updateOne({ _id: req.body.id }, req.body)
+  const address = await Address.findById(req.body.id)
+  res.status(201).send(address)
+})
+router.delete('/address/:id', userExtractor, async (req, res) => {
+  const address = await Address.findByIdAndDelete(req.params.id)
   res.status(201).send(address)
 })
 
@@ -154,6 +172,51 @@ router.post('/reset_password', async (request, response) => {
     return response.status(200).send()
   }
   return response.status(400).json({ error: 'The token has expired' })
+})
+
+router.post('/change_password', userExtractor, async (request, response) => {
+  const { oldPassword, newPassword } = request.body
+
+  if (!oldPassword) {
+    return response.status(400).json({ error: 'Previous password is required' })
+  }
+  if (!newPassword) {
+    return response.status(400).json({ error: 'New password is required' })
+  }
+  let user = await User.findById(request.user.id)
+  if (!user) {
+    return response
+      .status(404)
+      .json({ error: 'Cannot find a user with that token.' })
+  }
+  const passwordCorrect = await bcrypt.compare(oldPassword, user.passwordHash)
+
+  if (passwordCorrect) {
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(newPassword, saltRounds)
+    user.passwordHash = passwordHash
+    await user.save()
+    return response.status(200).send()
+  }
+  return response.status(400).json({ error: 'Previous password incorrect.' })
+})
+
+router.delete('/', userExtractor, async (request, response) => {
+  const { email, password } = request.body
+
+  const user = await User.findOne({ email })
+  const passwordCorrect =
+    user === null ? false : await bcrypt.compare(password, user.passwordHash)
+
+  if (!(user && passwordCorrect)) {
+    return response.status(401).json({
+      error: 'invalid email or password',
+    })
+  }
+  await User.deleteOne({ _id: user._id })
+  await Cart.deleteOne({ user: user._id })
+
+  response.status(204).end()
 })
 
 module.exports = router
