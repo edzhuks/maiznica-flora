@@ -10,7 +10,7 @@ const en = {
   sign_out: 'Sign out',
   sum: 'sum',
   paid_delivery: 'paid delivery',
-  under_30: 'under €30',
+  under: 'under €',
   total: 'total',
   order: 'order',
   city: 'city',
@@ -187,6 +187,12 @@ const en = {
   toast_address_deleted: 'The address has been deleted',
   confirm_delete_address: 'Are you sure you want to delete this address?',
   save_short: 'Save',
+  when_buying: 'When buying',
+  or_more: 'or more',
+  delete_account: 'Delete account',
+  confirm_delete_account:
+    'Are you sure you want to delete your account? The action is irreversible and you will not be able to access your account anymore.',
+  toast_account_deleted: 'Account has been deleted',
 }
 
 export default en

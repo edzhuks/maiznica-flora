@@ -71,7 +71,7 @@ const ChangePassword = () => {
   }
 
   return (
-    <LoginCard>
+    <LoginCard style={{ maxWidth: '600px' }}>
       <BigTitle>{lang.change_password}</BigTitle>
       <PaddedForm onSubmit={onSubmit}>
         <InputGroup>

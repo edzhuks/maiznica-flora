@@ -64,7 +64,13 @@ router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   res.send(order)
 })
 
-router.get('/', userExtractor, adminRequired, async (req, res) => {
+router.get('/', userExtractor, async (req, res) => {
+  const orders = await Order.find({ user: req.user.id }).populate([
+    { path: 'content', populate: { path: 'product' } },
+  ])
+  res.send(orders)
+})
+router.get('/all', userExtractor, adminRequired, async (req, res) => {
   const orders = await Order.find().populate([
     { path: 'content', populate: { path: 'product' } },
     { path: 'status', populate: { path: 'lastModifiedBy' } },

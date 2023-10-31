@@ -8,9 +8,7 @@ const OrderList = styled.ul`
   padding: 0;
   flex-wrap: wrap;
   background: ${(props) => props.theme.background};
-  gap: 20px;
-  row-gap: 20px;
-  padding: 20px;
+  gap: ${(props) => props.theme.padding};
 `
 
 const statusToColor = (status) => {
@@ -38,7 +36,7 @@ const OrderBase = styled.li`
   flex-grow: 1;
   display: flex;
   box-shadow: ${(props) => props.theme.shadow};
-  padding: 20px;
+  padding: ${(props) => props.theme.padding};
   background: ${(props) => statusToColor(props.status)};
 `
 
@@ -49,7 +47,7 @@ const _CompactOrder = styled(OrderBase)`
 const CompactOrderItem = styled.span`
   line-height: 2;
   & > b {
-    font-size: 18px;
+    font-size: 1rem;
   }
   color: ${(props) => (props.packed ? 'grey' : 'black')};
 `
@@ -99,6 +97,7 @@ const scaleOut = keyframes`
 
 const _ExpandedOrder = styled(OrderBase)`
   flex-wrap: wrap;
+  gap: ${(props) => props.theme.padding};
   width: 100%;
   animation: ${(props) =>
     props.closing
@@ -140,19 +139,18 @@ const CloseButton = styled.a`
 `
 
 const _ProductTile = styled.div`
-  margin: 10px;
-  border: 5px #00000022 dashed;
+  margin: 0;
+  border: 2px #00000022 dashed;
   display: flex;
   align-items: stretch;
-  width: calc(33.33% - 20px);
+  width: calc(98% / 2);
+  min-width: 250px;
   & > img {
-    width: 120px;
-    height: 120px;
   }
 `
 
 const ProductQuantity = styled.span`
-  font-size: 50px;
+  font-size: 2rem;
   /* font-family: 'Roboto'; */
   font-weight: bold;
   /* transform: scaleY(2); */
@@ -173,8 +171,8 @@ const CheckBox = styled.label`
   -ms-user-select: none;
   user-select: none;
 
-  width: 120px;
-  height: 120px;
+  width: 7rem;
+  height: 7rem;
   flex-shrink: 0;
   input {
     position: absolute;
@@ -186,8 +184,8 @@ const CheckBox = styled.label`
 
   span {
     position: absolute;
-    height: 120px;
-    width: 120px;
+    width: 7rem;
+    height: 7rem;
     background-image: ${(props) => `url(${props.src})`};
     background-position: center;
     background-repeat: no-repeat;

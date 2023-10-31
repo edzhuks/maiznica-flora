@@ -39,6 +39,8 @@ import PrivacyPolicyPage from './components/PrivacyPolicyPage'
 import AccountPage from './components/user/AccountPage'
 import ChangePassword from './components/user/ChangePassword'
 import Addresses from './components/user/Adresses'
+import Orders from './components/user/Orders'
+import UserData from './components/user/UserData'
 
 const baseTheme = {
   main: '#45941e',
@@ -199,6 +201,14 @@ function App() {
                       <Route
                         path="addresses"
                         element={<Addresses />}
+                      />
+                      <Route
+                        path="previous_orders"
+                        element={<Orders />}
+                      />
+                      <Route
+                        path="user_data"
+                        element={<UserData />}
                       />
                     </Route>
                   </Routes>

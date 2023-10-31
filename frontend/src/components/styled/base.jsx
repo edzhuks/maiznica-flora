@@ -9,16 +9,6 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
 `
-const Item = styled.div`
-  max-width: 300px;
-  width: calc(100% / 6);
-  @media (max-width: 1500px) {
-    width: calc(100% / 3);
-  }
-  @media (max-width: 960px) {
-    width: calc(100% / 3);
-  }
-`
 const Container = styled.div`
   max-width: 1200px;
   /* @media (max-width: 2000px) {
@@ -238,7 +228,9 @@ const BigTitle = styled.div`
     margin: 0 0 0 20px;
   }
 `
-
+const TightBigTitle = styled(BigTitle)`
+  margin: 0;
+`
 const Centerer = styled.div`
   display: flex;
   justify-content: center;
@@ -319,11 +311,6 @@ const HalfWidth = styled.div`
 const ContactText = styled.p`
   letter-spacing: 1px;
   line-height: 1.5;
-`
-
-const Spacer = styled(Item)`
-  height: 0;
-  padding: 0;
 `
 
 const ProductText = styled.p`
@@ -413,6 +400,7 @@ const Toggle = styled.button`
 const CardRow = styled(Row)`
   flex-wrap: wrap;
   justify-content: center;
+  gap: calc(${(props) => props.theme.padding} / 2);
 `
 const ValidationFailed = styled.div`
   color: ${(props) => props.theme.error};
@@ -435,7 +423,6 @@ const ValidPassword = styled(ValidationFailed)`
   color: ${(props) => props.theme.main};
 `
 export {
-  Item,
   ProductText,
   ShadowInput,
   CardRow,
@@ -463,6 +450,7 @@ export {
   Right,
   ColoredText,
   BigTitle,
+  TightBigTitle,
   Centerer,
   LoginCard,
   InputGroup,
@@ -479,7 +467,6 @@ export {
   ContactText,
   RowSpaceEvenly,
   Card,
-  Spacer,
   ProductImage,
   WrappableRow,
   BottomTextLink,

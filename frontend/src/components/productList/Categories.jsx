@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BigTitle, Spacer, CardRow, Item } from '../styled/base'
+import { BigTitle, CardRow } from '../styled/base'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -21,7 +21,7 @@ const CategoryText = styled.div`
   margin: 0px;
   color: ${(props) => props.theme.white};
   font-family: 'Roboto Slab', serif;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   @media (max-width: 960px) {
     font-size: 0.8rem;
   }
@@ -37,9 +37,20 @@ const CategoryText = styled.div`
   flex-direction: column;
   height: 100%;
 `
-const CategoryItem = styled(Item)`
+const CategoryItem = styled.div`
+  max-width: 200px;
+  width: ${(props) =>
+    `calc((100% / ${props.tight ? 3 : 6}) - ${props.theme.padding} / 2)`};
+  min-width: 130px;
+
+  @media (max-width: 1130px) {
+    width: calc((100% / 6) - ${(props) => props.theme.padding} / 2);
+  }
+  @media (max-width: 400px) {
+    width: calc((100% / 6) - ${(props) => props.theme.padding} / 2);
+  }
   aspect-ratio: 1;
-  padding: calc(${(props) => props.theme.padding} / 2);
+  /* padding: calc(${(props) => props.theme.padding} / 2); */
 `
 const CategoryCard = styled(Link)`
   box-shadow: ${(props) => props.theme.shadow};
@@ -55,14 +66,16 @@ const CategoryImage = styled.div`
   aspect-ratio: 1;
   position: relative;
 `
-const Categories = ({ categories, name }) => {
+const Categories = ({ categories, name, tight }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
-    <>
+    <div style={{ width: '100%' }}>
       {categories.length > 0 && (
         <CardRow>
           {categories.map((category) => (
-            <CategoryItem key={category.id}>
+            <CategoryItem
+              key={category.id}
+              tight={tight}>
               <CategoryCard to={`/category/${category.id}`}>
                 <CategoryImage
                   style={{
@@ -85,7 +98,7 @@ const Categories = ({ categories, name }) => {
         </CardRow>
       )}
       {name && <BigTitle>{name[selectedLang]}</BigTitle>}
-    </>
+    </div>
   )
 }
 

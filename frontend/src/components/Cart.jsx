@@ -46,15 +46,17 @@ const OrderButton = styled.div`
 `
 
 const ReverseRow = styled(CardRow)`
-  flex-direction: row-reverse;
+  flex-flow: row wrap-reverse;
 `
 
 const SummaryItem = styled.div`
   margin: calc(${(props) => props.theme.padding} / 2);
-  width: clamp(350px, 380px, 380px);
+  width: 300px;
+  flex: 1 1 20%;
+  min-width: 165px;
 `
 
-const CartSummary = ({ total, deliveryCost }) => {
+const CartSummary = ({ total, deliveryCost, deliveryThreshold }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <SummaryItem>
@@ -63,12 +65,14 @@ const CartSummary = ({ total, deliveryCost }) => {
           <CostInformation>
             <b>{lang.sum}</b>
           </CostInformation>
-          <CostNumber>{centsToEuro(addVat(total))}</CostNumber>
+          <CostNumber>{centsToEuro(total)}</CostNumber>
         </CostTile>
         <CostTile>
           <CostInformation>
             <b>{lang.paid_delivery}</b>
-            <br />({lang.under_30})
+            <br />
+            {lang.under}
+            {deliveryThreshold}
           </CostInformation>
           <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
         </CostTile>
@@ -77,9 +81,7 @@ const CartSummary = ({ total, deliveryCost }) => {
             <b>{lang.total}</b>
           </CostInformation>
           <CostNumber>
-            <ColoredText>
-              {centsToEuro(addVat(total) + deliveryCost)}
-            </ColoredText>
+            <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
           </CostNumber>
         </CostTile>
         <OrderButton>
@@ -96,22 +98,31 @@ const Cart = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   const cart = useSelector((state) => state.cart)
-  const total = useSelector((state) =>
-    state.cart
-      .map((i) => i.product.price * i.quantity)
+
+  const calculateSum = (cart) => {
+    return cart
+      .map((i) => {
+        if (
+          i.product.discount &&
+          Date.parse(i.product.discount.startDate) <= new Date() &&
+          Date.parse(i.product.discount.endDate) >= new Date()
+        ) {
+          return i.product.discount.discountPrice * i.quantity
+        } else if (
+          i.product.bulkThreshold &&
+          i.product.bulkThreshold <= i.quantity
+        ) {
+          return i.product.bulkPrice * i.quantity
+        }
+        return i.product.price * i.quantity
+      })
       .reduce((acc, cur) => {
         return acc + cur
       }, 0)
-  )
+  }
+  const total = useSelector((state) => calculateSum(state.cart))
   const deliveryCost = useSelector((state) =>
-    state.cart
-      .map((i) => i.product.price * i.quantity)
-      .reduce((acc, cur) => {
-        return acc + cur
-      }, 0) >
-    30 * 100
-      ? 0
-      : 10 * 100
+    calculateSum(state.cart) > 50 * 100 ? 0 : 399
   )
 
   return (
@@ -120,18 +131,21 @@ const Cart = () => {
         <div>
           {cart.length > 0 ? (
             <ReverseRow>
+              <CardRow style={{ flex: '1 1 75%' }}>
+                {cart.map((item, index) => (
+                  <ProductListItem
+                    inCart
+                    quantity={item.quantity}
+                    product={item.product}
+                    key={item.product.id}
+                  />
+                ))}
+              </CardRow>
               <CartSummary
                 total={total}
                 deliveryCost={deliveryCost}
+                deliveryThreshold={50}
               />
-              {cart.map((item, index) => (
-                <ProductListItem
-                  inCart
-                  quantity={item.quantity}
-                  product={item.product}
-                  key={item.product.id}
-                />
-              ))}
             </ReverseRow>
           ) : (
             <p>{lang.empty_cart}</p>
