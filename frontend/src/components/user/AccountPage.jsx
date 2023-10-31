@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, NavLink, Outlet } from 'react-router-dom'
-import styled from 'styled-components'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import styled, { css } from 'styled-components'
 import UserContext from '../../contexts/userContext'
 import { clearCart } from '../../reducers/cartReducer'
 
@@ -10,6 +10,8 @@ const SideMenuList = styled.ul`
   box-shadow: ${(props) => props.theme.shadow};
   margin: 0;
   padding: 0;
+  flex: 1 1 18%;
+  min-width: 150px;
 `
 const SideMenuItem = styled.li`
   border: 0;
@@ -36,13 +38,19 @@ const SideMenuLink = styled(NavLink)`
   &.active {
     background-color: ${(props) => props.theme.main};
     color: ${(props) => props.theme.white};
-    &:hover {
-      color: ${(props) => props.theme.text};
-    }
+    ${(props) =>
+      !props.theme.isMobile &&
+      css`
+        &:hover {
+          color: ${props.theme.text};
+        }
+      `}
   }
 `
-const Spacer = styled.div`
-  flex: 1 1 auto;
+const Center = styled.div`
+  flex: 1 1 78%;
+  display: flex;
+  justify-content: center;
 `
 
 const ReversibleRow = styled.div`
@@ -59,9 +67,11 @@ const AccountPageSideMenu = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
+  const navigate = useNavigate()
   const logout = () => {
     dispatch(clearCart())
     window.localStorage.removeItem('maiznicafloraUser')
+    navigate('/')
     setUser(null)
   }
   return (
@@ -73,9 +83,7 @@ const AccountPageSideMenu = () => {
         <SideMenuLink to="change_password">{lang.change_password}</SideMenuLink>
       </SideMenuItem>
       <SideMenuItem>
-        <SideMenuLink to="account_information">
-          {lang.account_information}
-        </SideMenuLink>
+        <SideMenuLink to="user_data">{lang.account_information}</SideMenuLink>
       </SideMenuItem>
       <SideMenuItem>
         <SideMenuLink to="addresses">{lang.addresses}</SideMenuLink>
@@ -93,9 +101,9 @@ const AccountPageSideMenu = () => {
 const AccountPage = () => {
   return (
     <ReversibleRow>
-      <Spacer />
-      <Outlet />
-      <Spacer />
+      <Center>
+        <Outlet />
+      </Center>
       <AccountPageSideMenu />
     </ReversibleRow>
   )

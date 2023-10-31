@@ -10,7 +10,7 @@ const de = {
   sign_out: 'Abmelden',
   sum: 'Summe',
   paid_delivery: 'bezahlte Lieferung',
-  under_30: 'unter 30 €',
+  under: 'unter €',
   total: 'gesamt',
   order: 'Bestellung',
   city: 'Stadt',
@@ -190,6 +190,12 @@ const de = {
   confirm_delete_address:
     'Sind Sie sicher, dass Sie diese Adresse löschen wollen?',
   save_short: 'Speichern',
+  when_buying: 'Wenn',
+  or_more: 'oder mehr',
+  delete_account: 'Konto löschen',
+  confirm_delete_account:
+    'Sind Sie sicher, dass Sie Ihr Konto löschen wollen? Der Vorgang ist nicht rückgängig zu machen, und Sie werden nicht mehr auf Ihr Konto zugreifen können.',
+  toast_account_deleted: 'Das Konto wurde gelöscht',
 }
 
 export default de

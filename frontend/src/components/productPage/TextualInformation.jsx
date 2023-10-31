@@ -58,6 +58,9 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
             price={product.price}
             discount={product.discount}
             weight={product.weight}
+            bulkPrice={product.bulkPrice}
+            bulkThreshold={product.bulkThreshold}
+            isSmall={false}
           />
           <ShadowDiv>
             <NumberInput

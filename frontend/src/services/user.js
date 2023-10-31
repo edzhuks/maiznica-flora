@@ -59,6 +59,14 @@ const useUserService = () => {
     )
     return request
   }
+  const deleteAccount = ({ email, password }) => {
+    const config = makeConfig()
+    const request = axios.delete(`${baseURL}`, {
+      data: { email, password },
+      headers: config.headers,
+    })
+    return request
+  }
   return {
     create,
     login,
@@ -68,6 +76,7 @@ const useUserService = () => {
     changePassword,
     editAddress,
     deleteAddress,
+    deleteAccount,
   }
 }
 export default useUserService

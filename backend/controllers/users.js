@@ -201,4 +201,22 @@ router.post('/change_password', userExtractor, async (request, response) => {
   return response.status(400).json({ error: 'Previous password incorrect.' })
 })
 
+router.delete('/', userExtractor, async (request, response) => {
+  const { email, password } = request.body
+
+  const user = await User.findOne({ email })
+  const passwordCorrect =
+    user === null ? false : await bcrypt.compare(password, user.passwordHash)
+
+  if (!(user && passwordCorrect)) {
+    return response.status(401).json({
+      error: 'invalid email or password',
+    })
+  }
+  await User.deleteOne({ _id: user._id })
+  await Cart.deleteOne({ user: user._id })
+
+  response.status(204).end()
+})
+
 module.exports = router

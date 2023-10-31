@@ -14,14 +14,15 @@ const OrderHeader = ({
   datePlaced,
   close,
   expanded,
+  id,
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   return (
     <_OrderHeader>
       <Status>
-        <b>{lang.order_status[status]}</b>{' '}
-        {lastModified
+        <b>{lang.order_status[status]}</b>&nbsp;&nbsp;&nbsp;#{id}{' '}
+        {lastModifiedBy
           ? `${lang.last_modified_by}
             ${lastModifiedBy.username} 
             ${formatDistanceToNow(new Date(lastModified))} ago`

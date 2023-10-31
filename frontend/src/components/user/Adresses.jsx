@@ -115,7 +115,7 @@ const Form = styled.form`
   box-shadow: ${(props) => props.theme.shadow};
   background-color: ${(props) => props.theme.card};
   padding: ${(props) => props.theme.padding};
-  margin: 0px 0px 12px 0px;
+  margin: ${(props) => props.theme.padding} 0;
 `
 
 const AddressChoice = styled(Radio)`
@@ -136,7 +136,6 @@ const Spacer = styled.div`
 `
 
 const AddressList = styled.div`
-  flex: 1 1 80%;
   margin-top: -${(props) => props.theme.padding};
 `
 

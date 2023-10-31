@@ -30,7 +30,6 @@ const CardLink = styled(Link)`
     transform: scale(1.3) translateY(-40px) translateX(-20px);
     box-shadow: ${(props) => props.theme.shadow};
   }
-  z-index: 10;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -68,6 +67,7 @@ const ProductImage = styled.img`
   background: ${(props) => props.theme.white};
   width: 10rem;
   aspect-ratio: 1;
+  z-index: 10;
 `
 
 const BuyButton = styled(Button)`
@@ -116,7 +116,9 @@ const ProductListItem = ({ inCart, product, quantity }) => {
   const [user] = useContext(UserContext)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [quantityToAdd, setQuantityToAdd] = useState(1)
+  const [quantityToAdd, setQuantityToAdd] = useState(
+    product.bulkThreshold ? product.bulkThreshold : 1
+  )
   const [isMobile] = useContext(MobileContext)
   const addToCart = () => {
     if (!user) {
@@ -158,6 +160,8 @@ const ProductListItem = ({ inCart, product, quantity }) => {
                   price={product.price}
                   discount={product.discount}
                   weight={product.weight}
+                  bulkPrice={product.bulkPrice}
+                  bulkThreshold={product.bulkThreshold}
                   isSmall
                 />
               </CenteredPrice>

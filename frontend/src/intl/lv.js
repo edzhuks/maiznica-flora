@@ -10,7 +10,7 @@ const lv = {
   sign_out: 'Iziet',
   sum: 'kopā',
   paid_delivery: 'maksas piegāde',
-  under_30: 'zem €30',
+  under: 'zem €',
   total: 'pavisam',
   order: 'pasūtīt',
   city: 'Pilsēta / Pagasts / Ciems',
@@ -63,7 +63,7 @@ const lv = {
   weight: 'svars',
   in_grams: 'gramos',
   price: 'cena (centos)',
-  in_cents: 'centos',
+  in_cents: 'centi',
   add_to_all: "Pievienot 'all' kategorijai",
   add_to_new: "Pievienot 'new' kategorijai",
   accept_order: 'Pieņemt pasūtījumu?',
@@ -202,6 +202,12 @@ const lv = {
   toast_address_deleted: 'Adrese izdzēsta',
   confirm_delete_address: 'Vai tiešām dzēst šo adresi?',
   save_short: 'Saglabāt',
+  when_buying: 'Pērkot',
+  or_more: 'vai vairāk',
+  delete_account: 'Dzēst kontu',
+  confirm_delete_account:
+    'Vai tiešām dzēst jūsu kontu? Šī darbība ir neatgriezeniska un jums vairs nebūs piekļuves šim kontam.',
+  toast_account_deleted: 'Konts dzēsts',
 }
 
 export default lv

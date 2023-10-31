@@ -34,6 +34,8 @@ const productSchema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
   },
+  bulkPrice: Number,
+  bulkThreshold: Number,
   EAN: String,
   image: String,
   bio: Boolean,

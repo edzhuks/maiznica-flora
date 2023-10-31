@@ -34,4 +34,6 @@
 | 26.10        | 2     | hiding products, distance agreement                                                                                                                                                   |
 | 27.10        | 5     | password reset, privacy policy, change password                                                                                                                                       |
 | 28.10        | 2     | better addresses, editing and removing                                                                                                                                                |
-| total        | 139.5 |                                                                                                                                                                                       |
+| 30.10        | 2     | better home page, bulk discount                                                                                                                                                       |
+| 31.10        | 2     | finished profile page for now - past orders and account deletion                                                                                                                      |
+| total        | 143.5 |                                                                                                                                                                                       |

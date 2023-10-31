@@ -61,11 +61,12 @@ const MobileHeader = styled(DesktopHeader)`
 `
 
 const HeaderTab = styled(NavLink)`
+  font-family: 'Roboto Slab', serif;
   padding: 0 12px;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
-  font-size: 22px;
+  font-size: 18px;
   background-color: transparent;
   flex: 0 1 auto;
   display: flex;
@@ -137,7 +138,7 @@ const CartBadge = styled.div`
     text-align: center;
     width: 100%;
     color: ${(props) => props.theme.white};
-    margin-top: 3px;
+    margin-top: 1px;
     font-size: 1rem;
   }
 `
@@ -161,6 +162,7 @@ const SideMenu = styled(Card)`
 `
 
 const SideMenuTab = styled(NavLink)`
+  font-family: 'Roboto Slab', serif;
   flex: 0 1 auto;
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
@@ -344,7 +346,7 @@ const Header = () => {
               )}
               {user && (
                 <SideMenuTab
-                  to="/account"
+                  to="/account/previous_orders"
                   onClick={() => setSideMenu(false)}>
                   {lang.profile}
                 </SideMenuTab>
@@ -441,7 +443,11 @@ const Header = () => {
                   <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
                 </>
               )}
-              {user && <HeaderTab to="/account">{lang.profile}</HeaderTab>}
+              {user && (
+                <HeaderTab to="/account/previous_orders">
+                  {lang.profile}
+                </HeaderTab>
+              )}
               <Lang>
                 <button
                   onClick={() => {

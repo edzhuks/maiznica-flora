@@ -127,6 +127,7 @@ const Product = () => {
     productService.getById(id).then((p) => {
       console.log(p)
       setProduct(p)
+      setQuantity(p.bulkThreshold ? p.bulkThreshold : 1)
     })
   }
   useEffect(() => {

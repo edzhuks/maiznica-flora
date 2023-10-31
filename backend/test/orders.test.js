@@ -133,7 +133,7 @@ test('ordering fails without an address', async () => {
 
 test('unatuhorized can not get all orders', async () => {
   await api
-    .get('/api/order')
+    .get('/api/order/all')
     .set('Authorization', `Bearer ${token}`)
     .expect(403)
 })
@@ -218,7 +218,7 @@ describe('admins can', () => {
       .send(goodAddress)
     address = addressResponse.body
     const response2 = await api
-      .get('/api/order')
+      .get('/api/order/all')
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200)
     expect(response2.body.length).toBe(0)
@@ -228,7 +228,7 @@ describe('admins can', () => {
       .send({ id: address.id })
       .expect(200)
     const response = await api
-      .get('/api/order')
+      .get('/api/order/all')
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200)
     expect(response.body.length).toBe(1)
@@ -301,7 +301,7 @@ describe('admins can', () => {
         .send({ ...order, status: { status: 'what is this' } })
         .expect(400)
       const response = await api
-        .get('/api/order')
+        .get('/api/order/all')
         .set('Authorization', `Bearer ${adminToken}`)
         .expect(200)
       expect(response.body[0].status.status).toBe('placed')
