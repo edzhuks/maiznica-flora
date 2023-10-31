@@ -23,10 +23,15 @@ const useOrderService = () => {
 
   const getAll = () => {
     const config = makeConfig()
+    const request = axios.get(`${baseURL}/all`, config)
+    return request.then((response) => response.data)
+  }
+  const get = () => {
+    const config = makeConfig()
     const request = axios.get(baseURL, config)
     return request.then((response) => response.data)
   }
-  return { placeOrder, updateOrder, getAll }
+  return { placeOrder, updateOrder, getAll, get }
 }
 
 export default useOrderService

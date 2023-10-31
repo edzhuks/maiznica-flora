@@ -95,6 +95,8 @@ const NewProductFrom = () => {
   const name_de = useField('text')
   const weight = useField('number')
   const price = useField('number')
+  const bulkPrice = useField('number')
+  const bulkThreshold = useField('number')
   const energy = useField('number')
   const fat = useField('number')
   const saturatedFat = useField('number')
@@ -146,6 +148,8 @@ const NewProductFrom = () => {
         weight.changeValue(product.weight)
         price.changeValue(product.price)
         EAN.changeValue(product.EAN)
+        bulkPrice.changeValue(product.bulkPrice)
+        bulkThreshold.changeValue(product.bulkThreshold)
         if (product.nutrition) {
           energy.changeValue(product.nutrition.energy)
           fat.changeValue(product.nutrition.fat)
@@ -212,6 +216,8 @@ const NewProductFrom = () => {
             }
           : null,
       price: price.value,
+      bulkPrice: bulkPrice.value,
+      bulkThreshold: bulkThreshold.value,
       EAN: EAN.value,
       bio,
       spoonGreen,
@@ -251,6 +257,8 @@ const NewProductFrom = () => {
         name_de.clear()
         weight.clear()
         price.clear()
+        bulkPrice.clear()
+        bulkThreshold.clear()
         energy.clear()
         fat.clear()
         saturatedFat.clear()
@@ -380,7 +388,14 @@ const NewProductFrom = () => {
           </BadgeButton>
         </EditableBadges>
         <GreenNumberInput {...price} />
-        {lang.in_cents}
+        {`${lang.in_cents} ${lang.with_VAT}`}
+        <br />
+        {lang.when_buying}
+        <GreenNumberInput {...bulkThreshold} />
+        ,
+        <GreenNumberInput {...bulkPrice} />
+        {`${lang.in_cents} ${lang.with_VAT}`}
+        <br />
         <Checkbox
           checked={bio}
           onChange={() => setBio(!bio)}
@@ -416,7 +431,7 @@ const NewProductFrom = () => {
             <span>{lang.months}</span>
           </Toggle>
         </Label>
-        <ProductText>{allLang.lv.description}</ProductText>
+        <ShortLabel>{allLang.lv.description}</ShortLabel>
         <ProductTextArea
           rows={12}
           value={description_lv}

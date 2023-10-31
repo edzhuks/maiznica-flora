@@ -24,7 +24,7 @@ const OrderAction = ({
   )
 }
 
-const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
+const ExpandedOrder = ({ close, order, closing, updateOrder, fixed }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allPacked = () => {
     return order.content.every((o) => o.packed)
@@ -91,6 +91,7 @@ const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
         lastModified={order.status?.lastModified}
         lastModifiedBy={order.status?.lastModifiedBy}
         datePlaced={order.datePlaced}
+        id={order.id}
         expanded={true}
       />
       {order.content.map((i) => (
@@ -104,35 +105,39 @@ const ExpandedOrder = ({ close, order, closing, updateOrder }) => {
           changeItemPacked={changeItemPacked}
         />
       ))}
-      {order.status?.status === 'placed' && (
-        <OrderAction
-          question={lang.accept_order}
-          action1text={lang.accept}
-          action2text={lang.refuse}
-          action1callback={acceptOrder}
-          action2callback={refuseOrder}
-        />
-      )}
-      {order.status?.status === 'packing' && allPacked() && (
-        <OrderAction
-          question={lang.ready_for_delivery}
-          action1text={lang.ready}
-          action1callback={makeOrderReadyForDelivery}
-        />
-      )}
-      {order.status?.status === 'waitingForDelivery' && (
-        <OrderAction
-          question={lang.out_for_delivery}
-          action1text={lang.deliver}
-          action1callback={startDeliveringOrder}
-        />
-      )}
-      {order.status?.status === 'delivering' && (
-        <OrderAction
-          question={lang.delivery_completed}
-          action1text={lang.completed}
-          action1callback={completeDelivery}
-        />
+      {!fixed && (
+        <>
+          {order.status?.status === 'placed' && (
+            <OrderAction
+              question={lang.accept_order}
+              action1text={lang.accept}
+              action2text={lang.refuse}
+              action1callback={acceptOrder}
+              action2callback={refuseOrder}
+            />
+          )}
+          {order.status?.status === 'packing' && allPacked() && (
+            <OrderAction
+              question={lang.ready_for_delivery}
+              action1text={lang.ready}
+              action1callback={makeOrderReadyForDelivery}
+            />
+          )}
+          {order.status?.status === 'waitingForDelivery' && (
+            <OrderAction
+              question={lang.out_for_delivery}
+              action1text={lang.deliver}
+              action1callback={startDeliveringOrder}
+            />
+          )}
+          {order.status?.status === 'delivering' && (
+            <OrderAction
+              question={lang.delivery_completed}
+              action1text={lang.completed}
+              action1callback={completeDelivery}
+            />
+          )}
+        </>
       )}
     </_ExpandedOrder>
   )

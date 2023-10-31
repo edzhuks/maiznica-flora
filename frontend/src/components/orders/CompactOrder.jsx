@@ -12,6 +12,7 @@ const CompactOrder = ({ order, expand }) => {
         status={order.status?.status}
         datePlaced={order.datePlaced}
         expanded={false}
+        id={order.id}
       />
 
       {order.content.map((p) => (

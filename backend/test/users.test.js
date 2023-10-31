@@ -243,27 +243,27 @@ describe('address', () => {
     const response2 = await api.post('/api/login').send(notAdmin)
     expect(response2.body.addresses.length).toBe(0)
   })
-  test('creation fails without mandatory fields: house', async () => {
+  test('creation passes without optional fields: house', async () => {
     const badAddress = { ...goodAddress }
     delete badAddress.house
     await api
       .post('/api/users/address')
       .set('Authorization', `Bearer ${token}`)
       .send(badAddress)
-      .expect(400)
+      .expect(201)
     const response2 = await api.post('/api/login').send(notAdmin)
-    expect(response2.body.addresses.length).toBe(0)
+    expect(response2.body.addresses.length).toBe(1)
   })
-  test('creation fails without mandatory fields: apartment', async () => {
+  test('creation passes without optional fields: apartment', async () => {
     const badAddress = { ...goodAddress }
     delete badAddress.apartment
     await api
       .post('/api/users/address')
       .set('Authorization', `Bearer ${token}`)
       .send(badAddress)
-      .expect(400)
+      .expect(201)
     const response2 = await api.post('/api/login').send(notAdmin)
-    expect(response2.body.addresses.length).toBe(0)
+    expect(response2.body.addresses.length).toBe(1)
   })
 })
 
