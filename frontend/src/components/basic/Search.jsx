@@ -54,9 +54,11 @@ const Search = ({ value, onChange, onEnter, onClear, onSearch }) => {
           }}
         />
 
-        <InvertedButton onClick={onClear}>
-          <Cross />
-        </InvertedButton>
+        {value && (
+          <InvertedButton onClick={onClear}>
+            <Cross />
+          </InvertedButton>
+        )}
       </SearchInput>
       <Button onClick={onSearch}>
         <SearchOutline />

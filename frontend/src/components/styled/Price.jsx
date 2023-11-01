@@ -118,7 +118,7 @@ const Price = ({
           {bulkPrice ? (
             <>
               <Row>
-                <ProductText style={{ margin: '20px 0px' }}>
+                <ProductText style={{ margin: '10px 0px' }}>
                   {`${lang.when_buying} ${bulkThreshold} ${lang.or_more}`}
                   <br />
                   <BigPriceText isSmall={isSmall}>
@@ -131,7 +131,7 @@ const Price = ({
                   </SmallPriceText>
                   <TipText>€ / kg</TipText>
                 </ProductText>
-                <ProductText style={{ margin: '20px 50px' }}>
+                <ProductText style={{ margin: '10px 50px' }}>
                   {`${lang.when_buying} 1`}
                   <br />
                   <BigPriceText isSmall={isSmall}>

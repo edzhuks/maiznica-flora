@@ -1,6 +1,21 @@
 import { ContactText } from '../styled/base'
 
-const Address = () => {
+const Address = ({ address }) => {
+  if (address) {
+    return (
+      <div>
+        <ContactText>
+          {address.name}
+          <br />
+          {address.street}
+          <br />
+          {address.city}
+          <br />
+          {address.country}-{address.postalCode}
+        </ContactText>
+      </div>
+    )
+  }
   return (
     <div>
       <ContactText>
