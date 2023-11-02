@@ -96,7 +96,6 @@ const DeliveryMethod = ({
                 address: selectedPickupPoint?.value,
                 cost: 399,
               })
-              console.log('fuck')
             }
           }}
           active={deliveryMethod.method === 'pickupPoint'}>
