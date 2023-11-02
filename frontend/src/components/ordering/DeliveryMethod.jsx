@@ -89,13 +89,16 @@ const DeliveryMethod = ({
           </DeliveryTime>
         </DeliveryOption>
         <DeliveryOption
-          onClick={() =>
-            setDeliveryMethod({
-              method: 'pickupPoint',
-              // address: selectedPickupPoint?.value,
-              cost: 399,
-            })
-          }
+          onClick={() => {
+            if (deliveryMethod.method !== 'pickupPoint') {
+              setDeliveryMethod({
+                method: 'pickupPoint',
+                address: selectedPickupPoint?.value,
+                cost: 399,
+              })
+              console.log('fuck')
+            }
+          }}
           active={deliveryMethod.method === 'pickupPoint'}>
           <SmallerBigTitle style={{ marginBottom: '20px' }}>
             {lang.pickup_point}
@@ -110,7 +113,6 @@ const DeliveryMethod = ({
           </DeliveryTime>
           <div style={{ width: '100%', marginTop: '20px' }}>
             <ReactSelect
-              onMouseDown={(e) => e.stopPropagation()}
               placeholder={lang.select_point}
               value={selectedPickupPoint}
               onChange={(selected) => {
@@ -119,7 +121,6 @@ const DeliveryMethod = ({
                   ...deliveryMethod,
                   address: selected.value,
                 })
-                console.log(deliveryMethod)
                 setSelectedPickupPoint(selected)
               }}
               options={pickupPoints}
@@ -173,7 +174,10 @@ const DeliveryMethod = ({
         {deliveryMethod.method === 'courrier' && (
           <Addresses
             selectedAddress={address}
-            selectAddress={setAddress}
+            selectAddress={(address) => {
+              setDeliveryMethod({ ...deliveryMethod, address: address })
+              setAddress(address)
+            }}
           />
         )}
         {deliveryMethod.method === 'bakery' && <AddressWithMap />}
