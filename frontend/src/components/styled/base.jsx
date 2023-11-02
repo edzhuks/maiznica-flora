@@ -5,7 +5,7 @@ const Card = styled.div`
   box-shadow: ${(props) => props.theme.shadow};
 
   background-color: ${(props) => props.theme.card};
-  border-radius: 2px;
+  border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
   flex-direction: column;
 `
@@ -19,8 +19,11 @@ const Container = styled.div`
   } */
   margin: auto;
 `
-const Padding = styled.div`
+const PaddingH = styled.div`
   padding: 0 ${(props) => props.theme.padding};
+`
+const Padding = styled.div`
+  padding: ${(props) => props.theme.padding};
 `
 const FullHeightContainer = styled(Container)`
   min-height: 100vh;
@@ -434,6 +437,16 @@ const ValidationFailed = styled.div`
 const ValidPassword = styled(ValidationFailed)`
   color: ${(props) => props.theme.main};
 `
+const TextLink = styled(Link)`
+  font-weight: bold;
+  text-decoration: none;
+  color: ${(props) => props.theme.text};
+  transition: 0.3s;
+  &:hover {
+    color: ${(props) => props.theme.main};
+  }
+  margin-bottom: ${(props) => props.theme.padding};
+`
 export {
   ProductText,
   ShadowInput,
@@ -483,8 +496,10 @@ export {
   WrappableRow,
   BottomTextLink,
   Padding,
+  PaddingH,
   PaddedForm,
   ValidationFailed,
   ValidPassword,
   SmallerBigTitle,
+  TextLink,
 }

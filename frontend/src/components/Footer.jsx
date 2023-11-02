@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Container, Padding, WrappableRow } from './styled/base'
+import { Container, Padding, TextLink, WrappableRow } from './styled/base'
 import ContactPage from './contact/ContactPage'
 import { Link } from 'react-router-dom'
 import ContactForm from './contact/ContactForm'
@@ -17,16 +17,6 @@ const FooterContainer = styled.div`
   justify-content: center;
 `
 
-const FooterLink = styled(Link)`
-  font-weight: bold;
-  text-decoration: none;
-  color: ${(props) => props.theme.text};
-  transition: 0.3s;
-  &:hover {
-    color: ${(props) => props.theme.main};
-  }
-  margin-bottom: ${(props) => props.theme.padding};
-`
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,13 +32,11 @@ const Footer = () => {
             <ContactForm />
             <Column>
               <Address />
-              <FooterLink to="/EU_projects">{lang.eu_projects}</FooterLink>
-              <FooterLink to="/distance_agreement">
+              <TextLink to="/EU_projects">{lang.eu_projects}</TextLink>
+              <TextLink to="/distance_agreement">
                 {lang.distance_agreement}
-              </FooterLink>
-              <FooterLink to="/privacy_policy">
-                {lang.privacy_policy}
-              </FooterLink>
+              </TextLink>
+              <TextLink to="/privacy_policy">{lang.privacy_policy}</TextLink>
             </Column>
           </WrappableRow>
         </Container>

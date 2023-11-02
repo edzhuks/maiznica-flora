@@ -7,34 +7,51 @@ const {
   verificationRequired,
 } = require('../util/middleware')
 const Address = require('../models/address')
+const { sendReceiptEmail } = require('../util/emails')
+const { getPrice } = require('../util/functions')
 const router = express.Router()
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
-  const address = await Address.findById(req.body.id)
-  if (!address) {
-    return res.status(400).json({ error: 'Address is required' })
+  if (!req.body.deliveryMethod.method) {
+    return res.status(400).json({ error: 'Delivery method is required' })
   }
-  let cart = await Cart.findOne({ user: req.user.id })
+  let cart = await Cart.findOne({ user: req.user.id }).populate([
+    { path: 'content', populate: { path: 'product' } },
+  ])
   if (!cart) {
     return res.status(400).json({ error: 'User does not have a cart' })
   }
   if (cart.content.length < 1) {
     return res.status(400).json({ error: 'Cannot order an empty cart' })
   }
+  const subtotal = cart.content
+    .map((i) => getPrice(i) * i.quantity)
+    .reduce((acc, cur) => acc + cur, 0)
+  const deliveryCost = subtotal >= 5000 ? 0 : req.body.deliveryMethod.cost
+  const total = subtotal + deliveryCost
+  console.log(subtotal)
+  console.log(deliveryCost)
+  console.log(total)
   const order = new Order({
     user: cart.user,
     content: cart.content,
-    address,
+    deliveryMethod: req.body.deliveryMethod,
     status: { status: 'placed' },
     datePlaced: Date.now(),
+    subtotal,
+    deliveryCost,
+    total,
+    vat: total * 0.23,
   })
   await order.save()
+  await order.populate([{ path: 'content', populate: { path: 'product' } }])
   await cart.deleteOne()
   const newCart = new Cart({
     content: [],
     user: req.user.id,
   })
   await newCart.save()
+  sendReceiptEmail(req.user.email, order)
   res.send(order)
 })
 

@@ -3,6 +3,11 @@ import { SearchOutline } from '@styled-icons/evaicons-outline/SearchOutline'
 import { Cross } from '@styled-icons/entypo/Cross'
 import styled, { css } from 'styled-components'
 
+const StyledButton = styled(Button)`
+  border-radius: 0 ${(props) => props.theme.borderRadius}
+    ${(props) => props.theme.borderRadius} 0;
+`
+
 const SearchInput = styled.div`
   margin: 0 0 0 clamp(10px, 20px, 30px);
   display: flex;
@@ -10,7 +15,10 @@ const SearchInput = styled.div`
   ${StyledInput} {
     box-shadow: ${(props) => props.theme.shadowInset};
     background-color: ${(props) => props.theme.lighter};
+    border-radius: ${(props) => props.theme.borderRadius} 0 0
+      ${(props) => props.theme.borderRadius};
   }
+
   ${InvertedButton} {
     position: absolute;
     right: 0;
@@ -60,9 +68,9 @@ const Search = ({ value, onChange, onEnter, onClear, onSearch }) => {
           </InvertedButton>
         )}
       </SearchInput>
-      <Button onClick={onSearch}>
+      <StyledButton onClick={onSearch}>
         <SearchOutline />
-      </Button>
+      </StyledButton>
     </SideSearch>
   )
 }

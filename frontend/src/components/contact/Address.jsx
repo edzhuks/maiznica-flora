@@ -5,9 +5,9 @@ const Address = ({ address }) => {
     return (
       <div>
         <ContactText>
-          {address.name}
+          {address.name} {address.surname}
           <br />
-          {address.street}
+          {address.street} {address.house}-{address.apartment}
           <br />
           {address.city}
           <br />
