@@ -47,6 +47,7 @@ const CartSummary = ({
   deliveryCostRange,
   deliveryThreshold,
   stage,
+  checkDeliveryMethod,
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
@@ -98,7 +99,12 @@ const CartSummary = ({
         )}
         {stage === 1 && (
           <OrderButton>
-            <Link to="/order/payment">
+            <Link
+              to="/order/payment"
+              onClick={(e) => {
+                e.preventDefault()
+                checkDeliveryMethod()
+              }}>
               <Button>{lang.to_payment}</Button>
             </Link>
           </OrderButton>

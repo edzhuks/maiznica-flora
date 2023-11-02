@@ -205,6 +205,9 @@ const en = {
   select_point: 'Select pickup point',
   to_delivery: 'Choose delivery',
   to_payment: 'Go to payment',
+  toast_select_delivery_method: 'Select a delivery method!',
+  toast_select_pickup_point: 'Select a pickup point!',
+  toast_select_address: 'Select an address!',
 }
 
 export default en

@@ -23,7 +23,7 @@ import { Person } from '@styled-icons/evaicons-solid/Person'
 import { Phone } from '@styled-icons/boxicons-solid/Phone'
 import { Home } from '@styled-icons/boxicons-solid/Home'
 import Addresses from '../user/Adresses'
-import { Route, Routes, useMatch } from 'react-router-dom'
+import { Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 import Cart from './Cart'
 import CartSummary from './CartSummary'
 import DeliveryMethod from './DeliveryMethod'
@@ -131,13 +131,14 @@ const Order = () => {
   const [selectedAddress, selectAddress] = useState()
   const dispatch = useDispatch()
   const orderService = useOrderService()
-  const { showPromiseToast } = useToast()
+  const { showPromiseToast, showErrorToast } = useToast()
   const cart = useSelector((state) => state.cart)
   const [deliveryMethod, setDeliveryMethod] = useState({
-    method: '',
+    method: undefined,
     address: undefined,
     cost: undefined,
   })
+  const navigate = useNavigate()
   const deliveryThreshold = 5000
   const calculateSum = (cart) => {
     return cart
@@ -177,6 +178,29 @@ const Order = () => {
       console.error('No address selected')
     }
   }
+  const checkDeliveryMethod = () => {
+    console.log(deliveryMethod)
+    if (!deliveryMethod.method) {
+      toast.error(lang.toast_select_delivery_method)
+    } else if (
+      deliveryMethod.method === 'pickupPoint' &&
+      !deliveryMethod.address
+    ) {
+      toast.error(lang.toast_select_pickup_point)
+    } else if (
+      deliveryMethod.method === 'courrier' &&
+      !deliveryMethod.address
+    ) {
+      toast.error(lang.toast_select_address)
+    } else {
+      navigate('payment')
+    }
+  }
+
+  const handleDeliveryMethodChange = (newMethod) => {
+    console.log(newMethod)
+    setDeliveryMethod(newMethod)
+  }
 
   return (
     <div>
@@ -193,7 +217,7 @@ const Order = () => {
               element={
                 <DeliveryMethod
                   deliveryMethod={deliveryMethod}
-                  setDeliveryMethod={setDeliveryMethod}
+                  setDeliveryMethod={handleDeliveryMethodChange}
                   overThreshold={total >= deliveryThreshold}
                 />
               }
@@ -211,6 +235,7 @@ const Order = () => {
             deliveryCostRange={{ min: 0, max: 599 }}
             deliveryThreshold={deliveryThreshold}
             stage={stage}
+            checkDeliveryMethod={checkDeliveryMethod}
           />
         </div>
       </ReverseRow>
