@@ -208,6 +208,21 @@ const lv = {
   confirm_delete_account:
     'Vai tiešām dzēst jūsu kontu? Šī darbība ir neatgriezeniska un jums vairs nebūs piekļuves šim kontam.',
   toast_account_deleted: 'Konts dzēsts',
+  cart: 'Grozs',
+  delivery: 'Piegāde',
+  payment: 'Apmaksa',
+  pick_up_from_flora: 'Saņemt maiznīcā',
+  next_working_day: 'Nākamajā darbadienā',
+  pickup_point: 'DPD pakomātā',
+  courrier: 'Ar kurjeru',
+  pickup_point_delivery_time: '2 - 3 dienās',
+  courrier_delivery_time: '2 - 3 dienās',
+  select_point: 'Izvēlies pakomātu',
+  to_delivery: 'Uz piegādi',
+  to_payment: 'Uz apmaksu',
+  toast_select_delivery_method: 'Izvēlies piegādes metodi!',
+  toast_select_pickup_point: 'Izvēlies pakomātu!',
+  toast_select_address: 'Norādi piegādes adresi!',
 }
 
 export default lv
