@@ -10,8 +10,8 @@ import Product from './components/productPage/Product'
 import Login from './components/user/Login'
 import SignUp from './components/user/SignUp'
 import { useState, useEffect, useLayoutEffect } from 'react'
-import Cart from './components/Cart'
-import Order from './components/Order'
+import Cart from './components/ordering/Cart'
+import Order from './components/ordering/Order'
 import { FullHeightContainer, Padding } from './components/styled/base'
 import ManagementPage from './components/management/ManagementPage'
 import HomePage from './components/Home'
@@ -119,11 +119,7 @@ function App() {
                       element={<ProductListWithCategories />}
                     />
                     <Route
-                      path="/cart"
-                      element={<Cart />}
-                    />
-                    <Route
-                      path="/order"
+                      path="/order/*"
                       element={<Order />}
                     />
                     <Route
@@ -200,7 +196,7 @@ function App() {
                       />
                       <Route
                         path="addresses"
-                        element={<Addresses />}
+                        element={<Addresses noSelection={true} />}
                       />
                       <Route
                         path="previous_orders"

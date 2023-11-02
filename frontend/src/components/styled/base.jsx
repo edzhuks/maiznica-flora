@@ -231,6 +231,18 @@ const BigTitle = styled.div`
 const TightBigTitle = styled(BigTitle)`
   margin: 0;
 `
+
+const SmallerBigTitle = styled(TightBigTitle)`
+  font-size: 1rem;
+  &::before,
+  ::after {
+    margin: 0 10px 0 0;
+    min-width: 30px;
+  }
+  &::after {
+    margin: 0 0 0 10px;
+  }
+`
 const Centerer = styled.div`
   display: flex;
   justify-content: center;
@@ -309,7 +321,7 @@ const HalfWidth = styled.div`
 `
 
 const ContactText = styled.p`
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   line-height: 1.5;
 `
 
@@ -474,4 +486,5 @@ export {
   PaddedForm,
   ValidationFailed,
   ValidPassword,
+  SmallerBigTitle,
 }

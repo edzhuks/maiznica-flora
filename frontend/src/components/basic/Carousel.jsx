@@ -20,6 +20,7 @@ const CarouselLeft = styled.div`
   left: 0;
   height: 100%;
   display: flex;
+  align-items: center;
   svg > path {
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.5));
     color: ${(props) => props.theme.white};
@@ -29,6 +30,7 @@ const CarouselLeft = styled.div`
 const CarouselRight = styled(CarouselLeft)`
   right: 0;
   left: auto;
+  justify-content: end;
 `
 
 const CarouselImages = styled.div`
@@ -110,7 +112,10 @@ const Carousel = ({ images }) => {
           )
           clearInterval(int)
         }}>
-        <CaretLeftFill color="lightgray" />
+        <CaretLeftFill
+          color="lightgray"
+          size="2rem"
+        />
       </CarouselLeft>
       <CarouselImages>
         {images.map((image, index) => (
@@ -127,7 +132,10 @@ const Carousel = ({ images }) => {
           setActiveImage((activeImage + 1) % images.length)
           clearInterval(int)
         }}>
-        <CaretRightFill color="lightgray" />
+        <CaretRightFill
+          size="2rem"
+          color="lightgray"
+        />
       </CarouselRight>
       <CarouselIndicators>
         {images.map((image, index) => (

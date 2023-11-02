@@ -21,7 +21,7 @@ import { Home } from '@styled-icons/boxicons-solid/Home'
 const Radio = styled.label`
   display: block;
   position: relative;
-  margin: ${(props) => props.theme.padding} 0px;
+  margin: 0px 0px ${(props) => props.theme.padding} 0px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -135,9 +135,7 @@ const Spacer = styled.div`
   flex: 1 1 auto;
 `
 
-const AddressList = styled.div`
-  margin-top: -${(props) => props.theme.padding};
-`
+const AddressList = styled.div``
 
 const AddressForm = ({ submit, values, cancel }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -274,7 +272,7 @@ const AddressForm = ({ submit, values, cancel }) => {
   )
 }
 
-const Addresses = ({ selectedAddress, selectAddress }) => {
+const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
   const userService = useUserService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useContext(UserContext)
@@ -359,7 +357,7 @@ const Addresses = ({ selectedAddress, selectAddress }) => {
             {editingId !== address.id ? (
               <AddressChoice
                 key={address.id}
-                disabled={!selectAddress}>
+                disabled={noSelection}>
                 <input
                   type="radio"
                   value={address}

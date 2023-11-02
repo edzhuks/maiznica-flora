@@ -266,7 +266,7 @@ const Header = () => {
 
             <Spacer />
             {user ? (
-              <HeaderTab to="/cart">
+              <HeaderTab to="/order/cart">
                 <AnimatedShoppingCart
                   cart={cart}
                   key={JSON.stringify(cart)}>
@@ -413,7 +413,7 @@ const Header = () => {
 
               <Spacer />
               {user ? (
-                <HeaderTab to="/cart">
+                <HeaderTab to="/order/cart">
                   <AnimatedShoppingCart
                     cart={cart}
                     key={JSON.stringify(cart)}>
