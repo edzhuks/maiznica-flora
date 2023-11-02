@@ -196,6 +196,21 @@ const de = {
   confirm_delete_account:
     'Sind Sie sicher, dass Sie Ihr Konto löschen wollen? Der Vorgang ist nicht rückgängig zu machen, und Sie werden nicht mehr auf Ihr Konto zugreifen können.',
   toast_account_deleted: 'Das Konto wurde gelöscht',
+  cart: 'Warenkorb',
+  delivery: 'Lieferung',
+  payment: 'Zahlung',
+  pick_up_from_flora: 'Abholung in der Bäckerei',
+  next_working_day: 'Nächster Werktag',
+  pickup_point: 'DPD Abholpunkt',
+  courrier: 'Kurierzustellung',
+  pickup_point_delivery_time: '2 - 3 Tage',
+  courrier_delivery_time: '2 - 3 Tage',
+  select_point: 'Abholort wählen',
+  to_delivery: 'Lieferung wählen',
+  to_payment: 'Zur Zahlung gehen',
+  toast_select_delivery_method: 'Wählen Sie eine Liefermethode!',
+  toast_select_pickup_point: 'Wählen Sie einen Abholpunkt!',
+  toast_select_address: 'Wählen Sie eine Adresse!',
 }
 
 export default de
