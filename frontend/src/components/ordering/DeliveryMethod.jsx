@@ -92,7 +92,7 @@ const DeliveryMethod = ({
           onClick={() =>
             setDeliveryMethod({
               method: 'pickupPoint',
-              address: selectedPickupPoint,
+              // address: selectedPickupPoint?.value,
               cost: 399,
             })
           }
@@ -110,9 +110,18 @@ const DeliveryMethod = ({
           </DeliveryTime>
           <div style={{ width: '100%', marginTop: '20px' }}>
             <ReactSelect
+              onMouseDown={(e) => e.stopPropagation()}
               placeholder={lang.select_point}
               value={selectedPickupPoint}
-              onChange={(selected) => setSelectedPickupPoint(selected)}
+              onChange={(selected) => {
+                console.log(selected)
+                setDeliveryMethod({
+                  ...deliveryMethod,
+                  address: selected.value,
+                })
+                console.log(deliveryMethod)
+                setSelectedPickupPoint(selected)
+              }}
               options={pickupPoints}
               styles={{
                 option: (baseStyles, state) => ({
