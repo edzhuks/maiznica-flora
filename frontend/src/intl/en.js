@@ -208,6 +208,11 @@ const en = {
   toast_select_delivery_method: 'Select a delivery method!',
   toast_select_pickup_point: 'Select a pickup point!',
   toast_select_address: 'Select an address!',
+  to_distance_agreement: 'Distance agreement',
+  agree_terms: 'I have read and agree with the ',
+  pay: 'Bezahlen',
+  toast_must_agree:
+    'Sie müssen mit den Bedingungen einverstanden sein, um die Bestellung aufzugeben!',
 }
 
 export default en

@@ -162,21 +162,29 @@ const Order = () => {
       }, 0)
   }
   const total = useSelector((state) => calculateSum(state.cart))
-  const deliveryCost = useSelector((state) =>
-    calculateSum(state.cart) > 50 * 100 ? 0 : 399
-  )
+
   const order = async () => {
-    if (selectedAddress) {
-      console.log(orderService)
-      const promise = orderService.placeOrder(selectedAddress)
-      showPromiseToast({
-        promise,
-        successMessage: lang.toast_order_successful,
-      })
-      promise.then(dispatch(clearCart()))
-    } else {
-      console.error('No address selected')
+    const finalDeliveryMethod = { ...deliveryMethod }
+    if (deliveryMethod.method === 'bakery') {
+      finalDeliveryMethod.address = {
+        name: 'Maiznīca ',
+        surname: 'Flora',
+        phone: '+371 67521291',
+        city: 'Krimuldas pagasts',
+        street: '"Vecvaltes"',
+      }
+    } else if (deliveryMethod.method === 'pickupPoint') {
+      finalDeliveryMethod.address = {
+        ...finalDeliveryMethod.address,
+        ...finalDeliveryMethod.address.address,
+      }
     }
+    const promise = orderService.placeOrder(finalDeliveryMethod)
+    showPromiseToast({
+      promise,
+      successMessage: lang.toast_order_successful,
+    })
+    promise.then(dispatch(clearCart()))
   }
   const checkDeliveryMethod = () => {
     console.log(deliveryMethod)
@@ -224,7 +232,7 @@ const Order = () => {
             />
             <Route
               path="payment"
-              element={<Payment />}
+              element={<Payment order={order} />}
             />
           </Routes>
         </div>

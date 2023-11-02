@@ -223,6 +223,10 @@ const lv = {
   toast_select_delivery_method: 'Izvēlies piegādes metodi!',
   toast_select_pickup_point: 'Izvēlies pakomātu!',
   toast_select_address: 'Norādi piegādes adresi!',
+  to_distance_agreement: 'Distances līgumam',
+  agree_terms: 'Esmu izlasījis un piekrītu ',
+  pay: 'Apmaksāt',
+  toast_must_agree: 'Ir jāpiekrīt distances līgumam, lai veiktu pasūtījumu!',
 }
 
 export default lv
