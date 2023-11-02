@@ -6,6 +6,9 @@ const SECRET = process.env.SECRET
 const EMAIL_PASS = process.env.EMAIL_PASS
 const FRONTEND_URL = process.env.FRONTEND_URL
 const BACKEND_URL = process.env.BACKEND_URL
+const DPD_AUTH_HEADER = {
+  headers: { Authorization: `Bearer ${process.env.DPD_KEY}` },
+}
 
 const MONGODB_URI =
   process.env.NODE_ENV === 'test'
@@ -13,6 +16,7 @@ const MONGODB_URI =
     : process.env.MONGODB_URI
 
 module.exports = {
+  DPD_AUTH_HEADER,
   MONGODB_URI,
   PORT,
   SECRET,

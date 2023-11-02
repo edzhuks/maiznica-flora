@@ -75,13 +75,13 @@ const DistanceAgreementPage = () => {
         </p>
         <p>
           3.2. Pircējam ir jāaizpilda reģistrācijas laikā pieprasītie personīgie
-          dati, tajā skaitā, bet ne tikai, vārds, uzvārds, mobilā tālruņa
-          numurs, elektroniskā pasta adrese, preču piegādes adrese un pārējie
-          preču piegādei nepieciešamie dati. Lai tiktu veikta pircēja profila
-          reģistrācija, datu ievadei jāizmanto latīņu alfabēta burti. Pircējs ir
-          atbildīgs par pareizas un patiesas informācijas sniegšanu, tai skaitā
-          par reģistrācijas anketā norādīto datu precizitāti, pilnīgumu un
-          ticamību.
+          dati - elektroniskā pasta adrese. Noformējot pasūtījumu, ja izvēlēta
+          piegāde ar kurjeru, jānorāda arī piegādei nepieciešamie dati - vārds,
+          uzvārds, mobilā tālruņa numurs, preču piegādes adrese. Lai tiktu
+          veikta pircēja profila reģistrācija, datu ievadei jāizmanto latīņu
+          alfabēta burti. Pircējs ir atbildīgs par pareizas un patiesas
+          informācijas sniegšanu, tai skaitā par reģistrācijas anketā norādīto
+          datu precizitāti, pilnīgumu un ticamību.
         </p>
 
         <p>
@@ -92,8 +92,8 @@ const DistanceAgreementPage = () => {
 
         <p>
           3.4. Pircējs ir atbildīgs par visām darbībām, kas tiek veiktas ar
-          pircēja profilu. Pircējs apņemas sava profila lietotāja vārdu un
-          paroli glabāt noslēpumā, un neatklāt tos trešajām personām.
+          pircēja profilu. Pircējs apņemas sava profila paroli glabāt noslēpumā,
+          un neatklāt to trešajām personām.
         </p>
 
         <p>
@@ -113,8 +113,8 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          3.7. Ja pircēja profils nav ticis izmantots pēdējos 12 (divpadsmit)
-          mēnešus, tas tiek automātiski dzēsts.
+          3.7. Ja pircēja profils nav ticis izmantots pēdējos 36 (trīsdesmit
+          seši) mēnešus, tas tiek automātiski dzēsts.
         </p>
 
         <p>
@@ -133,7 +133,7 @@ const DistanceAgreementPage = () => {
         <p>
           3.9. Pircējam ir tiesības jebkurā brīdī brīvi mainīt reģistrācijas
           datus pircēja profilā, labot vai papildināt tos vai anulēt savu
-          reģistrāciju. Īstenojot pasūtījuma izpildi vai risinot jebkādus ar
+          reģistrāciju. Īstenojot pasūtījuma izpildi vai risinot jebkādus ar
           pasūtījumu saistītus jautājumus, E-veikals ir tiesīgs izmantot
           informāciju, kas bija reģistrēta pircēja profilā pasūtījuma veikšanas
           vai jautājuma rašanās brīdī, ja vien pircējs nav pienācīgi un
@@ -141,13 +141,13 @@ const DistanceAgreementPage = () => {
         </p>
         <h4>4. Pasūtījumu veikšanas un norēķinu kārtība</h4>
         <p>
-          4.1. Lai iegādātos preci E-veikalā, pircējam, kas veicis reģistrāciju
+          4.1. Lai iegādātos preci E-veikalā, pircējam, kas veicis reģistrāciju
           E-veikalā, ir nepieciešams izvēlēties vēlamo preci un jāpievieno tā
           pirkumu "grozam".
         </p>
 
         <p>
-          4.2. Pēc visu izvēlēto preču pievienošanas pirkumu "grozam", pircējam
+          4.2. Pēc visu izvēlēto preču pievienošanas pirkumu "grozam", pircējam
           jāaizpilda informācija, kas nepieciešama pasūtījuma noformēšanai un
           piegādes veikšanai.
         </p>
@@ -158,16 +158,16 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          4.4. Preces pircējam tiek pārdotas par cenām, kas ir spēkā pasūtījuma
+          4.4. Preces pircējam tiek pārdotas par cenām, kas ir spēkā pasūtījuma
           izveidošanas brīdī.
         </p>
 
         <p>
-          4.5. Veicot pasūtījumu, pircējs ir tiesīgs komentāru sadaļā norādīt
-          citu personu, kuru tas pilnvaro pircēja vārdā saņemt pasūtījumu.
-          Pircējs norāda šīs personas vārdu un uzvārdu. Pircējs nodrošina, ka
-          viņa norādītā persona ir informēta par to, ka tā ir tiesīga saņemt
-          preces pircēja vārdā.
+          4.5. Veicot pasūtījumu, pircējs ir tiesīgs norādīt citas personas
+          adresi un datus, kuru tas pilnvaro pircēja vārdā saņemt pasūtījumu.
+          Pircējs norāda šīs personas vārdu, uzvārdu, telefona numuru un adresi.
+          Pircējs nodrošina, ka viņa norādītā persona ir informēta par to, ka tā
+          ir tiesīga saņemt preces pircēja vārdā.
         </p>
 
         <p>
@@ -186,10 +186,12 @@ const DistanceAgreementPage = () => {
           norēķināties tikai ar maksājuma metodēm, kas pieejamas E-veikala
           maksājumu metožu izvēlnē. Ja, veicot maksājumu, Pircēja banka pieprasa
           komisiju par maksājuma apstrādi, tā tiek segta no Pircēja puses.
+          Maksājumu apstrādi nodrošina SEB banka, E-veikals maksāšanas datus
+          neglabā.
         </p>
 
         <p>
-          4.8. Pēc pasūtījuma apmaksas E-veikals nosūta Pircējam uz pircēja
+          4.8. Pēc pasūtījuma apmaksas E-veikals nosūta Pircējam uz pircēja
           norādīto elektroniskā pasta adresi pasūtījuma apstiprinājumu un
           attaisnojuma dokumentu - elektroniski sagatavotu rēķinu. Elektroniski
           sagatavots attaisnojuma dokuments - rēķins - ir derīgs bez paraksta.
@@ -211,16 +213,16 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          4.11. Ja pircējs ir pārdomājis veikt pasūtījumu pēc tā
+          4.11. Ja Pircējs ir pārdomājis veikt pasūtījumu pēc tā
           apstiprināšanas, pircējs ir tiesīgs atcelt pasūtījumu, nosūtot
           attiecīgu pieprasījumu Klientu servisam Klientu servisa darba laikā,
           obligāti norādot pasūtījuma numuru. Pircējam tiek atgriezta samaksātā
-          nauda par pasūtījumu atbilstoši Noteikumu 9.8.punktā norādītajam.
+          nauda par pasūtījumu atbilstoši Noteikumu 7.8.punktā norādītajam.
         </p>
 
         <h4>5. Preču saņemšanas un piegādes noteikumi</h4>
         <p>
-          5.1. Preču piegāde tiek nodrošināta visā Latvijas Republikas
+          5.1. Preču piegāde tiek nodrošināta visā Latvijas Republikas
           teritorijā.
         </p>
 
@@ -231,10 +233,10 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          5.3 Preču piegāde E-veikala pircējiem ir atkarīga no pasūtījuma
+          5.3 Preču piegādes cena E-veikala pircējiem ir atkarīga no pasūtījuma
           summas: pasūtījumiem virs 50&euro; (summa apmaksai pēc atlaižu
           piemērošanas) - bezmaksas, pasūtījumiem līdz 50&euro; piegādes maksa
-          ir 3.99&euro;.
+          uz DPD pakomātu ir 3.99&euro;, kurjera piegādes maksa ir 5.99&euro; .
         </p>
 
         <p>
@@ -243,9 +245,7 @@ const DistanceAgreementPage = () => {
         </p>
         <p>
           5.5. Pircēja pasūtītās preces tiek piegādātas ar kurjeru uz pasūtījuma
-          noformēšanas laikā noradīto piegādes adresi vai uz pircēja profilā
-          reģistrēto adresi, ja pasūtījuma noformēšanas laikā nav norādīts cita
-          piegādes adrese.
+          noformēšanas laikā noradīto piegādes adresi.
         </p>
 
         <p>
@@ -277,7 +277,7 @@ const DistanceAgreementPage = () => {
           pakomāta displejā.
         </p>
         <p>
-          5.7. Ja nav iespējams nodrošināt preču piegādes laiku atbilstoši
+          5.7. Ja nav iespējams nodrošināt preču piegādes laiku atbilstoši
           Noteikumu 4.6.punktā paredzētajam, par to pircējs tiks informēts pēc
           iespējas īsākā laikā pēc pasūtījuma apstiprināšanas. Gadījumā, ja
           neparedzētu apstākļu dēļ notiek piegādes kavējums, pircēju par to
@@ -285,7 +285,7 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          5.8. Preces atbilstību veiktajam pasūtījumam un preces pavaddokumentam
+          5.8. Preces atbilstību veiktajam pasūtījumam un preces pavaddokumentam
           pēc daudzuma, sortimenta un veida, kā arī vizuāli konstatējamu defektu
           esamību, Pircējs pārbauda piegādes brīdī un piesaka pretenzijas 24
           (divdesmit četru) stundu laikā no preces saņemšanas brīža.
@@ -293,7 +293,7 @@ const DistanceAgreementPage = () => {
 
         <h4>6. Kvalitātes garantija</h4>
         <p>
-           E-veikals garantē, ka E-veikala preces ir kvalitatīvas, cilvēka
+          E-veikals garantē, ka E-veikala preces ir kvalitatīvas, cilvēka
           veselībai, dzīvībai un videi nekaitīgas, tās atbilst Latvijas
           Republikas normatīvajos aktos noteiktajām pārtikas nekaitīguma
           prasībām.
@@ -310,14 +310,14 @@ const DistanceAgreementPage = () => {
 
         <h4>7.Atteikuma tiesības un naudas atgriešana</h4>
         <p>
-          7.1. Pircējs ir tiesīgs 14 (četrpadsmit) dienu laika no pasūtīto preču
+          7.1. Pircējs ir tiesīgs 14 (četrpadsmit) dienu laika no pasūtīto preču
           saņemšanas izmantot atteikuma tiesības uz visu preci vai daļu no
           precēm.
         </p>
 
         <p>
-          7.2. Pircējs paziņo par vēlēšanos izmantot atteikuma tiesības uz
-          preci, sazinoties ar Klientu servisu. Pircējs nevar izmantot atteikuma
+          7.2. Pircējs paziņo par vēlēšanos izmantot atteikuma tiesības uz
+          preci, sazinoties ar Klientu servisu. Pircējs nevar izmantot atteikuma
           tiesības šādos gadījumos:
         </p>
         <p>&bull; prece (vai tās iepakojums) pēc piegādes tikusi sabojāta;</p>
@@ -329,13 +329,13 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          7.3. Preci, no kuras pircējs ir atteicies, pircējam ir jānogādā
+          7.3. Preci, no kuras pircējs ir atteicies, pircējam ir jānogādā
           "Vecvaltes" Krimuldas pagasts, Siguldas novads, LV2144, Latvijā.
           Pircējs sedz visas izmaksas, kas saistītas ar preces atgriešanu.
         </p>
 
         <p>
-          7.4. Atgrieztajai precei ir jābūt orģinālajā iepakojumā, neatvērtai,
+          7.4. Atgrieztajai precei ir jābūt orģinālajā iepakojumā, neatvērtai,
           derīguma termiņa ietvaros un bez pazīmēm, kas liecina, ka tā tika
           neatbilstoši glabāta. Atgriežot pārtikas preci, pircējam ir jārēķinās
           ar to, ka pārvadāšanas laikā tai ir jānodrošina speciālais
@@ -347,13 +347,13 @@ const DistanceAgreementPage = () => {
         </p>
 
         <p>
-          7.5. E-veikals izskata pircēju iesniegumus attiecībā uz atteikuma
+          7.5. E-veikals izskata pircēju iesniegumus attiecībā uz atteikuma
           tiesību izmantošanu 3 (trīs) darba dienu laikā, sniedzot atbildi uz
           iesniedzēja e-pasta adresi.
         </p>
 
         <p>
-          7.6. Atteikuma tiesību izmantošanas gadījumā E-veikals atmaksā
+          7.6. Atteikuma tiesību izmantošanas gadījumā E-veikals atmaksā
           pircējam viņa samaksāto naudas summu, tajā skaitā pircēja samaksātos
           saprātīgus un pamatotus piegādes izdevumus, ja tādi bija piemēroti,
           balstoties uz Ministru kabineta Noteikumiem par distances līgumu.
@@ -396,12 +396,12 @@ const DistanceAgreementPage = () => {
 
         <h4>9. Nobeiguma noteikumi</h4>
         <p>
-          9.1. Noteikumi sagatavoti atbilstoši Latvijas Republikas normatīvajiem
+          9.1. Noteikumi sagatavoti atbilstoši Latvijas Republikas normatīvajiem
           aktiem.
         </p>
 
         <p>
-          9.2. E-veikals ir tiesības vienpusēji grozīt, labot vai papildināt
+          9.2. E-veikals ir tiesības vienpusēji grozīt, labot vai papildināt
           Noteikumus. Pircējam ir saistoši Noteikumi, kas ir spēkā pasūtījuma
           iesniegšanas brīdī un ir publicēti E-veikalā.
         </p>

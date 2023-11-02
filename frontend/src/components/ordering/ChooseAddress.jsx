@@ -1,7 +1,7 @@
-import UserContext from '../contexts/userContext'
+import UserContext from '../../contexts/userContext'
 import { useContext, useEffect, useState } from 'react'
-import useUserService from '../services/user'
-import useField from '../hooks/useField'
+import useUserService from '../../services/user'
+import useField from '../../hooks/useField'
 import styled from 'styled-components'
 import {
   Button,
@@ -11,18 +11,18 @@ import {
   Label,
   Row,
   StyledInput,
-} from './styled/base'
+} from '../styled/base'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart } from '../reducers/cartReducer'
+import { clearCart } from '../../reducers/cartReducer'
 import { toast } from 'react-toastify'
-import useToast from '../util/promiseToast'
-import useOrderService from '../services/order'
+import useToast from '../../util/promiseToast'
+import useOrderService from '../../services/order'
 import { Person } from '@styled-icons/evaicons-solid/Person'
 import { Phone } from '@styled-icons/boxicons-solid/Phone'
 import { Home } from '@styled-icons/boxicons-solid/Home'
-import Addresses from './user/Adresses'
+import Addresses from '../user/Adresses'
 
-const Order = () => {
+const ChooseAddress = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [selectedAddress, selectAddress] = useState()
   const dispatch = useDispatch()
@@ -65,4 +65,4 @@ const Order = () => {
   )
 }
 
-export default Order
+export default ChooseAddress

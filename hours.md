@@ -35,5 +35,7 @@
 | 27.10        | 5     | password reset, privacy policy, change password                                                                                                                                       |
 | 28.10        | 2     | better addresses, editing and removing                                                                                                                                                |
 | 30.10        | 2     | better home page, bulk discount                                                                                                                                                       |
-| 31.10        | 2     | finished profile page for now - past orders and account deletion                                                                                                                      |
-| total        | 143.5 |                                                                                                                                                                                       |
+| 31.10        | 7     | finished profile page for now - past orders and account deletion. ordering flow, pickup point list from DPD                                                                           |
+| 01.11        | 1     | finished ordering flow, except payment                                                                                                                                                |
+| 02.11        | 0.5   | distance agreement matching current state                                                                                                                                             |
+| total        | 150   |                                                                                                                                                                                       |
