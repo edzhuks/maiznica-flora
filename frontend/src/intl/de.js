@@ -211,6 +211,7 @@ const de = {
   toast_select_delivery_method: 'Wählen Sie eine Liefermethode!',
   toast_select_pickup_point: 'Wählen Sie einen Abholpunkt!',
   toast_select_address: 'Wählen Sie eine Adresse!',
+  related_products: 'Verwandte Produkte',
 }
 
 export default de

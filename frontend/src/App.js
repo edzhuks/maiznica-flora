@@ -12,7 +12,11 @@ import SignUp from './components/user/SignUp'
 import { useState, useEffect, useLayoutEffect } from 'react'
 import Cart from './components/ordering/Cart'
 import Order from './components/ordering/Order'
-import { FullHeightContainer, Padding } from './components/styled/base'
+import {
+  FullHeightContainer,
+  Padding,
+  PaddingH,
+} from './components/styled/base'
 import ManagementPage from './components/management/ManagementPage'
 import HomePage from './components/Home'
 import ProductListWithCategories from './components/productList/ProductListWithCategories'
@@ -56,6 +60,7 @@ const baseTheme = {
   dark: '#777777',
   white: 'white',
   error: '#bd5757',
+  borderRadius: '2px',
 }
 
 const responsiveTheme = (isMobile) => {
@@ -111,7 +116,7 @@ function App() {
           <MobileContext.Provider value={[isMobile, setIsMobile]}>
             <Router>
               <Header />
-              <Padding>
+              <PaddingH>
                 <FullHeightContainer>
                   <Routes>
                     <Route
@@ -209,7 +214,7 @@ function App() {
                     </Route>
                   </Routes>
                 </FullHeightContainer>
-              </Padding>
+              </PaddingH>
               <Footer />
             </Router>
           </MobileContext.Provider>

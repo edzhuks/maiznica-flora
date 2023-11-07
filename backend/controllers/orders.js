@@ -7,39 +7,65 @@ const {
   verificationRequired,
 } = require('../util/middleware')
 const Address = require('../models/address')
+const { sendReceiptEmail } = require('../util/emails')
+const { getPrice } = require('../util/functions')
+const { TEST_MODE } = require('../util/config')
 const router = express.Router()
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
-  const address = await Address.findById(req.body.id)
-  if (!address) {
-    return res.status(400).json({ error: 'Address is required' })
+  if (!req.body.deliveryMethod) {
+    return res.status(400).json({ error: 'Delivery method is required' })
   }
-  let cart = await Cart.findOne({ user: req.user.id })
+  if (!req.body.deliveryMethod.method) {
+    return res.status(400).json({ error: 'Delivery method is required' })
+  }
+  if (!req.body.deliveryMethod.address) {
+    return res.status(400).json({ error: 'Delivery address is required' })
+  }
+  let cart = await Cart.findOne({ user: req.user.id }).populate([
+    { path: 'content', populate: { path: 'product' } },
+  ])
   if (!cart) {
     return res.status(400).json({ error: 'User does not have a cart' })
   }
   if (cart.content.length < 1) {
     return res.status(400).json({ error: 'Cannot order an empty cart' })
   }
+  const subtotal = cart.content
+    .map((i) => getPrice(i) * i.quantity)
+    .reduce((acc, cur) => acc + cur, 0)
+  const deliveryCost = subtotal >= 5000 ? 0 : req.body.deliveryMethod.cost
+  const total = subtotal + deliveryCost
+  console.log(subtotal)
+  console.log(deliveryCost)
+  console.log(total)
   const order = new Order({
     user: cart.user,
     content: cart.content,
-    address,
+    deliveryMethod: req.body.deliveryMethod,
     status: { status: 'placed' },
     datePlaced: Date.now(),
+    subtotal,
+    deliveryCost,
+    total,
+    vat: total * 0.23,
   })
   await order.save()
+  await order.populate([{ path: 'content', populate: { path: 'product' } }])
   await cart.deleteOne()
   const newCart = new Cart({
     content: [],
     user: req.user.id,
   })
   await newCart.save()
+  if (!TEST_MODE) {
+    sendReceiptEmail(req.user.email, order)
+  }
   res.send(order)
 })
 
 router.put('/:id', userExtractor, adminRequired, async (req, res) => {
-  let newOrder = req.body
+  let newOrder = { status: req.body.status }
   if (
     ![
       'placed',
@@ -55,7 +81,6 @@ router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   }
   newOrder.status.lastModifiedBy = req.user.id
   newOrder.status.lastModified = new Date()
-  newOrder.address = newOrder.address.id
   await Order.updateOne({ _id: req.params.id }, newOrder)
   const order = await Order.findById(req.params.id).populate([
     { path: 'content', populate: { path: 'product' } },

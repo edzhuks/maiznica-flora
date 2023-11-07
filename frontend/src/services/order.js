@@ -7,9 +7,9 @@ const useOrderService = () => {
   const { showErrorToast } = useToast()
   const baseURL = `${apiURL}/order`
 
-  const placeOrder = (address) => {
+  const placeOrder = (deliveryMethod) => {
     const config = makeConfig()
-    const request = axios.post(baseURL, address, config)
+    const request = axios.post(baseURL, { deliveryMethod }, config)
     return request
   }
 

@@ -16,6 +16,7 @@ import {
   CompactInputGroup,
   Form,
   StyledInput,
+  BigTitle,
 } from '../styled/base'
 import useProductService from '../../services/product'
 import StaticInformation from './TextualInformation'
@@ -25,6 +26,7 @@ import styled from 'styled-components'
 import BaseModal from '../management/BaseModal'
 import useField from '../../hooks/useField'
 import useToast from '../../util/promiseToast'
+import ProductList from '../productList/ProductList'
 
 // const Center = styled.div`
 //   display: flex;
@@ -219,6 +221,12 @@ const Product = () => {
             onOrder={addToCart}
           />
         </WrappableRow>
+        {product.relatedProducts && product.relatedProducts.length > 0 && (
+          <>
+            <BigTitle>{lang.related_products}</BigTitle>
+            <ProductList products={product.relatedProducts} />
+          </>
+        )}
       </>
     )
 }

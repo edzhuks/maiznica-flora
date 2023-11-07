@@ -15,9 +15,32 @@ const orderSchema = new mongoose.Schema({
       packed: Boolean,
     },
   ],
-  address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Address',
+  deliveryMethod: {
+    method: String,
+    cost: Number,
+    address: {
+      name: {
+        type: String,
+      },
+      surname: {
+        type: String,
+      },
+      phone: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      house: {
+        type: String,
+      },
+      apartment: {
+        type: String,
+      },
+    },
   },
   datePlaced: Date,
   status: {
@@ -39,6 +62,10 @@ const orderSchema = new mongoose.Schema({
     },
     lastModified: Date,
   },
+  subtotal: Number,
+  deliveryCost: Number,
+  total: Number,
+  vat: Number,
 })
 
 orderSchema.set('toJSON', {

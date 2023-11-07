@@ -133,11 +133,11 @@ const ProductListItem = ({ inCart, product, quantity }) => {
   }
 
   const addMore = async () => {
-    dispatch(changeQuantityOfItem({ product, quantity: quantity + 1 }))
+    dispatch(changeQuantityOfItem({ product, quantity: 1 }))
   }
 
   const removeSome = async () => {
-    dispatch(changeQuantityOfItem({ product, quantity: quantity - 1 }))
+    dispatch(changeQuantityOfItem({ product, quantity: -1 }))
   }
 
   return (
