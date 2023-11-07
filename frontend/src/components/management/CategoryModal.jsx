@@ -13,6 +13,7 @@ import {
   StyledInput,
   CancelButton,
   Button,
+  ProductImage,
 } from '../styled/base'
 import Select from 'react-select'
 import { useState } from 'react'
@@ -20,9 +21,12 @@ import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 import BaseModal from './BaseModal'
+import useUploadService from '../../services/uploads'
+import { backendURL } from '../../util/config'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const categoryService = useCategoryService()
+  const uploadService = useUploadService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
@@ -31,7 +35,9 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const name_en = useField('text')
   const name_de = useField('text')
   const id = useField('text')
-  const image = useField('text')
+  const [image, setImage] = useState(
+    'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
+  )
 
   useEffect(() => {
     if (activeCategory) {
@@ -55,7 +61,9 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     name_en.clear()
     name_de.clear()
     id.clear()
-    image.clear()
+    setImage(
+      'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
+    )
     setSelectedCategoryIds([])
   }
 
@@ -70,7 +78,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
               de: name_de.value,
             },
             id: id.value,
-            image: image.value,
+            image,
           },
           parentCategory: activeCategory.id,
         })
@@ -89,6 +97,14 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
           onClose()
         })
     }
+  }
+  const imageSelected = (event) => {
+    event.preventDefault()
+    const formData = new FormData()
+    formData.append('image', event.target.files[0])
+    uploadService.uploadImage(formData).then((response) => {
+      setImage(`${backendURL}${response.data.path}`)
+    })
   }
 
   return (
@@ -157,12 +173,17 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
                 />
               </Label>
             </CompactInputGroup>
+            <ProductImage
+              style={{ width: '200px' }}
+              src={image}
+            />
             <CompactInputGroup>
               <Label>
-                {lang.image_url}
-                <StyledInput
-                  $isonlightbackground
-                  {...image}
+                <input
+                  filename={image}
+                  onChange={(e) => imageSelected(e)}
+                  type="file"
+                  accept="image/*"
                 />
               </Label>
             </CompactInputGroup>
