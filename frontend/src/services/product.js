@@ -69,6 +69,14 @@ const useProductService = () => {
     const request = axios.put(`${baseURL}/outOfStock/${productId}`, {}, config)
     return request
   }
+
+  const uploadImage = (image) => {
+    const config = makeConfig()
+    const request = axios.post(`${baseURL}/image`, image, {
+      headers: { ...config.headers, 'Content-Type': 'multipart/form-data' },
+    })
+    return request
+  }
   return {
     create,
     getAll,
@@ -81,6 +89,7 @@ const useProductService = () => {
     showProduct,
     inStock,
     outOfStock,
+    uploadImage,
   }
 }
 export default useProductService
