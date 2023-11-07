@@ -187,7 +187,6 @@ const Order = () => {
     promise.then(dispatch(clearCart()))
   }
   const checkDeliveryMethod = () => {
-    console.log(deliveryMethod)
     if (!deliveryMethod.method) {
       toast.error(lang.toast_select_delivery_method)
     } else if (
@@ -204,9 +203,15 @@ const Order = () => {
       navigate('payment')
     }
   }
+  const checkCartEmpty = () => {
+    if (cart.length < 1) {
+      toast.error(lang.empty_cart)
+    } else {
+      navigate('delivery')
+    }
+  }
 
   const handleDeliveryMethodChange = (newMethod) => {
-    console.log(newMethod)
     setDeliveryMethod(newMethod)
   }
 
@@ -244,6 +249,7 @@ const Order = () => {
             deliveryThreshold={deliveryThreshold}
             stage={stage}
             checkDeliveryMethod={checkDeliveryMethod}
+            checkCartEmpty={checkCartEmpty}
           />
         </div>
       </ReverseRow>

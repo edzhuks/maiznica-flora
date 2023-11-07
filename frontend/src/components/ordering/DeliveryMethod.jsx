@@ -151,7 +151,7 @@ const DeliveryMethod = ({
           onClick={() =>
             setDeliveryMethod({
               method: 'courrier',
-              address: undefined,
+              address: address,
               cost: 599,
             })
           }

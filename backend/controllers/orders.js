@@ -9,11 +9,18 @@ const {
 const Address = require('../models/address')
 const { sendReceiptEmail } = require('../util/emails')
 const { getPrice } = require('../util/functions')
+const { TEST_MODE } = require('../util/config')
 const router = express.Router()
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
+  if (!req.body.deliveryMethod) {
+    return res.status(400).json({ error: 'Delivery method is required' })
+  }
   if (!req.body.deliveryMethod.method) {
     return res.status(400).json({ error: 'Delivery method is required' })
+  }
+  if (!req.body.deliveryMethod.address) {
+    return res.status(400).json({ error: 'Delivery address is required' })
   }
   let cart = await Cart.findOne({ user: req.user.id }).populate([
     { path: 'content', populate: { path: 'product' } },
@@ -51,12 +58,14 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     user: req.user.id,
   })
   await newCart.save()
-  sendReceiptEmail(req.user.email, order)
+  if (!TEST_MODE) {
+    sendReceiptEmail(req.user.email, order)
+  }
   res.send(order)
 })
 
 router.put('/:id', userExtractor, adminRequired, async (req, res) => {
-  let newOrder = req.body
+  let newOrder = { status: req.body.status }
   if (
     ![
       'placed',
@@ -72,7 +81,6 @@ router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   }
   newOrder.status.lastModifiedBy = req.user.id
   newOrder.status.lastModified = new Date()
-  newOrder.address = newOrder.address.id
   await Order.updateOne({ _id: req.params.id }, newOrder)
   const order = await Order.findById(req.params.id).populate([
     { path: 'content', populate: { path: 'product' } },

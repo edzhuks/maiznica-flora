@@ -52,6 +52,7 @@ const product1 = {
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
   badges: [],
+  relatedProducts: [],
 }
 
 const product2 = {
@@ -68,6 +69,7 @@ const product2 = {
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',
   bio: false,
   badges: [],
+  relatedProducts: [],
 }
 
 const goodAddress = {
@@ -123,7 +125,7 @@ beforeEach(async () => {
     .expect(201)
 })
 
-test('ordering fails without an address', async () => {
+test('ordering fails without a delivery method', async () => {
   await api
     .post('/api/order')
     .set('Authorization', `Bearer ${token}`)
@@ -140,30 +142,26 @@ test('unatuhorized can not get all orders', async () => {
 
 describe('ordering', () => {
   let address
-  beforeEach(async () => {
-    const addressResponse = await api
-      .post('/api/users/address')
-      .set('Authorization', `Bearer ${token}`)
-      .send(goodAddress)
-    address = addressResponse.body
-  })
+
   test('succeeds with an address', async () => {
     await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(200)
   })
   test('fails with an empty cart', async () => {
     await api
       .post('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-      .send({ product: product1, quantity: 0 })
+      .send({ product: product1, quantity: -9999999 })
       .expect(201)
     await api
       .post('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-      .send({ product: product2, quantity: 0 })
+      .send({ product: product2, quantity: -9999999 })
       .expect(201)
     const response = await api
       .get('/api/cart')
@@ -172,14 +170,18 @@ describe('ordering', () => {
     await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(400)
   })
   test('creates an order with status "placed"', async () => {
     const response = await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(200)
     expect(response.body.status.status).toBe('placed')
   })
@@ -187,7 +189,9 @@ describe('ordering', () => {
     const response = await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(200)
     expect(
       new Date(response.body.datePlaced).getTime() - new Date().getTime()
@@ -201,7 +205,9 @@ describe('ordering', () => {
     await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(200)
     const response2 = await api
       .get('/api/cart')
@@ -225,7 +231,9 @@ describe('admins can', () => {
     await api
       .post('/api/order')
       .set('Authorization', `Bearer ${token}`)
-      .send({ id: address.id })
+      .send({
+        deliveryMethod: { address: goodAddress, method: 'courrier', cost: 599 },
+      })
       .expect(200)
     const response = await api
       .get('/api/order/all')
@@ -244,7 +252,13 @@ describe('admins can', () => {
       const response = await api
         .post('/api/order')
         .set('Authorization', `Bearer ${token}`)
-        .send({ id: address.id })
+        .send({
+          deliveryMethod: {
+            address: goodAddress,
+            method: 'courrier',
+            cost: 599,
+          },
+        })
       order = response.body
     })
     test('change status to a valid status', async () => {

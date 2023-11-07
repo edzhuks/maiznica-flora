@@ -1,7 +1,7 @@
 const express = require('express')
 const Cart = require('../models/cart')
 const { userExtractor, verificationRequired } = require('../util/middleware')
-const { isPositiveInteger } = require('../util/functions')
+const { isInteger } = require('../util/functions')
 const router = express.Router()
 
 router.get('/', userExtractor, async (req, res) => {
@@ -12,6 +12,9 @@ router.get('/', userExtractor, async (req, res) => {
 })
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
+  if (!isInteger(req.body.quantity)) {
+    return res.status(400).json({ error: 'Quantity must be a whole number' })
+  }
   if (!req.body.product) {
     return res.status(400).json({ error: 'Product missing' })
   }
@@ -38,12 +41,12 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
       )
     }
   } else {
-    if (req.body.quantity <= 0) {
+    if (Number(req.body.quantity) <= 0) {
       return res.status(400).json({ error: 'Cannot add less than 1 item' })
     }
     cart.content = cart.content.concat({
       product: req.body.product.id,
-      quantity: req.body.quantity,
+      quantity: Number(req.body.quantity),
     })
   }
 

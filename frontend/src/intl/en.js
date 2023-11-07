@@ -213,6 +213,7 @@ const en = {
   pay: 'Bezahlen',
   toast_must_agree:
     'Sie müssen mit den Bedingungen einverstanden sein, um die Bestellung aufzugeben!',
+  related_products: 'Related products',
 }
 
 export default en

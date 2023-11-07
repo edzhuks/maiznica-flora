@@ -49,6 +49,7 @@ const goodProduct = {
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
   badges: [],
+  relatedProducts:[]
 }
 let token
 let adminToken
