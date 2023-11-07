@@ -22,7 +22,7 @@ import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import StaticInformation from '../productPage/TextualInformation'
-import { useParams } from 'react-router-dom'
+import { Form, useParams } from 'react-router-dom'
 import useProductService from '../../services/product'
 import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
 import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
@@ -30,6 +30,8 @@ import useToast from '../../util/promiseToast'
 import { Badges } from '../styled/base'
 import { gramsToKilos } from '../../util/convert'
 import Select from 'react-select'
+import { backendURL } from '../../util/config'
+import useUploadService from '../../services/uploads'
 
 const NameInput = styled(ShadowInput)`
   color: ${(props) => props.theme.main};
@@ -89,6 +91,7 @@ const ShortLabel = styled(Label)`
 
 const NewProductFrom = () => {
   const productService = useProductService()
+  const uploadService = useUploadService()
   const productId = useParams().productId
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const allLang = useSelector((state) => state.lang)
@@ -263,13 +266,13 @@ const NewProductFrom = () => {
           : undefined,
       },
       relatedProducts: selectedProductIds.map((p) => p.value),
+      image,
     }
   }
 
   const onSubmit = (event) => {
     event.preventDefault()
     const product = formProduct()
-    product.image = image
     if (productId) {
       const promise = productService.update(productId, product)
       showPromiseToast({ promise, successMessage: lang.toast_changes_saved })
@@ -321,13 +324,13 @@ const NewProductFrom = () => {
     }
   }
 
-  const imageDropped = (event) => {
+  const imageSelected = (event) => {
     event.preventDefault()
-    const imageObj = event.dataTransfer.getData('text/html')
-    let src = new DOMParser()
-      .parseFromString(imageObj, 'text/html')
-      .querySelector('img').src
-    setImage(src)
+    const formData = new FormData()
+    formData.append('image', event.target.files[0])
+    uploadService.uploadImage(formData).then((response) => {
+      setImage(`${backendURL}${response.data.path}`)
+    })
   }
 
   const badgeClicked = (name) => {
@@ -620,19 +623,17 @@ const NewProductFrom = () => {
         )}
       </EditTab>
       <WrappableRow style={{ justifyContent: 'end' }}>
-        <ProductImage
-          onDragOver={(e) => {
-            e.stopPropagation()
-            e.preventDefault()
-          }}
-          onDrop={(e) => {
-            console.log(e)
-            e.preventDefault()
-            e.stopPropagation()
-            imageDropped(e)
-          }}
-          src={image}
-        />
+        <form>
+          <ProductImage src={image} />
+          <br />
+          <input
+            filename={image}
+            onChange={(e) => imageSelected(e)}
+            type="file"
+            accept="image/*"
+          />
+        </form>
+
         <div>
           <StaticInformation product={formProduct()} />
           <Button onClick={onSubmit}>
