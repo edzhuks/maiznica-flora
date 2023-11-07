@@ -1228,7 +1228,7 @@ const sendEmail = (email, { subject, text, html }) => {
 
 const sendVerificationEmail = (email, token) => {
   sendEmail(email, {
-    subject: 'Email verification',
+    subject: 'Apstipriniet e-pastu',
     text: `verify your email by clicking the link below</br>${BACKEND_URL}/api/users/verifyEmail/${token}`,
     html: verificationEmailHtml(
       `${BACKEND_URL}/api/users/verifyEmail/${token}`
@@ -1246,8 +1246,56 @@ const sendResetEmail = (email, token) => {
 }
 const sendReceiptEmail = (email, order) => {
   sendEmail(email, {
-    subject: 'Flora Bakery purchase receipt',
-    text: 'TODO: add text',
+    subject: 'Maiznīcas Flora internetveikala rēķins',
+    text: `
+    Paldies, ka iepirkāties Maiznīcas Flora internetveikalā!\n
+    Pasūtījums #${order._id}\n
+    ${order.datePlaced}\n
+    ${order.content
+      .map(
+        (item) => `
+          ${item.product.name.lv} ${gramsToKilos(item.product.weight)}\t
+          ${centsToEuro(getPrice(item))}\t
+          ${item.quantity}\t
+          ${centsToEuro(getPrice(item) * item.quantity)}
+    `
+      )
+      .join('\n')}
+    Starpsumma \t ${centsToEuro(order.subtotal)}\n
+    Piegāde \t ${centsToEuro(order.deliveryCost)}\n
+    Pavisam kopā (ar PVN) \t ${centsToEuro(order.total)}\n
+    PVN \t ${centsToEuro(order.vat)}
+    
+    Piegādes adrese\n
+    ${order.deliveryMethod.address.name}
+    ${
+      order.deliveryMethod.address.surname
+        ? order.deliveryMethod.address.surname
+        : ''
+    }\n
+    ${order.deliveryMethod.address.street} 
+    ${
+      order.deliveryMethod.address.house
+        ? order.deliveryMethod.address.house
+        : ''
+    }-${
+      order.deliveryMethod.address.apartment
+        ? order.deliveryMethod.address.apartment
+        : ''
+    }\n
+    ${order.deliveryMethod.address.city}
+    Piegādes veids\n
+    ${(() => {
+      switch (order.deliveryMethod.method) {
+        case 'courrier':
+          return 'Piegāde ar kurjeru'
+        case 'bakery':
+          return 'Saņemšana maiznīcā'
+        case 'pickupPoint':
+          return 'DPD pakomāts'
+      }
+    })()}
+      `,
     html: receiptEmail(order),
   })
 }

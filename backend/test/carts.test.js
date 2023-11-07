@@ -50,6 +50,7 @@ const product1 = {
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas_rudzu_skeles-1.jpg',
   bio: false,
   badges: [],
+  relatedProducts: [],
 }
 
 const product2 = {
@@ -66,6 +67,7 @@ const product2 = {
     'https://www.maiznica.lv/wp-content/uploads/2019/04/sejas-ar-briedinatiem_rudzu_300.jpg',
   bio: false,
   badges: [],
+  relatedProducts: [],
 }
 
 let token
@@ -150,7 +152,7 @@ describe('an user can', () => {
       quantity: 9,
     })
   })
-  test('add more of a product to their cart, but the quantity is replaced, not added', async () => {
+  test('add more of a product to their cart and the quantities are added', async () => {
     await api
       .post('/api/cart')
       .set('Authorization', `Bearer ${token}`)
@@ -168,10 +170,10 @@ describe('an user can', () => {
     delete response.body.content[0]._id
     expect(response.body.content[0]).toStrictEqual({
       product: product1,
-      quantity: 9,
+      quantity: 19,
     })
   })
-  test('delete an item by ordering 0 of it', async () => {
+  test('order less of an item by ordering a negative amount of it', async () => {
     await api
       .post('/api/cart')
       .set('Authorization', `Bearer ${token}`)
@@ -189,7 +191,37 @@ describe('an user can', () => {
     await api
       .post('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-      .send({ product: product1, quantity: 0 })
+      .send({ product: product1, quantity: -5 })
+      .expect(201)
+    const response2 = await api
+      .get('/api/cart')
+      .set('Authorization', `Bearer ${token}`)
+    expect(response2.body.content.length).toBe(1)
+    delete response2.body.content[0]._id
+    expect(response2.body.content[0]).toStrictEqual({
+      product: product1,
+      quantity: 5,
+    })
+  })
+  test('order less of an item by ordering a negative amount of it, but the end amount cannot be negative', async () => {
+    await api
+      .post('/api/cart')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ product: product1, quantity: 10 })
+      .expect(201)
+    const response = await api
+      .get('/api/cart')
+      .set('Authorization', `Bearer ${token}`)
+    expect(response.body.content.length).toBe(1)
+    delete response.body.content[0]._id
+    expect(response.body.content[0]).toStrictEqual({
+      product: product1,
+      quantity: 10,
+    })
+    await api
+      .post('/api/cart')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ product: product1, quantity: -50 })
       .expect(201)
     const response2 = await api
       .get('/api/cart')

@@ -1,6 +1,9 @@
 const isPositiveInteger = (str) => {
   return str >>> 0 === parseFloat(str)
 }
+const isInteger = (str) => {
+  return /^-?\d+$/.test(str)
+}
 const centsToEuro = (cents) => {
   const euros = new Intl.NumberFormat('en-EU', {
     style: 'currency',
@@ -32,4 +35,10 @@ const gramsToKilos = (grams) => {
   return grams < 1000 ? `${grams}g` : `${kilos.format(grams / 1000)}kg`
 }
 
-module.exports = { isPositiveInteger, centsToEuro, getPrice, gramsToKilos }
+module.exports = {
+  isPositiveInteger,
+  centsToEuro,
+  getPrice,
+  gramsToKilos,
+  isInteger,
+}

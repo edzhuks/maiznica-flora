@@ -97,7 +97,7 @@ const Categories = ({ categories, name, tight }) => {
           {/* <Spacer /> */}
         </CardRow>
       )}
-      {name && <BigTitle>{name[selectedLang]}</BigTitle>}
+      {name && <BigTitle>{name[selectedLang] || name.lv}</BigTitle>}
     </div>
   )
 }

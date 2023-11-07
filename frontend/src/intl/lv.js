@@ -227,6 +227,7 @@ const lv = {
   agree_terms: 'Esmu izlasījis un piekrītu ',
   pay: 'Apmaksāt',
   toast_must_agree: 'Ir jāpiekrīt distances līgumam, lai veiktu pasūtījumu!',
+  related_products: 'Līdzīgi produkti',
 }
 
 export default lv

@@ -49,6 +49,12 @@ const productSchema = new mongoose.Schema({
   badges: [{ type: String }],
   outOfStock: Boolean,
   invisible: Boolean,
+  relatedProducts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
 })
 
 productSchema.set('toJSON', {
