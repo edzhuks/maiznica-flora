@@ -67,7 +67,9 @@ router.delete(
 )
 
 router.get('/', async (req, res) => {
-  const products = await Product.find({ invisible: { $ne: true } })
+  const products = await Product.find({ invisible: { $ne: true } }).populate(
+    'relatedProducts'
+  )
   res.send(products)
 })
 
@@ -75,7 +77,7 @@ router.get('/:id', async (req, res) => {
   const product = await Product.findOne({
     _id: req.params.id,
     invisible: { $ne: true },
-  })
+  }).populate('relatedProducts')
   if (!product) {
     return res.status(404).json({ error: 'The product does not exist' })
   }
@@ -139,6 +141,25 @@ router.put(
   productChecker,
   async (req, res) => {
     await Product.updateOne({ _id: req.params.id }, req.body.product)
+    const products = await Product.find()
+    for (const p of products) {
+      console.log(p.relatedProducts)
+      if (
+        req.body.product.relatedProducts.find((r) => r === p.id) &&
+        !p.relatedProducts.find((r) => r.equals(req.params.id))
+      ) {
+        p.relatedProducts.push(req.params.id)
+        await p.save()
+      } else if (
+        !req.body.product.relatedProducts.find((r) => r === p.id) &&
+        p.relatedProducts.find((r) => r.equals(req.params.id))
+      ) {
+        console.log(p.relatedProducts)
+        p.relatedProducts.pull(req.params.id)
+        console.log(p.relatedProducts)
+        await p.save()
+      }
+    }
     const product = await Product.findById(req.params.id)
     res.status(200).send(product)
   }

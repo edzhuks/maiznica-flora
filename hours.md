@@ -38,4 +38,5 @@
 | 31.10        | 7     | finished profile page for now - past orders and account deletion. ordering flow, pickup point list from DPD                                                                           |
 | 01.11        | 1     | finished ordering flow, except payment                                                                                                                                                |
 | 02.11        | 0.5   | distance agreement matching current state                                                                                                                                             |
-| total        | 150   |                                                                                                                                                                                       |
+| 02.11        | 4     | Email order receipt                                                                                                                                                                   |
+| total        | 154   |                                                                                                                                                                                       |

@@ -16,7 +16,11 @@ const useCartService = () => {
 
   const removeFromCart = (product) => {
     const config = makeConfig()
-    const request = axios.post(baseURL, { product, quantity: 0 }, config)
+    const request = axios.post(
+      baseURL,
+      { product, quantity: -999999999999 },
+      config
+    )
     showErrorToast(request)
     return request
   }

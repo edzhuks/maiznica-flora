@@ -1,7 +1,7 @@
 const express = require('express')
 const Cart = require('../models/cart')
 const { userExtractor, verificationRequired } = require('../util/middleware')
-const { isPositiveInteger } = require('../util/functions')
+const { isInteger } = require('../util/functions')
 const router = express.Router()
 
 router.get('/', userExtractor, async (req, res) => {
@@ -12,8 +12,8 @@ router.get('/', userExtractor, async (req, res) => {
 })
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
-  if (!isPositiveInteger(req.body.quantity)) {
-    return res.status(400).json({ error: 'Cannot add less than 1 item' })
+  if (!isInteger(req.body.quantity)) {
+    return res.status(400).json({ error: 'Quantity must be a whole number' })
   }
   if (!req.body.product) {
     return res.status(400).json({ error: 'Product missing' })
@@ -30,22 +30,26 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
       user: req.user.id,
     })
   }
-  if (Number(req.body.quantity) === 0) {
-    cart.content = cart.content.filter(
-      (item) => !item.product.equals(req.body.product.id)
-    )
-  } else {
-    if (
-      (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
-    ) {
-      item.quantity = Number(req.body.quantity)
-    } else {
-      cart.content = cart.content.concat({
-        product: req.body.product.id,
-        quantity: req.body.quantity,
-      })
+
+  if (
+    (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
+  ) {
+    item.quantity += Number(req.body.quantity)
+    if (item.quantity <= 0) {
+      cart.content = cart.content.filter(
+        (item) => !item.product.equals(req.body.product.id)
+      )
     }
+  } else {
+    if (Number(req.body.quantity) <= 0) {
+      return res.status(400).json({ error: 'Cannot add less than 1 item' })
+    }
+    cart.content = cart.content.concat({
+      product: req.body.product.id,
+      quantity: Number(req.body.quantity),
+    })
   }
+
   await cart.save()
   await cart.populate({
     path: 'content.product',

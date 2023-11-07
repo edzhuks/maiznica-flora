@@ -28,6 +28,8 @@ import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
 import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
 import useToast from '../../util/promiseToast'
 import { Badges } from '../styled/base'
+import { gramsToKilos } from '../../util/convert'
+import Select from 'react-select'
 
 const NameInput = styled(ShadowInput)`
   color: ${(props) => props.theme.main};
@@ -131,11 +133,27 @@ const NewProductFrom = () => {
   const [editTabOpen, setEditTabOpen] = useState(true)
 
   const { showPromiseToast } = useToast()
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+
+  const [allProducts, setAllProducts] = useState([])
+  const [selectedProductIds, setSelectedProductIds] = useState([])
 
   useEffect(() => {
-    if (productId) {
-      console.log('blerp')
-      productService.getById(productId).then((product) => {
+    productService.getAll().then((result) => {
+      setAllProducts(
+        result
+          .filter((p) => p.id !== productId)
+          .map((product) => ({
+            value: product.id,
+            label: `${
+              product.name[selectedLang] || product.name.lv
+            } ${gramsToKilos(product.weight)}`,
+          }))
+      )
+
+      if (productId) {
+        console.log('blerp')
+        const product = result.find((p) => p.id === productId)
         name_lv.changeValue(product.name.lv)
         name_en.changeValue(product.name.en)
         name_de.changeValue(product.name.de)
@@ -176,8 +194,18 @@ const NewProductFrom = () => {
             )
           }
         }
-      })
-    }
+        if (product.relatedProducts && product.relatedProducts.length > 0) {
+          setSelectedProductIds(
+            product.relatedProducts.map((product) => ({
+              value: product.id,
+              label: `${
+                product.name[selectedLang] || product.name.lv
+              } ${gramsToKilos(product.weight)}`,
+            }))
+          )
+        }
+      }
+    })
   }, [productId])
 
   const formProduct = () => {
@@ -234,6 +262,7 @@ const NewProductFrom = () => {
             }
           : undefined,
       },
+      relatedProducts: selectedProductIds.map((p) => p.value),
     }
   }
 
@@ -287,6 +316,7 @@ const NewProductFrom = () => {
         setBio(false)
         setAddToAll(false)
         setAddToNew(false)
+        setSelectedProductIds([])
       })
     }
   }
@@ -480,7 +510,10 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...energy} />
+                <NumberInput
+                  {...energy}
+                  $isonlightbackground
+                />
                 kcal
               </NutritionTableCell>
             </NutritionTableRow>
@@ -495,7 +528,11 @@ const NewProductFrom = () => {
                 &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
               </NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...saturatedFat} />g
+                <NumberInput
+                  $isonlightbackground
+                  {...saturatedFat}
+                />
+                g
               </NutritionTableCell>
             </NutritionTableRow>
 
@@ -510,7 +547,11 @@ const NewProductFrom = () => {
                 &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
               </NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...sugar} />g
+                <NumberInput
+                  $isonlightbackground
+                  {...sugar}
+                />
+                g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
@@ -522,7 +563,11 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.protein}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...protein} />g
+                <NumberInput
+                  $isonlightbackground
+                  {...protein}
+                />
+                g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
@@ -534,7 +579,10 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.d3}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...d3} />
+                <NumberInput
+                  $isonlightbackground
+                  {...d3}
+                />
                 µg
               </NutritionTableCell>
             </NutritionTableRow>
@@ -546,6 +594,16 @@ const NewProductFrom = () => {
           {...EAN}
         />
         <br />
+        {lang.related_products}
+        <div style={{ maxWidth: '420px' }}>
+          <Select
+            closeMenuOnSelect={false}
+            isMulti
+            options={allProducts}
+            onChange={(e) => setSelectedProductIds(e ? e : [])}
+            value={selectedProductIds}
+          />
+        </div>
         {!productId && (
           <div>
             <Checkbox
