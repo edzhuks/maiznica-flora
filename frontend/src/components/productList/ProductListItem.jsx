@@ -145,7 +145,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
       <MobileCard>
         <CardLink to={`/products/${product.id}`}>
           <ImageWrapper>
-            <ProductImage src={product.image} />
+            <ProductImage src={`/images/${product.image}`} />
           </ImageWrapper>
         </CardLink>
         <Column>
