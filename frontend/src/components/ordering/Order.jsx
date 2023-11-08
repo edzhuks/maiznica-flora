@@ -138,6 +138,7 @@ const Order = () => {
     address: undefined,
     cost: undefined,
   })
+  const [iframe, setIframe] = useState()
   const navigate = useNavigate()
   const deliveryThreshold = 5000
   const calculateSum = (cart) => {
@@ -184,7 +185,10 @@ const Order = () => {
       promise,
       successMessage: lang.toast_order_successful,
     })
-    promise.then(dispatch(clearCart()))
+    promise.then((response) => {
+      setIframe(response.data.paymentLink)
+    })
+    // promise.then(dispatch(clearCart()))
   }
   const checkDeliveryMethod = () => {
     if (!deliveryMethod.method) {
@@ -237,7 +241,12 @@ const Order = () => {
             />
             <Route
               path="payment"
-              element={<Payment order={order} />}
+              element={
+                <Payment
+                  order={order}
+                  iframe={iframe}
+                />
+              }
             />
           </Routes>
         </div>

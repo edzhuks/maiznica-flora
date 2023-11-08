@@ -327,7 +327,39 @@ const NewProductFrom = () => {
   const imageSelected = (event) => {
     event.preventDefault()
     const formData = new FormData()
-    formData.append('image', event.target.files[0])
+    const blob = event.target.files[0]
+    const noDiacritics = new File(
+      [blob],
+      blob.name
+        .replace('ā', 'a')
+        .replace('č', 'c')
+        .replace('ē', 'e')
+        .replace('ģ', 'g')
+        .replace('ļ', 'l')
+        .replace('ķ', 'k')
+        .replace('ī', 'i')
+        .replace('ņ', 'n')
+        .replace('š', 's')
+        .replace('ū', 'u')
+        .replace('ž', 'z')
+        .replace('ŗ', 'r')
+        .replace('Ā', 'A')
+        .replace('Č', 'C')
+        .replace('Ē', 'E')
+        .replace('Ģ', 'G')
+        .replace('Ļ', 'L')
+        .replace('Ķ', 'K')
+        .replace('Ī', 'I')
+        .replace('Ņ', 'N')
+        .replace('Š', 'S')
+        .replace('Ū', 'U')
+        .replace('Ž', 'Z')
+        .replace('Ŗ', 'R'),
+      {
+        type: blob.type,
+      }
+    )
+    formData.append('image', noDiacritics)
     uploadService.uploadImage(formData).then((response) => {
       setImage(`${backendURL}${response.data.path}`)
     })
@@ -632,6 +664,8 @@ const NewProductFrom = () => {
             type="file"
             accept="image/*"
           />
+          <br />
+          {image}
         </form>
 
         <div>
