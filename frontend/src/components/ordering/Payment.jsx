@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import Checkbox from '../basic/Checkbox'
 import { toast } from 'react-toastify'
 
-const Payment = ({ order, iframe, startOver }) => {
+const Payment = ({ order, iframe, startOver, orderData }) => {
   const [termsAccepted, acceptTerms] = useState(false)
   const [termsChecked, setTermsChecked] = useState(false)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -27,6 +27,7 @@ const Payment = ({ order, iframe, startOver }) => {
   return (
     <div>
       {iframe && <Button onClick={startOver}>{lang.start_over_payment}</Button>}
+      {orderData?.toString()}
       <Card>
         {iframe ? (
           <iframe

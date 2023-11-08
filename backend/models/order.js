@@ -66,6 +66,8 @@ const orderSchema = new mongoose.Schema({
   deliveryCost: Number,
   total: Number,
   vat: Number,
+  paymentStatus: String,
+  paymentReference: String,
 })
 
 orderSchema.set('toJSON', {

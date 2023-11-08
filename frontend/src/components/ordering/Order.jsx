@@ -141,6 +141,8 @@ const Order = () => {
   const [iframe, setIframe] = useState()
   const [orderId, setOrderId] = useState()
   const navigate = useNavigate()
+  const [statusInterval, setStatusInterval] = useState()
+  const [orderData, setOrderData] = useState()
   const deliveryThreshold = 5000
   const calculateSum = (cart) => {
     return cart
@@ -177,6 +179,23 @@ const Order = () => {
     })
   }
 
+  useEffect(() => {
+    if (orderId) {
+      const interval = setInterval(() => {
+        console.log(orderId)
+        orderService.getPaymentStatus(orderId).then((response) => {
+          setOrderData(response.data.paymentStatus)
+          console.log(response.data)
+          if (response.data.paymentStatus === 'settled') {
+            clearInterval(statusInterval)
+          }
+        })
+      }, 5000)
+      setStatusInterval(statusInterval)
+      return () => clearInterval(interval)
+    }
+  }, [orderId])
+
   const order = async () => {
     const finalDeliveryMethod = { ...deliveryMethod }
     if (deliveryMethod.method === 'bakery') {
@@ -203,6 +222,7 @@ const Order = () => {
       setIframe(response.data.paymentLink)
       setOrderId(response.data.orderId)
     })
+
     // promise.then(dispatch(clearCart()))
   }
   const checkDeliveryMethod = () => {
@@ -261,6 +281,7 @@ const Order = () => {
                   order={order}
                   iframe={iframe}
                   startOver={startOver}
+                  orderData={orderData}
                 />
               }
             />

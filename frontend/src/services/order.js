@@ -20,10 +20,16 @@ const useOrderService = () => {
   }
   const startOver = (orderId) => {
     const config = makeConfig()
-    const request = axios.get(`${baseURL}/pay/${orderId}`, config)
+    const request = axios.get(
+      `${baseURL}/pay/${orderId}?selectedLang=${selectedLang}`,
+      config
+    )
     return request
   }
-
+  const getPaymentStatus = (orderId) => {
+    const request = axios.get(`${baseURL}/paymentStatus/${orderId}`)
+    return request
+  }
   const updateOrder = (newOrder) => {
     const config = makeConfig()
     const request = axios.put(`${baseURL}/${newOrder.id}`, newOrder, config)
@@ -42,7 +48,7 @@ const useOrderService = () => {
     const request = axios.get(baseURL, config)
     return request.then((response) => response.data)
   }
-  return { placeOrder, updateOrder, getAll, get, startOver }
+  return { placeOrder, updateOrder, getAll, get, startOver, getPaymentStatus }
 }
 
 export default useOrderService

@@ -19,7 +19,7 @@ const axios = require('axios')
 const crypto = require('crypto')
 const { log } = require('console')
 
-const getPaymentLink = async ({ order, selectedLang }) => {
+const getPaymentData = async ({ order, selectedLang }) => {
   try {
     const response = await axios.post(
       'https://igw-demo.every-pay.com/api/v4/payments/oneoff',
@@ -29,7 +29,7 @@ const getPaymentLink = async ({ order, selectedLang }) => {
         nonce: crypto.randomBytes(16).toString('base64'),
         account_name: 'EUR3D1',
         amount: (order.total / 100).toFixed(2),
-        customer_url: 'http://new.maiznica.com',
+        customer_url: `http://new.maiznica.com/api/order/status/${order._id}`,
         order_reference: order._id.toString(),
         locale: selectedLang,
       },
@@ -46,7 +46,7 @@ const getPaymentLink = async ({ order, selectedLang }) => {
     )
 
     console.log(response.data)
-    return response.data.payment_link
+    return response.data
   } catch (error) {
     console.log(error)
     console.log(error.response.data)
@@ -109,11 +109,15 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     user: req.user.id,
   })
   await newCart.save()
+  const paymentData = await getPaymentData({
+    order: savedOrder,
+    selectedLang: req.body.selectedLang,
+  })
+  savedOrder.paymentStatus = paymentData.payment_state
+  savedOrder.paymentReference = paymentData.payment_reference
+  await savedOrder.save()
   res.send({
-    paymentLink: await getPaymentLink({
-      order: savedOrder,
-      selectedLang: req.body.selectedLang,
-    }),
+    paymentLink: paymentData.payment_link,
     orderId: savedOrder._id,
   })
   // if (!TEST_MODE) {
@@ -128,9 +132,45 @@ router.get(
   verificationRequired,
   async (req, res) => {
     const order = await Order.findById(req.params.id)
-    res.send(order)
+
+    res.send({
+      paymentLink: await getPaymentLink({
+        order: order,
+        selectedLang: req.query.selectedLang,
+      }),
+    })
   }
 )
+
+router.get('/paymentStatus/:id', async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  try {
+    const response = await axios.get(
+      `https://igw-demo.every-pay.com/api/v4/payments/${order.paymentReference}?api_username=${BANK_API_USERNAME}`,
+
+      {
+        auth: {
+          username: BANK_API_USERNAME,
+          password: BANK_API_PASSWORD,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    )
+
+    console.log(response.data)
+    order.paymentStatus = response.data.payment_state
+    await order.save()
+    // return response.data
+  } catch (error) {
+    console.log(error)
+    console.log(error.response.data)
+    return res.status(400).send()
+  }
+  res.send(order)
+})
 
 router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   let newOrder = { status: req.body.status }
