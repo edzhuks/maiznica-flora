@@ -30,7 +30,7 @@ router.get('/rename_category_images', async (req, res) => {
     if (c.image) {
       const parts = c.image.split('.')
       const extension = parts[parts.length - 1]
-      c.image = `sadala_${c.id}.${extension}`
+      c.image = `sadala_${c.id}.jpg`
       await c.save()
     }
   }
