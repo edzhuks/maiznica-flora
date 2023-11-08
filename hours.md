@@ -39,4 +39,6 @@
 | 01.11        | 1     | finished ordering flow, except payment                                                                                                                                                |
 | 02.11        | 0.5   | distance agreement matching current state                                                                                                                                             |
 | 02.11        | 4     | Email order receipt                                                                                                                                                                   |
-| total        | 154   |                                                                                                                                                                                       |
+| 07.11        | 4     | Moving to another hosting provider - webserver, mongo, images                                                                                                                         |
+| 08.11        | 6     | Working on payments with SEB payment integration                                                                                                                                      |
+| total        | 164   |                                                                                                                                                                                       |
