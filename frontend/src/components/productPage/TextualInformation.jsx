@@ -77,7 +77,7 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
 
       {product.bio && (
         <CertImg
-          src="http://www.maiznica.lv/wp-content/uploads/2019/04/eurobio.jpg"
+          src="/images/eurobio.jpg"
           width={100}
           height={66}
         />

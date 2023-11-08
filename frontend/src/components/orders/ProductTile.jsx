@@ -27,7 +27,7 @@ const ProductTile = ({ item, changeItemPacked, disabled }) => {
     <_ProductTile>
       <Checkbox
         disabled={disabled}
-        src={item.product.image}
+        src={`/images/${item.product.image}`}
         checked={item.packed}
         onChange={() => changeItemPacked(item._id, !item.packed)}
       />

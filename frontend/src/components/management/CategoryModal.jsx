@@ -175,7 +175,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             </CompactInputGroup>
             <ProductImage
               style={{ width: '200px' }}
-              src={image}
+              src={`/images/${image}`}
             />
             <CompactInputGroup>
               <Label>

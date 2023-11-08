@@ -211,7 +211,7 @@ const Product = () => {
           }}>
           <Centerer>
             {' '}
-            <ProductImage src={product.image} />
+            <ProductImage src={`/images/${product.image}`} />
           </Centerer>
 
           <StaticInformation

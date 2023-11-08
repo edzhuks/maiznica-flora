@@ -79,7 +79,7 @@ const Categories = ({ categories, name, tight }) => {
               <CategoryCard to={`/category/${category.id}`}>
                 <CategoryImage
                   style={{
-                    background: `url(${category.image}) center center`,
+                    background: `url(/images/${category.image}) center center`,
                     backgroundSize: 'cover',
                   }}>
                   <CategoryTextBackground>

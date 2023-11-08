@@ -221,6 +221,7 @@ const Logo = styled.img`
 
 const Header = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const dispatch = useDispatch()
   const [user, setUser] = useContext(UserContext)
   const [mobile, setIsMobile] = useContext(MobileContext)
@@ -258,7 +259,7 @@ const Header = () => {
           <MobileHeader>
             <a href="/">
               <Logo
-                src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
+                src={`/images/logo-${selectedLang}.png`}
                 style={{ marginRight: 20 }}
                 alt="logo"
               />
@@ -391,7 +392,7 @@ const Header = () => {
             <HeaderContainer>
               <a href="/">
                 <Logo
-                  src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png"
+                  src={`/images/logo-${selectedLang}.png`}
                   style={{ marginRight: 20 }}
                   alt="logo"
                 />

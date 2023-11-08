@@ -14,7 +14,7 @@ const BigImage = styled.div`
     transform: translateX(-50%);
     height: 100%;
     width: 100vw;
-    background: url('https://www.maiznica.lv/wp-content/uploads/2019/12/Uznemuma-bilde2019.jpg');
+    background: url('images/Uznemuma-bilde2019.jpg');
     background-position-x: 0%;
     background-position-y: 0%;
     background-repeat: repeat;
@@ -227,17 +227,17 @@ const AboutPage = () => {
       <ValueRow>
         <Value
           title="nature"
-          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon2.png"
+          image="/images/newicon2.png"
           text="nature_text"
         />
         <Value
           title="people"
-          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon3.png"
+          image="/images/newicon3.png"
           text="people_text"
         />
         <Value
           title="quality"
-          image="https://www.maiznica.lv/wp-content/uploads/2019/11/newicon1.png"
+          image="/images/newicon1.png"
           text="quality_text"
         />
       </ValueRow>

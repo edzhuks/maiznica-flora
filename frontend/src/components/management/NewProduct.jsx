@@ -656,7 +656,7 @@ const NewProductFrom = () => {
       </EditTab>
       <WrappableRow style={{ justifyContent: 'end' }}>
         <form>
-          <ProductImage src={image} />
+          <ProductImage src={`/images/${image}`} />
           <br />
           <input
             filename={image}

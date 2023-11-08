@@ -7,7 +7,7 @@ import Address from './contact/Address'
 import { useSelector } from 'react-redux'
 
 const FooterContainer = styled.div`
-  background-image: url(https://www.maiznica.lv/wp-content/themes/maiznica/img/bg.jpg);
+  background-image: url(/images/bg.jpg);
   background-repeat: repeat;
   background-position: center;
   background-attachment: fixed;
