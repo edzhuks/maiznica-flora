@@ -211,6 +211,11 @@ const de = {
   toast_select_delivery_method: 'Wählen Sie eine Liefermethode!',
   toast_select_pickup_point: 'Wählen Sie einen Abholpunkt!',
   toast_select_address: 'Wählen Sie eine Adresse!',
+  to_distance_agreement: 'Fernabsatzvertrag',
+  agree_terms: 'Ich habe die Bedingungen gelesen und stimme ihnen zu ',
+  pay: 'Bezahlen',
+  toast_must_agree:
+    'Sie müssen mit den Bedingungen einverstanden sein, um die Bestellung aufzugeben!',
   related_products: 'Verwandte Produkte',
 }
 

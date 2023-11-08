@@ -139,6 +139,7 @@ const Order = () => {
     cost: undefined,
   })
   const [iframe, setIframe] = useState()
+  const [orderId, setOrderId] = useState()
   const navigate = useNavigate()
   const deliveryThreshold = 5000
   const calculateSum = (cart) => {
@@ -164,6 +165,18 @@ const Order = () => {
   }
   const total = useSelector((state) => calculateSum(state.cart))
 
+  const startOver = () => {
+    console.log(orderId)
+    const promise = orderService.startOver(orderId)
+    showPromiseToast({
+      promise,
+      successMessage: 'TODO',
+    })
+    promise.then((response) => {
+      setIframe(response.data.paymentLink)
+    })
+  }
+
   const order = async () => {
     const finalDeliveryMethod = { ...deliveryMethod }
     if (deliveryMethod.method === 'bakery') {
@@ -186,7 +199,9 @@ const Order = () => {
       successMessage: lang.toast_order_successful,
     })
     promise.then((response) => {
+      console.log(response)
       setIframe(response.data.paymentLink)
+      setOrderId(response.data.orderId)
     })
     // promise.then(dispatch(clearCart()))
   }
@@ -245,6 +260,7 @@ const Order = () => {
                 <Payment
                   order={order}
                   iframe={iframe}
+                  startOver={startOver}
                 />
               }
             />

@@ -210,10 +210,10 @@ const en = {
   toast_select_address: 'Select an address!',
   to_distance_agreement: 'Distance agreement',
   agree_terms: 'I have read and agree with the ',
-  pay: 'Bezahlen',
-  toast_must_agree:
-    'Sie müssen mit den Bedingungen einverstanden sein, um die Bestellung aufzugeben!',
+  pay: 'Pay',
+  toast_must_agree: 'You must agree with the terms to complete the order!',
   related_products: 'Related products',
+  start_over_payment: 'Start over with payment',
 }
 
 export default en

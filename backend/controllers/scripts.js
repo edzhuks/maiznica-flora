@@ -24,17 +24,17 @@ const router = express.Router()
 //   res.status(200).end()
 // })
 
-router.get('/rename_category_images', async (req, res) => {
-  const categories = await Category.find()
-  for (const c of categories) {
-    if (c.image) {
-      const parts = c.image.split('.')
-      const extension = parts[parts.length - 1]
-      c.image = `sadala_${c.id}.jpg`
-      await c.save()
-    }
-  }
-  res.status(200).end()
-})
+// router.get('/rename_category_images', async (req, res) => {
+//   const categories = await Category.find()
+//   for (const c of categories) {
+//     if (c.image) {
+//       const parts = c.image.split('.')
+//       const extension = parts[parts.length - 1]
+//       c.image = `sadala_${c.id}.jpg`
+//       await c.save()
+//     }
+//   }
+//   res.status(200).end()
+// })
 
 module.exports = router
