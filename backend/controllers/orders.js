@@ -46,7 +46,9 @@ const getPaymentLink = async ({ order, selectedLang }) => {
     )
 
     console.log(response.data)
+    return response.data.payment_link
   } catch (error) {
+    console.log(error)
     console.log(error.response.data)
     res.status(400).send()
   }
@@ -108,7 +110,10 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
   })
   await newCart.save()
   res.send({
-    paymentLink: getPaymentLink(savedOrder, req.body.selectedLang),
+    paymentLink: await getPaymentLink({
+      order: savedOrder,
+      selectedLang: req.body.selectedLang,
+    }),
     orderId: savedOrder._id,
   })
   // if (!TEST_MODE) {
