@@ -29,7 +29,7 @@ const getPaymentData = async ({ order, selectedLang }) => {
         nonce: crypto.randomBytes(16).toString('base64'),
         account_name: 'EUR3D1',
         amount: (order.total / 100).toFixed(2),
-        customer_url: `http://new.maiznica.com/api/order/paymentStatus2/${order._id}`,
+        customer_url: `http://new.maiznica.com/api/order/payment_landing`,
         order_reference: order._id.toString(),
         locale: selectedLang,
       },
@@ -96,7 +96,7 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     datePlaced: Date.now(),
     subtotal,
     deliveryCost,
-    total: 3300,
+    total,
     vat: total * 0.23,
   })
   const savedOrder = await order.save()
@@ -142,73 +142,88 @@ router.get(
   }
 )
 
-router.post('/paymentStatus/:id', async (req, res) => {
-  console.log('post')
-  console.log(req)
+const updatePaymentStatus = async (paymentReference) => {
+  const order = await Order.findOne({
+    paymentReference,
+  })
+  try {
+    const response = await axios.get(
+      `https://igw-demo.every-pay.com/api/v4/payments/${order.paymentReference}?api_username=${BANK_API_USERNAME}`,
+
+      {
+        auth: {
+          username: BANK_API_USERNAME,
+          password: BANK_API_PASSWORD,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    )
+
+    order.paymentStatus = response.data.payment_state
+    await order.save()
+  } catch (error) {
+    console.log(error.reponse.data)
+  }
+}
+
+router.get('/payment_status_callback', async (req, res) => {
+  updatePaymentStatus(req.query.payment_reference)
+  return res.status(200).send()
 })
 
-router.get('/paymentStatus', async (req, res) => {
-  console.log('get')
-  console.log(req)
-  // const order = await Order.findById(req.params.id)
-  // try {
-  //   const response = await axios.get(
-  //     `https://igw-demo.every-pay.com/api/v4/payments/${order.paymentReference}?api_username=${BANK_API_USERNAME}`,
-
-  //     {
-  //       auth: {
-  //         username: BANK_API_USERNAME,
-  //         password: BANK_API_PASSWORD,
-  //       },
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //       },
-  //     }
-  //   )
-
-  //   console.log(response.data)
-  //   order.paymentStatus = response.data.payment_state
-  //   await order.save()
-  //   // return response.data
-  // } catch (error) {
-  //   console.log(error)
-  //   console.log(error.response.data)
-  //   return res.status(400).send()
-  // }
-  // res.send(order)
-  res.status(200).send()
+router.get('/payment_landing', async (req, res) => {
+  updatePaymentStatus(req.query.payment_reference)
+  res.status(200).send(`<html><head><style>.container{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #45941e;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #45941e transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style></head><body><div class="container"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div></body></html>`)
 })
-router.get('/paymentStatus2/:id', async (req, res) => {
-  console.log('get2')
-  console.log(req)
+
+router.get('/payment_status/:id', async (req, res) => {
   const order = await Order.findById(req.params.id)
-  // try {
-  //   const response = await axios.get(
-  //     `https://igw-demo.every-pay.com/api/v4/payments/${order.paymentReference}?api_username=${BANK_API_USERNAME}`,
-
-  //     {
-  //       auth: {
-  //         username: BANK_API_USERNAME,
-  //         password: BANK_API_PASSWORD,
-  //       },
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //       },
-  //     }
-  //   )
-
-  //   console.log(response.data)
-  //   order.paymentStatus = response.data.payment_state
-  //   await order.save()
-  //   // return response.data
-  // } catch (error) {
-  //   console.log(error)
-  //   console.log(error.response.data)
-  //   return res.status(400).send()
-  // }
-  res.send(order)
+  return res.status(200).send(order)
 })
 
 router.put('/:id', userExtractor, adminRequired, async (req, res) => {
