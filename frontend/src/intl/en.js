@@ -214,6 +214,7 @@ const en = {
   toast_must_agree: 'You must agree with the terms to complete the order!',
   related_products: 'Related products',
   start_over_payment: 'Start over with payment',
+  payment_failed: 'Payment failed, please start over',
 }
 
 export default en

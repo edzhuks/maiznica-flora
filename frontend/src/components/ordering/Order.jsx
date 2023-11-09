@@ -142,7 +142,8 @@ const Order = () => {
   const [orderId, setOrderId] = useState()
   const navigate = useNavigate()
   const [statusInterval, setStatusInterval] = useState()
-  const [orderData, setOrderData] = useState()
+  const [orderStatus, setOrderStatus] = useState()
+  const [failedPayment, setFailedPayment] = useState()
   const deliveryThreshold = 5000
   const calculateSum = (cart) => {
     return cart
@@ -184,7 +185,7 @@ const Order = () => {
       const interval = setInterval(() => {
         console.log(orderId)
         orderService.getPaymentStatus(orderId).then((response) => {
-          setOrderData(response.data.paymentStatus)
+          setOrderStatus(response.data.paymentStatus)
           console.log(response.data)
           if (response.data.paymentStatus === 'settled') {
             clearInterval(statusInterval)
@@ -281,7 +282,8 @@ const Order = () => {
                   order={order}
                   iframe={iframe}
                   startOver={startOver}
-                  orderData={orderData}
+                  orderStatus={orderStatus}
+                  failedPayment={failedPayment}
                 />
               }
             />

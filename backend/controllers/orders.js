@@ -161,8 +161,15 @@ const updatePaymentStatus = async (paymentReference) => {
         },
       }
     )
-
-    order.paymentStatus = response.data.payment_state
+    if (
+      response.data.payment_state === 'abandoned' ||
+      response.data.payment_state === 'failed' ||
+      response.data.payment_state === 'voided'
+    ) {
+      order.paymentStatus = 'failed'
+    } else {
+      order.paymentStatus = response.data.payment_state
+    }
     await order.save()
   } catch (error) {
     console.log(error.reponse.data)

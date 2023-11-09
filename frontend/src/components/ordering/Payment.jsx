@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import Checkbox from '../basic/Checkbox'
 import { toast } from 'react-toastify'
 
-const Payment = ({ order, iframe, startOver, orderData }) => {
+const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
   const [termsAccepted, acceptTerms] = useState(false)
   const [termsChecked, setTermsChecked] = useState(false)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -27,7 +27,7 @@ const Payment = ({ order, iframe, startOver, orderData }) => {
   return (
     <div>
       {iframe && <Button onClick={startOver}>{lang.start_over_payment}</Button>}
-      {orderData?.toString()}
+      {orderStatus?.toString()}
       <Card>
         {iframe ? (
           <iframe
@@ -44,28 +44,35 @@ const Payment = ({ order, iframe, startOver, orderData }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <div>
-              <Checkbox
-                checked={termsChecked}
-                onChange={() => {
-                  setTermsChecked(!termsChecked)
-                }}
-                label={
-                  <div>
-                    {lang.agree_terms}
-                    <TextLink to="/distance_agreement">
-                      {lang.to_distance_agreement}
-                    </TextLink>
-                  </div>
-                }
-              />
-              <FullWidthButton
-                onClick={() => {
-                  tryAcceptTerms()
-                }}>
-                {lang.pay}
-              </FullWidthButton>
-            </div>
+            {orderStatus === 'failed' ? (
+              <div>
+                {lang.payment_failed}
+                <Button onClick={startOver}>{lang.start_over_payment}</Button>
+              </div>
+            ) : (
+              <div>
+                <Checkbox
+                  checked={termsChecked}
+                  onChange={() => {
+                    setTermsChecked(!termsChecked)
+                  }}
+                  label={
+                    <div>
+                      {lang.agree_terms}
+                      <TextLink to="/distance_agreement">
+                        {lang.to_distance_agreement}
+                      </TextLink>
+                    </div>
+                  }
+                />
+                <FullWidthButton
+                  onClick={() => {
+                    tryAcceptTerms()
+                  }}>
+                  {lang.pay}
+                </FullWidthButton>
+              </div>
+            )}
           </div>
         )}
       </Card>
