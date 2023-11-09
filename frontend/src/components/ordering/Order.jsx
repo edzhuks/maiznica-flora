@@ -190,6 +190,8 @@ const Order = () => {
           console.log(response.data)
           if (response.data.paymentStatus === 'settled') {
             clearInterval(statusInterval)
+          } else if (response.data.paymentStatus === 'failed') {
+            setIframe(undefined)
           }
         })
       }, 5000)
