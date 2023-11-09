@@ -96,7 +96,7 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     datePlaced: Date.now(),
     subtotal,
     deliveryCost,
-    total,
+    total: 3300,
     vat: total * 0.23,
   })
   const savedOrder = await order.save()
@@ -134,13 +134,17 @@ router.get(
     const order = await Order.findById(req.params.id)
 
     res.send({
-      paymentLink: await getPaymentLink({
+      paymentLink: await getPaymentData({
         order: order,
         selectedLang: req.query.selectedLang,
       }),
     })
   }
 )
+
+router.post('/paymentStatus/:id', async (req, res) => {
+  console.log(req)
+})
 
 router.get('/paymentStatus/:id', async (req, res) => {
   const order = await Order.findById(req.params.id)
