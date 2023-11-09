@@ -146,7 +146,8 @@ const updatePaymentStatus = async (paymentReference) => {
       order.paymentStatus !== 'settled'
     ) {
       if (!TEST_MODE) {
-        sendReceiptEmail(req.user.email, order)
+        await order.populate('user')
+        sendReceiptEmail(order.user.email, order)
       }
     }
     if (
