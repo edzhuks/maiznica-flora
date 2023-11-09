@@ -189,11 +189,14 @@ const Order = () => {
           navigate('/info/ordered')
         } else if (response.data.paymentStatus === 'failed') {
           setIframe(undefined)
+          console.log(statusInterval)
           clearInterval(statusInterval)
+          console.log(statusInterval)
         }
       })
     }, 5000)
     setStatusInterval(statusInterval)
+    console.log(statusInterval)
     return interval
   }
 
