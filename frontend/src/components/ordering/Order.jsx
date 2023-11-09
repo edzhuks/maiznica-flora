@@ -185,6 +185,7 @@ const Order = () => {
       const interval = setInterval(() => {
         console.log(orderId)
         orderService.getPaymentStatus(orderId).then((response) => {
+          console.log(response.data.paymentStatus)
           setOrderStatus(response.data.paymentStatus)
           console.log(response.data)
           if (response.data.paymentStatus === 'settled') {
