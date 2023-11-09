@@ -169,6 +169,7 @@ const Order = () => {
   const total = useSelector((state) => calculateSum(state.cart))
 
   const startOver = () => {
+    clearInterval(statusInterval)
     console.log(orderId)
     const promise = orderService.startOver(orderId)
     promise.then((response) => {

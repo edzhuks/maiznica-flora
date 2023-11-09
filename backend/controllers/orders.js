@@ -172,7 +172,7 @@ const updatePaymentStatus = async (paymentReference) => {
     }
     await order.save()
   } catch (error) {
-    console.log(error.reponse.data)
+    console.log(error)
   }
 }
 
