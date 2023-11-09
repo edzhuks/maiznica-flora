@@ -126,23 +126,6 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
   // res.send(order)
 })
 
-router.get(
-  '/pay/:id',
-  userExtractor,
-  verificationRequired,
-  async (req, res) => {
-    const order = await Order.findById(req.params.id)
-    await updatePaymentStatus(order.paymentReference)
-    const paymentData = await getPaymentData({
-      order,
-      selectedLang: req.query.selectedLang,
-    })
-    res.send({
-      paymentLink: paymentData.payment_link,
-    })
-  }
-)
-
 const updatePaymentStatus = async (paymentReference) => {
   const order = await Order.findOne({
     paymentReference,
@@ -176,6 +159,26 @@ const updatePaymentStatus = async (paymentReference) => {
     console.log(error)
   }
 }
+
+router.get(
+  '/pay/:id',
+  userExtractor,
+  verificationRequired,
+  async (req, res) => {
+    const order = await Order.findById(req.params.id)
+
+    const paymentData = await getPaymentData({
+      order,
+      selectedLang: req.query.selectedLang,
+    })
+    order.paymentStatus = paymentData.payment_state
+    order.paymentReference = paymentData.payment_reference
+    await order.save()
+    res.send({
+      paymentLink: paymentData.payment_link,
+    })
+  }
+)
 
 router.get('/payment_status_callback', async (req, res) => {
   updatePaymentStatus(req.query.payment_reference)
