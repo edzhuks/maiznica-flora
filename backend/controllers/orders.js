@@ -150,7 +150,7 @@ router.post('/paymentStatus/:id', async (req, res) => {
 router.get('/paymentStatus', async (req, res) => {
   console.log('get')
   console.log(req)
-  const order = await Order.findById(req.params.id)
+  // const order = await Order.findById(req.params.id)
   // try {
   //   const response = await axios.get(
   //     `https://igw-demo.every-pay.com/api/v4/payments/${order.paymentReference}?api_username=${BANK_API_USERNAME}`,
@@ -176,7 +176,8 @@ router.get('/paymentStatus', async (req, res) => {
   //   console.log(error.response.data)
   //   return res.status(400).send()
   // }
-  res.send(order)
+  // res.send(order)
+  res.status(200).send()
 })
 router.get('/paymentStatus2/:id', async (req, res) => {
   console.log('get2')
