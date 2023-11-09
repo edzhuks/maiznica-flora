@@ -132,6 +132,7 @@ router.get(
   verificationRequired,
   async (req, res) => {
     const order = await Order.findById(req.params.id)
+    await updatePaymentStatus(order.paymentReference)
     const paymentData = await getPaymentData({
       order,
       selectedLang: req.query.selectedLang,
