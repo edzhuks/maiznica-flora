@@ -180,6 +180,7 @@ const Order = () => {
   const checkForUpdates = () => {
     const interval = setInterval(() => {
       orderService.getPaymentStatus(orderId).then((response) => {
+        console.log(response.data)
         setOrderStatus(response.data.paymentStatus)
         if (response.data.paymentStatus === 'settled') {
           clearInterval(statusInterval)

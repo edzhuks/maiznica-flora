@@ -16,7 +16,6 @@ const useOrderService = () => {
       { deliveryMethod, selectedLang },
       config
     )
-    showErrorToast(request)
     return request
   }
 
@@ -26,7 +25,6 @@ const useOrderService = () => {
       `${baseURL}/pay/${orderId}?selectedLang=${selectedLang}`,
       config
     )
-    showErrorToast(request)
     return request
   }
   const getPaymentStatus = (orderId) => {
