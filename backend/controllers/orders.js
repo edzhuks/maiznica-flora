@@ -147,7 +147,7 @@ router.post('/paymentStatus/:id', async (req, res) => {
   console.log(req)
 })
 
-router.get('/paymentStatus/:id', async (req, res) => {
+router.get('/paymentStatus', async (req, res) => {
   console.log('get')
   console.log(req)
   const order = await Order.findById(req.params.id)
