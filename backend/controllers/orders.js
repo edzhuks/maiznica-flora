@@ -120,10 +120,6 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     paymentLink: paymentData.payment_link,
     orderId: savedOrder._id,
   })
-  // if (!TEST_MODE) {
-  //   sendReceiptEmail(req.user.email, order)
-  // }
-  // res.send(order)
 })
 
 const updatePaymentStatus = async (paymentReference) => {
@@ -145,6 +141,14 @@ const updatePaymentStatus = async (paymentReference) => {
         },
       }
     )
+    if (
+      response.data.payment_state === 'settled' &&
+      order.paymentStatus !== 'settled'
+    ) {
+      if (!TEST_MODE) {
+        sendReceiptEmail(req.user.email, order)
+      }
+    }
     if (
       response.data.payment_state === 'abandoned' ||
       response.data.payment_state === 'failed' ||

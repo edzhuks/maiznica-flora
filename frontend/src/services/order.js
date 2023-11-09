@@ -16,6 +16,7 @@ const useOrderService = () => {
       { deliveryMethod, selectedLang },
       config
     )
+    showErrorToast(request)
     return request
   }
 
