@@ -132,12 +132,12 @@ router.get(
   verificationRequired,
   async (req, res) => {
     const order = await Order.findById(req.params.id)
-
+    const paymentData = await getPaymentData({
+      order,
+      selectedLang: req.query.selectedLang,
+    })
     res.send({
-      paymentLink: await getPaymentData({
-        order: order,
-        selectedLang: req.query.selectedLang,
-      }),
+      paymentLink: paymentData.payment_link,
     })
   }
 )
