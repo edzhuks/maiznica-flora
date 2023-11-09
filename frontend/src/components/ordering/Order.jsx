@@ -180,20 +180,20 @@ const Order = () => {
   }
 
   useEffect(() => {
-    if (orderId) {
-      const interval = setInterval(() => {
-        console.log(orderId)
-        orderService.getPaymentStatus(orderId).then((response) => {
-          setOrderData(response.data.paymentStatus)
-          console.log(response.data)
-          if (response.data.paymentStatus === 'settled') {
-            clearInterval(statusInterval)
-          }
-        })
-      }, 5000)
-      setStatusInterval(statusInterval)
-      return () => clearInterval(interval)
-    }
+    // if (orderId) {
+    //   const interval = setInterval(() => {
+    //     console.log(orderId)
+    //     orderService.getPaymentStatus(orderId).then((response) => {
+    //       setOrderData(response.data.paymentStatus)
+    //       console.log(response.data)
+    //       if (response.data.paymentStatus === 'settled') {
+    //         clearInterval(statusInterval)
+    //       }
+    //     })
+    //   }, 5000)
+    //   setStatusInterval(statusInterval)
+    //   return () => clearInterval(interval)
+    // }
   }, [orderId])
 
   const order = async () => {
