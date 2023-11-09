@@ -47,6 +47,7 @@ const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
             {orderStatus === 'failed' ? (
               <div>
                 {lang.payment_failed}
+                <br />
                 <Button onClick={startOver}>{lang.start_over_payment}</Button>
               </div>
             ) : (

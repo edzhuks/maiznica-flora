@@ -16,14 +16,17 @@ const useOrderService = () => {
       { deliveryMethod, selectedLang },
       config
     )
+    showErrorToast(request)
     return request
   }
+
   const startOver = (orderId) => {
     const config = makeConfig()
     const request = axios.get(
       `${baseURL}/pay/${orderId}?selectedLang=${selectedLang}`,
       config
     )
+    showErrorToast(request)
     return request
   }
   const getPaymentStatus = (orderId) => {

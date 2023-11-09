@@ -190,6 +190,8 @@ const Order = () => {
           console.log(response.data)
           if (response.data.paymentStatus === 'settled') {
             clearInterval(statusInterval)
+            toast.success(lang.toast_order_successful)
+            navigate('/info/ordered')
           } else if (response.data.paymentStatus === 'failed') {
             setIframe(undefined)
           }
@@ -217,17 +219,13 @@ const Order = () => {
       }
     }
     const promise = orderService.placeOrder(finalDeliveryMethod)
-    showPromiseToast({
-      promise,
-      successMessage: lang.toast_order_successful,
-    })
+
     promise.then((response) => {
       console.log(response)
       setIframe(response.data.paymentLink)
       setOrderId(response.data.orderId)
+      dispatch(clearCart())
     })
-
-    // promise.then(dispatch(clearCart()))
   }
   const checkDeliveryMethod = () => {
     if (!deliveryMethod.method) {
