@@ -171,34 +171,34 @@ const Order = () => {
   const startOver = () => {
     console.log(orderId)
     const promise = orderService.startOver(orderId)
-    showPromiseToast({
-      promise,
-      successMessage: 'TODO',
-    })
     promise.then((response) => {
       setIframe(response.data.paymentLink)
+      checkForUpdates()
     })
+  }
+
+  const checkForUpdates = () => {
+    const interval = setInterval(() => {
+      orderService.getPaymentStatus(orderId).then((response) => {
+        setOrderStatus(response.data.paymentStatus)
+        if (response.data.paymentStatus === 'settled') {
+          clearInterval(statusInterval)
+          toast.success(lang.toast_order_successful)
+          navigate('/info/ordered')
+        } else if (response.data.paymentStatus === 'failed') {
+          setIframe(undefined)
+          clearInterval(statusInterval)
+        }
+      })
+    }, 5000)
+    setStatusInterval(statusInterval)
+    return interval
   }
 
   useEffect(() => {
     if (orderId) {
-      const interval = setInterval(() => {
-        console.log(orderId)
-        orderService.getPaymentStatus(orderId).then((response) => {
-          console.log(response.data.paymentStatus)
-          setOrderStatus(response.data.paymentStatus)
-          console.log(response.data)
-          if (response.data.paymentStatus === 'settled') {
-            clearInterval(statusInterval)
-            toast.success(lang.toast_order_successful)
-            navigate('/info/ordered')
-          } else if (response.data.paymentStatus === 'failed') {
-            setIframe(undefined)
-          }
-        })
-      }, 5000)
-      setStatusInterval(statusInterval)
-      return () => clearInterval(interval)
+      checkForUpdates()
+      return () => clearInterval(statusInterval)
     }
   }, [orderId])
 
