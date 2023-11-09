@@ -143,10 +143,13 @@ router.get(
 )
 
 router.post('/paymentStatus/:id', async (req, res) => {
+  console.log('post')
   console.log(req)
 })
 
 router.get('/paymentStatus/:id', async (req, res) => {
+  console.log('get')
+  console.log(req)
   const order = await Order.findById(req.params.id)
   try {
     const response = await axios.get(
