@@ -169,41 +169,29 @@ const Order = () => {
   const total = useSelector((state) => calculateSum(state.cart))
 
   const startOver = () => {
-    clearInterval(statusInterval)
     console.log(orderId)
     const promise = orderService.startOver(orderId)
     promise.then((response) => {
       setIframe(response.data.paymentLink)
-      checkForUpdates()
     })
-  }
-
-  const checkForUpdates = () => {
-    const interval = setInterval(() => {
-      orderService.getPaymentStatus(orderId).then((response) => {
-        console.log(response.data)
-        setOrderStatus(response.data.paymentStatus)
-        if (response.data.paymentStatus === 'settled') {
-          clearInterval(statusInterval)
-          toast.success(lang.toast_order_successful)
-          navigate('/info/ordered')
-        } else if (response.data.paymentStatus === 'failed') {
-          setIframe(undefined)
-          console.log(statusInterval)
-          clearInterval(statusInterval)
-          console.log(statusInterval)
-        }
-      })
-    }, 5000)
-    setStatusInterval(statusInterval)
-    console.log(statusInterval)
-    return interval
   }
 
   useEffect(() => {
     if (orderId) {
-      checkForUpdates()
-      return () => clearInterval(statusInterval)
+      const interval = setInterval(() => {
+        orderService.getPaymentStatus(orderId).then((response) => {
+          console.log(response.data)
+          setOrderStatus(response.data.paymentStatus)
+          if (response.data.paymentStatus === 'settled') {
+            clearInterval(interval)
+            toast.success(lang.toast_order_successful)
+            navigate('/info/ordered')
+          } else if (response.data.paymentStatus === 'failed') {
+            setIframe(undefined)
+          }
+        })
+      }, 5000)
+      return () => clearInterval(interval)
     }
   }, [orderId])
 
