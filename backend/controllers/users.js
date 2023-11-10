@@ -82,7 +82,7 @@ router.get('/verifyEmail/:token', async (req, res) => {
   if (user) {
     user.emailVerified = true
     await user.save()
-    return res.redirect(`${FRONTEND_URL}/email_verified`)
+    return res.redirect(`${FRONTEND_URL}/info/email_verified`)
   }
   return res.status(404).send()
 })

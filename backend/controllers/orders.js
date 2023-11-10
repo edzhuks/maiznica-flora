@@ -45,11 +45,8 @@ const getPaymentData = async ({ order, selectedLang }) => {
       }
     )
 
-    // console.log(response.data)
     return response.data
   } catch (error) {
-    // console.log(error)
-    // console.log(error.response.data)
     res.status(400).send()
   }
 }
@@ -85,9 +82,6 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
       ? 0
       : 399
   const total = subtotal + deliveryCost
-  // console.log(subtotal)
-  // console.log(deliveryCost)
-  // console.log(total)
   const order = new Order({
     user: cart.user,
     content: cart.content,
@@ -282,57 +276,6 @@ router.get('/all', userExtractor, adminRequired, async (req, res) => {
     { path: 'status', populate: { path: 'lastModifiedBy' } },
   ])
   res.send(orders)
-})
-
-router.get('/pay', async (req, res) => {
-  axios
-    .post(
-      'https://igw-demo.every-pay.com/api/v4/payments/oneoff',
-      {
-        timestamp: new Date(),
-        api_username: '993bbc1f9f94fa86',
-        nonce: crypto.randomBytes(16).toString('base64'),
-        account_name: 'EUR3D1',
-        amount: 0.01,
-        customer_url: 'http://new.maiznica.com',
-        order_reference: 1,
-      },
-      {
-        auth: {
-          username: '993bbc1f9f94fa86',
-          password: 'd568a98bc44e7a8c8308373e010a1084',
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    )
-    .then((response) => {
-      res.redirect(response.data.payment_link)
-    })
-    .catch((e) => console.log(e.response.data))
-  // axios
-  //   .get(
-  //     'https://igw-demo.every-pay.com/api/v4/processing_accounts/EUR3D1?api_username:993bbc1f9f94fa86',
-
-  //     {
-  //       auth: {
-  //         username: '993bbc1f9f94fa86',
-  //         password: 'd568a98bc44e7a8c8308373e010a1084',
-  //       },
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //       },
-  //     }
-  //   )
-  //   .then((response) => {
-  //     // res.redirect(response.data.payment_link)
-  //     console.log(response.data)
-  //   })
-  //   .catch((e) => console.log(e.response.data))
-  // res.status(200).send()
 })
 
 module.exports = router

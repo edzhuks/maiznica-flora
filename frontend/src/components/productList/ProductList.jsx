@@ -6,12 +6,13 @@ const ProductList = ({ products, withSearch }) => {
     <>
       {withSearch && <StyledInput />}
       <CardRow>
-        {products.map((product) => (
-          <ProductListItem
-            product={product}
-            key={product.id}
-          />
-        ))}
+        {products &&
+          products.map((product) => (
+            <ProductListItem
+              product={product}
+              key={product.id}
+            />
+          ))}
 
         {/* <Spacer /> */}
         {/* <Spacer /> */}

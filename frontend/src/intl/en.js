@@ -215,6 +215,12 @@ const en = {
   related_products: 'Related products',
   start_over_payment: 'Start over with payment',
   payment_failed: 'Payment failed, please start over',
+  email_verified: 'Email verified',
+  can_start_shopping:
+    'Your email has been verified.\n\nYou can start shopping now!',
+  order_completed: 'Order completed',
+  order_completed_info:
+    'We have received your order and will begin packing it shortly.\n\nIf there are any issues, we will contact you via email.\n\nWe have also sent you an email containing the receipt for this order.',
 }
 
 export default en

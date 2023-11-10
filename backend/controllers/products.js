@@ -34,10 +34,8 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
     startDate: new Date(req.body.discount.startDate),
     endDate: new Date(req.body.discount.endDate),
   }
-  console.log(discount)
   discount.startDate.setHours(0)
   discount.endDate.setHours(23, 59, 59, 999)
-  console.log(discount)
 
   if (discount.endDate < discount.startDate) {
     return res.status(400).json({

@@ -79,13 +79,17 @@ const HeaderTab = styled(NavLink)`
   &:hover {
     color: ${(props) => props.theme.main};
   }
-  &.active {
-    background-color: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.white};
-    &:hover {
-      color: ${(props) => props.theme.text};
-    }
-  }
+  ${(props) =>
+    !props.$noactive &&
+    css`
+      &.active {
+        background-color: props.theme.main;
+        color: props.theme.white;
+        &:hover {
+          color: props.theme.text;
+        }
+      }
+    `}
   height: 100%;
 `
 
@@ -257,13 +261,14 @@ const Header = () => {
       {mobile ? (
         <>
           <MobileHeader>
-            <a href="/">
+            <HeaderTab
+              to="/"
+              $noactive={true}>
               <Logo
                 src={`/images/logo-${selectedLang}.png`}
-                style={{ marginRight: 20 }}
                 alt="logo"
               />
-            </a>
+            </HeaderTab>
 
             <Spacer />
             {user ? (
@@ -390,13 +395,14 @@ const Header = () => {
         <>
           <DesktopHeader>
             <HeaderContainer>
-              <a href="/">
+              <HeaderTab
+                to="/"
+                $noactive={true}>
                 <Logo
                   src={`/images/logo-${selectedLang}.png`}
-                  style={{ marginRight: 20 }}
                   alt="logo"
                 />
-              </a>
+              </HeaderTab>
 
               <HeaderTab to="/category/all">{lang.products}</HeaderTab>
               <HeaderTab to="/about">{lang.about}</HeaderTab>

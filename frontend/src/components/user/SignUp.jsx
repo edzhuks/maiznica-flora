@@ -19,8 +19,9 @@ import {
 } from '../styled/base'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PasswordWithValidation from '../basic/PasswordValidation'
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
   const userService = useUserService()
@@ -30,7 +31,6 @@ const SignUp = () => {
   const email = useField('email')
   const password1 = useField('password')
   const password2 = useField('password')
-  const [registered, setRegistered] = useState(false)
 
   const [emailRequiredReminderVisible, setEmailRequiredReminderVisible] =
     useState(false)
@@ -38,7 +38,7 @@ const SignUp = () => {
     useState(false)
   const [emailUsedReminderVisible, setEmailUsedReminderVisible] =
     useState(false)
-
+  const navigate = useNavigate()
   const onSubmit = async (event) => {
     event.preventDefault()
     if (email.value.length < 1 || password1.value.length < 1) {
@@ -55,7 +55,6 @@ const SignUp = () => {
           password: password1.value,
         })
         .then(() => {
-          setRegistered(true)
           userService
             .login(email.value, password1.value)
             .then((loginResult) => {
@@ -65,6 +64,7 @@ const SignUp = () => {
               )
               setUser(loginResult.data)
             })
+          navigate('/info/registered')
         })
         .catch((error) => {
           console.log(error)
@@ -73,6 +73,12 @@ const SignUp = () => {
             error.response.data.error === 'This email is already used.'
           ) {
             setEmailUsedReminderVisible(true)
+          } else if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            toast.error(error.response.data.error)
           }
         })
     }
@@ -85,47 +91,38 @@ const SignUp = () => {
 
   return (
     <Centerer>
-      {registered ? (
-        <LoginCard>
-          <BigTitle>{lang.verify_email}</BigTitle>
-          <SubTitle>{lang.verification_instructions}</SubTitle>
-        </LoginCard>
-      ) : (
-        <LoginCard>
-          <BigTitle>{lang.sign_up}</BigTitle>
-          <PaddedForm onSubmit={onSubmit}>
-            <InputGroup>
-              <Label>
-                {lang.email}
-                <StyledInput
-                  {...email}
-                  $isonlightbackground
-                />
-              </Label>
-            </InputGroup>
+      <LoginCard>
+        <BigTitle>{lang.sign_up}</BigTitle>
+        <PaddedForm onSubmit={onSubmit}>
+          <InputGroup>
+            <Label>
+              {lang.email}
+              <StyledInput
+                {...email}
+                $isonlightbackground
+              />
+            </Label>
+          </InputGroup>
 
-            <PasswordWithValidation
-              password1={password1}
-              password2={password2}
-              passwordRequiredReminderVisible={passwordRequiredReminderVisible}
-            />
-            {emailRequiredReminderVisible && (
-              <ValidationFailed>
-                <h3>{lang.email_required}</h3>
-              </ValidationFailed>
-            )}
-            {emailUsedReminderVisible && (
-              <ValidationFailed>
-                <h3>{lang.email_already_used}</h3>
-              </ValidationFailed>
-            )}
-            <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
-          </PaddedForm>
-          <BottomTextLink to="/login">
-            {lang.already_have_account}
-          </BottomTextLink>
-        </LoginCard>
-      )}
+          <PasswordWithValidation
+            password1={password1}
+            password2={password2}
+            passwordRequiredReminderVisible={passwordRequiredReminderVisible}
+          />
+          {emailRequiredReminderVisible && (
+            <ValidationFailed>
+              <h3>{lang.email_required}</h3>
+            </ValidationFailed>
+          )}
+          {emailUsedReminderVisible && (
+            <ValidationFailed>
+              <h3>{lang.email_already_used}</h3>
+            </ValidationFailed>
+          )}
+          <FullWidthButton type="submit">{lang.sign_up}</FullWidthButton>
+        </PaddedForm>
+        <BottomTextLink to="/login">{lang.already_have_account}</BottomTextLink>
+      </LoginCard>
     </Centerer>
   )
 }

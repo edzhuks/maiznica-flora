@@ -45,6 +45,10 @@ import ChangePassword from './components/user/ChangePassword'
 import Addresses from './components/user/Adresses'
 import Orders from './components/user/Orders'
 import UserData from './components/user/UserData'
+import InfoPage from './components/info/InfoPage'
+import EmailVerified from './components/info/EmailVerified'
+import Ordered from './components/info/Ordered'
+import Registered from './components/info/Registered'
 
 const baseTheme = {
   main: '#45941e',
@@ -210,6 +214,22 @@ function App() {
                       <Route
                         path="user_data"
                         element={<UserData />}
+                      />
+                    </Route>
+                    <Route
+                      path="/info"
+                      element={<InfoPage />}>
+                      <Route
+                        path="email_verified"
+                        element={<EmailVerified />}
+                      />
+                      <Route
+                        path="ordered"
+                        element={<Ordered />}
+                      />
+                      <Route
+                        path="registered"
+                        element={<Registered />}
                       />
                     </Route>
                   </Routes>

@@ -200,19 +200,13 @@ categoryRouter.put(
   userExtractor,
   adminRequired,
   async (req, res) => {
-    if (req.user.admin) {
-      if (!req.body.parentCategory) {
-        return res
-          .status(400)
-          .json({ error: 'Parent category msut be defined' })
-      }
-      const parentCategory = await Category.findById(req.body.parentCategory)
-      parentCategory.products = req.body.productsToAdd
-      await parentCategory.save()
-      res.status(200).send(parentCategory)
-    } else {
-      res.status(403).end()
+    if (!req.body.parentCategory) {
+      return res.status(400).json({ error: 'Parent category msut be defined' })
     }
+    const parentCategory = await Category.findById(req.body.parentCategory)
+    parentCategory.products = req.body.productsToAdd
+    await parentCategory.save()
+    res.status(200).send(parentCategory)
   }
 )
 
@@ -227,8 +221,8 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
 })
 
 categoryRouter.get('/', async (req, res) => {
-  let allIds = await Category.find({})
-  res.send(allIds)
+  let categories = await Category.find({})
+  res.send(categories)
 })
 
 module.exports = { categoryRouter, getCatalogue }

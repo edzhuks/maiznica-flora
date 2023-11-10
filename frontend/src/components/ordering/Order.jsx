@@ -128,10 +128,8 @@ const Order = () => {
       ? 1
       : 2
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [selectedAddress, selectAddress] = useState()
   const dispatch = useDispatch()
   const orderService = useOrderService()
-  const { showPromiseToast, showErrorToast } = useToast()
   const cart = useSelector((state) => state.cart)
   const [deliveryMethod, setDeliveryMethod] = useState({
     method: undefined,
@@ -141,7 +139,6 @@ const Order = () => {
   const [iframe, setIframe] = useState()
   const [orderId, setOrderId] = useState()
   const navigate = useNavigate()
-  const [statusInterval, setStatusInterval] = useState()
   const [orderStatus, setOrderStatus] = useState()
   const [failedPayment, setFailedPayment] = useState()
   const deliveryThreshold = 5000

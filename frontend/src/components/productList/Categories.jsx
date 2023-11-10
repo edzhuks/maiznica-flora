@@ -70,7 +70,7 @@ const Categories = ({ categories, name, tight }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
     <div style={{ width: '100%' }}>
-      {categories.length > 0 && (
+      {categories && categories.length > 0 && (
         <CardRow>
           {categories.map((category) => (
             <CategoryItem
