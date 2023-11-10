@@ -27,7 +27,6 @@ const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
   return (
     <div>
       {iframe && <Button onClick={startOver}>{lang.start_over_payment}</Button>}
-      {orderStatus?.toString()}
       <Card>
         {iframe ? (
           <iframe

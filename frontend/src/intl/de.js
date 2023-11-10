@@ -217,6 +217,14 @@ const de = {
   toast_must_agree:
     'Sie müssen mit den Bedingungen einverstanden sein, um die Bestellung aufzugeben!',
   related_products: 'Verwandte Produkte',
+  start_over_payment: 'Mit der Zahlung neu beginnen',
+  payment_failed: 'Zahlung fehlgeschlagen, bitte von vorne beginnen',
+  email_verifiziert: 'E-Mail verifiziert',
+  can_start_shopping:
+    'Ihre E-Mail wurde verifiziert.\n\nSie können jetzt mit dem Einkaufen beginnen!',
+  order_completed: 'Bestellung abgeschlossen',
+  order_completed_info:
+    'Wir haben Ihre Bestellung erhalten und werden in Kürze mit dem Verpacken beginnen.\n\nWenn es irgendwelche Probleme gibt, werden wir Sie per E-Mail kontaktieren.\n\nWir haben Ihnen auch eine E-Mail mit der Quittung für diese Bestellung geschickt.',
 }
 
 export default de

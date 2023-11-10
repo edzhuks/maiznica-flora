@@ -228,6 +228,13 @@ const lv = {
   pay: 'Apmaksāt',
   toast_must_agree: 'Ir jāpiekrīt distances līgumam, lai veiktu pasūtījumu!',
   related_products: 'Līdzīgi produkti',
+  start_over_payment: 'Sākt apmaksu no jauna',
+  payment_failed: 'Maksājums neizdevās, lūdzu sāciet no jauna',
+  email_verified: 'E-pasts apstiprināts',
+  can_start_shopping: 'Jūsu e-pasts ir apstiprināts.\n\nVarat sākt iepirkties!',
+  order_completed: 'Pasūtījums saņemts',
+  order_completed_info:
+    'Mēs esam saņēmuši jūsu pasūtījumu un sāksim to komplektēt.\n\nJa radīsies kādas problēmas, mēs ar jums sazināsimies pa e-pastu\n\nEsam jums nosūtījuši e-pastu ar pirkuma rēķinu',
 }
 
 export default lv
