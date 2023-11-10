@@ -41,4 +41,5 @@
 | 02.11        | 4     | Email order receipt                                                                                                                                                                   |
 | 07.11        | 4     | Moving to another hosting provider - webserver, mongo, images                                                                                                                         |
 | 08.11        | 6     | Working on payments with SEB payment integration                                                                                                                                      |
+| 09.11        | 4     | Finished payments for now                                                                                                                                                             |
 | total        | 164   |                                                                                                                                                                                       |
