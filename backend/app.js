@@ -49,6 +49,7 @@ app.get('/api/version', (request, response) => {
   response.send('1')
 })
 app.get('*', (req, res) => {
+  console.log(__dirname)
   res.sendFile(path.join(__dirname + '/build/index.html'))
 })
 
