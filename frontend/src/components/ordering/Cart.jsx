@@ -1,19 +1,6 @@
 import ProductListItem from '../productList/ProductListItem'
-import { Fragment, useContext } from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import {
-  CardRow,
-  ColoredText,
-  FullWidthButton,
-  Card,
-  Spacer,
-  Item,
-  Button,
-} from '../styled/base'
-import { centsToEuro, addVat } from '../../util/convert'
+import { CardRow } from '../styled/base'
 import { useSelector } from 'react-redux'
-import MobileContext from '../../contexts/mobileContext'
 
 const Cart = ({ cart }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])

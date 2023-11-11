@@ -1,20 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Button,
-  InvertedButton,
-  NumberInput,
-  RowSpaceBetween,
-  SubTitle,
-  Card,
-  BigProductTitle,
-  Item,
-} from '../styled/base'
+import { Button, InvertedButton, NumberInput, Card } from '../styled/base'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
-import { centsToEuro, gramsToKilos, addVat } from '../../util/convert'
+import { gramsToKilos } from '../../util/convert'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'

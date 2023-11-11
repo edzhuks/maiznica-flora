@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { addVat, centsToEuro, gramsToKilos } from '../../util/convert'
+import { gramsToKilos } from '../../util/convert'
 import { useSelector } from 'react-redux'
 import {
   NumberInput,

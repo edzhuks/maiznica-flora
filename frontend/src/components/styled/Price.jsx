@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { addVat, centsToEuro } from '../../util/convert'
+import { centsToEuro } from '../../util/convert'
 import { ProductText, Row } from './base'
 
 const { default: styled, css } = require('styled-components')
@@ -175,23 +175,19 @@ const Price = ({
                 <BigPriceText
                   isSmall={isSmall}
                   discountPrice={discountPrice}>
-                  <strong>{centsToEuro(addVat(price))}</strong>
-                  {discountPrice && (
-                    <span>{centsToEuro(addVat(discountPrice))}</span>
-                  )}
+                  <strong>{centsToEuro(price)}</strong>
+                  {discountPrice && <span>{centsToEuro(discountPrice)}</span>}
                 </BigPriceText>
                 <TipText>{lang.with_VAT}</TipText>
                 <br />
                 <SmallPriceText discountPrice={discountPrice}>
-                  <strong>
-                    {centsToEuro((addVat(price) / weight) * 1000)}
-                  </strong>
+                  <strong>{centsToEuro(price / weight) * 1000}</strong>
 
                   {discountPrice && (
                     <span>
-                      {centsToEuro(
-                        (addVat(discountPrice) / weight) * 1000
-                      ).substring(1)}
+                      {centsToEuro((discountPrice / weight) * 1000).substring(
+                        1
+                      )}
                     </span>
                   )}
                 </SmallPriceText>
