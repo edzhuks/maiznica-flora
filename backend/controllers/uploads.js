@@ -22,7 +22,7 @@ router.post(
   upload.single('image'),
   async (req, res) => {
     const imageName = req.file.filename
-    return res.status(201).send({ path: `/images/${imageName}` })
+    return res.status(201).send({ path: `${imageName}` })
   }
 )
 

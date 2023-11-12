@@ -103,7 +103,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     const formData = new FormData()
     formData.append('image', event.target.files[0])
     uploadService.uploadImage(formData).then((response) => {
-      setImage(`${backendURL}${response.data.path}`)
+      setImage(`${response.data.path}`)
     })
   }
 
