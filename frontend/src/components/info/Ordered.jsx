@@ -5,10 +5,8 @@ const Ordered = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
-      <BigTitle>{lang.order_completed}</BigTitle>
-      <SubTitle style={{ whiteSpace: 'pre-wrap' }}>
-        {lang.order_completed_info}
-      </SubTitle>
+      <h1 className="big-title m-b">{lang.order_completed}</h1>
+      <p className="card-text wrap-n m-b">{lang.order_completed_info}</p>
     </div>
   )
 }

@@ -1,76 +1,48 @@
-const { useSelector } = require('react-redux')
-const {
-  InputGroup,
-  Label,
-  StyledInput,
-  ValidPassword,
-  ValidationFailed,
-} = require('../styled/base')
+import { useSelector } from 'react-redux'
+import Input from './Input'
+import { ValidPassword, ValidationFailed } from '../styled/base'
 
 const PasswordWithValidation = ({
   password1,
   password2,
-  passwordRequiredReminderVisible,
+  blink,
+  validLength,
+  hasDigit,
+  hasLetter,
+  hasSpecial,
+  doMatch,
+  style,
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   return (
-    <div>
-      <InputGroup>
-        <Label>
-          {lang.password}
-          <StyledInput
-            {...password1}
-            $isonlightbackground
-          />
-        </Label>
-      </InputGroup>
-      <InputGroup>
-        <Label>
-          {lang.confirm_password}
-          <StyledInput
-            {...password2}
-            $isonlightbackground
-          />
-        </Label>
-      </InputGroup>
+    <div style={style}>
+      <Input
+        label={lang.password}
+        {...password1}
+        required
+      />
+      <Input
+        label={lang.confirm_password}
+        {...password2}
+        required
+      />
       {password1.value.length > 0 && (
-        <div>
-          {password1.value.length >= 8 &&
-          /\d/.test(password1.value) &&
-          /[!@#$%^&* ]/.test(password1.value) &&
-          /[a-zA-Z]/.test(password1.value) &&
-          password1.value === password2.value ? (
-            <ValidPassword>
-              <h3>✔ Valid password</h3>
-            </ValidPassword>
+        <div className="p-t">
+          {validLength && hasDigit && hasLetter && hasSpecial && doMatch ? (
+            <ul className="validation accented">
+              <li>✔ Valid password</li>
+            </ul>
           ) : (
-            <ValidationFailed>
-              <h3>{lang.password_must}</h3>
-              <ul>
-                {password1.value.length < 8 && <li>{lang.password_8_chars}</li>}
-                {!/\d/.test(password1.value) && (
-                  <li>{lang.password_contain_digit}</li>
-                )}
-                {!/[!@#$%^&* ]/.test(password1.value) && (
-                  <li>{lang.password_contain_special}</li>
-                )}
-                {!/[a-zA-Z]/.test(password1.value) && (
-                  <li>{lang.password_contain_letter}</li>
-                )}
-                {password1.value !== password2.value && (
-                  <li>{lang.password_match}</li>
-                )}
-              </ul>
-            </ValidationFailed>
+            <ul className={`validation ${blink && 'blink'}`}>
+              {!validLength && <li>{lang.password_8_chars}</li>}
+              {!hasDigit && <li>{lang.password_contain_digit}</li>}
+              {!hasSpecial && <li>{lang.password_contain_special}</li>}
+              {!hasLetter && <li>{lang.password_contain_letter}</li>}
+              {!doMatch && <li>{lang.password_match}</li>}
+            </ul>
           )}
         </div>
-      )}
-
-      {passwordRequiredReminderVisible && (
-        <ValidationFailed>
-          <h3>{lang.password_required}</h3>
-        </ValidationFailed>
       )}
     </div>
   )

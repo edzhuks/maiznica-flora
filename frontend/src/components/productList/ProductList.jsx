@@ -1,10 +1,11 @@
-import { CardRow, Spacer, StyledInput } from '../styled/base'
+import Input from '../basic/Input'
+import { CardRow, Spacer } from '../styled/base'
 import ProductListItem from './ProductListItem'
 
 const ProductList = ({ products, withSearch }) => {
   return (
     <>
-      {withSearch && <StyledInput />}
+      {withSearch && <Input />}
       <CardRow>
         {products &&
           products.map((product) => (

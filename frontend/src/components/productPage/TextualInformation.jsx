@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { gramsToKilos } from '../../util/convert'
 import { useSelector } from 'react-redux'
 import {
-  NumberInput,
   Button,
   BigProductTitle,
   ProductText,
@@ -14,6 +13,7 @@ import {
 } from '../styled/base'
 import { Barcode } from '@styled-icons/icomoon/Barcode'
 import Price from '../styled/Price'
+import Input from '../basic/Input'
 
 const ShadowDiv = styled.div`
   box-shadow: ${(props) => props.theme.shadow};
@@ -63,7 +63,7 @@ const StaticInformation = ({ product, quantity, setQuantity, onOrder }) => {
             isSmall={false}
           />
           <ShadowDiv>
-            <NumberInput
+            <Input
               value={quantity}
               onChange={(event) => setQuantity(event.target.value)}
               type="number"

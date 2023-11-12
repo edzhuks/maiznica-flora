@@ -12,7 +12,7 @@ import {
   Label,
   LoginCard,
   PaddedForm,
-  StyledInput,
+  Input,
   SubTitle,
   ValidPassword,
   ValidationFailed,

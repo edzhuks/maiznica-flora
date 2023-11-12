@@ -1,13 +1,9 @@
 import useField from '../../hooks/useField'
 import { useEffect, useState } from 'react'
 import {
-  ShadowInput,
-  TextArea,
-  NumberInput,
   Row,
   Button,
   ProductImage,
-  WrappableRow,
   Label,
   BigProductTitle,
   ProductText,
@@ -16,7 +12,6 @@ import {
   NutritionTableHeader,
   NutritionTableCell,
   Toggle,
-  ShadowTextArea,
 } from '../styled/base'
 import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
@@ -32,21 +27,22 @@ import { gramsToKilos } from '../../util/convert'
 import Select from 'react-select'
 import { backendURL } from '../../util/config'
 import useUploadService from '../../services/uploads'
+import Input from '../basic/Input'
 
-const NameInput = styled(ShadowInput)`
+const NameInput = styled(Input)`
   color: ${(props) => props.theme.main};
   width: 300px;
   margin: 5px 0px;
 `
 
-const GreenNumberInput = styled(NumberInput)`
+const GreenNumberInput = styled(Input)`
   color: ${(props) => props.theme.main};
   width: 100px;
   margin: 5px;
   box-shadow: ${(props) => props.theme.shadow};
 `
 
-const ProductTextArea = styled(ShadowTextArea)`
+const ProductTextArea = styled(Input)`
   width: 420px;
   font-size: small;
   margin: 5px 0px;
@@ -545,7 +541,7 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput
+                <Input
                   {...energy}
                   $isonlightbackground
                 />
@@ -555,7 +551,7 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.fat}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...fat} />g
+                <Input {...fat} />g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
@@ -563,7 +559,7 @@ const NewProductFrom = () => {
                 &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
               </NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput
+                <Input
                   $isonlightbackground
                   {...saturatedFat}
                 />
@@ -574,7 +570,7 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...carbs} />g
+                <Input {...carbs} />g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
@@ -582,7 +578,7 @@ const NewProductFrom = () => {
                 &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
               </NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput
+                <Input
                   $isonlightbackground
                   {...sugar}
                 />
@@ -592,13 +588,13 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.fiber}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...fiber} />g
+                <Input {...fiber} />g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
               <NutritionTableCell>{lang.protein}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput
+                <Input
                   $isonlightbackground
                   {...protein}
                 />
@@ -608,13 +604,13 @@ const NewProductFrom = () => {
             <NutritionTableRow>
               <NutritionTableCell>{lang.salt}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput {...salt} />g
+                <Input {...salt} />g
               </NutritionTableCell>
             </NutritionTableRow>
             <NutritionTableRow>
               <NutritionTableCell>{lang.d3}</NutritionTableCell>
               <NutritionTableCell>
-                <NumberInput
+                <Input
                   $isonlightbackground
                   {...d3}
                 />
@@ -624,7 +620,7 @@ const NewProductFrom = () => {
           </tbody>
         </NutritionTable>
         {lang.EAN_code}
-        <ShadowInput
+        <Input
           style={{ marginBottom: 20, marginLeft: '20px' }}
           {...EAN}
         />
@@ -654,7 +650,9 @@ const NewProductFrom = () => {
           </div>
         )}
       </EditTab>
-      <WrappableRow style={{ justifyContent: 'end' }}>
+      <div
+        className="row"
+        style={{ justifyContent: 'end' }}>
         <form>
           <ProductImage src={`/images/${image}`} />
           <br />
@@ -674,7 +672,7 @@ const NewProductFrom = () => {
             {productId ? lang.save : lang.create}
           </Button>
         </div>
-      </WrappableRow>
+      </div>
     </div>
   )
 }

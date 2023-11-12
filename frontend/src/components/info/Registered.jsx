@@ -5,8 +5,8 @@ const Registered = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
-      <BigTitle>{lang.verify_email}</BigTitle>
-      <SubTitle>{lang.verification_instructions}</SubTitle>
+      <h1 className="big-title m-b">{lang.verify_email}</h1>
+      <p className="wrap-n card-text m-b">{lang.verification_instructions}</p>
     </div>
   )
 }

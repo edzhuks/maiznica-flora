@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { Button, InvertedButton, NumberInput, Card } from '../styled/base'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'
@@ -11,6 +10,7 @@ import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import UserContext from '../../contexts/userContext'
 import Price from '../styled/Price'
 import MobileContext from '../../contexts/mobileContext'
+import Input from '../basic/Input'
 
 const CardLink = styled(Link)`
   text-decoration: none;
@@ -61,7 +61,7 @@ const ProductImage = styled.img`
   z-index: 10;
 `
 
-const BuyButton = styled(Button)`
+const BuyButton = styled.button`
   max-width: 50%;
   margin-left: ${(props) => props.theme.padding};
 `
@@ -73,7 +73,7 @@ const Column = styled.div`
   width: 100%;
 `
 
-const MobileCard = styled(Card)`
+const MobileCard = styled.div`
   flex-direction: row;
   margin: calc(${(props) => props.theme.padding} / 2);
   width: clamp(350px, 380px, 380px);
@@ -162,20 +162,26 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             <>
               {inCart ? (
                 <CartButtonRow>
-                  <InvertedButton onClick={removeSome}>
+                  <button
+                    className="inverted"
+                    onClick={removeSome}>
                     <Minus />
-                  </InvertedButton>
+                  </button>
                   <Quantity>{quantity}</Quantity>
-                  <InvertedButton onClick={addMore}>
+                  <button
+                    className="inverted"
+                    onClick={addMore}>
                     <Plus />
-                  </InvertedButton>
-                  <InvertedButton onClick={removeFromCart}>
+                  </button>
+                  <button
+                    className="inverted"
+                    onClick={removeFromCart}>
                     <Trash />
-                  </InvertedButton>
+                  </button>
                 </CartButtonRow>
               ) : (
                 <ButtonRow>
-                  <NumberInput
+                  <Input
                     value={quantityToAdd}
                     onChange={(event) => setQuantityToAdd(event.target.value)}
                     type="number"

@@ -1,13 +1,4 @@
 import { useSelector } from 'react-redux'
-import {
-  ModalContainer,
-  ModalContent,
-  BigTitle,
-  SubTitle,
-  CancelButton,
-  Button,
-  Row,
-} from '../styled/base'
 
 const BaseModal = ({
   children,
@@ -19,26 +10,24 @@ const BaseModal = ({
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <ModalContainer style={{ display: visible ? 'block' : 'none' }}>
-      <ModalContent>
-        <BigTitle style={{ marginBottom: 15 }}>{title}</BigTitle>
-        <div style={{ padding: padding }}>{children}</div>
-        <Row style={{ justifyContent: 'space-between' }}>
-          <CancelButton
+    <div
+      className="modal-container"
+      style={{ display: visible ? 'block' : 'none' }}>
+      <div className="modal card">
+        <h1 className="big-title p-t-b">{title}</h1>
+        <div>{children}</div>
+        <div className="row end p-m">
+          <button
+            className="cancel"
             onClick={() => {
               onClose()
-            }}
-            style={{ margin: 20 }}>
+            }}>
             {lang.cancel}
-          </CancelButton>
-          <Button
-            style={{ margin: 20, float: 'right' }}
-            onClick={onSubmit}>
-            {lang.add}
-          </Button>
-        </Row>
-      </ModalContent>
-    </ModalContainer>
+          </button>
+          <button onClick={onSubmit}>{lang.add}</button>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,10 +1,8 @@
-import { ContactText } from '../styled/base'
-
 const Address = ({ address }) => {
   if (address) {
     return (
       <div>
-        <ContactText>
+        <p className="text">
           {address.name} {address.surname}
           <br />
           {address.street} {address.house}-{address.apartment}
@@ -12,13 +10,13 @@ const Address = ({ address }) => {
           {address.city}
           <br />
           {address.country}-{address.postalCode}
-        </ContactText>
+        </p>
       </div>
     )
   }
   return (
     <div>
-      <ContactText>
+      <p>
         SIA “Maiznīca Flora”
         <br />
         Ražotne: Vecvaltes, Krimuldas pagasts,
@@ -30,7 +28,7 @@ const Address = ({ address }) => {
         Tālrunis: +371 67521291
         <br />
         E-pasts: flora@maiznica.lv
-      </ContactText>
+      </p>
     </div>
   )
 }

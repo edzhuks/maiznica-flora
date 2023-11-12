@@ -7,7 +7,6 @@ import {
   Label,
   LoginCard,
   PaddedForm,
-  StyledInput,
 } from '../styled/base'
 import { useContext } from 'react'
 import UserContext from '../../contexts/userContext'
@@ -18,6 +17,7 @@ import useUserService from '../../services/user'
 import useToast from '../../util/promiseToast'
 import { useNavigate } from 'react-router-dom'
 import { clearCart } from '../../reducers/cartReducer'
+import Input from '../basic/Input'
 
 const UserData = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -63,27 +63,17 @@ const UserData = () => {
     <LoginCard>
       <BigTitle>{lang.account_information}</BigTitle>
       <PaddedForm>
-        <InputGroup>
-          <Label>
-            {lang.email}
-            <StyledInput
-              $isonlightbackground
-              {...email}
-              disabled
-              style={{ color: 'gray' }}
-            />
-          </Label>
-        </InputGroup>
+        <Input
+          label={lang.email}
+          {...email}
+          disabled
+          style={{ color: 'gray' }}
+        />
         {deleteClicked && (
-          <InputGroup>
-            <Label>
-              {lang.password}
-              <StyledInput
-                $isonlightbackground
-                {...password}
-              />
-            </Label>
-          </InputGroup>
+          <Input
+            label={lang.password}
+            {...password}
+          />
         )}
       </PaddedForm>
       <CancelButton onClick={deleteAccount}>{lang.delete_account}</CancelButton>

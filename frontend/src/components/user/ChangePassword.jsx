@@ -5,6 +5,7 @@ import { useState } from 'react'
 import useUserService from '../../services/user'
 import useToast from '../../util/promiseToast'
 import { useNavigate } from 'react-router-dom'
+import Input from '../basic/Input'
 
 const {
   LoginCard,
@@ -12,7 +13,6 @@ const {
   PaddedForm,
   InputGroup,
   Label,
-  StyledInput,
   FullWidthButton,
   ValidationFailed,
 } = require('../styled/base')
@@ -74,15 +74,11 @@ const ChangePassword = () => {
     <LoginCard style={{ maxWidth: '600px' }}>
       <BigTitle>{lang.change_password}</BigTitle>
       <PaddedForm onSubmit={onSubmit}>
-        <InputGroup>
-          <Label>
-            {lang.previous_password}
-            <StyledInput
-              {...previousPassword}
-              $isonlightbackground
-            />
-          </Label>
-        </InputGroup>
+        <Input
+          label={lang.previous_password}
+          {...previousPassword}
+          $isonlightbackground
+        />
 
         <PasswordWithValidation
           password1={password1}

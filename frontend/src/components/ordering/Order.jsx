@@ -12,7 +12,7 @@ import {
   FullWidthCancelButton,
   Label,
   Row,
-  StyledInput,
+  Input,
 } from '../styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../../reducers/cartReducer'

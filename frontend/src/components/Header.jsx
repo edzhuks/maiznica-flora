@@ -1,13 +1,5 @@
 import styled, { css, keyframes } from 'styled-components'
-import {
-  Button,
-  Card,
-  Container,
-  InvertedButton,
-  Row,
-  ShadowInput,
-  StyledInput,
-} from './styled/base'
+import { Button, Card, Container, InvertedButton, Row } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
 import { useContext, useEffect, useState } from 'react'
 import UserContext from '../contexts/userContext'
@@ -66,7 +58,7 @@ const HeaderTab = styled(NavLink)`
   text-transform: uppercase;
   color: ${(props) => props.theme.text};
   text-decoration: none;
-  font-size: 18px;
+  font-size: 1.2rem;
   background-color: transparent;
   flex: 0 1 auto;
   display: flex;

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import useProductService from '../services/product'
 import { useEffect } from 'react'
-import { BigTitle, ShadowInput } from './styled/base'
+import { BigTitle, Input } from './styled/base'
 import Fuse from 'fuse.js'
 import { useSearchParams } from 'react-router-dom'
 import useCategoryService from '../services/category'

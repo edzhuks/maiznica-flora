@@ -45,28 +45,7 @@ const RowSpaceEvenly = styled(Row)`
   justify-content: space-evenly;
 `
 
-const Button = styled.button`
-  cursor: pointer;
-  border: 0;
-  color: ${(props) => props.theme.white};
-  padding: 5px 10px;
-  border-radius: 2px;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: ${(props) => props.theme.main};
-  transition: 0.3s;
-  min-width: 40px;
-  min-height: 2rem;
-  &:hover {
-    background-color: ${(props) => props.theme.white};
-    color: ${(props) => props.theme.main};
-  }
-  text-transform: uppercase;
-  text-rendering: optimizeLegibility;
-  font-family: 'Roboto Slab', serif;
-  letter-spacing: 1px;
-  box-shadow: ${(props) => props.theme.shadow};
-`
+const Button = styled.button``
 
 const CancelButton = styled(Button)`
   background-color: ${(props) => props.theme.error};
@@ -87,89 +66,61 @@ const FullWidthCancelButton = styled(FullWidthButton)`
     color: ${(props) => props.theme.error};
   }
 `
-const InvertedButton = styled(Button)`
-  padding: 1px 4px;
-  background-color: transparent;
-  box-shadow: none;
-  font-weight: bold;
-  color: ${(props) => props.theme.dark};
-  &:hover {
-    /* background-color: ${(props) => props.theme.main}; */
-    color: ${(props) => props.theme.main};
-  }
-`
 
-const StyledInput = styled(Input)`
-  height: 2rem;
-  border: 0px;
-  color: ${(props) => props.theme.text};
-  border-radius: 2px;
-  padding: ${(props) => props.theme.padding} 0px
-    ${(props) => props.theme.padding} ${(props) => props.theme.padding};
-  border: 0px solid
-    ${(props) =>
-      props.$isonlightbackground ? props.theme.lighter : props.theme.white};
-  background-color: ${(props) =>
-    props.$isonlightbackground ? props.theme.lighter : props.theme.white};
-  &:focus {
-    outline: 1px solid ${(props) => props.theme.main};
-  }
-  font-size: 1rem;
-`
-const ShadowInput = styled(StyledInput)`
-  box-shadow: ${(props) => props.theme.shadow};
-`
-const BottomTextLink = styled(Link)`
-  text-decoration: none;
-  color: ${(props) => props.theme.light};
-  margin-top: 40px;
-  margin-bottom: -20px;
-`
-const TextArea = styled.textarea`
-  width: 300px;
-  border: 1px solid ${(props) => props.theme.white};
-  color: ${(props) => props.theme.text};
-  border-radius: 2px;
-  font-size: 16;
-  color: ${(props) => props.theme.text};
-  font-family: 'Roboto';
-  &:focus {
-    outline: none;
-    border-color: ${(props) => props.theme.main};
-  }
-  font-size: medium;
-  &:focus {
-    outline: none;
-    border: 1px solid ${(props) => props.theme.main};
-  }
-`
+// const Input = styled(Input)`
+//   height: 2rem;
+//   border: 0px;
+//   color: ${(props) => props.theme.text};
+//   border-radius: 2px;
+//   padding: ${(props) => props.theme.padding} 0px
+//     ${(props) => props.theme.padding} ${(props) => props.theme.padding};
+//   border: 0px solid
+//     ${(props) =>
+//       props.$isonlightbackground ? props.theme.lighter : props.theme.white};
+//   background-color: ${(props) =>
+//     props.$isonlightbackground ? props.theme.lighter : props.theme.white};
+//   &:focus {
+//     outline: 1px solid ${(props) => props.theme.main};
+//   }
+//   font-size: 1rem;
+// `
+// const Input = styled(Input)`
+//   box-shadow: ${(props) => props.theme.shadow};
+// `
 
-const ShadowTextArea = styled(TextArea)`
-  box-shadow: ${(props) => props.theme.shadow};
-`
+// const Input = styled.Input`
+//   width: 300px;
+//   border: 1px solid ${(props) => props.theme.white};
+//   color: ${(props) => props.theme.text};
+//   border-radius: 2px;
+//   font-size: 16;
+//   color: ${(props) => props.theme.text};
+//   font-family: 'Roboto';
+//   &:focus {
+//     outline: none;
+//     border-color: ${(props) => props.theme.main};
+//   }
+//   font-size: medium;
+//   &:focus {
+//     outline: none;
+//     border: 1px solid ${(props) => props.theme.main};
+//   }
+// `
 
-const NumberInput = styled(StyledInput)`
-  width: 100px;
-`
-const WideNumberInput = styled(NumberInput)`
-  width: 217px;
-`
+// const Input = styled(Input)`
+//   box-shadow: ${(props) => props.theme.shadow};
+// `
+
+// const Input = styled(Input)`
+//   width: 100px;
+// `
+// const WideNumberInput = styled(Input)`
+//   width: 217px;
+// `
 
 const Form = styled.form`
-  min-width: 100px;
-  display: inline-block;
-  ${StyledInput} {
-    float: right;
-    margin-left: 28px;
-  }
-  ${TextArea} {
-    margin-left: 28px;
-    float: right;
-  }
-  ${WideNumberInput} {
-    margin-left: 28px;
-    float: right;
-  }
+  /* min-width: 100px;
+  display: inline-block; */
 `
 
 const ProductImage = styled.img`
@@ -208,29 +159,7 @@ const Label = styled.label`
     text-transform: uppercase;
   }
 `
-const BigTitle = styled.div`
-  font-family: 'Roboto Slab', serif;
-  font-size: 1.5rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin: ${(props) => props.theme.padding} 0;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  &::before,
-  ::after {
-    content: '';
-    border-top: 1px solid ${(props) => props.theme.text};
-    margin: 0 20px 0 0;
-    flex: 1 0 20px;
-    min-width: 50px;
-  }
-  &::after {
-    margin: 0 0 0 20px;
-  }
-`
+const BigTitle = styled.div``
 const TightBigTitle = styled(BigTitle)`
   margin: 0;
 `
@@ -252,21 +181,7 @@ const Centerer = styled.div`
   align-items: center;
   height: 100%;
 `
-const WrappableRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  & > div {
-    width: fit-content;
-  }
-  @media (max-width: 800px) {
-    flex-direction: column;
-    & > div {
-      width: 100%;
-    }
-  }
-  column-gap: 40px;
-`
+
 const LoginCard = styled(Card)`
   padding: calc(${(props) => props.theme.padding}*2)
     calc(${(props) => props.theme.padding}*4)
@@ -286,24 +201,9 @@ const CompactInputGroup = styled(InputGroup)`
   overflow: auto;
 `
 
-const ModalContainer = styled.div`
-  position: fixed; /* Stay in place */
-  z-index: 50; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: #474e5da9;
-  padding-top: 50px;
-`
+const ModalContainer = styled.div``
 
-const ModalContent = styled(Card)`
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  max-width: 1020px; /* Could be more or less, depending on screen size */
-  width: fit-content;
-  overflow: visible;
-`
+const ModalContent = styled(Card)``
 
 const ModalHalf = styled.div`
   width: 400px;
@@ -321,11 +221,6 @@ const ModalOr = styled.div`
 const HalfWidth = styled.div`
   width: 50%;
   padding: 30px;
-`
-
-const ContactText = styled.p`
-  /* letter-spacing: 1px; */
-  line-height: 1.5;
 `
 
 const ProductText = styled.p`
@@ -449,7 +344,6 @@ const TextLink = styled(Link)`
 `
 export {
   ProductText,
-  ShadowInput,
   CardRow,
   Toggle,
   Badges,
@@ -466,11 +360,7 @@ export {
   CancelButton,
   FullWidthButton,
   FullWidthCancelButton,
-  InvertedButton,
-  StyledInput,
   Label,
-  NumberInput,
-  WideNumberInput,
   SubTitle,
   Right,
   ColoredText,
@@ -480,8 +370,6 @@ export {
   LoginCard,
   InputGroup,
   CompactInputGroup,
-  TextArea,
-  ShadowTextArea,
   Form,
   ModalContainer,
   ModalContent,
@@ -489,12 +377,9 @@ export {
   ModalOr,
   Center,
   HalfWidth,
-  ContactText,
   RowSpaceEvenly,
   Card,
   ProductImage,
-  WrappableRow,
-  BottomTextLink,
   Padding,
   PaddingH,
   PaddedForm,

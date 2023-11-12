@@ -7,11 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   FullWidthButton,
   Label,
-  StyledInput,
   BigTitle,
   Centerer,
   LoginCard,
-  InputGroup,
   Form,
   BottomTextLink,
   PaddedForm,
@@ -20,6 +18,7 @@ import useUserService from '../../services/user'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import useToast from '../../util/promiseToast'
+import Input from '../basic/Input'
 const ValidationFailed = styled.div`
   color: ${(props) => props.theme.error};
   ul {
@@ -71,15 +70,11 @@ const ForgotPassword = () => {
       <LoginCard>
         <BigTitle>{lang.reset_password}</BigTitle>
         <PaddedForm onSubmit={onSubmit}>
-          <InputGroup style={{ marginTop: '30px' }}>
-            <Label>
-              {lang.email}
-              <StyledInput
-                {...email}
-                $isonlightbackground
-              />
-            </Label>
-          </InputGroup>
+          <Input
+            label={lang.email}
+            {...email}
+            $isonlightbackground
+          />
 
           <FullWidthButton
             type="submit"

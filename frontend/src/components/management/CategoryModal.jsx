@@ -10,7 +10,6 @@ import {
   Form,
   CompactInputGroup,
   Label,
-  StyledInput,
   CancelButton,
   Button,
   ProductImage,
@@ -23,6 +22,7 @@ import { useSelector } from 'react-redux'
 import BaseModal from './BaseModal'
 import useUploadService from '../../services/uploads'
 import { backendURL } from '../../util/config'
+import Input from '../basic/Input'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const categoryService = useCategoryService()
@@ -137,56 +137,37 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
         <ModalHalf>
           <SubTitle>{lang.add_new_category}</SubTitle>
           <Form>
-            <CompactInputGroup>
-              <Label>
-                {lang.product_name} lv
-                <StyledInput
-                  $isonlightbackground
-                  {...name_lv}
-                />
-              </Label>
-            </CompactInputGroup>
-            <CompactInputGroup>
-              <Label>
-                {lang.product_name} en
-                <StyledInput
-                  $isonlightbackground
-                  {...name_en}
-                />
-              </Label>
-            </CompactInputGroup>
-            <CompactInputGroup>
-              <Label>
-                {lang.product_name} de
-                <StyledInput
-                  $isonlightbackground
-                  {...name_de}
-                />
-              </Label>
-            </CompactInputGroup>
-            <CompactInputGroup>
-              <Label>
-                ID
-                <StyledInput
-                  $isonlightbackground
-                  {...id}
-                />
-              </Label>
-            </CompactInputGroup>
+            <Input
+              label={`${lang.product_name} lv`}
+              $isonlightbackground
+              {...name_lv}
+            />
+            <Input
+              label={`${lang.product_name} en`}
+              $isonlightbackground
+              {...name_en}
+            />{' '}
+            <Input
+              label={`${lang.product_name} de`}
+              $isonlightbackground
+              {...name_de}
+            />
+            <Input
+              label="ID"
+              $isonlightbackground
+              {...id}
+            />
             <ProductImage
               style={{ width: '200px' }}
               src={`/images/${image}`}
             />
-            <CompactInputGroup>
-              <Label>
-                <input
-                  filename={image}
-                  onChange={(e) => imageSelected(e)}
-                  type="file"
-                  accept="image/*"
-                />
-              </Label>
-            </CompactInputGroup>
+            <input
+              label={lang.image}
+              filename={image}
+              onChange={(e) => imageSelected(e)}
+              type="file"
+              accept="image/*"
+            />
           </Form>
         </ModalHalf>
       </Row>

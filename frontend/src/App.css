@@ -1,7 +1,19 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #222 !important;
+  }
+}
+:root {
+  min-height: 100vh;
+  --toastify-color-success: rgb(69, 148, 30);
+
+  --background: red;
+}
 html {
   box-sizing: border-box;
   min-height: 100vh;
   font-size: 16px;
+  background-color: gray;
 
   @media (max-width: 2000px) {
     font-size: 16px;
@@ -18,21 +30,12 @@ html {
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #fafafa;
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
   min-height: 100vh;
   color: #333333;
-}
-
-#root {
-  min-height: 100vh;
-  --toastify-color-success: rgb(69, 148, 30);
-}
-
-button {
-  cursor: pointer;
+  background-color: var(--background);
 }
 
 .leaflet-control {
@@ -51,4 +54,16 @@ input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   -webkit-appearance: none;
+}
+
+button {
+  cursor: pointer;
+}
+.card {
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+.full-width {
+  width: 100% !important;
 }

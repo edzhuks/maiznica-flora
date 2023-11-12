@@ -2,20 +2,14 @@ import { useEffect, useState, useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  NumberInput,
   Button,
   Row,
   CancelButton,
   ProductImage,
-  WrappableRow,
   Centerer,
-  SubTitle,
-  InputGroup,
   Label,
-  ShadowInput,
   CompactInputGroup,
   Form,
-  StyledInput,
   BigTitle,
 } from '../styled/base'
 import useProductService from '../../services/product'
@@ -27,6 +21,7 @@ import BaseModal from '../management/BaseModal'
 import useField from '../../hooks/useField'
 import useToast from '../../util/promiseToast'
 import ProductList from '../productList/ProductList'
+import Input from '../basic/Input'
 
 // const Center = styled.div`
 //   display: flex;
@@ -67,7 +62,7 @@ const DiscountModal = ({ visible, onSubmit, onCancel }) => {
           <Label>
             {lang.discount_price}
 
-            <NumberInput
+            <Input
               $isonlightbackground
               {...discountPrice}
             />
@@ -77,7 +72,7 @@ const DiscountModal = ({ visible, onSubmit, onCancel }) => {
         <CompactInputGroup>
           <Label>
             {lang.start_date}
-            <StyledInput
+            <Input
               type="date"
               $isonlightbackground
               valueAsDate={startDate}
@@ -88,7 +83,7 @@ const DiscountModal = ({ visible, onSubmit, onCancel }) => {
         <CompactInputGroup>
           <Label>
             {lang.end_date}
-            <StyledInput
+            <Input
               type="date"
               $isonlightbackground
               valueAsDate={endDate}
@@ -205,7 +200,8 @@ const Product = () => {
             </CancelButton>
           </Row>
         )}
-        <WrappableRow
+        <div
+          className="row"
           style={{
             justifyContent: 'center',
           }}>
@@ -220,7 +216,7 @@ const Product = () => {
             setQuantity={setQuantity}
             onOrder={addToCart}
           />
-        </WrappableRow>
+        </div>
         {product.relatedProducts && product.relatedProducts.length > 0 && (
           <>
             <BigTitle>{lang.related_products}</BigTitle>

@@ -9,7 +9,6 @@ import {
   FullWidthButton,
   Label,
   Row,
-  StyledInput,
 } from '../styled/base'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -17,6 +16,7 @@ import useToast from '../../util/promiseToast'
 import { Person } from '@styled-icons/evaicons-solid/Person'
 import { Phone } from '@styled-icons/boxicons-solid/Phone'
 import { Home } from '@styled-icons/boxicons-solid/Home'
+import Input from '../basic/Input'
 
 const Radio = styled.label`
   display: block;
@@ -191,69 +191,45 @@ const AddressForm = ({ submit, values, cancel }) => {
   }
   return (
     <Form onSubmit={onSubmit}>
-      <InputGroup>
-        <CompactLabel className="required">
-          <span>{lang.city}</span>
-          <StyledInput
-            {...city}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel className="required">
-          <span>{lang.street}</span>
-          <StyledInput
-            {...street}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel>
-          <span>{lang.house}</span>
-          <StyledInput
-            {...house}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel>
-          <span>{lang.apt}</span>
-          <StyledInput
-            {...apartment}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel className="required">
-          <span>{lang.name}</span>
-          <StyledInput
-            {...name}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel className="required">
-          <span>{lang.surname}</span>
-          <StyledInput
-            {...surname}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
-      <InputGroup>
-        <CompactLabel className="required">
-          <span>{lang.phone}</span>
-          <StyledInput
-            {...phone}
-            $isonlightbackground
-          />
-        </CompactLabel>
-      </InputGroup>
+      <Input
+        label={lang.city}
+        $required
+        {...city}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.street}
+        $required
+        {...street}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.house}
+        {...house}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.apt}
+        {...apartment}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.name}
+        $required
+        {...name}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.surname}
+        $required
+        {...surname}
+        $isonlightbackground
+      />
+      <Input
+        label={lang.phone}
+        {...phone}
+        $isonlightbackground
+      />
       <InputGroup style={{ display: 'flex' }}>
         <CompactLabel style={{ alignSelf: 'end' }}>
           {!values ? (

@@ -3,11 +3,11 @@ import { Center, Centerer, LoginCard } from '../styled/base'
 
 const InfoPage = () => {
   return (
-    <Centerer>
-      <LoginCard style={{ width: 'fit-content' }}>
+    <div className="center-h">
+      <div className="card p">
         <Outlet />
-      </LoginCard>
-    </Centerer>
+      </div>
+    </div>
   )
 }
 

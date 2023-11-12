@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Container, Padding, TextLink, WrappableRow } from './styled/base'
+import { Container, Padding, TextLink } from './styled/base'
 import ContactPage from './contact/ContactPage'
 import { Link } from 'react-router-dom'
 import ContactForm from './contact/ContactForm'
@@ -28,7 +28,9 @@ const Footer = () => {
     <FooterContainer>
       <Padding style={{ width: '100%' }}>
         <Container style={{ width: 'fit-content' }}>
-          <WrappableRow style={{ width: 'fit-content' }}>
+          <div
+            className="row"
+            style={{ width: 'fit-content' }}>
             <ContactForm />
             <Column>
               <Address />
@@ -38,7 +40,7 @@ const Footer = () => {
               </TextLink>
               <TextLink to="/privacy_policy">{lang.privacy_policy}</TextLink>
             </Column>
-          </WrappableRow>
+          </div>
         </Container>
       </Padding>
     </FooterContainer>
