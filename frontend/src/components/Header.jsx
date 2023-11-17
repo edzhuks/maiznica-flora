@@ -1,7 +1,6 @@
 import styled, { css, keyframes } from 'styled-components'
-import { Button, Card, Container, InvertedButton, Row } from './styled/base'
 import { useDispatch, useSelector } from 'react-redux'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import UserContext from '../contexts/userContext'
 import { ShoppingCart } from '@styled-icons/entypo/ShoppingCart'
 import { Menu } from '@styled-icons/evaicons-solid/Menu'
@@ -18,72 +17,7 @@ import MobileContext from '../contexts/mobileContext'
 import { changeLanguage } from '../reducers/languageReducer'
 import { ScrewdriverWrench } from '@styled-icons/fa-solid/ScrewdriverWrench'
 import { DocumentBulletListClock } from '@styled-icons/fluentui-system-filled/DocumentBulletListClock'
-import { Exit } from '@styled-icons/icomoon/Exit'
-import { Enter } from '@styled-icons/icomoon/Enter'
-import { AccountCircle } from '@styled-icons/material/AccountCircle'
 import Search from './basic/Search'
-
-const HeaderSpacer = styled.div`
-  height: calc(
-    ${(props) => props.theme.headerHeight} + ${(props) => props.theme.padding}
-  );
-`
-const HeaderContainer = styled(Container)`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  position: relative;
-`
-
-const DesktopHeader = styled.div`
-  box-shadow: ${(props) => props.theme.shadow};
-  width: 100vw;
-  height: ${(props) => props.theme.headerHeight};
-  position: fixed;
-  top: 0;
-  /* padding-top: 18px; */
-  background-color: #fffdfd;
-  z-index: 16;
-`
-
-const MobileHeader = styled(DesktopHeader)`
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-`
-
-const HeaderTab = styled(NavLink)`
-  font-family: 'Roboto Slab', serif;
-  padding: 0 12px;
-  text-transform: uppercase;
-  color: ${(props) => props.theme.text};
-  text-decoration: none;
-  font-size: 1.2rem;
-  background-color: transparent;
-  flex: 0 1 auto;
-  display: flex;
-  align-items: center;
-  border: 0;
-  white-space: nowrap;
-  cursor: pointer;
-  justify-content: center;
-  transition: 0.3s;
-  &:hover {
-    color: ${(props) => props.theme.main};
-  }
-  ${(props) =>
-    !props.$noactive &&
-    css`
-      &.active {
-        background-color: props.theme.main;
-        color: props.theme.white;
-        &:hover {
-          color: props.theme.text;
-        }
-      }
-    `}
-  height: 100%;
-`
 
 const pop = keyframes`
   0% {
@@ -110,8 +44,9 @@ const pop = keyframes`
   }
 `
 const AnimatedShoppingCart = styled.div`
+  position: relative;
   animation: ${(props) =>
-    props.cart.length > 0
+    props.animate
       ? css`
           ${pop} 0.7s ease-in-out both
         `
@@ -139,52 +74,12 @@ const CartBadge = styled.div`
   }
 `
 
-const slideInFromTop = keyframes`
-from {
-    transform: translateY(-100%);
-}to{
-    transform: translateY(0);
-}`
-
-const SideMenu = styled(Card)`
-  position: fixed;
-  left: 0;
-  top: ${(props) => props.theme.headerHeight};
-  z-index: 13;
-  width: 100vw;
-  align-items: end;
-  padding: 20px 0px 0px 0px;
-  animation: ${slideInFromTop} 0.2s;
-`
-
-const SideMenuTab = styled(NavLink)`
-  font-family: 'Roboto Slab', serif;
-  flex: 0 1 auto;
-  text-transform: uppercase;
-  color: ${(props) => props.theme.text};
-  text-decoration: none;
-  font-size: 1rem;
-  padding: 0.7rem 2rem 0.7rem 0px;
-  background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid ${(props) => props.theme.lighter};
-  width: 100%;
-  text-align: right;
-  &.active {
-    background-color: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.white};
-  }
-`
-
-const Spacer = styled.div`
-  flex: 1 1 auto;
-`
-
 const Lang = styled.div`
   display: flex;
+  align-items: center;
   button {
     transition: 0.2s;
-
+    box-shadow: none;
     &:hover {
       background: ${(props) => props.theme.main};
       color: ${(props) => props.theme.white};
@@ -193,21 +88,16 @@ const Lang = styled.div`
     color: ${(props) => props.theme.dark};
     font-size: 12px;
     font-weight: bold;
-    padding: 5px;
+    padding: 8px;
     margin: 0px 3px;
-    border: 0px solid ${(props) => props.theme.main};
     border-radius: 50%;
-    cursor: pointer;
   }
 `
 
 const MobileLang = styled(Lang)`
-  flex-direction: row;
   justify-content: end;
   button {
     margin: 0px 0px 0px 15px;
-    padding: 7px;
-    font-size: 0.7rem;
   }
 `
 
@@ -223,7 +113,7 @@ const Header = () => {
   const [mobile, setIsMobile] = useContext(MobileContext)
   const cart = useSelector((state) => state.cart)
   const productCount = useSelector((state) =>
-    state.cart.reduce((acc, cur) => {
+    state.cart.content.reduce((acc, cur) => {
       return acc + cur.quantity
     }, 0)
   )
@@ -249,228 +139,254 @@ const Header = () => {
 
   return (
     <div>
-      <HeaderSpacer />
-      {mobile ? (
-        <>
-          <MobileHeader>
-            <HeaderTab
-              to="/"
-              $noactive={true}>
-              <Logo
-                src={`/images/logo-${selectedLang}.png`}
-                alt="logo"
-              />
-            </HeaderTab>
+      <div style={{ height: 'var(--header-height)' }} />
 
-            <Spacer />
-            {user ? (
-              <HeaderTab to="/order/cart">
-                <AnimatedShoppingCart
-                  cart={cart}
-                  key={JSON.stringify(cart)}>
-                  <ShoppingCart size="2rem" />
-                  <CartBadge number={productCount}>
-                    <span>{productCount}</span>
-                  </CartBadge>
-                </AnimatedShoppingCart>
-              </HeaderTab>
-            ) : (
-              <HeaderTab to="/login">
-                <ShoppingCart size="2rem" />
-              </HeaderTab>
-            )}
-
-            <HeaderTab
-              style={{ padding: 0 }}
-              as="button"
-              onClick={() => setSideMenu(!sideMenu)}>
-              {sideMenu ? <CloseOutline size="3rem" /> : <Menu size="3rem" />}
-            </HeaderTab>
-          </MobileHeader>
-          {sideMenu && (
-            <SideMenu>
-              <Search
-                value={searchQuery}
-                onChange={(value) => handleSearchChange(value)}
-                onEnter={search}
-                onClear={() => handleSearchChange('')}
-                onSearch={() => {
-                  search()
-                  setSideMenu(false)
-                }}
-              />
-              <SideMenuTab
+      {sideMenu && (
+        <div className="side-menu card">
+          <div className="tab side-menu-tab  self-end">
+            <Search
+              value={searchQuery}
+              onChange={(value) => handleSearchChange(value)}
+              onEnter={search}
+              onClear={() => handleSearchChange('')}
+              onSearch={() => {
+                search()
+                setSideMenu(false)
+              }}
+            />
+          </div>
+          <div className="card-divider" />
+          <NavLink
+            className="tab side-menu-tab"
+            onClick={() => setSideMenu(false)}
+            to="/category/all">
+            {lang.products}
+          </NavLink>
+          <div className="card-divider" />
+          <NavLink
+            className="tab side-menu-tab"
+            onClick={() => setSideMenu(false)}
+            to="/about">
+            {lang.about}
+          </NavLink>
+          <div className="card-divider" />
+          <NavLink
+            className="tab side-menu-tab"
+            onClick={() => setSideMenu(false)}
+            to="/contact">
+            {lang.contact}
+          </NavLink>
+          <div className="card-divider" />
+          {user && user.admin && (
+            <>
+              <NavLink
+                className="tab side-menu-tab"
                 onClick={() => setSideMenu(false)}
-                to="/category/all">
-                {lang.products}
-              </SideMenuTab>
-              <SideMenuTab
+                to="/management/categories">
+                {lang.management}
+              </NavLink>
+              <div className="card-divider" />
+              <NavLink
+                className="tab side-menu-tab"
                 onClick={() => setSideMenu(false)}
-                to="/about">
-                {lang.about}
-              </SideMenuTab>
-              <SideMenuTab
-                onClick={() => setSideMenu(false)}
-                to="/contact">
-                {lang.contact}
-              </SideMenuTab>
-              {user && user.admin && (
-                <>
-                  <SideMenuTab
-                    onClick={() => setSideMenu(false)}
-                    to="/management/categories">
-                    {lang.management}
-                  </SideMenuTab>
-                  <SideMenuTab
-                    onClick={() => setSideMenu(false)}
-                    to="/orders">
-                    {lang.orders}
-                  </SideMenuTab>
-                </>
-              )}
-              {!user && (
-                <>
-                  <SideMenuTab
-                    onClick={() => setSideMenu(false)}
-                    to="/login">
-                    {lang.sign_in}
-                  </SideMenuTab>
-                  <SideMenuTab
-                    onClick={() => setSideMenu(false)}
-                    to="/signup">
-                    {lang.sign_up}
-                  </SideMenuTab>
-                </>
-              )}
-              {user && (
-                <SideMenuTab
-                  to="/account/previous_orders"
-                  onClick={() => setSideMenu(false)}>
-                  {lang.profile}
-                </SideMenuTab>
-              )}
-              {user && (
-                <SideMenuTab
-                  as="button"
-                  onClick={logout}>
-                  {lang.sign_out}
-                </SideMenuTab>
-              )}
-              <SideMenuTab
-                as="div"
-                style={{ border: '0' }}>
-                <MobileLang>
-                  <button
-                    onClick={() => {
-                      dispatch(changeLanguage('lv'))
-                    }}>
-                    LV
-                  </button>
-                  <button
-                    onClick={() => {
-                      dispatch(changeLanguage('en'))
-                    }}>
-                    EN
-                  </button>
-                  <button
-                    onClick={() => {
-                      dispatch(changeLanguage('de'))
-                    }}>
-                    DE
-                  </button>
-                </MobileLang>
-              </SideMenuTab>
-            </SideMenu>
+                to="/orders">
+                {lang.orders}
+              </NavLink>
+              <div className="card-divider" />
+            </>
           )}
-        </>
-      ) : (
-        <>
-          <DesktopHeader>
-            <HeaderContainer>
-              <HeaderTab
+          {!user && (
+            <>
+              <NavLink
+                className="tab side-menu-tab"
+                onClick={() => setSideMenu(false)}
+                to="/login">
+                {lang.sign_in}
+              </NavLink>
+              <div className="card-divider" />
+              <NavLink
+                className="tab side-menu-tab"
+                onClick={() => setSideMenu(false)}
+                to="/signup">
+                {lang.sign_up}
+              </NavLink>
+              <div className="card-divider" />
+            </>
+          )}
+          {user && (
+            <>
+              <NavLink
+                className="tab side-menu-tab"
+                to="/account/previous_orders"
+                onClick={() => setSideMenu(false)}>
+                {lang.profile}
+              </NavLink>
+              <div className="card-divider" />
+            </>
+          )}
+          {user && (
+            <>
+              <Link
                 to="/"
-                $noactive={true}>
-                <Logo
-                  src={`/images/logo-${selectedLang}.png`}
-                  alt="logo"
-                />
-              </HeaderTab>
-
-              <HeaderTab to="/category/all">{lang.products}</HeaderTab>
-              <HeaderTab to="/about">{lang.about}</HeaderTab>
-              <HeaderTab to="/contact">{lang.contact}</HeaderTab>
-              <Search
-                value={searchQuery}
-                onChange={(value) => handleSearchChange(value)}
-                onEnter={search}
-                onClear={() => handleSearchChange('')}
-                onSearch={() => {
-                  search()
-                  setSideMenu(false)
-                }}
-              />
-
-              <Spacer />
-              {user ? (
-                <HeaderTab to="/order/cart">
-                  <AnimatedShoppingCart
-                    cart={cart}
-                    key={JSON.stringify(cart)}>
-                    <ShoppingCart size="2.2rem" />
-                    <CartBadge number={productCount}>
-                      <span>{productCount}</span>
-                    </CartBadge>
-                  </AnimatedShoppingCart>
-                </HeaderTab>
-              ) : (
-                <HeaderTab to="/login">
-                  <ShoppingCart size="2.2rem" />
-                </HeaderTab>
-              )}
-              {user && user.admin && (
-                <>
-                  <HeaderTab to="/management/categories">
-                    <ScrewdriverWrench size="2rem" />
-                  </HeaderTab>
-                  <HeaderTab to="/orders">
-                    <DocumentBulletListClock size="2rem" />
-                  </HeaderTab>
-                </>
-              )}
-              {!user && (
-                <>
-                  <HeaderTab to="/login">{lang.sign_in}</HeaderTab>
-                </>
-              )}
-              {user && (
-                <HeaderTab to="/account/previous_orders">
-                  {lang.profile}
-                </HeaderTab>
-              )}
-              <Lang>
-                <button
-                  onClick={() => {
-                    dispatch(changeLanguage('lv'))
-                  }}>
-                  LV
-                </button>
-                <button
-                  onClick={() => {
-                    dispatch(changeLanguage('en'))
-                  }}>
-                  EN
-                </button>
-                <button
-                  onClick={() => {
-                    dispatch(changeLanguage('de'))
-                  }}>
-                  DE
-                </button>
-              </Lang>
-            </HeaderContainer>
-          </DesktopHeader>
-        </>
+                className="tab side-menu-tab"
+                onClick={logout}>
+                {lang.sign_out}
+              </Link>
+              <div className="card-divider" />
+            </>
+          )}
+          <div className="tab side-menu-tab">
+            <MobileLang>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('lv'))
+                }}>
+                LV
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('en'))
+                }}>
+                EN
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('de'))
+                }}>
+                DE
+              </button>
+            </MobileLang>
+          </div>
+        </div>
       )}
+      <div className="header card full-width p-h">
+        <Link
+          className="tab"
+          to="/">
+          <Logo
+            style={{ height: 'calc(var(--header-height) - 10px)' }}
+            src={`/images/logo-${selectedLang}.png`}
+            alt="logo"
+          />
+        </Link>
+        {!mobile && (
+          <>
+            <NavLink
+              className="tab"
+              to="/category/all">
+              {lang.products}
+            </NavLink>
+            <NavLink
+              className="tab"
+              to="/about">
+              {lang.about}
+            </NavLink>
+            <NavLink
+              className="tab"
+              to="/contact">
+              {lang.contact}
+            </NavLink>
+            <Search
+              className="tab"
+              value={searchQuery}
+              onChange={(value) => handleSearchChange(value)}
+              onEnter={search}
+              onClear={() => handleSearchChange('')}
+              onSearch={() => {
+                search()
+                setSideMenu(false)
+              }}
+            />
+          </>
+        )}
+        <div style={{ flex: '100 ' }} />
+        {user ? (
+          <NavLink
+            className="tab relative"
+            to="/order/cart">
+            <AnimatedShoppingCart
+              animate={cart.animate}
+              key={JSON.stringify(cart)}>
+              <ShoppingCart className="icon-b " />
+              {user && (
+                <CartBadge number={productCount}>
+                  <span>{productCount}</span>
+                </CartBadge>
+              )}
+            </AnimatedShoppingCart>
+          </NavLink>
+        ) : (
+          <Link
+            className="tab relative"
+            to="/login">
+            <ShoppingCart className="icon-b " />
+          </Link>
+        )}
+
+        {!mobile && (
+          <>
+            {user && user.admin && (
+              <>
+                <NavLink
+                  className="tab"
+                  to="/management/categories">
+                  <ScrewdriverWrench className="icon-b" />
+                </NavLink>
+                <NavLink
+                  className="tab"
+                  to="/orders">
+                  <DocumentBulletListClock className="icon-b" />
+                </NavLink>
+              </>
+            )}
+            {!user && (
+              <NavLink
+                className="tab"
+                to="/login">
+                {lang.sign_in}
+              </NavLink>
+            )}
+            {user && (
+              <NavLink
+                className="tab"
+                to="/account/previous_orders">
+                {lang.profile}
+              </NavLink>
+            )}
+            <Lang>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('lv'))
+                }}>
+                LV
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('en'))
+                }}>
+                EN
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(changeLanguage('de'))
+                }}>
+                DE
+              </button>
+            </Lang>
+          </>
+        )}
+        {mobile && (
+          <button
+            className="tab inverted"
+            onClick={() => setSideMenu(!sideMenu)}>
+            {sideMenu ? (
+              <CloseOutline className="icon-xb" />
+            ) : (
+              <Menu className="icon-xb" />
+            )}
+          </button>
+        )}
+      </div>
     </div>
   )
 }

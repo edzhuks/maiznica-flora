@@ -1,13 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  BigTitle,
-  CancelButton,
-  FullWidthCancelButton,
-  InputGroup,
-  Label,
-  LoginCard,
-  PaddedForm,
-} from '../styled/base'
 import { useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import useField from '../../hooks/useField'
@@ -60,24 +51,34 @@ const UserData = () => {
   }
 
   return (
-    <LoginCard>
-      <BigTitle>{lang.account_information}</BigTitle>
-      <PaddedForm>
+    <div className="card">
+      <h1 className="big-title m-v-b">{lang.account_information}</h1>
+      <form
+        className="p-h-b"
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}>
         <Input
           label={lang.email}
           {...email}
           disabled
-          style={{ color: 'gray' }}
+          style={{ color: 'var(--subtle)' }}
         />
         {deleteClicked && (
           <Input
             label={lang.password}
             {...password}
+            required
+            autoComplete="new-password"
           />
         )}
-      </PaddedForm>
-      <CancelButton onClick={deleteAccount}>{lang.delete_account}</CancelButton>
-    </LoginCard>
+        <button
+          className="cancel full-width m-d-b  m-t-m"
+          onClick={deleteAccount}>
+          {lang.delete_account}
+        </button>
+      </form>
+    </div>
   )
 }
 

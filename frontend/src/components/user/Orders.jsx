@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import useOrderService from '../../services/order'
-import OrderManagementPage from '../orders/OrderManagementPage'
 import { useEffect } from 'react'
 import { OrderList } from '../orders/styledComponents'
 import Order from '../orders/Order'

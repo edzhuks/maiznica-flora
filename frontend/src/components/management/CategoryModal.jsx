@@ -1,27 +1,10 @@
 import { useEffect } from 'react'
-import {
-  ModalContainer,
-  ModalContent,
-  ModalHalf,
-  ModalOr,
-  Row,
-  BigTitle,
-  SubTitle,
-  Form,
-  CompactInputGroup,
-  Label,
-  CancelButton,
-  Button,
-  ProductImage,
-} from '../styled/base'
-import Select from 'react-select'
 import { useState } from 'react'
 import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
-import BaseModal from './BaseModal'
+import BaseModal from '../basic/BaseModal'
 import useUploadService from '../../services/uploads'
-import { backendURL } from '../../util/config'
 import Input from '../basic/Input'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
@@ -30,14 +13,12 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
+  const selectedCategories = useField('select')
   const name_lv = useField('text')
   const name_en = useField('text')
   const name_de = useField('text')
   const id = useField('text')
-  const [image, setImage] = useState(
-    'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
-  )
+  const [image, setImage] = useState('placeholder.jpeg')
 
   useEffect(() => {
     if (activeCategory) {
@@ -51,7 +32,13 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             }))
             .filter((c) => c.value !== activeCategory.id)
         )
-        setSelectedCategoryIds(activeCategory.categories.map((c) => c.id))
+        selectedCategories.changeValue(
+          activeCategory.categories.map((category) => ({
+            value: category.id,
+            label:
+              category.displayName[selectedLang] || category.displayName.lv,
+          }))
+        )
       })
     }
   }, [selectedLang, activeCategory])
@@ -61,10 +48,8 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     name_en.clear()
     name_de.clear()
     id.clear()
-    setImage(
-      'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
-    )
-    setSelectedCategoryIds([])
+    setImage('placeholder.jpeg')
+    selectedCategories.clear()
   }
 
   const addCategories = () => {
@@ -89,7 +74,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     } else {
       categoryService
         .addExisting({
-          categoriesToAdd: selectedCategoryIds,
+          categoriesToAdd: selectedCategories.value.map((c) => c.value),
           parentCategory: activeCategory.id,
         })
         .then(() => {
@@ -103,7 +88,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
     const formData = new FormData()
     formData.append('image', event.target.files[0])
     uploadService.uploadImage(formData).then((response) => {
-      setImage(`${backendURL}${response.data.path}`)
+      setImage(`${response.data.path}`)
     })
   }
 
@@ -115,62 +100,74 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
         clear()
         onClose()
       }}
-      onSubmit={() => addCategories()}
-      padding="20px 20px">
-      <Row style={{ flexWrap: 'wrap' }}>
-        <ModalHalf>
-          <SubTitle>{lang.select_existing_categories}</SubTitle>
-          <div style={{ width: '360px' }}>
-            <Select
-              isMulti
-              options={allCategories}
-              onChange={(e) =>
-                setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
-              }
-              value={allCategories.filter((item) =>
-                selectedCategoryIds.includes(item.value)
-              )}
-            />
-          </div>
-        </ModalHalf>
-        <ModalOr>{lang.or}</ModalOr>
-        <ModalHalf>
-          <SubTitle>{lang.add_new_category}</SubTitle>
-          <Form>
+      onSubmit={() => addCategories()}>
+      <div className="row full-width">
+        <div
+          className="column p"
+          style={{ flex: '10 1 300px', maxWidth: '1000px' }}>
+          <h2 className="title text-center">
+            {lang.select_existing_categories}
+          </h2>
+          <Input
+            options={allCategories}
+            {...selectedCategories}
+            label={lang.categories}
+          />
+          {/* <Select
+            isMulti
+            options={allCategories}
+            onChange={(e) =>
+              setSelectedCategoryIds(e ? e.map((x) => x.value) : [])
+            }
+            value={allCategories.filter((item) =>
+              selectedCategoryIds.includes(item.value)
+            )}
+          /> */}
+        </div>
+        <div
+          className="column p"
+          style={{ flex: '1 1 60px' }}>
+          <h2 className="title text-center">{lang.or}</h2>
+        </div>
+        <div
+          className="column p"
+          style={{ flex: '10 1 300px' }}>
+          <h2 className="title text-center">{lang.add_new_category}</h2>
+          <form>
             <Input
               label={`${lang.product_name} lv`}
-              $isonlightbackground
               {...name_lv}
+              required
             />
             <Input
               label={`${lang.product_name} en`}
-              $isonlightbackground
               {...name_en}
             />{' '}
             <Input
               label={`${lang.product_name} de`}
-              $isonlightbackground
               {...name_de}
             />
             <Input
               label="ID"
-              $isonlightbackground
               {...id}
+              required
             />
-            <ProductImage
+            <img
+              className="m-t"
               style={{ width: '200px' }}
               src={`/images/${image}`}
             />
-            <input
-              label={lang.image}
+            <Input
+              required
+              label=""
               filename={image}
               onChange={(e) => imageSelected(e)}
               type="file"
               accept="image/*"
             />
-          </Form>
-        </ModalHalf>
-      </Row>
+          </form>
+        </div>
+      </div>
     </BaseModal>
   )
 }

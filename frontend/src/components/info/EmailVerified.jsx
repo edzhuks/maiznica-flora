@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { BigTitle, SubTitle } from '../styled/base'
 
 const EmailVerified = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])

@@ -1,6 +1,5 @@
 import OrderHeader from './OrderHeader'
 import { ActionTile, Question, _ExpandedOrder } from './styledComponents'
-import { RowSpaceEvenly, Button, CancelButton } from '../styled/base'
 import ProductTile from './ProductTile'
 import { useSelector } from 'react-redux'
 
@@ -14,12 +13,16 @@ const OrderAction = ({
   return (
     <ActionTile>
       <Question>{question}</Question>
-      <RowSpaceEvenly>
-        <Button onClick={action1callback}>{action1text}</Button>
+      <div className="row evenly">
+        <button onClick={action1callback}>{action1text}</button>
         {action2text && (
-          <CancelButton onClick={action2callback}>{action2text}</CancelButton>
+          <button
+            className="cancel"
+            onClick={action2callback}>
+            {action2text}
+          </button>
         )}
-      </RowSpaceEvenly>
+      </div>
     </ActionTile>
   )
 }

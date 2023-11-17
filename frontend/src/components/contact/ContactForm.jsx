@@ -4,9 +4,9 @@ import Input from '../basic/Input'
 const ContactForm = (props) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <div className={`card p-m ${props.className}`}>
-      <h1 className="big-title">{lang.contact_us}</h1>
-      <form className="m-d">
+    <div className={`card ${props.className}`}>
+      <h1 className="big-title m-v-m">{lang.contact_us}</h1>
+      <form className="p-h-m">
         <Input
           label={lang.name}
           required
@@ -24,7 +24,7 @@ const ContactForm = (props) => {
         />
       </form>
       <div className="text-right">
-        <button>{lang.send_message}</button>
+        <button className="m-m">{lang.send_message}</button>
       </div>
     </div>
   )

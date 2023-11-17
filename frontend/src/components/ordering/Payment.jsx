@@ -1,19 +1,11 @@
-import { useState } from 'react'
-import {
-  BigTitle,
-  Button,
-  Card,
-  FullWidthButton,
-  Label,
-  TextLink,
-} from '../styled/base'
 import { useSelector } from 'react-redux'
-import Checkbox from '../basic/Checkbox'
 import { toast } from 'react-toastify'
+import useField from '../../hooks/useField'
+import Input from '../basic/Input'
+import { Link } from 'react-router-dom'
 
 const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
-  const [termsAccepted, acceptTerms] = useState(false)
-  const [termsChecked, setTermsChecked] = useState(false)
+  const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   const tryAcceptTerms = () => {
@@ -26,8 +18,14 @@ const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
 
   return (
     <div>
-      {iframe && <Button onClick={startOver}>{lang.start_over_payment}</Button>}
-      <Card>
+      {iframe && (
+        <button
+          className="m-d"
+          onClick={startOver}>
+          {lang.start_over_payment}
+        </button>
+      )}
+      <div className="card column">
         {iframe ? (
           <iframe
             style={{ height: '800px', border: 'none' }}
@@ -36,46 +34,44 @@ const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
           />
         ) : (
           <div
+            className="center-vh"
             style={{
               width: '100%',
-              aspectRatio: '2',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              height: '800px',
             }}>
             {orderStatus === 'failed' ? (
               <div>
                 {lang.payment_failed}
                 <br />
-                <Button onClick={startOver}>{lang.start_over_payment}</Button>
+                <button onClick={startOver}>{lang.start_over_payment}</button>
               </div>
             ) : (
               <div>
-                <Checkbox
-                  checked={termsChecked}
-                  onChange={() => {
-                    setTermsChecked(!termsChecked)
-                  }}
-                  label={
-                    <div>
-                      {lang.agree_terms}
-                      <TextLink to="/distance_agreement">
-                        {lang.to_distance_agreement}
-                      </TextLink>
-                    </div>
-                  }
-                />
-                <FullWidthButton
+                <div className="row align-cross-end">
+                  <Input
+                    {...termsChecked}
+                    label={<div>{lang.agree_terms}</div>}
+                  />
+                  <Link
+                    className="text-link"
+                    to="/distance_agreement"
+                    onClick={(event) => event.stopPropagation()}>
+                    {lang.to_distance_agreement}
+                  </Link>
+                </div>
+
+                <button
+                  className="full-width m-t"
                   onClick={() => {
                     tryAcceptTerms()
                   }}>
                   {lang.pay}
-                </FullWidthButton>
+                </button>
               </div>
             )}
           </div>
         )}
-      </Card>
+      </div>
     </div>
   )
 }

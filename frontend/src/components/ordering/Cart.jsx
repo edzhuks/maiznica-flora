@@ -1,17 +1,16 @@
 import ProductListItem from '../productList/ProductListItem'
-import { CardRow } from '../styled/base'
 import { useSelector } from 'react-redux'
 
-const Cart = ({ cart }) => {
+const Cart = ({ content }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   return (
     <>
-      {cart && (
+      {content && (
         <div>
-          {cart.length > 0 ? (
-            <CardRow>
-              {cart.map((item, index) => (
+          {content.length > 0 ? (
+            <div className="row stretch no-row-gap">
+              {content.map((item, index) => (
                 <ProductListItem
                   inCart
                   quantity={item.quantity}
@@ -19,9 +18,11 @@ const Cart = ({ cart }) => {
                   key={item.product.id}
                 />
               ))}
-            </CardRow>
+              <div className="spacer-300" />
+              <div className="spacer-300" />
+            </div>
           ) : (
-            <p>{lang.empty_cart}</p>
+            <h3 className="card-heading">{lang.empty_cart}</h3>
           )}
         </div>
       )}

@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import Input from './Input'
-import { ValidPassword, ValidationFailed } from '../styled/base'
 
 const PasswordWithValidation = ({
   password1,

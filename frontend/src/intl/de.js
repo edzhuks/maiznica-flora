@@ -225,6 +225,20 @@ const de = {
   order_completed: 'Bestellung abgeschlossen',
   order_completed_info:
     'Wir haben Ihre Bestellung erhalten und werden in Kürze mit dem Verpacken beginnen.\n\nWenn es irgendwelche Probleme gibt, werden wir Sie per E-Mail kontaktieren.\n\nWir haben Ihnen auch eine E-Mail mit der Quittung für diese Bestellung geschickt.',
+  search: 'Suche',
+  image: 'Bild',
+  price_per_one: 'Einer kostet',
+  when_buying_x: 'Beim Kauf von x',
+  phone_use_info:
+    'Sie erhalten alle notwendigen Informationen per E-Mail.\nSie können optional Ihre Telefonnummer für eine einfachere Kommunikation angeben.',
+  delivery_bakery: 'Abholung in der Bäckerei',
+  delivery_courrier: 'DPD Kurierzustellung',
+  delivery_pickupPoint: 'DPD Abholstelle',
+  delivery_time_bakery: 'Nächster Werktag',
+  delivery_time_courrier: '2 - 3 Tage',
+  delivery_time_pickupPoint: '2 - 3 Tage',
+  toast_pickup_point_data:
+    'Bitte geben Sie alle erforderlichen Daten für die Lieferung am Abholpunkt ein',
 }
 
 export default de

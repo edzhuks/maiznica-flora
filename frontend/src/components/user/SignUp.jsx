@@ -87,9 +87,11 @@ const SignUp = () => {
 
   return (
     <div className="center-h">
-      <div className="card p-b">
-        <h1 className="big-title">{lang.sign_up}</h1>
-        <form onSubmit={onSubmit}>
+      <div className="card">
+        <h1 className="big-title m-b">{lang.sign_up}</h1>
+        <form
+          className="m-b m-d-0"
+          onSubmit={onSubmit}>
           <Input
             label={lang.email}
             {...email}
@@ -118,7 +120,7 @@ const SignUp = () => {
           </button>
         </form>
         <Link
-          className="card-bottom-link p-t-m"
+          className="card-bottom-link m-b m-t-m"
           to="/login">
           {lang.already_have_account}
         </Link>

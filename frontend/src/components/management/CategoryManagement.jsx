@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '../styled/base'
 
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
@@ -19,22 +18,6 @@ const CategoryList = styled.ul`
   padding: 0;
   margin: 0;
   margin-left: 30px;
-`
-
-const Clearer = styled.div`
-  background: ${(props) => props.theme.background};
-  z-index: -1;
-  position: absolute;
-  height: 170px;
-  width: 100%;
-  top: 0;
-  left: 0;
-`
-
-const SmallButton = styled(Button)`
-  padding: 2px 5px;
-  margin: 0px 5px;
-  height: auto;
 `
 
 const ProductItemm = styled.li`
@@ -71,24 +54,24 @@ const ProductItemm = styled.li`
   button {
   }
 `
-const RemoveButton = styled.button`
-  border-radius: 3px;
-  padding: 3px;
-  background: transparent;
-  border: 0px;
-  color: red;
-  &:hover {
-    background: red;
-    color: ${(props) => props.theme.white};
-  }
-`
-const EditButton = styled(RemoveButton)`
-  color: ${(props) => props.theme.main};
-  &:hover {
-    background: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.white};
-  }
-`
+// const RemoveButton = styled.button`
+//   border-radius: 3px;
+//   padding: 3px;
+//   background: transparent;
+//   border: 0px;
+//   color: red;
+//   &:hover {
+//     background: red;
+//     color: ${(props) => props.theme.white};
+//   }
+// `
+// const EditButton = styled(RemoveButton)`
+//   color: ${(props) => props.theme.main};
+//   &:hover {
+//     background: ${(props) => props.theme.main};
+//     color: ${(props) => props.theme.white};
+//   }
+// `
 
 const CategoryItemm = styled(ProductItemm)`
   font-weight: bold;
@@ -126,29 +109,32 @@ const ProductItem = ({
           {product.name[selectedLang] || product.name.lv} {product.weight}g
         </span>
       </Link>
-      <RemoveButton
+      <button
+        className="inverted icon-button cancel m-h-s"
         onClick={(e) => {
           e.preventDefault()
           removeProduct(product.id, parentCategory.id)
         }}>
-        <Cross size="20px" />
-      </RemoveButton>
-      <EditButton
+        <Cross className="icon-s" />
+      </button>
+      <button
+        className="inverted icon-button m-h-s"
         onClick={() => {
           toggleShow(product)
         }}>
-        <Eye size="18px" />
-      </EditButton>
-      <EditButton
+        <Eye className="icon-s" />
+      </button>
+      <button
+        className="inverted icon-button m-h-s"
         onClick={() => {
           toggleStock(product)
         }}>
-        <BoxSeam size="18px" />
-      </EditButton>
+        <BoxSeam className="icon-s" />
+      </button>
       <Link to={`/management/new_product/${product.id}`}>
-        <EditButton>
-          <Edit size="20px" />
-        </EditButton>
+        <button className="inverted icon-button m-h-s">
+          <Edit className="icon-s" />
+        </button>
       </Link>
     </div>
   )
@@ -172,20 +158,19 @@ const CategoryItem = ({
           {category.displayName[selectedLang] || category.displayName.lv}
           {category.id !== 'all' && category.id !== 'new' && (
             <button
+              className="inverted icon-button m-h-s cancel"
               onClick={(e) => {
                 e.preventDefault()
                 removeCategory(category.id, parentCategory.id)
               }}>
-              <Cross />
+              <Cross className="icon-m" />
             </button>
           )}
         </span>
       </Link>
 
-      <SmallButton onClick={handleProductButton}>+ {lang.product}</SmallButton>
-      <SmallButton onClick={handleCategoryButton}>
-        + {lang.category}
-      </SmallButton>
+      <button onClick={handleProductButton}>+ {lang.product}</button>
+      <button onClick={handleCategoryButton}>+ {lang.category}</button>
     </div>
   )
 }
@@ -324,7 +309,6 @@ const CategoryManagement = () => {
         onClose={onModalClose}
       />
       <ul style={{ listStyle: 'none' }}>
-        <Clearer />
         {catalogue ? (
           <CategoryTab
             handleProduct={clickProduct}

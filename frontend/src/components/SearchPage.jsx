@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import useProductService from '../services/product'
 import { useEffect } from 'react'
-import { BigTitle, Input } from './styled/base'
 import Fuse from 'fuse.js'
 import { useSearchParams } from 'react-router-dom'
 import useCategoryService from '../services/category'
@@ -102,11 +101,11 @@ const SearchPage = () => {
         />
       )}
       {searchedCategories.length > 0 && (
-        <BigTitle>{lang.found_categories}</BigTitle>
+        <h1 className="big-title m-d">{lang.found_categories}</h1>
       )}
       <Categories categories={searchedCategories} />
       {searchedProducts.length > 0 && (
-        <BigTitle>{lang.found_products}</BigTitle>
+        <h1 className="big-title m-d">{lang.found_products}</h1>
       )}
       <ProductList products={searchedProducts} />
     </div>

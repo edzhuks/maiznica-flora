@@ -1,12 +1,11 @@
 import Input from '../basic/Input'
-import { CardRow, Spacer } from '../styled/base'
 import ProductListItem from './ProductListItem'
 
 const ProductList = ({ products, withSearch }) => {
   return (
     <>
       {withSearch && <Input />}
-      <CardRow>
+      <div className="row stretch no-row-gap">
         {products &&
           products.map((product) => (
             <ProductListItem
@@ -15,10 +14,10 @@ const ProductList = ({ products, withSearch }) => {
             />
           ))}
 
-        {/* <Spacer /> */}
-        {/* <Spacer /> */}
-        {/* <Spacer /> */}
-      </CardRow>
+        <div className="spacer-300" />
+        <div className="spacer-300" />
+        <div className="spacer-300" />
+      </div>
     </>
   )
 }

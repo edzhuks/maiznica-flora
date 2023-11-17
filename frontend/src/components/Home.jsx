@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-import { BigTitle, TightBigTitle, WrappableRow } from './styled/base'
 import Categories from './productList/Categories'
 import Carousel from './basic/Carousel'
 import ProductList from './productList/ProductList'
 import { useSelector } from 'react-redux'
 import useCategoryService from '../services/category'
-import { ScrollRestoration } from 'react-router-dom'
 import styled from 'styled-components'
 
 const TopRow = styled.div`
@@ -46,39 +44,41 @@ const HomePage = () => {
     categoryService.getTopCategory().then((p) => setAllProducts(p))
   }, [])
   return (
-    <div>
-      <TopRow>
-        <StyledCarousel>
-          <Carousel
-            images={[
-              'https://www.maiznica.lv/wp-content/uploads/2022/09/4.png',
-              'https://www.maiznica.lv/wp-content/uploads/2019/11/maiznica.png',
-              'https://www.maiznica.lv/wp-content/uploads/2022/07/Noform%C4%93jums-bez-nosaukuma-10-1.png',
-              'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
-            ]}
-          />
-        </StyledCarousel>
-        <StyledCategories>
-          <Categories
-            categories={allProducts.categories}
-            tight={true}
-          />
-        </StyledCategories>
-      </TopRow>
-      {discountedProducts.products.length > 0 && (
-        <div>
-          <TightBigTitle>
-            {discountedProducts.displayName[selectedLang]}
-          </TightBigTitle>
-          <ProductList products={discountedProducts.products} />
-        </div>
-      )}
-      {newProducts.products.length > 0 && (
-        <div>
-          <TightBigTitle>{newProducts.displayName[selectedLang]}</TightBigTitle>
-          <ProductList products={newProducts.products} />
-        </div>
-      )}
+    <div className="row wrap-reverse">
+      <div
+        className="column no-gap"
+        style={{ flex: '2 1 370px' }}>
+        <Carousel
+          className="m-d"
+          images={[
+            'https://www.maiznica.lv/wp-content/uploads/2022/09/4.png',
+            'https://www.maiznica.lv/wp-content/uploads/2019/11/maiznica.png',
+            'https://www.maiznica.lv/wp-content/uploads/2022/07/Noform%C4%93jums-bez-nosaukuma-10-1.png',
+            'https://www.maiznica.lv/wp-content/uploads/2021/06/maize_slider.jpg',
+          ]}
+        />
+        {discountedProducts.products.length > 0 && (
+          <div>
+            <h1 className="big-title m-d">
+              {discountedProducts.displayName[selectedLang]}
+            </h1>
+            <ProductList products={discountedProducts.products} />
+          </div>
+        )}
+        {newProducts.products.length > 0 && (
+          <div>
+            <h1 className="big-title m-d">
+              {newProducts.displayName[selectedLang]}
+            </h1>
+            <ProductList products={newProducts.products} />
+          </div>
+        )}
+      </div>
+      <div
+        className="column"
+        style={{ flex: '1 1 300px' }}>
+        <Categories categories={allProducts.categories} />
+      </div>
     </div>
   )
 }

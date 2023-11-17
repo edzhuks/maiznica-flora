@@ -1,44 +1,51 @@
-import { Button, InvertedButton } from '../styled/base'
 import { SearchOutline } from '@styled-icons/evaicons-outline/SearchOutline'
 import { Cross } from '@styled-icons/entypo/Cross'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import Input from './Input'
 import { useSelector } from 'react-redux'
 
-const StyledButton = styled(Button)`
-  border-radius: 0 ${(props) => props.theme.borderRadius}
-    ${(props) => props.theme.borderRadius} 0;
+const StyledButton = styled.button`
+  border-radius: 0 va(--border-radius) var(--border-radius) 0;
 `
 
 const SearchInput = styled.div`
-  margin: 0 0 0 clamp(10px, 20px, 30px);
   display: flex;
   position: relative;
+  align-items: end;
+  align-self: center;
 
   .label {
     font-size: 1.2rem;
     text-transform: uppercase;
     font-family: var(--serif);
-    top: -4px;
+    top: 6px;
   }
-
   .inverted {
     position: absolute;
-    right: 40px;
-    top: 10px;
-  }
-  .inverted:hover {
-    background-color: transparent;
-    color: var(--main);
+    z-index: 20;
+    right: 45px;
+    top: 7px;
   }
 `
 
-const Search = ({ value, onChange, onEnter, onClear, onSearch }) => {
+const Search = ({
+  value,
+  onChange,
+  onEnter,
+  onClear,
+  onSearch,
+  style,
+  className,
+}) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <SearchInput>
+    <SearchInput
+      style={style}
+      className={className}>
       <Input
         label={lang.search}
+        className="m-0 "
+        width={200}
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -51,13 +58,15 @@ const Search = ({ value, onChange, onEnter, onClear, onSearch }) => {
 
       {value && (
         <button
-          className="inverted"
+          className="inverted icon-button"
           onClick={onClear}>
-          <Cross />
+          <Cross className="icon-m" />
         </button>
       )}
-      <StyledButton onClick={onSearch}>
-        <SearchOutline />
+      <StyledButton
+        onClick={onSearch}
+        style={{}}>
+        <SearchOutline className="icon-m" />
       </StyledButton>
     </SearchInput>
   )

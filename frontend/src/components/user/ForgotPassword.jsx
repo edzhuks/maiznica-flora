@@ -1,21 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import useField from '../../hooks/useField'
-import UserContext from '../../contexts/userContext'
-import { useContext, useState } from 'react'
-import { useCartServiceDispatch } from '../../reducers/cartReducer'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  FullWidthButton,
-  Label,
-  BigTitle,
-  Centerer,
-  LoginCard,
-  Form,
-  BottomTextLink,
-  PaddedForm,
-} from '../styled/base'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import useUserService from '../../services/user'
-import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import useToast from '../../util/promiseToast'
 import Input from '../basic/Input'
@@ -66,29 +52,31 @@ const ForgotPassword = () => {
   }
 
   return (
-    <Centerer>
-      <LoginCard>
-        <BigTitle>{lang.reset_password}</BigTitle>
-        <PaddedForm onSubmit={onSubmit}>
+    <div className="center-h">
+      <div className="card">
+        <h1 className="big-title m-b">{lang.reset_password}</h1>
+        <form
+          className="m-b"
+          onSubmit={onSubmit}>
           <Input
             label={lang.email}
             {...email}
-            $isonlightbackground
+            required
           />
 
-          <FullWidthButton
-            type="submit"
-            style={{ marginTop: '30px' }}>
+          <button
+            className="full-width m-t-m"
+            type="submit">
             {lang.send_reset_instructions}
             {emailUnregisteredReminderVisisble && (
               <ValidationFailed>
                 <h3>{lang.email_not_registered}</h3>
               </ValidationFailed>
             )}
-          </FullWidthButton>
-        </PaddedForm>
-      </LoginCard>
-    </Centerer>
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }
 

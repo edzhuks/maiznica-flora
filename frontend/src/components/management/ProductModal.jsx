@@ -1,20 +1,12 @@
 import { useEffect } from 'react'
-import {
-  ModalContainer,
-  ModalContent,
-  BigTitle,
-  SubTitle,
-  CancelButton,
-  Button,
-  Row,
-} from '../styled/base'
-import Select from 'react-select'
 import { useState } from 'react'
 import useCategoryService from '../../services/category'
 import { useSelector } from 'react-redux'
 import { gramsToKilos } from '../../util/convert'
 import useProductService from '../../services/product'
-import BaseModal from './BaseModal'
+import BaseModal from '../basic/BaseModal'
+import useField from '../../hooks/useField'
+import Input from '../basic/Input'
 
 const ProductModal = ({ visible, activeCategory, onClose }) => {
   const categoryService = useCategoryService()
@@ -22,7 +14,7 @@ const ProductModal = ({ visible, activeCategory, onClose }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allProducts, setAllProducts] = useState([])
-  const [selectedProductIds, setSelectedProductIds] = useState([])
+  const selectedProducts = useField('select')
 
   useEffect(() => {
     productService.getAll().then((result) => {
@@ -35,20 +27,27 @@ const ProductModal = ({ visible, activeCategory, onClose }) => {
         }))
       )
       if (activeCategory) {
-        setSelectedProductIds(activeCategory.products.map((p) => p.id))
+        selectedProducts.changeValue(
+          activeCategory.products.map((product) => ({
+            value: product.id,
+            label: `${
+              product.name[selectedLang] || product.name.lv
+            } ${gramsToKilos(product.weight)}`,
+          }))
+        )
       }
     })
   }, [selectedLang, activeCategory])
 
   const clear = () => {
-    setSelectedProductIds([])
+    selectedProducts.clear()
   }
 
   const addProducts = () => {
-    if (selectedProductIds.length) {
+    if (selectedProducts.value.length) {
       categoryService
         .addProducts({
-          productsToAdd: selectedProductIds,
+          productsToAdd: selectedProducts,
           parentCategory: activeCategory.id,
         })
         .then((newCatalogue) => {
@@ -66,20 +65,13 @@ const ProductModal = ({ visible, activeCategory, onClose }) => {
         clear()
         onClose()
       }}
-      onSubmit={() => addProducts()}
-      padding="20px 100px">
-      <SubTitle>{lang.select_existing_products}</SubTitle>
-      <div style={{ width: '600px' }}>
-        <Select
-          closeMenuOnSelect={false}
-          isMulti
+      onSubmit={() => addProducts()}>
+      <h2 className="title m text-center">{lang.select_existing_products}</h2>
+      <div className="m p-h-b">
+        <Input
           options={allProducts}
-          onChange={(e) =>
-            setSelectedProductIds(e ? e.map((x) => x.value) : [])
-          }
-          value={allProducts.filter((item) =>
-            selectedProductIds.includes(item.value)
-          )}
+          {...selectedProducts}
+          label={lang.products}
         />
       </div>
     </BaseModal>

@@ -3,13 +3,6 @@ import { useContext, useEffect, useState } from 'react'
 import useUserService from '../../services/user'
 import useField from '../../hooks/useField'
 import styled, { css } from 'styled-components'
-import {
-  Button,
-  CancelButton,
-  FullWidthButton,
-  Label,
-  Row,
-} from '../styled/base'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import useToast from '../../util/promiseToast'
@@ -17,34 +10,17 @@ import { Person } from '@styled-icons/evaicons-solid/Person'
 import { Phone } from '@styled-icons/boxicons-solid/Phone'
 import { Home } from '@styled-icons/boxicons-solid/Home'
 import Input from '../basic/Input'
+import { Edit } from '@styled-icons/evaicons-solid/Edit'
+import { Trash } from '@styled-icons/boxicons-regular/Trash'
 
 const Radio = styled.label`
-  display: block;
   position: relative;
-  margin: 0px 0px ${(props) => props.theme.padding} 0px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  row-gap: ${(props) => props.theme.padding};
 
-  p {
-    margin: 8px 0px 0px 0px;
-    font-size: 1rem;
-  }
-  svg {
-    color: ${(props) => props.theme.light};
-    margin-top: -8px;
-    margin-left: calc(${(props) => props.theme.padding});
-    margin-right: calc(${(props) => props.theme.padding} / 4);
-  }
-  button {
-    margin-right: ${(props) => props.theme.padding};
-  }
   /* Hide the browser's default radio button */
   input {
     position: absolute;
@@ -55,7 +31,7 @@ const Radio = styled.label`
   }
 
   /* Create a custom radio button */
-  span {
+  .radio {
     position: relative;
     display: block;
     height: 25px;
@@ -66,13 +42,13 @@ const Radio = styled.label`
   }
 
   /* On mouse-over or when checked add a main background color */
-  &:hover input ~ span,
-  input:checked ~ span {
+  &:hover input ~ .radio,
+  input:checked ~ .radio {
     background-color: ${(props) => props.theme.main};
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
-  span:after {
+  .radio:after {
     content: '';
     position: absolute;
     display: none;
@@ -85,57 +61,19 @@ const Radio = styled.label`
   }
 
   /* Show the indicator (dot/circle) when checked */
-  input:checked ~ span:after {
+  input:checked ~ .radio:after {
     display: block;
   }
 `
-const InputGroup = styled.div`
-  float: left;
-  padding: calc(${(props) => props.theme.padding} / 2);
-  width: 25%;
-  min-width: 150px;
-  input {
-    width: 100%;
-  }
-`
-const CompactLabel = styled(Label)`
-  width: auto;
-  line-height: 1rem;
-  &.required span:after {
-    content: ' *';
-    color: red;
-  }
-`
-
-const Form = styled.form`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: space-evenly;
-  box-shadow: ${(props) => props.theme.shadow};
-  background-color: ${(props) => props.theme.card};
-  padding: ${(props) => props.theme.padding};
-  margin: ${(props) => props.theme.padding} 0;
-`
-
 const AddressChoice = styled(Radio)`
-  box-shadow: ${(props) => props.theme.shadow};
-  background-color: ${(props) => props.theme.card};
-  padding: ${(props) => props.theme.padding};
   ${(props) =>
     props.disabled &&
     css`
-      span {
+      .radio {
         display: none;
       }
     `}
 `
-
-const Spacer = styled.div`
-  flex: 1 1 auto;
-`
-
-const AddressList = styled.div``
 
 const AddressForm = ({ submit, values, cancel }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -190,70 +128,75 @@ const AddressForm = ({ submit, values, cancel }) => {
     }
   }
   return (
-    <Form onSubmit={onSubmit}>
+    <form
+      className="column align-cross-end no-gap"
+      onSubmit={onSubmit}>
       <Input
         label={lang.city}
-        $required
+        required
         {...city}
-        $isonlightbackground
       />
       <Input
         label={lang.street}
-        $required
+        required
         {...street}
-        $isonlightbackground
       />
       <Input
         label={lang.house}
         {...house}
-        $isonlightbackground
       />
       <Input
         label={lang.apt}
         {...apartment}
-        $isonlightbackground
       />
       <Input
+        required
         label={lang.name}
-        $required
         {...name}
-        $isonlightbackground
       />
       <Input
+        required
         label={lang.surname}
-        $required
         {...surname}
-        $isonlightbackground
       />
       <Input
+        required
         label={lang.phone}
         {...phone}
-        $isonlightbackground
       />
-      <InputGroup style={{ display: 'flex' }}>
-        <CompactLabel style={{ alignSelf: 'end' }}>
-          {!values ? (
-            <FullWidthButton type="submit">
-              {lang.add_new_address}
-            </FullWidthButton>
-          ) : (
-            <>
-              <Button type="submit">{lang.save_short}</Button>{' '}
-              <CancelButton onClick={cancel}>{lang.cancel}</CancelButton>
-            </>
-          )}
-        </CompactLabel>
-      </InputGroup>
-    </Form>
+      {!values ? (
+        <button
+          className="m-t"
+          type="submit">
+          {lang.add_new_address}
+        </button>
+      ) : (
+        <div className="row m-t">
+          <button type="submit">{lang.save_short}</button>
+          <button
+            className="cancel"
+            onClick={cancel}>
+            {lang.cancel}
+          </button>
+        </div>
+      )}
+    </form>
   )
 }
 
-const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
+const Addresses = ({
+  selectedAddress,
+  selectAddress,
+  noSelection,
+  className,
+  style,
+}) => {
   const userService = useUserService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useContext(UserContext)
   const { showPromiseToast } = useToast()
   const [editingId, setEditingId] = useState(undefined)
+
   const onSubmitNewAddress = async (address) => {
     const promise = userService.addAddress(address)
     showPromiseToast({
@@ -272,7 +215,9 @@ const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
           JSON.stringify(newUser)
         )
         setUser(newUser)
-        selectAddress(newAddress)
+        if (selectAddress) {
+          selectAddress(newAddress)
+        }
       })
       .catch((error) => console.log(error.response.data.error))
   }
@@ -296,7 +241,9 @@ const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
           JSON.stringify(newUser)
         )
         setUser(newUser)
-        selectAddress(newAddress)
+        if (selectAddress) {
+          selectAddress(newAddress)
+        }
         setEditingId(undefined)
       })
       .catch((error) => console.log(error.response.data.error))
@@ -321,57 +268,74 @@ const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
           )
           setUser(newUser)
           setEditingId(undefined)
+          if (selectAddress) {
+            selectAddress(undefined)
+          }
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => console.log(error))
     }
   }
   return (
-    <AddressList>
+    <div
+      className={`column align-cross-center ${className ? className : ''}`}
+      style={style}>
       <div>
         {user?.addresses.map((address) => (
-          <div>
+          <div key={address.id}>
             {editingId !== address.id ? (
-              <AddressChoice
-                key={address.id}
-                disabled={noSelection}>
-                <input
-                  type="radio"
-                  value={address}
-                  checked={selectedAddress === address}
-                  onChange={() => {
-                    if (selectAddress) {
-                      selectAddress(address)
-                    }
-                  }}
-                />
-                <span />
-                <p>
-                  <Person size="1.6rem" />
-                  {address.name} {address.surname}
-                </p>
-                <p>
-                  <Phone size="1.6rem" />
-                  {address.phone}
-                </p>
-                <p>
-                  <Home size="1.6rem" />
-                  {address.city}, {address.street} {address.house}
-                  {address.apartment && address.house && '-'}
-                  {address.apartment}
-                </p>
-                <Row style={{ flex: 1 }}>
-                  <Spacer />
-                  <Button
-                    onClick={() => {
-                      setEditingId(address.id)
-                    }}>
-                    {lang.edit}
-                  </Button>
-                  <CancelButton onClick={() => onDeleteAddress(address.id)}>
-                    {lang.delete}
-                  </CancelButton>
-                </Row>
-              </AddressChoice>
+              <>
+                <AddressChoice
+                  className="row align-cross-center no-gap m-d"
+                  disabled={noSelection}>
+                  <div className="column">
+                    <input
+                      type="radio"
+                      value={address}
+                      checked={selectedAddress === address.id}
+                      onChange={() => {
+                        if (selectAddress) {
+                          selectAddress(address)
+                        }
+                      }}
+                    />
+                    <span className="radio m-r" />
+                  </div>
+                  <div
+                    className="column"
+                    style={{ flexGrow: '1000' }}>
+                    <p className="card-text m-r">
+                      <Person className="icon-m m-r-s m-d-s" />
+                      {address.name} {address.surname}
+                    </p>
+                    <p className="card-text m-r">
+                      <Phone className="icon-m m-r-s m-d-s" />
+                      {address.phone}
+                    </p>
+                    <p className="card-text m-r">
+                      <Home className="icon-m m-r-s m-d-s" />
+                      {address.city}, {address.street} {address.house}
+                      {address.apartment && address.house && '-'}
+                      {address.apartment}
+                    </p>
+                  </div>
+                  <div
+                    className="column"
+                    style={{ flex: 1 }}>
+                    <button
+                      onClick={() => {
+                        setEditingId(address.id)
+                      }}>
+                      <Edit className="icon-m" />
+                    </button>
+                    <button
+                      className="cancel"
+                      onClick={() => onDeleteAddress(address.id)}>
+                      <Trash className="icon-m" />
+                    </button>
+                  </div>
+                </AddressChoice>
+                <div className="card-divider m-d" />
+              </>
             ) : (
               <AddressForm
                 submit={onSubmitEditedAddress}
@@ -383,7 +347,7 @@ const Addresses = ({ selectedAddress, selectAddress, noSelection }) => {
         ))}
       </div>
       <AddressForm submit={onSubmitNewAddress} />
-    </AddressList>
+    </div>
   )
 }
 

@@ -6,7 +6,6 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 const CarouselContainer = styled.div`
   width: 100%;
   position: relative;
-  margin-bottom: ${(props) => props.theme.padding};
 `
 
 const CarouselLeft = styled.div`
@@ -80,7 +79,7 @@ const CarouselItem = ({ image, active }) => {
   )
 }
 
-const Carousel = ({ images }) => {
+const Carousel = ({ images, className }) => {
   const [activeImage, setActiveImage] = useState(0)
   const [int, setInt] = useState(undefined)
 
@@ -94,7 +93,7 @@ const Carousel = ({ images }) => {
   }, [images])
 
   return (
-    <CarouselContainer>
+    <CarouselContainer className={className}>
       <CarouselLeft
         onClick={() => {
           setActiveImage(
