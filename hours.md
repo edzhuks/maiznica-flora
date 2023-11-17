@@ -43,4 +43,4 @@
 | 08.11        | 6     | Working on payments with SEB payment integration                                                                                                                                      |
 | 09.11        | 4     | Finished payments for now                                                                                                                                                             |
 | 11.11-17.11  | 12    | css rework - mostly css classes instead of styled components, other improvements as well                                                                                              |
-| total        | 168   |                                                                                                                                                                                       |
+| total        | 180   |                                                                                                                                                                                       |
