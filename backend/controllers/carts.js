@@ -54,6 +54,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
         pickupPointData: cart.pickupPointData,
         deliveryPhone: cart.deliveryPhone,
       })
+      await newCart.save()
     }
     console.log(error)
     console.log(error.response.data.error)
