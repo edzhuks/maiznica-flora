@@ -45,6 +45,16 @@ const getPaymentData = async ({ cart, selectedLang }) => {
 
     return response.data
   } catch (error) {
+    if (error.response.code === 4024) {
+      await cart.deleteOne()
+      const newCart = new Cart({
+        content: [],
+        user: req.user.id,
+        courrierAddress: cart.courrierAddress,
+        pickupPointData: cart.pickupPointData,
+        deliveryPhone: cart.deliveryPhone,
+      })
+    }
     console.log(error)
     console.log(error.response.data.error)
   }
