@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart, selectCartTotal } from '../../reducers/cartReducer'
+import {
+  clearCart,
+  selectCartTotal,
+  placeOrder,
+} from '../../reducers/cartReducer'
 import { toast } from 'react-toastify'
 import useOrderService from '../../services/order'
 
@@ -72,21 +76,20 @@ const Order = () => {
   }, [orderId])
 
   const order = async () => {
-    const promise = orderService.placeOrder()
-    promise.then((response) => {
-      console.log(response)
-      setIframe(response.data.paymentLink)
-      setOrderId(response.data.orderId)
-    })
+    if (checkDeliveryMethod() && checkCartEmpty()) {
+      dispatch(placeOrder())
+    }
   }
   const checkDeliveryMethod = () => {
     if (!cart.deliveryMethod) {
       toast.error(lang.toast_select_delivery_method)
+      return false
     } else if (
       cart.deliveryMethod === 'pickupPoint' &&
       (!cart.pickupPointData || !cart.pickupPointData.id)
     ) {
       toast.error(lang.toast_select_pickup_point)
+      return false
     } else if (
       cart.deliveryMethod === 'pickupPoint' &&
       (!cart.pickupPointData.name ||
@@ -94,24 +97,31 @@ const Order = () => {
         !cart.pickupPointData.phone)
     ) {
       toast.error(lang.toast_pickup_point_data)
+      return false
     } else if (cart.deliveryMethod === 'courrier' && !cart.courrierAddress) {
       toast.error(lang.toast_select_address)
+      return false
     } else {
-      navigate('payment')
+      return true
     }
   }
   const checkCartEmpty = () => {
     if (cart.content.length < 1) {
       toast.error(lang.empty_cart)
+      return false
     } else {
-      navigate('delivery')
+      return true
     }
   }
   const runChecksAndNavigate = () => {
     if (stage === 'cart') {
-      checkCartEmpty()
+      if (checkCartEmpty()) {
+        navigate('delivery')
+      }
     } else if (stage === 'delivery') {
-      checkDeliveryMethod()
+      if (checkDeliveryMethod()) {
+        navigate('payment')
+      }
     }
   }
 

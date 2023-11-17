@@ -4,10 +4,10 @@ import useField from '../../hooks/useField'
 import Input from '../basic/Input'
 import { Link } from 'react-router-dom'
 
-const Payment = ({ order, iframe, startOver, orderStatus, failedPayment }) => {
+const Payment = ({ order, startOver, orderStatus, failedPayment }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-
+  const iframe = useSelector((state) => state.cart.iframe)
   const tryAcceptTerms = () => {
     if (!termsChecked) {
       toast.error(lang.toast_must_agree)

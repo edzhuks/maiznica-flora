@@ -283,7 +283,8 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',
   })
-  if (!cart) {
+
+  if (!cart || cart.paymentStatus === 'settled') {
     cart = await new Cart({
       content: [],
       user: req.user.id,

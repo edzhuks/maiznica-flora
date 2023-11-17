@@ -1,5 +1,6 @@
 import useCartService from '../services/cart'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
+import useOrderService from '../services/order'
 const initialState = {
   content: [],
   deliveryMethod: undefined,
@@ -9,6 +10,7 @@ const initialState = {
   paid: false,
   animate: false,
   animateTimeout: undefined,
+  iframe: undefined,
 }
 
 const cartSlice = createSlice({
@@ -50,6 +52,9 @@ const cartSlice = createSlice({
     },
     setPaid(state, action) {
       state.paid = action.payload
+    },
+    setIframe(state, action) {
+      state.iframe = action.payload
     },
   },
 })
@@ -127,10 +132,12 @@ export const {
   setAnimateTimeout,
   stopAnimate,
   clearAnimationTimeout,
+  setIframe,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
   const cartService = useCartService()
+  const orderService = useOrderService()
   const loadCart = () => {
     return async (dispatch) => {
       cartService
@@ -230,6 +237,15 @@ export const useCartServiceDispatch = () => {
     }
   }
 
+  const placeOrder = () => {
+    return async (dispatch) => {
+      orderService
+        .placeOrder()
+        .then((response) => dispatch(setIframe(response.data.paymentLink)))
+        .catch((error) => console.log(error.response.data.error))
+    }
+  }
+
   return {
     loadCart,
     addItem,
@@ -239,6 +255,7 @@ export const useCartServiceDispatch = () => {
     changeDeliveryPhone,
     changePickupPointData,
     changeDeliveryMethod,
+    placeOrder,
   }
 }
 
