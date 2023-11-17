@@ -38,12 +38,38 @@ const useCartService = () => {
     const request = axios.get(baseURL, config)
     return request
   }
+  const changeDeliveryMethod = (method) => {
+    const config = makeConfig()
+    const request = axios.put(baseURL, { deliveryMethod: method }, config)
+    return request
+  }
+  const changeCourrierAddress = (address) => {
+    console.log(address)
+    console.log({ courrierAddress: address })
+    const config = makeConfig()
+    const request = axios.put(baseURL, { courrierAddress: address }, config)
+    return request
+  }
+  const changePickupPointData = (data) => {
+    const config = makeConfig()
+    const request = axios.put(baseURL, { pickupPointData: data }, config)
+    return request
+  }
+  const changeDeliveryPhone = (phone) => {
+    const config = makeConfig()
+    const request = axios.put(baseURL, { deliveryPhone: phone }, config)
+    return request
+  }
 
   return {
     addToCart,
     getCart,
     changeQuantity,
     removeFromCart,
+    changeCourrierAddress,
+    changeDeliveryPhone,
+    changePickupPointData,
+    changeDeliveryMethod,
   }
 }
 export default useCartService

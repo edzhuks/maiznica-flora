@@ -1,72 +1,29 @@
 import useField from '../../hooks/useField'
 import { useEffect, useState } from 'react'
-import {
-  ShadowInput,
-  TextArea,
-  NumberInput,
-  Row,
-  Button,
-  ProductImage,
-  WrappableRow,
-  Label,
-  BigProductTitle,
-  ProductText,
-  NutritionTable,
-  NutritionTableRow,
-  NutritionTableHeader,
-  NutritionTableCell,
-  Toggle,
-  ShadowTextArea,
-} from '../styled/base'
-import Checkbox from '../basic/Checkbox'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import StaticInformation from '../productPage/TextualInformation'
-import { Form, useParams } from 'react-router-dom'
+import StaticInformation from '../productPage/ProductInformation'
+import { useParams } from 'react-router-dom'
 import useProductService from '../../services/product'
 import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
 import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
 import useToast from '../../util/promiseToast'
-import { Badges } from '../styled/base'
 import { gramsToKilos } from '../../util/convert'
-import Select from 'react-select'
-import { backendURL } from '../../util/config'
 import useUploadService from '../../services/uploads'
-
-const NameInput = styled(ShadowInput)`
-  color: ${(props) => props.theme.main};
-  width: 300px;
-  margin: 5px 0px;
-`
-
-const GreenNumberInput = styled(NumberInput)`
-  color: ${(props) => props.theme.main};
-  width: 100px;
-  margin: 5px;
-  box-shadow: ${(props) => props.theme.shadow};
-`
-
-const ProductTextArea = styled(ShadowTextArea)`
-  width: 420px;
-  font-size: small;
-  margin: 5px 0px;
-`
-
-const EditableBadges = styled(Badges)`
-  max-width: 450px;
-`
+import Input from '../basic/Input'
 
 const EditTab = styled.div`
+  max-width: 600px;
   position: absolute;
   left: ${(props) => (props.editTabOpen ? '00px' : '-485px')};
-  background: #ffffffaa;
-
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  z-index: 2;
   box-shadow: ${(props) => props.theme.shadow};
-  padding: 30px;
+  padding: var(--space);
   transition: 0.5s;
 `
 
-const EditTabButton = styled(Button)`
+const EditTabButton = styled.button`
   position: absolute;
   right: -50px;
   width: 50px;
@@ -74,21 +31,37 @@ const EditTabButton = styled(Button)`
   top: -0px;
 `
 
-const BadgeButton = styled.button`
-  color: ${(props) => (props.selected ? props.theme.white : props.theme.main)};
-  padding: 5px 15px;
-  background-color: ${(props) =>
-    props.selected ? props.theme.main : props.theme.white};
-  border-radius: 20px;
-  box-shadow: ${(props) => props.theme.shadow};
-  border: 0;
-  font-size: 16px;
-`
-
-const ShortLabel = styled(Label)`
-  line-height: normal;
-`
-
+const BadgeSelection = ({
+  badges,
+  selectedBadges,
+  setSelectedBadges,
+  className,
+}) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const badgeClicked = (name, selected) => {
+    if (selected) {
+      setSelectedBadges(selectedBadges.filter((b) => b !== name))
+    } else {
+      setSelectedBadges(selectedBadges.concat(name))
+    }
+  }
+  return (
+    <div className={`row ${className ? className : ''}`}>
+      {badges.map((badge) => {
+        const selected = selectedBadges.find((b) => b === badge)
+        return (
+          <button
+            key={badge}
+            className={`badge ${selected ? 'active' : ''}`}
+            selected={selected}
+            onClick={() => badgeClicked(badge, selected)}>
+            {lang[badge]}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 const NewProductFrom = () => {
   const productService = useProductService()
   const uploadService = useUploadService()
@@ -114,24 +87,23 @@ const NewProductFrom = () => {
   const expiryTime = useField('number')
   const expiryTimeAfter = useField('number')
   const EAN = useField('text')
-  const [image, setImage] = useState(
-    'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
-  )
+  const image = useField('image')
 
-  const [description_lv, setDescription_lv] = useState('')
-  const [description_en, setDescription_en] = useState('')
-  const [description_de, setDescription_de] = useState('')
-  const [ingredients_lv, setIngredients_lv] = useState('')
-  const [ingredients_en, setIngredients_en] = useState('')
-  const [ingredients_de, setIngredients_de] = useState('')
+  const description_lv = useField('textarea')
+  const description_en = useField('textarea')
+  const description_de = useField('textarea')
+  const ingredients_lv = useField('textarea')
+  const ingredients_en = useField('textarea')
+  const ingredients_de = useField('textarea')
+
   const [badges, setBadges] = useState([])
-  const [bio, setBio] = useState(false)
-  const [spoonGreen, setSpoonGreen] = useState(false)
-  const [expiryTimeDays, setExpiryTimeDays] = useState(true)
-  const [expiryTimeDaysAfter, setExpiryTimeDaysAfter] = useState(true)
-  const [spoonRed, setSpoonRed] = useState(false)
-  const [addToAll, setAddToAll] = useState(false)
-  const [addToNew, setAddToNew] = useState(false)
+  const bio = useField('checkbox')
+  const spoonGreen = useField('checkbox')
+  const spoonRed = useField('checkbox')
+  const expiryTimeDays = useField('toggle')
+  const expiryTimeDaysAfter = useField('toggle')
+  const addToAll = useField('checkbox')
+  const addToNew = useField('checkbox')
 
   const [editTabOpen, setEditTabOpen] = useState(true)
 
@@ -139,7 +111,7 @@ const NewProductFrom = () => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
 
   const [allProducts, setAllProducts] = useState([])
-  const [selectedProductIds, setSelectedProductIds] = useState([])
+  const relatedProducts = useField('select')
 
   useEffect(() => {
     productService.getAll().then((result) => {
@@ -160,12 +132,12 @@ const NewProductFrom = () => {
         name_lv.changeValue(product.name.lv)
         name_en.changeValue(product.name.en)
         name_de.changeValue(product.name.de)
-        setDescription_lv(product.description.lv)
-        setDescription_en(product.description.en)
-        setDescription_de(product.description.de)
-        setIngredients_lv(product.ingredients.lv)
-        setIngredients_en(product.ingredients.en)
-        setIngredients_de(product.ingredients.de)
+        description_lv.changeValue(product.description.lv)
+        description_en.changeValue(product.description.en)
+        description_de.changeValue(product.description.de)
+        ingredients_lv.changeValue(product.ingredients.lv)
+        ingredients_en.changeValue(product.ingredients.en)
+        ingredients_de.changeValue(product.ingredients.de)
         weight.changeValue(product.weight)
         price.changeValue(product.price)
         EAN.changeValue(product.EAN)
@@ -183,22 +155,24 @@ const NewProductFrom = () => {
           d3.changeValue(product.nutrition.d3)
         }
         setBadges(product.badges ? product.badges : [])
-        setImage(product.image)
-        setBio(product.bio)
-        setSpoonGreen(product.spoonGreen)
-        setSpoonRed(product.spoonRed)
+        image.changeValue(product.image)
+        bio.changeValue(product.bio)
+        spoonGreen.changeValue(product.spoonGreen)
+        spoonRed.changeValue(product.spoonRed)
+        expiryTimeDays.changeValue(true)
+        expiryTimeDaysAfter.changeValue(true)
         if (product.expiration) {
-          setExpiryTimeDays(product.expiration.word === 'days')
+          expiryTimeDays.changeValue(product.expiration.word === 'days')
           expiryTime.changeValue(product.expiration.number)
           if (product.expiration.afterOpening) {
             expiryTimeAfter.changeValue(product.expiration.afterOpening.number)
-            setExpiryTimeDaysAfter(
+            expiryTimeDaysAfter.changeValue(
               product.expiration.afterOpening.word === 'days'
             )
           }
         }
         if (product.relatedProducts && product.relatedProducts.length > 0) {
-          setSelectedProductIds(
+          relatedProducts.changeValue(
             product.relatedProducts.map((product) => ({
               value: product.id,
               label: `${
@@ -215,14 +189,14 @@ const NewProductFrom = () => {
     return {
       name: { lv: name_lv.value, en: name_en.value, de: name_de.value },
       description: {
-        lv: description_lv,
-        en: description_en,
-        de: description_de,
+        lv: description_lv.value,
+        en: description_en.value,
+        de: description_de.value,
       },
       ingredients: {
-        lv: ingredients_lv,
-        en: ingredients_en,
-        de: ingredients_de,
+        lv: ingredients_lv.value,
+        en: ingredients_en.value,
+        de: ingredients_de.value,
       },
       nutrition:
         energy.value ||
@@ -250,23 +224,23 @@ const NewProductFrom = () => {
       bulkPrice: bulkPrice.value,
       bulkThreshold: bulkThreshold.value,
       EAN: EAN.value,
-      bio,
-      spoonGreen,
-      spoonRed,
+      bio: bio.value,
+      spoonGreen: spoonGreen.value,
+      spoonRed: spoonRed.value,
       weight: weight.value,
       badges,
       expiration: expiryTime.value && {
         number: expiryTime.value,
-        word: expiryTimeDays ? 'days' : 'months',
+        word: expiryTimeDays.value ? 'days' : 'months',
         afterOpening: expiryTimeAfter.value
           ? {
               number: expiryTimeAfter.value,
-              word: expiryTimeDaysAfter ? 'days' : 'months',
+              word: expiryTimeDaysAfter.value ? 'days' : 'months',
             }
           : undefined,
       },
-      relatedProducts: selectedProductIds.map((p) => p.value),
-      image,
+      relatedProducts: relatedProducts.value,
+      image: image.value,
     }
   }
 
@@ -279,8 +253,8 @@ const NewProductFrom = () => {
     } else {
       const promise = productService.create({
         product,
-        addToAll,
-        addToNew,
+        addToAll: addToAll.value,
+        addToNew: addToNew.value,
       })
       showPromiseToast({ promise, successMessage: lang.toast_product_created })
       promise.then((reponse) => {
@@ -302,24 +276,22 @@ const NewProductFrom = () => {
         d3.clear()
         expiryTime.clear()
         expiryTimeAfter.clear()
-        setExpiryTimeDays(true)
-        setExpiryTimeDaysAfter(true)
-        setSpoonGreen(false)
-        setSpoonRed(false)
+        expiryTimeDays.clear()
+        expiryTimeDaysAfter.clear()
+        spoonGreen.clear()
+        spoonRed.clear()
         EAN.clear()
-        setImage(
-          'https://shop.mrpinball.com.au/wp-content/uploads/woocommerce-placeholder-510x510.png'
-        )
-        setDescription_lv('')
-        setDescription_en('')
-        setDescription_de('')
-        setIngredients_lv('')
-        setIngredients_en('')
-        setIngredients_de('')
-        setBio(false)
-        setAddToAll(false)
-        setAddToNew(false)
-        setSelectedProductIds([])
+        image.clear()
+        description_lv.clear()
+        description_en.clear()
+        description_de.clear()
+        ingredients_lv.clear()
+        ingredients_en.clear()
+        ingredients_de.clear()
+        bio.clear()
+        addToAll.clear()
+        addToNew.clear()
+        relatedProducts.clear()
       })
     }
   }
@@ -361,16 +333,9 @@ const NewProductFrom = () => {
     )
     formData.append('image', noDiacritics)
     uploadService.uploadImage(formData).then((response) => {
-      setImage(`${response.data.path}`)
-    })
-  }
+      image.changeValue(`${response.data.path}`)
 
-  const badgeClicked = (name) => {
-    if (badges.find((b) => b === name)) {
-      setBadges(badges.filter((b) => b !== name))
-    } else {
-      setBadges(badges.concat(name))
-    }
+    })
   }
 
   return (
@@ -382,299 +347,290 @@ const NewProductFrom = () => {
         minHeight: '2500px',
       }}>
       <EditTab editTabOpen={editTabOpen}>
-        <EditTabButton>
-          {editTabOpen ? (
-            <BoxArrowLeft
-              onClick={(e) => {
-                e.preventDefault()
-                setEditTabOpen(false)
-              }}
-            />
-          ) : (
-            <BoxArrowRight
-              onClick={(e) => {
-                e.preventDefault()
-                setEditTabOpen(true)
-              }}
-            />
-          )}
+        <EditTabButton
+          onClick={(e) => {
+            e.preventDefault()
+            setEditTabOpen(!editTabOpen)
+          }}>
+          {editTabOpen ? <BoxArrowLeft /> : <BoxArrowRight />}
         </EditTabButton>
-        <Row>
-          <div>
-            <NameInput {...name_lv} />
-            <br />
-            <NameInput {...name_en} />
-            <br />
-            <NameInput {...name_de} />
-          </div>
-          <GreenNumberInput {...weight} />
-          <BigProductTitle>g</BigProductTitle>
-        </Row>
-        <EditableBadges>
-          <BadgeButton
-            selected={badges.find((b) => b === 'vegan')}
-            onClick={() => badgeClicked('vegan')}>
-            {lang.vegan}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'high_protein')}
-            onClick={() => badgeClicked('high_protein')}>
-            {lang.high_protein}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'high_fiber')}
-            onClick={() => badgeClicked('high_fiber')}>
-            {lang.high_fiber}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'handmade')}
-            onClick={() => badgeClicked('handmade')}>
-            {lang.handmade}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'no_added_yeast')}
-            onClick={() => badgeClicked('no_added_yeast')}>
-            {lang.no_added_yeast}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'no_conservants')}
-            onClick={() => badgeClicked('no_conservants')}>
-            {lang.no_conservants}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'vitamin_d')}
-            onClick={() => badgeClicked('vitamin_d')}>
-            {lang.vitamin_d}
-          </BadgeButton>
-          <BadgeButton
-            selected={badges.find((b) => b === 'iodine')}
-            onClick={() => badgeClicked('iodine')}>
-            {lang.iodine}
-          </BadgeButton>
-        </EditableBadges>
-        <GreenNumberInput {...price} />
-        {`${lang.in_cents} ${lang.with_VAT}`}
-        <br />
-        {lang.when_buying}
-        <GreenNumberInput {...bulkThreshold} />
-        ,
-        <GreenNumberInput {...bulkPrice} />
-        {`${lang.in_cents} ${lang.with_VAT}`}
-        <br />
-        <Checkbox
-          checked={bio}
-          onChange={() => setBio(!bio)}
-          label="BIO"
+        <div className="row align-cross-end">
+          <Input
+            label={lang.image}
+            filename={image.value}
+            onChange={(e) => imageSelected(e)}
+            type="file"
+            accept="image/*"
+            required
+          />
+          <button onClick={onSubmit}>
+            {productId ? lang.save : lang.create}
+          </button>
+        </div>
+
+        <Input
+          width="100%"
+          {...name_lv}
+          label={`${lang.product_name} lv`}
+          required
         />
-        <Checkbox
-          checked={spoonRed}
-          onChange={() => setSpoonRed(!spoonRed)}
-          label="Sarkanā karotīte"
+        <Input
+          width="100%"
+          {...name_en}
+          label={`${lang.product_name} en`}
         />
-        <Checkbox
-          checked={spoonGreen}
-          onChange={() => setSpoonGreen(!spoonGreen)}
-          label="Zaļā karotīte"
+        <Input
+          width="100%"
+          {...name_de}
+          label={`${lang.product_name} de`}
         />
-        <Label>
-          {lang.expiration_time}
-          <GreenNumberInput {...expiryTime} />
-          <Toggle
-            onClick={() => setExpiryTimeDays(!expiryTimeDays)}
-            true={expiryTimeDays}>
-            <span>{lang.days}</span>
-            <span>{lang.months}</span>
-          </Toggle>
-        </Label>
-        <Label>
-          {lang.after_opening}
-          <GreenNumberInput {...expiryTimeAfter} />
-          <Toggle
-            onClick={() => setExpiryTimeDaysAfter(!expiryTimeDaysAfter)}
-            true={expiryTimeDaysAfter}>
-            <span>{lang.days}</span>
-            <span>{lang.months}</span>
-          </Toggle>
-        </Label>
-        <ShortLabel>{allLang.lv.description}</ShortLabel>
-        <ProductTextArea
-          rows={12}
-          value={description_lv}
-          onChange={(event) => setDescription_lv(event.target.value)}
+        <Input
+          width="250px"
+          {...weight}
+          required
+          label={`${lang.weight} (${lang.in_grams})`}
         />
-        {/* <Text>{allLang.en.description}</Text>
-        <ProductTextArea
-          rows={7}
-          value={description_en}
-          onChange={(event) => setDescription_en(event.target.value)}
+        <BadgeSelection
+          className="m-t"
+          badges={[
+            'vegan',
+            'iodine',
+            'vitamin_d',
+            'no_conservants',
+            'no_added_yeast',
+            'handmade',
+            'high_fiber',
+            'high_protein',
+          ]}
+          selectedBadges={badges}
+          setSelectedBadges={setBadges}
         />
-        <Text>{allLang.de.description}</Text>
-        <ProductTextArea
-          rows={7}
-          value={description_de}
-          onChange={(event) => setDescription_de(event.target.value)}
-        /> */}
-        <ShortLabel>{allLang.lv.ingredients}</ShortLabel>
-        <ProductTextArea
-          rows={4}
-          value={ingredients_lv}
-          onChange={(event) => setIngredients_lv(event.target.value)}
+
+        <Input
+          width="250px"
+          {...price}
+          label={`${lang.price} (${lang.in_cents}, ${lang.with_VAT})`}
+          required
         />
-        <ShortLabel>{allLang.en.ingredients}</ShortLabel>
-        <ProductTextArea
-          rows={4}
-          value={ingredients_en}
-          onChange={(event) => setIngredients_en(event.target.value)}
+        <div className="row">
+          <Input
+            {...bulkThreshold}
+            label={lang.when_buying_x}
+            width={160}
+          />
+          <Input
+            {...bulkPrice}
+            label={`${lang.price_per_one} (${lang.in_cents}, ${lang.with_VAT})`}
+            width={250}
+          />
+        </div>
+
+        <div className="row p-t">
+          <Input
+            {...bio}
+            label="BIO"
+          />
+          <Input
+            {...spoonRed}
+            label="Sarkanā karotīte"
+          />
+          <Input
+            {...spoonGreen}
+            label="Zaļā karotīte"
+          />
+        </div>
+        <div className="row align-cross-end">
+          <Input
+            label={lang.expiration_time}
+            {...expiryTime}
+          />
+          <Input
+            {...expiryTimeDays}
+            option1={lang.days}
+            option2={lang.months}
+          />
+        </div>
+        <div className="row align-cross-end">
+          <Input
+            label={lang.after_opening}
+            {...expiryTimeAfter}
+          />
+          <Input
+            {...expiryTimeDaysAfter}
+            option1={lang.days}
+            option2={lang.months}
+          />
+        </div>
+        <Input
+          {...description_lv}
+          width="100%"
+          label={allLang.lv.description}
         />
-        <ShortLabel>{allLang.de.ingredients}</ShortLabel>
-        <ProductTextArea
-          rows={4}
-          value={ingredients_de}
-          onChange={(event) => setIngredients_de(event.target.value)}
+        <Input
+          {...description_en}
+          width="100%"
+          label={allLang.en.description}
         />
-        <NutritionTable style={{ marginBottom: '20px', marginTop: '20px' }}>
+        <Input
+          {...description_de}
+          width="100%"
+          label={allLang.de.description}
+        />
+
+        <Input
+          width="100%"
+          {...ingredients_lv}
+          required
+          label={allLang.lv.ingredients}
+        />
+        <Input
+          width="100%"
+          {...ingredients_en}
+          label={allLang.en.ingredients}
+        />
+        <Input
+          width="100%"
+          {...ingredients_de}
+          label={allLang.de.ingredients}
+        />
+
+        <table
+          className="nutrition-table"
+          style={{ marginBottom: '20px', marginTop: '20px' }}>
           <tbody>
-            <NutritionTableRow>
-              <NutritionTableHeader>
+            <tr>
+              <th>
                 <b>{lang.nutritional_info}</b>
-              </NutritionTableHeader>
-              <NutritionTableHeader>
+              </th>
+              <th>
                 <strong>{lang.g_contains}</strong>
-              </NutritionTableHeader>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.energy_content}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput
+              </th>
+            </tr>
+            <tr>
+              <td>{lang.energy_content}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
                   {...energy}
-                  $isonlightbackground
+                  width={100}
                 />
-                kcal
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.fat}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput {...fat} />g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>
-                &nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}
-              </NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput
-                  $isonlightbackground
+                <span>kcal</span>
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.fat}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
+                  {...fat}
+                />
+                g
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;&nbsp;&nbsp; {lang.of_which_saturated_fat}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
                   {...saturatedFat}
                 />
                 g
-              </NutritionTableCell>
-            </NutritionTableRow>
-
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.carbohydrates}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput {...carbs} />g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>
-                &nbsp;&nbsp;&nbsp; {lang.of_which_sugars}
-              </NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput
-                  $isonlightbackground
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.carbohydrates}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
+                  {...carbs}
+                />
+                g
+              </td>
+            </tr>
+            <tr>
+              <td>&nbsp;&nbsp;&nbsp; {lang.of_which_sugars}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
                   {...sugar}
                 />
                 g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.fiber}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput {...fiber} />g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.protein}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput
-                  $isonlightbackground
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.fiber}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
+                  {...fiber}
+                />
+                g
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.protein}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
                   {...protein}
                 />
                 g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.salt}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput {...salt} />g
-              </NutritionTableCell>
-            </NutritionTableRow>
-            <NutritionTableRow>
-              <NutritionTableCell>{lang.d3}</NutritionTableCell>
-              <NutritionTableCell>
-                <NumberInput
-                  $isonlightbackground
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.salt}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
+                  {...salt}
+                />
+                g
+              </td>
+            </tr>
+            <tr>
+              <td>{lang.d3}</td>
+              <td>
+                <Input
+                  className="m-0 inline-block"
+                  width={100}
                   {...d3}
                 />
                 µg
-              </NutritionTableCell>
-            </NutritionTableRow>
+              </td>
+            </tr>
           </tbody>
-        </NutritionTable>
-        {lang.EAN_code}
-        <ShadowInput
-          style={{ marginBottom: 20, marginLeft: '20px' }}
+        </table>
+        <Input
+          label={lang.EAN_code}
           {...EAN}
         />
-        <br />
-        {lang.related_products}
-        <div style={{ maxWidth: '420px' }}>
-          <Select
-            closeMenuOnSelect={false}
-            isMulti
-            options={allProducts}
-            onChange={(e) => setSelectedProductIds(e ? e : [])}
-            value={selectedProductIds}
-          />
-        </div>
+        <Input
+          options={allProducts}
+          {...relatedProducts}
+          label={lang.related_products}
+        />
         {!productId && (
-          <div>
-            <Checkbox
-              checked={addToAll}
-              onChange={() => setAddToAll(!addToAll)}
+          <div className="row m-t">
+            <Input
+              {...addToAll}
               label={lang.add_to_all}
             />
-            <Checkbox
-              checked={addToNew}
-              onChange={() => setAddToNew(!addToNew)}
+            <Input
+              {...addToNew}
               label={lang.add_to_new}
             />
           </div>
         )}
       </EditTab>
-      <WrappableRow style={{ justifyContent: 'end' }}>
-        <form>
-          <ProductImage src={`/images/${image}`} />
-          <br />
-          <input
-            filename={image}
-            onChange={(e) => imageSelected(e)}
-            type="file"
-            accept="image/*"
-          />
-          <br />
-          {image}
-        </form>
 
-        <div>
-          <StaticInformation product={formProduct()} />
-          <Button onClick={onSubmit}>
-            {productId ? lang.save : lang.create}
-          </Button>
-        </div>
-      </WrappableRow>
+      <StaticInformation product={formProduct()} />
     </div>
   )
 }

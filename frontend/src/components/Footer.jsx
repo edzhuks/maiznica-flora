@@ -1,46 +1,50 @@
 import styled from 'styled-components'
-import { Container, Padding, TextLink, WrappableRow } from './styled/base'
-import ContactPage from './contact/ContactPage'
 import { Link } from 'react-router-dom'
 import ContactForm from './contact/ContactForm'
-import Address from './contact/Address'
 import { useSelector } from 'react-redux'
+import FloraAddress from './contact/Address'
 
 const FooterContainer = styled.div`
-  background-image: url(/images/bg.jpg);
+  background-image: url(http://new.maiznica.com/images/bg.jpg);
   background-repeat: repeat;
   background-position: center;
   background-attachment: fixed;
-  box-shadow: ${(props) => props.theme.shadowInset};
-  width: 100vw;
-  display: flex;
-  justify-content: center;
+  box-shadow: var(--shadow-inset);
 `
 
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
 const Footer = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <FooterContainer>
-      <Padding style={{ width: '100%' }}>
-        <Container style={{ width: 'fit-content' }}>
-          <WrappableRow style={{ width: 'fit-content' }}>
-            <ContactForm />
-            <Column>
-              <Address />
-              <TextLink to="/EU_projects">{lang.eu_projects}</TextLink>
-              <TextLink to="/distance_agreement">
+      <div className="center-h">
+        <div className="container p row center">
+          <ContactForm />
+          <div
+            className="column "
+            style={{ flex: 'unset' }}>
+            <div className="card p">
+              <FloraAddress />
+            </div>
+            <div className="card column p">
+              <Link
+                className="text-link"
+                to="/EU_projects">
+                {lang.eu_projects}
+              </Link>
+              <Link
+                className="text-link"
+                to="/distance_agreement">
                 {lang.distance_agreement}
-              </TextLink>
-              <TextLink to="/privacy_policy">{lang.privacy_policy}</TextLink>
-            </Column>
-          </WrappableRow>
-        </Container>
-      </Padding>
+              </Link>
+              <Link
+                className="text-link"
+                to="/privacy_policy">
+                {lang.privacy_policy}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </FooterContainer>
   )
 }

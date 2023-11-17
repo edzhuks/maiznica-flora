@@ -15,33 +15,24 @@ const orderSchema = new mongoose.Schema({
       packed: Boolean,
     },
   ],
-  deliveryMethod: {
-    method: String,
-    cost: Number,
-    address: {
-      name: {
-        type: String,
-      },
-      surname: {
-        type: String,
-      },
-      phone: {
-        type: String,
-      },
-      city: {
-        type: String,
-      },
-      street: {
-        type: String,
-      },
-      house: {
-        type: String,
-      },
-      apartment: {
-        type: String,
-      },
-    },
+  deliveryMethod: String,
+  courrierAddress: {
+    name: String,
+    surname: String,
+    phone: String,
+    city: String,
+    street: String,
+    house: String,
+    apartment: String,
   },
+  pickupPointData: {
+    id: String,
+    phone: String,
+    name: String,
+    surname: String,
+  },
+  deliveryPhone: String,
+  deliveryCost: Number,
   datePlaced: Date,
   status: {
     status: {

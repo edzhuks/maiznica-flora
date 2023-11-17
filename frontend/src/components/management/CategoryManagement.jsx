@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from '../styled/base'
 
 import { Link } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
@@ -21,23 +20,7 @@ const CategoryList = styled.ul`
   margin-left: 30px;
 `
 
-const Clearer = styled.div`
-  background: ${(props) => props.theme.background};
-  z-index: -1;
-  position: absolute;
-  height: 170px;
-  width: 100%;
-  top: 0;
-  left: 0;
-`
-
-const SmallButton = styled(Button)`
-  padding: 2px 5px;
-  margin: 0px 5px;
-  height: auto;
-`
-
-const ProductItem = styled.li`
+const ProductItemm = styled.li`
   span {
     color: ${(props) => (props.outOfStock ? props.theme.light : 'black')};
     text-decoration: ${(props) => (props.invisible ? 'line-through' : 'none')};
@@ -71,26 +54,26 @@ const ProductItem = styled.li`
   button {
   }
 `
-const RemoveButton = styled.button`
-  border-radius: 3px;
-  padding: 3px;
-  background: transparent;
-  border: 0px;
-  color: red;
-  &:hover {
-    background: red;
-    color: ${(props) => props.theme.white};
-  }
-`
-const EditButton = styled(RemoveButton)`
-  color: ${(props) => props.theme.main};
-  &:hover {
-    background: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.white};
-  }
-`
+// const RemoveButton = styled.button`
+//   border-radius: 3px;
+//   padding: 3px;
+//   background: transparent;
+//   border: 0px;
+//   color: red;
+//   &:hover {
+//     background: red;
+//     color: ${(props) => props.theme.white};
+//   }
+// `
+// const EditButton = styled(RemoveButton)`
+//   color: ${(props) => props.theme.main};
+//   &:hover {
+//     background: ${(props) => props.theme.main};
+//     color: ${(props) => props.theme.white};
+//   }
+// `
 
-const CategoryItem = styled(ProductItem)`
+const CategoryItemm = styled(ProductItemm)`
   font-weight: bold;
   margin: 5px 0px;
   button {
@@ -109,17 +92,98 @@ const CategoryItem = styled(ProductItem)`
   }
 `
 
+const ProductItem = ({
+  product,
+  parentCategory,
+  removeProduct,
+  toggleShow,
+  toggleStock,
+}) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  return (
+    <div>
+      <Link
+        to={`/products/${product.id}`}
+        style={{ textDecoration: 'none' }}>
+        <span>
+          {product.name[selectedLang] || product.name.lv} {product.weight}g
+        </span>
+      </Link>
+      <button
+        className="inverted icon-button cancel m-h-s"
+        onClick={(e) => {
+          e.preventDefault()
+          removeProduct(product.id, parentCategory.id)
+        }}>
+        <Cross className="icon-s" />
+      </button>
+      <button
+        className="inverted icon-button m-h-s"
+        onClick={() => {
+          toggleShow(product)
+        }}>
+        <Eye className="icon-s" />
+      </button>
+      <button
+        className="inverted icon-button m-h-s"
+        onClick={() => {
+          toggleStock(product)
+        }}>
+        <BoxSeam className="icon-s" />
+      </button>
+      <Link to={`/management/new_product/${product.id}`}>
+        <button className="inverted icon-button m-h-s">
+          <Edit className="icon-s" />
+        </button>
+      </Link>
+    </div>
+  )
+}
+
+const CategoryItem = ({
+  category,
+  removeCategory,
+  parentCategory,
+  handleCategoryButton,
+  handleProductButton,
+}) => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  return (
+    <div>
+      <Link
+        to={`/category/${category.id}`}
+        style={{ textDecoration: 'none' }}>
+        <span>
+          {category.displayName[selectedLang] || category.displayName.lv}
+          {category.id !== 'all' && category.id !== 'new' && (
+            <button
+              className="inverted icon-button m-h-s cancel"
+              onClick={(e) => {
+                e.preventDefault()
+                removeCategory(category.id, parentCategory.id)
+              }}>
+              <Cross className="icon-m" />
+            </button>
+          )}
+        </span>
+      </Link>
+
+      <button onClick={handleProductButton}>+ {lang.product}</button>
+      <button onClick={handleCategoryButton}>+ {lang.category}</button>
+    </div>
+  )
+}
+
 const CategoryTab = ({
   category,
   handleCategory,
   handleProduct,
-  handleDeleteProduct,
-  handleDeleteCategory,
+  removeProduct,
+  removeCategory,
   parentCategory,
-  handleHideProduct,
-  handleShowProduct,
-  handleInStockProduct,
-  handleOutOfStockProduct,
+  toggleShow,
+  toggleStock,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -132,79 +196,25 @@ const CategoryTab = ({
   }
 
   return (
-    <>
-      <CategoryItem>
-        <Link
-          to={`/category/${category.id}`}
-          style={{ textDecoration: 'none' }}>
-          <span>
-            {category.displayName[selectedLang] || category.displayName.lv}
-            {category.id !== 'all' && category.id !== 'new' && (
-              <button
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleDeleteCategory(category.id, parentCategory.id)
-                }}>
-                <Cross />
-              </button>
-            )}
-          </span>
-        </Link>
-
-        <SmallButton onClick={handleProductButton}>
-          + {lang.product}
-        </SmallButton>
-        <SmallButton onClick={handleCategoryButton}>
-          + {lang.category}
-        </SmallButton>
-      </CategoryItem>
+    <div>
+      <CategoryItem
+        category={category}
+        removeCategory={removeCategory}
+        parentCategory={parentCategory}
+        handleCategoryButton={handleCategoryButton}
+        handleProductButton={handleProductButton}
+      />
       <CategoryList>
         {category.categories &&
-          category.products.map((p) => (
+          category.products.map((product) => (
             <ProductItem
-              key={p.id}
-              invisible={p.invisible}
-              outOfStock={p.outOfStock}>
-              <Link
-                to={`/products/${p.id}`}
-                style={{ textDecoration: 'none' }}>
-                <span>
-                  {p.name[selectedLang] || p.name.lv} {p.weight}g
-                </span>
-              </Link>
-              <RemoveButton
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleDeleteProduct(p.id, category.id)
-                }}>
-                <Cross size="20px" />
-              </RemoveButton>
-              <EditButton
-                onClick={() => {
-                  if (p.invisible) {
-                    handleShowProduct(p.id)
-                  } else {
-                    handleHideProduct(p.id)
-                  }
-                }}>
-                <Eye size="18px" />
-              </EditButton>
-              <EditButton
-                onClick={() => {
-                  if (p.outOfStock) {
-                    handleInStockProduct(p.id)
-                  } else {
-                    handleOutOfStockProduct(p.id)
-                  }
-                }}>
-                <BoxSeam size="18px" />
-              </EditButton>
-              <Link to={`/management/new_product/${p.id}`}>
-                <EditButton>
-                  <Edit size="20px" />
-                </EditButton>
-              </Link>
-            </ProductItem>
+              key={product.id}
+              product={product}
+              parentCategory={category}
+              removeProduct={removeProduct}
+              toggleShow={toggleShow}
+              toggleStock={toggleStock}
+            />
           ))}
       </CategoryList>
       <CategoryList>
@@ -215,17 +225,15 @@ const CategoryTab = ({
               category={c}
               handleCategory={handleCategory}
               handleProduct={handleProduct}
-              handleDeleteProduct={handleDeleteProduct}
-              handleShowProduct={handleShowProduct}
-              handleHideProduct={handleHideProduct}
-              handleInStockProduct={handleInStockProduct}
-              handleOutOfStockProduct={handleOutOfStockProduct}
-              handleDeleteCategory={handleDeleteCategory}
+              removeProduct={removeProduct}
+              toggleShow={toggleShow}
+              toggleStock={toggleStock}
+              removeCategory={removeCategory}
               parentCategory={category}
             />
           ))}
       </CategoryList>
-    </>
+    </div>
   )
 }
 
@@ -253,27 +261,29 @@ const CategoryManagement = () => {
     refresh()
   }
 
-  const handleDeleteProduct = (id, parentCategory) => {
+  const removeProduct = (id, parentCategory) => {
     categoryService
       .removeProducts({ productId: id, parentCategory })
       .then(() => refresh())
   }
-  const handleDeleteCategory = (id, parentCategory) => {
+  const removeCategory = (id, parentCategory) => {
     categoryService
       .removeCategories({ categoryId: id, parentCategory })
       .then(() => refresh())
   }
-  const handleHideProduct = (id) => {
-    productService.hideProduct(id).then(() => refresh())
+  const toggleShow = (product) => {
+    if (product.invisible) {
+      productService.showProduct(product.id).then(() => refresh())
+    } else {
+      productService.hideProduct(product.id).then(() => refresh())
+    }
   }
-  const handleShowProduct = (id) => {
-    productService.showProduct(id).then(() => refresh())
-  }
-  const handleInStockProduct = (id) => {
-    productService.inStock(id).then(() => refresh())
-  }
-  const handleOutOfStockProduct = (id) => {
-    productService.outOfStock(id).then(() => refresh())
+  const toggleStock = (product) => {
+    if (product.inStock) {
+      productService.outOfStock(product.id).then(() => refresh())
+    } else {
+      productService.inStock(product.id).then(() => refresh())
+    }
   }
   const refresh = () => {
     categoryService.getFullCatalogue().then((result) => {
@@ -299,17 +309,14 @@ const CategoryManagement = () => {
         onClose={onModalClose}
       />
       <ul style={{ listStyle: 'none' }}>
-        <Clearer />
         {catalogue ? (
           <CategoryTab
             handleProduct={clickProduct}
             handleCategory={clickCategory}
-            handleDeleteProduct={handleDeleteProduct}
-            handleDeleteCategory={handleDeleteCategory}
-            handleShowProduct={handleShowProduct}
-            handleHideProduct={handleHideProduct}
-            handleInStockProduct={handleInStockProduct}
-            handleOutOfStockProduct={handleOutOfStockProduct}
+            removeProduct={removeProduct}
+            toggleShow={toggleShow}
+            toggleStock={toggleStock}
+            removeCategory={removeCategory}
             category={catalogue}
           />
         ) : (

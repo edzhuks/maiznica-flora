@@ -1,51 +1,23 @@
 import { useEffect, useState, useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import { useParams, useNavigate } from 'react-router-dom'
-import {
-  NumberInput,
-  Button,
-  Row,
-  CancelButton,
-  ProductImage,
-  WrappableRow,
-  Centerer,
-  SubTitle,
-  InputGroup,
-  Label,
-  ShadowInput,
-  CompactInputGroup,
-  Form,
-  StyledInput,
-  BigTitle,
-} from '../styled/base'
 import useProductService from '../../services/product'
-import StaticInformation from './TextualInformation'
+import StaticInformation from './ProductInformation'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from '../../reducers/cartReducer'
-import styled from 'styled-components'
-import BaseModal from '../management/BaseModal'
+import BaseModal from '../basic/BaseModal'
 import useField from '../../hooks/useField'
 import useToast from '../../util/promiseToast'
 import ProductList from '../productList/ProductList'
+import Input from '../basic/Input'
 
-// const Center = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   width: 100%;
-//   flex-shrink: 10;
-// `
-const TipText = styled.span`
-  color: ${(props) => props.theme.light};
-  font-size: 0.7rem;
-  font-weight: normal;
-`
 const DiscountModal = ({ visible, onSubmit, onCancel }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(new Date())
+  const startDate = useField('date')
+  const endDate = useField('date')
   const discountPrice = useField('number')
   useEffect(() => {
-    setStartDate(new Date())
+    startDate.changeValue(new Date())
   }, [])
   return (
     <BaseModal
@@ -60,43 +32,24 @@ const DiscountModal = ({ visible, onSubmit, onCancel }) => {
           startDate: startDate,
           endDate: endDate,
         })
-      }
-      padding="20px 100px">
-      <Form style={{ width: '300px' }}>
-        <CompactInputGroup>
-          <Label>
-            {lang.discount_price}
-
-            <NumberInput
-              $isonlightbackground
-              {...discountPrice}
-            />
-          </Label>
-          <TipText>{lang.without_vat_cents}</TipText>
-        </CompactInputGroup>
-        <CompactInputGroup>
-          <Label>
-            {lang.start_date}
-            <StyledInput
-              type="date"
-              $isonlightbackground
-              valueAsDate={startDate}
-              onChange={(e) => setStartDate(e.target.valueAsDate)}
-            />
-          </Label>
-        </CompactInputGroup>
-        <CompactInputGroup>
-          <Label>
-            {lang.end_date}
-            <StyledInput
-              type="date"
-              $isonlightbackground
-              valueAsDate={endDate}
-              onChange={(e) => setEndDate(e.target.valueAsDate)}
-            />
-          </Label>
-        </CompactInputGroup>
-      </Form>
+      }>
+      <form className="p-m">
+        <Input
+          {...discountPrice}
+          required
+          label={`${lang.discount_price} (${lang.in_cents} ${lang.with_VAT})`}
+        />
+        <Input
+          {...startDate}
+          required
+          label={lang.start_date}
+        />
+        <Input
+          {...endDate}
+          required
+          label={lang.end_date}
+        />
+      </form>
     </BaseModal>
   )
 }
@@ -184,46 +137,38 @@ const Product = () => {
           onSubmit={createDiscount}
         />
         {user && user.admin && (
-          <Row
-            style={{
-              gap: '20px',
-              marginBottom: '20px',
-            }}>
-            <Button onClick={() => navigate(`/management/new_product/${id}`)}>
+          <div className="row m-d">
+            <button onClick={() => navigate(`/management/new_product/${id}`)}>
               {lang.edit_product}
-            </Button>
-            <Button onClick={() => setDiscountModal(true)}>
+            </button>
+            <button onClick={() => setDiscountModal(true)}>
               {lang.create_discount}
-            </Button>
+            </button>
             {product.discount && (
-              <CancelButton onClick={removeDiscount}>
+              <button
+                className="cancel"
+                onClick={removeDiscount}>
                 {lang.remove_discount}
-              </CancelButton>
+              </button>
             )}
-            <CancelButton onClick={deleteProduct}>
+            <button
+              className="cancel"
+              onClick={deleteProduct}>
               {lang.delete_product}
-            </CancelButton>
-          </Row>
+            </button>
+          </div>
         )}
-        <WrappableRow
-          style={{
-            justifyContent: 'center',
-          }}>
-          <Centerer>
-            {' '}
-            <ProductImage src={`/images/${product.image}`} />
-          </Centerer>
 
-          <StaticInformation
-            product={product}
-            quantity={quantity}
-            setQuantity={setQuantity}
-            onOrder={addToCart}
-          />
-        </WrappableRow>
+        <StaticInformation
+          product={product}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          onOrder={addToCart}
+          className="m-d-b"
+        />
         {product.relatedProducts && product.relatedProducts.length > 0 && (
           <>
-            <BigTitle>{lang.related_products}</BigTitle>
+            <h1 className="big-title m-d">{lang.related_products}</h1>
             <ProductList products={product.relatedProducts} />
           </>
         )}

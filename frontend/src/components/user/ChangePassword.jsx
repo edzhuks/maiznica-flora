@@ -5,17 +5,7 @@ import { useState } from 'react'
 import useUserService from '../../services/user'
 import useToast from '../../util/promiseToast'
 import { useNavigate } from 'react-router-dom'
-
-const {
-  LoginCard,
-  BigTitle,
-  PaddedForm,
-  InputGroup,
-  Label,
-  StyledInput,
-  FullWidthButton,
-  ValidationFailed,
-} = require('../styled/base')
+import Input from '../basic/Input'
 
 const ChangePassword = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -71,37 +61,35 @@ const ChangePassword = () => {
   }
 
   return (
-    <LoginCard style={{ maxWidth: '600px' }}>
-      <BigTitle>{lang.change_password}</BigTitle>
-      <PaddedForm onSubmit={onSubmit}>
-        <InputGroup>
-          <Label>
-            {lang.previous_password}
-            <StyledInput
-              {...previousPassword}
-              $isonlightbackground
-            />
-          </Label>
-        </InputGroup>
+    <div className="card ">
+      <h1 className="big-title m-t-b">{lang.change_password}</h1>
+      <form
+        className="p-h-b"
+        onSubmit={onSubmit}>
+        <Input
+          label={lang.previous_password}
+          {...previousPassword}
+          required
+        />
 
         <PasswordWithValidation
           password1={password1}
           password2={password2}
           passwordRequiredReminderVisible={passwordRequiredReminderVisible}
         />
-        {previousPasswordRequiredReminderVisible && (
-          <ValidationFailed>
-            <h3>{lang.previous_password_required}</h3>
-          </ValidationFailed>
-        )}
         {previousPasswordIncorrectReminderVisible && (
-          <ValidationFailed>
-            <h3>{lang.previous_password_incorrect}</h3>
-          </ValidationFailed>
+          <ul className="validation blink">
+            <li>{lang.previous_password_incorrect}</li>
+          </ul>
         )}
-        <FullWidthButton type="submit">{lang.change_password}</FullWidthButton>
-      </PaddedForm>
-    </LoginCard>
+
+        <button
+          className="full-width m-t-m m-d-b"
+          type="submit">
+          {lang.change_password}
+        </button>
+      </form>
+    </div>
   )
 }
 

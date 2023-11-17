@@ -7,15 +7,11 @@ import { useSelector } from 'react-redux'
 const useOrderService = () => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const { showErrorToast } = useToast()
-  const baseURL = `${apiURL}/order`
+  const baseURL = `${apiURL}/cart`
 
-  const placeOrder = (deliveryMethod) => {
+  const placeOrder = () => {
     const config = makeConfig()
-    const request = axios.post(
-      baseURL,
-      { deliveryMethod, selectedLang },
-      config
-    )
+    const request = axios.post(`${baseURL}/pay/`, { selectedLang }, config)
     showErrorToast(request)
     return request
   }

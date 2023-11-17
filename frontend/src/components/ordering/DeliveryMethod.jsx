@@ -1,202 +1,225 @@
-import styled, { ThemeContext, css, useTheme } from 'styled-components'
-import { SmallerBigTitle, Card, Row } from '../styled/base'
-import { useSelector } from 'react-redux'
-import Price from '../styled/Price'
+import styled, { css, useTheme } from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import Price from '../basic/Price'
 import { Calendar3 } from '@styled-icons/bootstrap/Calendar3'
 import ReactSelect from 'react-select'
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import { useEffect } from 'react'
 import useDPDservice from '../../services/dpd'
-import { useContext } from 'react'
 import Addresses from '../user/Adresses'
 import AddressWithMap from '../contact/AddressWithMap'
-
-const DeliveryOptions = styled.div`
-  display: flex;
-  width: 100%;
-  gap: ${(props) => props.theme.padding};
-  flex-wrap: wrap;
-  justify-content: center;
-`
-const DeliveryOption = styled(Card)`
-  padding: ${(props) => props.theme.padding};
-  width: calc(96% / 3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 230px;
-  flex: 1 1 calc(96% / 3);
-  max-width: 340px;
-  ${(props) =>
-    props.active &&
-    css`
-      outline: 2px solid ${props.theme.main};
-    `}
-  cursor: pointer;
-  ${SmallerBigTitle} {
-    height: 2.6rem;
-  }
-`
-
-const DeliveryTime = styled.div`
-  color: ${(props) => props.theme.light};
-  font-size: 1rem;
-  margin-top: 20px;
-`
-const DeliveryMethod = ({
-  deliveryMethod,
+import {
+  getDeliveryCost,
   setDeliveryMethod,
-  overThreshold,
-}) => {
+  useCartServiceDispatch,
+} from '../../reducers/cartReducer'
+import Input from '../basic/Input'
+import useField from '../../hooks/useField'
+import BussinessMap from '../contact/BussinessMap'
+
+const DeliveryOption = ({ deliveryMethod, children, map }) => {
+  const dispatch = useDispatch()
+  const selected = useSelector(
+    (state) => state.cart.deliveryMethod === deliveryMethod
+  )
+  const { changeDeliveryMethod } = useCartServiceDispatch()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const [pickupPoints, setPickupPoints] = useState([])
+  return (
+    <>
+      <div
+        className={`card transition p-m row evenly stretch pointer ${
+          selected ? 'outlined ' : ''
+        } `}
+        onClick={() => {
+          if (!selected) {
+            dispatch(changeDeliveryMethod(deliveryMethod))
+          }
+        }}>
+        <div className="column align-cross-center center">
+          <h3 className="card-heading">{lang[`delivery_${deliveryMethod}`]}</h3>
+          <Price
+            className="m-v"
+            price={getDeliveryCost(deliveryMethod)}
+            isSmall={true}
+          />
+          <p className="hint-text">
+            <Calendar3 className="icon-m m-r" />
+            {lang[`delivery_time_${deliveryMethod}`]}
+          </p>
+        </div>
+        {selected && (
+          <div
+            className="column"
+            style={{ flexGrow: 0 }}>
+            {children}
+          </div>
+        )}
+      </div>
+      {selected && map && [map]}
+    </>
+  )
+}
+
+const BakeryPickup = ({}) => {
+  const dispatch = useDispatch()
+  const { changeDeliveryPhone } = useCartServiceDispatch()
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const deliveryPhoneInput = useField('phone')
+
+  const deliveryPhone = useSelector((state) => state.cart.deliveryPhone)
+  useEffect(() => {
+    if (deliveryPhone) {
+      deliveryPhoneInput.changeValue(deliveryPhone)
+    }
+  }, [deliveryPhone])
+  return (
+    <DeliveryOption
+      deliveryMethod="bakery"
+      map={<BussinessMap key="a" />}>
+      <p
+        className="card-text"
+        style={{ maxWidth: '300px' }}>
+        {lang.phone_use_info}
+      </p>
+      <Input
+        {...deliveryPhoneInput}
+        label={lang.phone}
+        onBlur={() => dispatch(changeDeliveryPhone(deliveryPhoneInput.value))}
+      />
+    </DeliveryOption>
+  )
+}
+const PickupPoint = ({}) => {
+  const dispatch = useDispatch()
+  const { changePickupPointData } = useCartServiceDispatch()
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allPickupPoints, setAllPickupPoints] = useState([])
   const dpdService = useDPDservice()
-  const [selectedPickupPoint, setSelectedPickupPoint] = useState()
-  const [address, setAddress] = useState()
+  const selectedPickupPoint = useField('select')
+  const name = useField('text')
+  const surname = useField('text')
+  const phone = useField('phone')
+  const pickupPointData = useSelector((state) => state.cart.pickupPointData)
+
   useEffect(() => {
     dpdService.getPickupPoints().then((data) => {
-      setPickupPoints(
+      setAllPickupPoints(
         data.map((point) => {
           return {
             value: point,
             label: `${point.name.substring(12)}, ${point.address.city}, ${
               point.address.street
-            }`.toLowerCase(),
+            }`,
           }
         })
       )
-      setAllPickupPoints(data)
     })
   }, [])
-  const appTheme = useTheme()
+  useEffect(() => {
+    if (pickupPointData) {
+      selectedPickupPoint.changeValue(
+        allPickupPoints.find((p) => p.value.id === pickupPointData.id)
+      )
+      name.changeValue(pickupPointData.name)
+      surname.changeValue(pickupPointData.surname)
+      phone.changeValue(pickupPointData.phone)
+    }
+  }, [pickupPointData])
+
+  return (
+    <DeliveryOption
+      deliveryMethod="pickupPoint"
+      map={
+        <AddressWithMap
+          key="b"
+          latlon={
+            pickupPointData && pickupPointData.id && allPickupPoints.length > 0
+              ? allPickupPoints.find((p) => p.value.id === pickupPointData.id)
+                  ?.value.address.latLong
+              : undefined
+          }
+        />
+      }>
+      <Input
+        {...selectedPickupPoint}
+        label={lang.select_point}
+        options={allPickupPoints}
+        isMulti={false}
+        width={300}
+        required={true}
+        onChange={(selected) => {
+          dispatch(
+            changePickupPointData({ ...pickupPointData, id: selected.value.id })
+          )
+        }}
+      />
+      <Input
+        {...name}
+        label={lang.name}
+        required
+        onBlur={() =>
+          dispatch(
+            changePickupPointData({ ...pickupPointData, name: name.value })
+          )
+        }
+      />
+      <Input
+        {...surname}
+        label={lang.surname}
+        required
+        onBlur={() =>
+          dispatch(
+            changePickupPointData({
+              ...pickupPointData,
+              surname: surname.value,
+            })
+          )
+        }
+      />
+      <Input
+        {...phone}
+        label={lang.phone}
+        required
+        onBlur={() =>
+          dispatch(
+            changePickupPointData({ ...pickupPointData, phone: phone.value })
+          )
+        }
+      />
+    </DeliveryOption>
+  )
+}
+const Courrier = ({}) => {
+  const dispatch = useDispatch()
+  const { changeCourrierAddress } = useCartServiceDispatch()
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const courrierAddress = useSelector((state) => state.cart.courrierAddress)
+
+  return (
+    <DeliveryOption deliveryMethod="courrier">
+      <Addresses
+        selectedAddress={courrierAddress}
+        style={{ maxWidth: '31rem' }}
+        selectAddress={(address) => {
+          if (address) {
+            dispatch(changeCourrierAddress(address.id))
+          } else {
+            dispatch(changeCourrierAddress('unset'))
+          }
+        }}
+      />
+    </DeliveryOption>
+  )
+}
+const DeliveryMethod = () => {
   return (
     <div>
-      <DeliveryOptions>
-        <DeliveryOption
-          onClick={() => setDeliveryMethod({ method: 'bakery', cost: 0 })}
-          active={deliveryMethod.method === 'bakery'}>
-          <SmallerBigTitle style={{ marginBottom: '20px' }}>
-            {lang.pick_up_from_flora}
-          </SmallerBigTitle>
-          <Price
-            price={0}
-            isSmall={true}
-          />
-          <DeliveryTime>
-            <Calendar3 size="1.5rem" />
-            &nbsp;&nbsp;&nbsp;&nbsp;{lang.next_working_day}
-          </DeliveryTime>
-        </DeliveryOption>
-        <DeliveryOption
-          onClick={() => {
-            if (deliveryMethod.method !== 'pickupPoint') {
-              setDeliveryMethod({
-                method: 'pickupPoint',
-                address: selectedPickupPoint?.value,
-                cost: 399,
-              })
-            }
-          }}
-          active={deliveryMethod.method === 'pickupPoint'}>
-          <SmallerBigTitle style={{ marginBottom: '20px' }}>
-            {lang.pickup_point}
-          </SmallerBigTitle>
-          <Price
-            price={overThreshold ? 0 : 399}
-            isSmall={true}
-          />
-          <DeliveryTime>
-            <Calendar3 size="1.5rem" />
-            &nbsp;&nbsp;&nbsp;&nbsp;{lang.pickup_point_delivery_time}
-          </DeliveryTime>
-          <div style={{ width: '100%', marginTop: '20px' }}>
-            <ReactSelect
-              placeholder={lang.select_point}
-              value={selectedPickupPoint}
-              onChange={(selected) => {
-                console.log(selected)
-                setDeliveryMethod({
-                  ...deliveryMethod,
-                  address: selected.value,
-                })
-                setSelectedPickupPoint(selected)
-              }}
-              options={pickupPoints}
-              styles={{
-                option: (baseStyles, state) => ({
-                  ...baseStyles,
-                  fontSize: '0.8rem',
-                  textTransform: 'capitalize',
-                  padding: '5px 3px',
-                }),
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  textTransform: 'capitalize',
-                }),
-              }}
-              theme={(theme) => ({
-                ...theme,
-                borderRadius: '2px',
-                colors: {
-                  ...theme.colors,
-                  primary: appTheme.main,
-                  primary25: appTheme.lighter,
-                },
-              })}
-            />
-          </div>
-        </DeliveryOption>
-        <DeliveryOption
-          onClick={() =>
-            setDeliveryMethod({
-              method: 'courrier',
-              address: address,
-              cost: 599,
-            })
-          }
-          active={deliveryMethod.method === 'courrier'}>
-          <SmallerBigTitle style={{ marginBottom: '20px' }}>
-            {lang.courrier}
-          </SmallerBigTitle>
-          <Price
-            price={overThreshold ? 0 : 599}
-            isSmall={true}
-          />
-          <DeliveryTime>
-            <Calendar3 size="1.5rem" />
-            &nbsp;&nbsp;&nbsp;&nbsp;{lang.courrier_delivery_time}
-          </DeliveryTime>
-        </DeliveryOption>
-      </DeliveryOptions>
-      <div style={{ marginTop: appTheme.padding }}>
-        {deliveryMethod.method === 'courrier' && (
-          <Addresses
-            selectedAddress={address}
-            selectAddress={(address) => {
-              setDeliveryMethod({ ...deliveryMethod, address: address })
-              setAddress(address)
-            }}
-          />
-        )}
-        {deliveryMethod.method === 'bakery' && <AddressWithMap />}
-        {deliveryMethod.method === 'pickupPoint' && (
-          <AddressWithMap
-            address={
-              selectedPickupPoint
-                ? {
-                    ...selectedPickupPoint.value.address,
-                    name: selectedPickupPoint.value.name,
-                  }
-                : undefined
-            }
-            latlon={
-              selectedPickupPoint
-                ? selectedPickupPoint.value.address.latLong
-                : undefined
-            }
-          />
-        )}
+      <div
+        className="column  "
+        style={{ flexWrap: 'nowrap' }}>
+        <BakeryPickup />
+        <PickupPoint />
+        <Courrier />
       </div>
     </div>
   )

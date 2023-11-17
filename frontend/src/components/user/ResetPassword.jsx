@@ -1,25 +1,8 @@
 import useUserService from '../../services/user'
 import useField from '../../hooks/useField'
-import { useContext, useEffect, useState } from 'react'
-import UserContext from '../../contexts/userContext'
-import {
-  BigTitle,
-  BottomTextLink,
-  Centerer,
-  Form,
-  FullWidthButton,
-  InputGroup,
-  Label,
-  LoginCard,
-  PaddedForm,
-  StyledInput,
-  SubTitle,
-  ValidPassword,
-  ValidationFailed,
-} from '../styled/base'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import useToast from '../../util/promiseToast'
 import PasswordWithValidation from '../basic/PasswordValidation'
 
@@ -57,23 +40,25 @@ const ResetPassword = () => {
     console.log(password1.value === password2.value)
   }, [password1, password2])
   return (
-    <Centerer>
-      <LoginCard>
-        <BigTitle>{lang.reset_password}</BigTitle>
-        <PaddedForm onSubmit={onSubmit}>
+    <div className="center-h">
+      <div className="card">
+        <h1 className="big-title m-b">{lang.reset_password}</h1>
+        <form
+          className="m-b"
+          onSubmit={onSubmit}>
           <PasswordWithValidation
             password1={password1}
             password2={password2}
             passwordRequiredReminderVisible={passwordRequiredReminderVisible}
           />
-          <FullWidthButton
-            type="submit"
-            style={{ marginTop: '20px', marginBottom: '-10px' }}>
+          <button
+            className="full-width m-t-m"
+            type="submit">
             {lang.reset_password}
-          </FullWidthButton>
-        </PaddedForm>
-      </LoginCard>
-    </Centerer>
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }
 

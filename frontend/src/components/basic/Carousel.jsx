@@ -5,9 +5,7 @@ import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
 
 const CarouselContainer = styled.div`
   width: 100%;
-  /* min-width: 450px; */
   position: relative;
-  margin-bottom: ${(props) => props.theme.padding};
 `
 
 const CarouselLeft = styled.div`
@@ -23,7 +21,7 @@ const CarouselLeft = styled.div`
   align-items: center;
   svg > path {
     filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.5));
-    color: ${(props) => props.theme.white};
+    color: var(--surface);
   }
 `
 
@@ -34,19 +32,16 @@ const CarouselRight = styled(CarouselLeft)`
 `
 
 const CarouselImages = styled.div`
-  box-shadow: ${(props) => props.theme.shadow};
+  box-shadow: var(--shadow);
 `
 
 const CarouselImage = styled.img`
   width: 100%;
   max-width: 100%;
-  /* max-height: 100%; */
   height: auto;
-  /* display: ${(props) => (props.active ? 'block' : 'none')}; */
   display: block;
   position: absolute;
   height: auto;
-  /* transition: 0.5s; */
   opacity: 0;
   transition: all 1000ms linear 0s;
   &.fade-in {
@@ -75,12 +70,6 @@ const CarouselIndicator = styled.div`
   transition: 0.5s;
 `
 
-const Center = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-`
-
 const CarouselItem = ({ image, active }) => {
   return (
     <CarouselImage
@@ -90,7 +79,7 @@ const CarouselItem = ({ image, active }) => {
   )
 }
 
-const Carousel = ({ images }) => {
+const Carousel = ({ images, className }) => {
   const [activeImage, setActiveImage] = useState(0)
   const [int, setInt] = useState(undefined)
 
@@ -104,7 +93,7 @@ const Carousel = ({ images }) => {
   }, [images])
 
   return (
-    <CarouselContainer>
+    <CarouselContainer className={className}>
       <CarouselLeft
         onClick={() => {
           setActiveImage(

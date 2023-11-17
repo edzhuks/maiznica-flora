@@ -1,26 +1,8 @@
-import { ContactText } from '../styled/base'
-
-const Address = ({ address }) => {
-  if (address) {
-    return (
-      <div>
-        <ContactText>
-          {address.name} {address.surname}
-          <br />
-          {address.street} {address.house}-{address.apartment}
-          <br />
-          {address.city}
-          <br />
-          {address.country}-{address.postalCode}
-        </ContactText>
-      </div>
-    )
-  }
+const FloraAddress = ({ address }) => {
   return (
     <div>
-      <ContactText>
-        SIA “Maiznīca Flora”
-        <br />
+      <h3 className="card-heading "> SIA “Maiznīca Flora”</h3>
+      <p className="card-text m-t">
         Ražotne: Vecvaltes, Krimuldas pagasts,
         <br />
         Siguldas novads, Latvija, LV-2144
@@ -30,9 +12,9 @@ const Address = ({ address }) => {
         Tālrunis: +371 67521291
         <br />
         E-pasts: flora@maiznica.lv
-      </ContactText>
+      </p>
     </div>
   )
 }
 
-export default Address
+export default FloraAddress

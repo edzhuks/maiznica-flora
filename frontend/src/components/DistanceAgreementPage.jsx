@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { BigTitle } from './styled/base'
 
 const DistanceAgreementPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -11,7 +10,7 @@ const DistanceAgreementPage = () => {
         alignItems: 'center',
         flexDirection: 'column',
       }}>
-      <BigTitle>{lang.distance_agreement}</BigTitle>
+      <h1 className="big-title m-d">{lang.distance_agreement}</h1>
       <div style={{ maxWidth: '800px' }}>
         <h3>Maiznīca Flora e-veikala preču pirkšanas-pārdošanas noteikumi</h3>
         <h4>1. Termini un vispārējie nosacījumi</h4>

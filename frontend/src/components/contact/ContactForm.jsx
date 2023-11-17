@@ -1,44 +1,30 @@
 import { useSelector } from 'react-redux'
-import {
-  BigTitle,
-  Button,
-  Form,
-  InputGroup,
-  Label,
-  ShadowInput,
-  ShadowTextArea,
-} from '../styled/base'
+import Input from '../basic/Input'
 
-const ContactForm = () => {
+const ContactForm = (props) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <div>
-      <BigTitle>{lang.contact_us}</BigTitle>
-      <Form style={{ width: '100%', paddingBottom: 20 }}>
-        <InputGroup>
-          <Label>
-            {lang.name}
-            <ShadowInput />
-          </Label>
-        </InputGroup>
-        <InputGroup>
-          <Label>
-            {lang.email}
-            <ShadowInput />
-          </Label>
-        </InputGroup>
-        <InputGroup>
-          <Label>
-            {lang.message}
-            <ShadowTextArea
-              rows={5}
-              style={{ width: '70%' }}
-            />
-          </Label>
-        </InputGroup>
-      </Form>
-      <div style={{ textAlign: 'right' }}>
-        <Button>{lang.send_message}</Button>
+    <div className={`card ${props.className}`}>
+      <h1 className="big-title m-v-m">{lang.contact_us}</h1>
+      <form className="p-h-m">
+        <Input
+          label={lang.name}
+          required
+        />
+        <Input
+          label={lang.email}
+          type="email"
+          required
+        />
+        <Input
+          label={lang.message}
+          type="textarea"
+          required
+          rows={5}
+        />
+      </form>
+      <div className="text-right">
+        <button className="m-m">{lang.send_message}</button>
       </div>
     </div>
   )

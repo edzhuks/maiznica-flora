@@ -1,14 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  BigTitle,
-  CancelButton,
-  FullWidthCancelButton,
-  InputGroup,
-  Label,
-  LoginCard,
-  PaddedForm,
-  StyledInput,
-} from '../styled/base'
 import { useContext } from 'react'
 import UserContext from '../../contexts/userContext'
 import useField from '../../hooks/useField'
@@ -18,6 +8,7 @@ import useUserService from '../../services/user'
 import useToast from '../../util/promiseToast'
 import { useNavigate } from 'react-router-dom'
 import { clearCart } from '../../reducers/cartReducer'
+import Input from '../basic/Input'
 
 const UserData = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -60,34 +51,34 @@ const UserData = () => {
   }
 
   return (
-    <LoginCard>
-      <BigTitle>{lang.account_information}</BigTitle>
-      <PaddedForm>
-        <InputGroup>
-          <Label>
-            {lang.email}
-            <StyledInput
-              $isonlightbackground
-              {...email}
-              disabled
-              style={{ color: 'gray' }}
-            />
-          </Label>
-        </InputGroup>
+    <div className="card">
+      <h1 className="big-title m-v-b">{lang.account_information}</h1>
+      <form
+        className="p-h-b"
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}>
+        <Input
+          label={lang.email}
+          {...email}
+          disabled
+          style={{ color: 'var(--subtle)' }}
+        />
         {deleteClicked && (
-          <InputGroup>
-            <Label>
-              {lang.password}
-              <StyledInput
-                $isonlightbackground
-                {...password}
-              />
-            </Label>
-          </InputGroup>
+          <Input
+            label={lang.password}
+            {...password}
+            required
+            autoComplete="new-password"
+          />
         )}
-      </PaddedForm>
-      <CancelButton onClick={deleteAccount}>{lang.delete_account}</CancelButton>
-    </LoginCard>
+        <button
+          className="cancel full-width m-d-b  m-t-m"
+          onClick={deleteAccount}>
+          {lang.delete_account}
+        </button>
+      </form>
+    </div>
   )
 }
 

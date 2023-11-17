@@ -6,17 +6,13 @@ import {
   useLocation,
   ScrollRestoration,
 } from 'react-router-dom'
+import './App.css'
 import Product from './components/productPage/Product'
 import Login from './components/user/Login'
 import SignUp from './components/user/SignUp'
 import { useState, useEffect, useLayoutEffect } from 'react'
 import Cart from './components/ordering/Cart'
 import Order from './components/ordering/Order'
-import {
-  FullHeightContainer,
-  Padding,
-  PaddingH,
-} from './components/styled/base'
 import ManagementPage from './components/management/ManagementPage'
 import HomePage from './components/Home'
 import ProductListWithCategories from './components/productList/ProductListWithCategories'
@@ -49,6 +45,7 @@ import InfoPage from './components/info/InfoPage'
 import EmailVerified from './components/info/EmailVerified'
 import Ordered from './components/info/Ordered'
 import Registered from './components/info/Registered'
+import AddressesPage from './components/user/AdressesPage'
 
 const baseTheme = {
   main: '#45941e',
@@ -120,8 +117,10 @@ function App() {
           <MobileContext.Provider value={[isMobile, setIsMobile]}>
             <Router>
               <Header />
-              <PaddingH>
-                <FullHeightContainer>
+              <div className="p center-h ">
+                <div
+                  className="container full-width "
+                  style={{ minHeight: '100vh' }}>
                   <Routes>
                     <Route
                       path="/category/:category?"
@@ -205,7 +204,7 @@ function App() {
                       />
                       <Route
                         path="addresses"
-                        element={<Addresses noSelection={true} />}
+                        element={<AddressesPage />}
                       />
                       <Route
                         path="previous_orders"
@@ -233,8 +232,8 @@ function App() {
                       />
                     </Route>
                   </Routes>
-                </FullHeightContainer>
-              </PaddingH>
+                </div>
+              </div>
               <Footer />
             </Router>
           </MobileContext.Provider>

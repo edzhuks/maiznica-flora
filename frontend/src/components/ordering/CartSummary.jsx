@@ -1,122 +1,67 @@
 import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-import { Button, Card, ColoredText } from '../styled/base'
 import { centsToEuro } from '../../util/convert'
 import { Link } from 'react-router-dom'
+import {
+  DELIVERY_THRESHOLD,
+  selectCartOverThreshold,
+  selectCartTotal,
+  selectDeliveryCost,
+} from '../../reducers/cartReducer'
 
-const CostInformation = styled.span``
+const SummaryTile = ({ title, subtitle, price, price2 }) => {
+  return (
+    <div className="row p no-row-gap">
+      <div className="column no-gap">
+        <h3 className="card-heading">{title}</h3>
+        <p className="card-text">{subtitle}</p>
+      </div>
+      <div className="float-to-end">
+        <p className="price-main no-break-words">
+          {centsToEuro(price)} {price2 && <span> - {centsToEuro(price2)}</span>}
+        </p>
+      </div>
+    </div>
+  )
+}
 
-const CostNumber = styled.span`
-  font-size: 1.5rem;
-  /* position: absolute; */
-  bottom: 0px;
-  right: ${(props) => props.theme.padding};
-  /* width: 100%; */
-  flex: 1 1 50%;
-  text-align: right;
-`
-
-const CostTile = styled.div`
-  height: 25%;
-  border-bottom: 3px ${(props) => props.theme.light} dashed;
-  position: relative;
-  padding: 10px;
-  display: flex;
-  width: 100%;
-`
-
-const OrderButton = styled.div`
-  height: 25%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /* padding: 0 100px; */
-  justify-content: end;
-  padding: ${(props) => props.theme.padding};
-`
-
-const SummaryItem = styled.div`
-  /* margin: calc(${(props) => props.theme.padding} / 2); */
-  flex: 1 1 20%;
-  min-width: 245px;
-`
-
-const CartSummary = ({
-  total,
-  deliveryCost,
-  deliveryCostRange,
-  deliveryThreshold,
-  stage,
-  checkDeliveryMethod,
-  checkCartEmpty,
-}) => {
+const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
+  const total = useSelector(selectCartTotal)
+  const deliveryCost = useSelector(selectDeliveryCost)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <SummaryItem style={{ width: '100%' }}>
-      <Card>
-        <CostTile>
-          <CostInformation>
-            <b>{lang.sum}</b>
-          </CostInformation>
-          <CostNumber>{centsToEuro(total)}</CostNumber>
-        </CostTile>
-        <CostTile>
-          <CostInformation>
-            <b>{lang.paid_delivery}</b>
-            <br />
-            {lang.under}
-            {deliveryThreshold / 100}
-          </CostInformation>
-          {deliveryCost === undefined ? (
-            <CostNumber>
-              {centsToEuro(deliveryCostRange.min)} -{' '}
-              {centsToEuro(deliveryCostRange.max)}
-            </CostNumber>
-          ) : (
-            <CostNumber>{centsToEuro(deliveryCost)}</CostNumber>
-          )}
-        </CostTile>
-        <CostTile>
-          <CostInformation>
-            <b>{lang.total}</b>
-          </CostInformation>
-          <CostNumber>
-            {deliveryCost === undefined ? (
-              <ColoredText>
-                {centsToEuro(deliveryCostRange.min + total)} -{' '}
-                {centsToEuro(deliveryCostRange.max + total)}
-              </ColoredText>
-            ) : (
-              <ColoredText>{centsToEuro(total + deliveryCost)}</ColoredText>
-            )}
-          </CostNumber>
-        </CostTile>
-        {stage === 0 && (
-          <OrderButton>
-            <Link
-              to="/order/delivery"
-              onClick={(e) => {
-                e.preventDefault()
-                checkCartEmpty()
-              }}>
-              <Button>{lang.to_delivery}</Button>
-            </Link>
-          </OrderButton>
-        )}
-        {stage === 1 && (
-          <OrderButton>
-            <Link
-              to="/order/payment"
-              onClick={(e) => {
-                e.preventDefault()
-                checkDeliveryMethod()
-              }}>
-              <Button>{lang.to_payment}</Button>
-            </Link>
-          </OrderButton>
-        )}
-      </Card>
-    </SummaryItem>
+    <div className="card">
+      <SummaryTile
+        title={lang.sum}
+        price={total}
+      />
+      <div className="card-divider" />
+      <SummaryTile
+        title={lang.paid_delivery}
+        subtitle={`${lang.under}${DELIVERY_THRESHOLD / 100}`}
+        price={deliveryCost[0]}
+        price2={deliveryCost[1]}
+      />
+
+      <div className="card-divider" />
+      <SummaryTile
+        title={lang.total}
+        price={deliveryCost[0] + total}
+        price2={deliveryCost[1] && deliveryCost[1] + total}
+      />
+
+      {nextStage && (
+        <div className="row end p">
+          <Link
+            to={`/order/${nextStage}`}
+            onClick={(e) => {
+              e.preventDefault()
+              runChecksAndNavigate()
+            }}>
+            <button>{lang[`to_${nextStage}`]}</button>
+          </Link>
+        </div>
+      )}
+    </div>
   )
 }
 
