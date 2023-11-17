@@ -334,6 +334,7 @@ const NewProductFrom = () => {
     formData.append('image', noDiacritics)
     uploadService.uploadImage(formData).then((response) => {
       image.changeValue(`${response.data.path}`)
+
     })
   }
 
