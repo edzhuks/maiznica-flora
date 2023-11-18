@@ -154,6 +154,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
+          dispatch(setIframe(undefined))
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -166,6 +167,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
+          dispatch(setIframe(undefined))
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -192,6 +194,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
+          dispatch(setIframe(undefined))
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -200,9 +203,10 @@ export const useCartServiceDispatch = () => {
     return async (dispatch) => {
       cartService
         .changeDeliveryMethod(method)
-        .then((response) =>
+        .then((response) => {
           dispatch(setDeliveryMethod(response.data.deliveryMethod))
-        )
+          dispatch(setIframe(undefined))
+        })
         .catch((error) => console.log(error.response.data.error))
     }
   }

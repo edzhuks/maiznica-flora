@@ -4,7 +4,7 @@ import useField from '../../hooks/useField'
 import Input from '../basic/Input'
 import { Link } from 'react-router-dom'
 
-const Payment = ({ order, startOver, orderStatus, failedPayment }) => {
+const Payment = ({ order, orderStatus, failedPayment }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)
@@ -43,7 +43,9 @@ const Payment = ({ order, startOver, orderStatus, failedPayment }) => {
               <div>
                 {lang.payment_failed}
                 <br />
-                <button onClick={startOver}>{lang.start_over_payment}</button>
+                <button onClick={tryAcceptTerms}>
+                  {lang.start_over_payment}
+                </button>
               </div>
             ) : (
               <div>
