@@ -148,7 +148,7 @@ export const {
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
-  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  // const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const navigate = useNavigate()
   const cartService = useCartService()
   const orderService = useOrderService()
