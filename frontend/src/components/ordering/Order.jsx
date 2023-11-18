@@ -48,11 +48,11 @@ const Order = () => {
   const { placeOrder } = useCartServiceDispatch()
 
   const startOver = () => {
-    console.log(orderId)
-    const promise = orderService.startOver(orderId)
-    promise.then((response) => {
-      setIframe(response.data.paymentLink)
-    })
+    // console.log(orderId)
+    // const promise = orderService.startOver(orderId)
+    // promise.then((response) => {
+    //   setIframe(response.data.paymentLink)
+    // })
   }
 
   useEffect(() => {
@@ -157,7 +157,6 @@ const Order = () => {
               element={
                 <Payment
                   order={order}
-                  startOver={startOver}
                   orderStatus={orderStatus}
                   failedPayment={failedPayment}
                 />
