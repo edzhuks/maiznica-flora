@@ -295,7 +295,13 @@ router.get('/payment_status/', userExtractor, async (req, res) => {
   const order = await Order.findOne({
     paymentReference: req.query.paymentReference,
   })
-  return res.status(200).send(order)
+  if (order) {
+    return res.status(200).send(order)
+  }
+  const cart = await Cart.findOne({
+    paymentReference: req.query.paymentReference,
+  })
+  return res.status(200).send(cart)
 })
 
 router.get('/', userExtractor, async (req, res) => {
