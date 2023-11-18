@@ -38,7 +38,7 @@ const Order = () => {
   const stage = match.params.stage
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
-  const { updatePaymentStatus } = useCartServiceDispatch()
+  // const { updatePaymentStatus } = useCartServiceDispatch()
   const cart = useSelector((state) => state.cart)
   const iframe = useSelector((state) => state.cart.iframe)
   const navigate = useNavigate()
