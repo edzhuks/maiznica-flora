@@ -5,33 +5,9 @@ import useToast from '../util/promiseToast'
 import { useSelector } from 'react-redux'
 
 const useOrderService = () => {
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const { showErrorToast } = useToast()
-  const baseURL = `${apiURL}/cart`
+  const baseURL = `${apiURL}/order`
 
-  const placeOrder = () => {
-    const config = makeConfig()
-    const request = axios.post(`${baseURL}/pay/`, { selectedLang }, config)
-    showErrorToast(request)
-    return request
-  }
-
-  const startOver = (orderId) => {
-    const config = makeConfig()
-    const request = axios.get(
-      `${baseURL}/pay/${orderId}?selectedLang=${selectedLang}`,
-      config
-    )
-    return request
-  }
-  const getPaymentStatus = (paymentReference) => {
-    const config = makeConfig()
-    const request = axios.get(
-      `${baseURL}/payment_status?paymentReference=${paymentReference}`,
-      config
-    )
-    return request
-  }
   const updateOrder = (newOrder) => {
     const config = makeConfig()
     const request = axios.put(`${baseURL}/${newOrder.id}`, newOrder, config)
@@ -50,7 +26,7 @@ const useOrderService = () => {
     const request = axios.get(baseURL, config)
     return request.then((response) => response.data)
   }
-  return { placeOrder, updateOrder, getAll, get, startOver, getPaymentStatus }
+  return { updateOrder, getAll, get }
 }
 
 export default useOrderService

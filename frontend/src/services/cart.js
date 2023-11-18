@@ -2,8 +2,10 @@ import axios from 'axios'
 import makeConfig from './token'
 import { apiURL } from '../util/config'
 import useToast from '../util/promiseToast'
+import { useSelector } from 'react-redux'
 
 const useCartService = () => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const { showErrorToast } = useToast()
   const baseURL = `${apiURL}/cart`
 
@@ -60,7 +62,21 @@ const useCartService = () => {
     const request = axios.put(baseURL, { deliveryPhone: phone }, config)
     return request
   }
+  const placeOrder = () => {
+    const config = makeConfig()
+    const request = axios.post(`${baseURL}/pay/`, { selectedLang }, config)
+    showErrorToast(request)
+    return request
+  }
 
+  const getPaymentStatus = (paymentReference) => {
+    const config = makeConfig()
+    const request = axios.get(
+      `${baseURL}/payment_status?paymentReference=${paymentReference}`,
+      config
+    )
+    return request
+  }
   return {
     addToCart,
     getCart,
@@ -70,6 +86,8 @@ const useCartService = () => {
     changeDeliveryPhone,
     changePickupPointData,
     changeDeliveryMethod,
+    placeOrder,
+    getPaymentStatus,
   }
 }
 export default useCartService

@@ -154,7 +154,6 @@ export const {
 
 export const useCartServiceDispatch = () => {
   const cartService = useCartService()
-  const orderService = useOrderService()
   const loadCart = () => {
     return async (dispatch) => {
       cartService
@@ -260,7 +259,7 @@ export const useCartServiceDispatch = () => {
 
   const placeOrder = () => {
     return async (dispatch) => {
-      orderService
+      cartService
         .placeOrder()
         .then((response) => {
           dispatch(setIframe(response.data.paymentLink))
@@ -271,7 +270,7 @@ export const useCartServiceDispatch = () => {
   }
   const updatePaymentStatus = (paymentReference) => {
     return async (dispatch) => {
-      orderService.getPaymentStatus(paymentReference).then((response) => {
+      cartService.getPaymentStatus(paymentReference).then((response) => {
         console.log(response.data)
         dispatch(setPaymentStatus(response.data.paymentStatus))
         if (response.data.paymentStatus === 'failed') {
