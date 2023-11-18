@@ -38,12 +38,10 @@ const Order = () => {
   const stage = match.params.stage
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
-  const orderService = useOrderService()
+  const { updatePaymentStatus } = useCartServiceDispatch()
   const cart = useSelector((state) => state.cart)
-  const deliveryMethod = useSelector((state) => state.cart.deliveryMethod)
-  const [orderId, setOrderId] = useState()
+  const iframe = useSelector((state) => state.cart.iframe)
   const navigate = useNavigate()
-  const [orderStatus, setOrderStatus] = useState()
   const [failedPayment, setFailedPayment] = useState()
   const { placeOrder } = useCartServiceDispatch()
 
@@ -56,24 +54,13 @@ const Order = () => {
   }
 
   useEffect(() => {
-    if (orderId) {
+    if (iframe) {
       const interval = setInterval(() => {
-        orderService.getPaymentStatus(orderId).then((response) => {
-          console.log(response.data)
-          setOrderStatus(response.data.paymentStatus)
-          if (response.data.paymentStatus === 'settled') {
-            clearInterval(interval)
-            toast.success(lang.toast_order_successful)
-            navigate('/info/ordered')
-            dispatch(clearCart())
-          } else if (response.data.paymentStatus === 'failed') {
-            // setIframe(undefined)
-          }
-        })
+        dispatch(updatePaymentStatus())
       }, 5000)
       return () => clearInterval(interval)
     }
-  }, [orderId])
+  }, [iframe])
 
   const order = async () => {
     if (checkDeliveryMethod() && checkCartEmpty()) {
@@ -157,7 +144,6 @@ const Order = () => {
               element={
                 <Payment
                   order={order}
-                  orderStatus={orderStatus}
                   failedPayment={failedPayment}
                 />
               }

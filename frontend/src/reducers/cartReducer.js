@@ -1,6 +1,9 @@
 import useCartService from '../services/cart'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import useOrderService from '../services/order'
+import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 const initialState = {
   content: [],
   deliveryMethod: undefined,
@@ -11,6 +14,7 @@ const initialState = {
   animate: false,
   animateTimeout: undefined,
   iframe: undefined,
+  orderStatus: undefined,
 }
 
 const cartSlice = createSlice({
@@ -58,6 +62,9 @@ const cartSlice = createSlice({
     },
     clearIframe(state, action) {
       state.iframe = ''
+    },
+    setOrderStatus(state, action) {
+      state.orderStatus = action.payload
     },
   },
 })
@@ -137,9 +144,12 @@ export const {
   clearAnimationTimeout,
   setIframe,
   clearIframe,
+  setOrderStatus,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const navigate = useNavigate()
   const cartService = useCartService()
   const orderService = useOrderService()
   const loadCart = () => {
@@ -253,7 +263,21 @@ export const useCartServiceDispatch = () => {
         .catch((error) => console.log(error.response.data.error))
     }
   }
-
+  const updatePaymentStatus = () => {
+    return async (dispatch) => {
+      orderService.getPaymentStatus().then((response) => {
+        console.log(response.data)
+        setOrderStatus(response.data.paymentStatus)
+        if (response.data.paymentStatus === 'settled') {
+          toast.success(lang.toast_order_successful)
+          navigate('/info/ordered')
+          dispatch(clearCart())
+        } else if (response.data.paymentStatus === 'failed') {
+          // setIframe(undefined)
+        }
+      })
+    }
+  }
   return {
     loadCart,
     addItem,
@@ -264,6 +288,7 @@ export const useCartServiceDispatch = () => {
     changePickupPointData,
     changeDeliveryMethod,
     placeOrder,
+    updatePaymentStatus,
   }
 }
 
