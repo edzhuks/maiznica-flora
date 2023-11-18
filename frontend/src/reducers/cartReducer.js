@@ -56,6 +56,9 @@ const cartSlice = createSlice({
     setIframe(state, action) {
       state.iframe = action.payload
     },
+    clearIframe(state, action) {
+      state.iframe = ''
+    },
   },
 })
 const selectContent = (state) => state.cart.content
@@ -133,6 +136,7 @@ export const {
   stopAnimate,
   clearAnimationTimeout,
   setIframe,
+  clearIframe,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
@@ -154,7 +158,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
-          dispatch(setIframe(undefined))
+          dispatch(clearIframe())
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -167,7 +171,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
-          dispatch(setIframe(undefined))
+          dispatch(clearIframe())
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -194,7 +198,7 @@ export const useCartServiceDispatch = () => {
         .then((response) => {
           dispatch(setContent(response.data.content))
           dispatch(animateCart())
-          dispatch(setIframe(undefined))
+          dispatch(clearIframe())
         })
         .catch((error) => console.log(error.response.data.error))
     }
@@ -205,7 +209,7 @@ export const useCartServiceDispatch = () => {
         .changeDeliveryMethod(method)
         .then((response) => {
           dispatch(setDeliveryMethod(response.data.deliveryMethod))
-          dispatch(setIframe(undefined))
+          dispatch(clearIframe())
         })
         .catch((error) => console.log(error.response.data.error))
     }
