@@ -18,47 +18,31 @@ const crypto = require('crypto')
 const { log } = require('console')
 
 const getPaymentData = async ({ cart, selectedLang }) => {
-  try {
-    const response = await axios.post(
-      'https://igw-demo.every-pay.com/api/v4/payments/oneoff',
-      {
-        timestamp: new Date(),
-        api_username: BANK_API_USERNAME,
-        nonce: crypto.randomBytes(16).toString('base64'),
-        account_name: 'EUR3D1',
-        amount: (cart.total / 100).toFixed(2),
-        customer_url: `http://new.maiznica.com/api/cart/payment_landing`,
-        order_reference: cart._id.toString(),
-        locale: selectedLang,
+  const response = await axios.post(
+    'https://igw-demo.every-pay.com/api/v4/payments/oneoff',
+    {
+      timestamp: new Date(),
+      api_username: BANK_API_USERNAME,
+      nonce: crypto.randomBytes(16).toString('base64'),
+      account_name: 'EUR3D1',
+      amount: (cart.total / 100).toFixed(2),
+      customer_url: `http://new.maiznica.com/api/cart/payment_landing`,
+      order_reference: cart._id.toString(),
+      locale: selectedLang,
+    },
+    {
+      auth: {
+        username: BANK_API_USERNAME,
+        password: BANK_API_PASSWORD,
       },
-      {
-        auth: {
-          username: BANK_API_USERNAME,
-          password: BANK_API_PASSWORD,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    )
-
-    return response.data
-  } catch (error) {
-    if (error.response.code === 4024) {
-      await cart.deleteOne()
-      const newCart = new Cart({
-        content: [],
-        user: req.user.id,
-        courrierAddress: cart.courrierAddress,
-        pickupPointData: cart.pickupPointData,
-        deliveryPhone: cart.deliveryPhone,
-      })
-      await newCart.save()
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
     }
-    console.log(error)
-    console.log(error.response.data.error)
-  }
+  )
+
+  return response.data
 }
 
 router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
@@ -111,17 +95,34 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
   const total = subtotal + deliveryCost
   cart.total = total
   cart = await cart.save()
-  const paymentData = await getPaymentData({
-    cart: cart,
-    selectedLang: req.body.selectedLang,
-  })
-  cart.paymentStatus = paymentData.payment_state
-  cart.paymentReference = paymentData.payment_reference
-  cart = await cart.save()
-  res.send({
-    paymentLink: paymentData.payment_link,
-    orderId: cart._id,
-  })
+  try {
+    const paymentData = await getPaymentData({
+      cart: cart,
+      selectedLang: req.body.selectedLang,
+    })
+    cart.paymentStatus = paymentData.payment_state
+    cart.paymentReference = paymentData.payment_reference
+    cart = await cart.save()
+    return res.send({
+      paymentLink: paymentData.payment_link,
+      orderId: cart._id,
+    })
+  } catch (error) {
+    if (error.response.data.error.code === 4024) {
+      await cart.deleteOne()
+      const newCart = new Cart({
+        content: [],
+        user: req.user.id,
+        courrierAddress: cart.courrierAddress,
+        pickupPointData: cart.pickupPointData,
+        deliveryPhone: cart.deliveryPhone,
+      })
+      await newCart.save()
+      res.status(400).send({ error: 'already paid' })
+    }
+    console.log(error)
+    console.log(error.response.data.error)
+  }
 })
 
 router.get(
