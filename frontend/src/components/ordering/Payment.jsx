@@ -19,6 +19,10 @@ const Payment = ({ order, failedPayment }) => {
       toast.success(lang.toast_order_successful)
       navigate('/info/ordered')
       dispatch(loadCart())
+    } else if (paymentStatus === 'price_mismatch') {
+      toast.error(lang.toast_price_mismatch)
+      navigate('/info/price_mismatch')
+      dispatch(loadCart())
     }
   }, [paymentStatus])
 

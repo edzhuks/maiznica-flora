@@ -46,6 +46,7 @@ import EmailVerified from './components/info/EmailVerified'
 import Ordered from './components/info/Ordered'
 import Registered from './components/info/Registered'
 import AddressesPage from './components/user/AdressesPage'
+import PriceMismatch from './components/info/PriceMismatch'
 
 const baseTheme = {
   main: '#45941e',
@@ -229,6 +230,10 @@ function App() {
                       <Route
                         path="registered"
                         element={<Registered />}
+                      />
+                      <Route
+                        path="price_mismatch"
+                        element={<PriceMismatch />}
                       />
                     </Route>
                   </Routes>
