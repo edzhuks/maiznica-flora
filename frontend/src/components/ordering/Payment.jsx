@@ -8,6 +8,7 @@ const Payment = ({ order, orderStatus, failedPayment }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)
+  console.log(iframe)
   const tryAcceptTerms = () => {
     if (!termsChecked) {
       toast.error(lang.toast_must_agree)
