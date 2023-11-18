@@ -168,24 +168,40 @@ const updatePaymentStatus = async (paymentReference) => {
       response.data.payment_state === 'settled' &&
       cart.paymentStatus !== 'settled'
     ) {
-      const order = new Order({
+      const subtotal = cart.content
+        .map((i) => getPrice(i) * i.quantity)
+        .reduce((acc, cur) => acc + cur, 0)
+      const deliveryCost =
+        subtotal >= 6000
+          ? 0
+          : cart.deliveryMethod === 'courrier'
+          ? 599
+          : cart.deliveryMethod === 'bakery'
+          ? 0
+          : 399
+      const total = subtotal + deliveryCost
+      let order = new Order({
         user: cart.user,
         content: cart.content,
         deliveryMethod: cart.deliveryMethod,
         courrierAddress: cart.courrierAddress,
         pickupPointData: cart.pickupPointData,
         deliveryPhone: cart.deliveryPhone,
-        deliveryCost: deliveryCost,
+        deliveryCost: cart.deliveryCost,
         status: { status: 'placed' },
         datePlaced: Date.now(),
-        subtotal,
-        deliveryCost,
-        total,
+        subtotal: subtotal,
+        deliveryCost: deliveryCost,
+        total: total,
         vat: total * 0.21,
         paymentReference: cart.paymentReference,
-        paymentStatus: cart.paymentStatus,
+        paymentStatus: 'settled',
       })
-      await order.save()
+      order = await order.save()
+      if (order.total !== cart.total) {
+        order.paymentStatus = 'price_mismatch'
+        order = await order.save()
+      }
       if (!TEST_MODE) {
         await cart.populate([
           { path: 'content', populate: { path: 'product' } },
@@ -203,17 +219,17 @@ const updatePaymentStatus = async (paymentReference) => {
         deliveryPhone: cart.deliveryPhone,
       })
       await newCart.save()
-    }
-    if (
+      return
+    } else if (
       response.data.payment_state === 'abandoned' ||
       response.data.payment_state === 'failed' ||
       response.data.payment_state === 'voided'
     ) {
-      order.paymentStatus = 'failed'
+      cart.paymentStatus = 'failed'
     } else {
-      order.paymentStatus = response.data.payment_state
+      cart.paymentStatus = response.data.payment_state
     }
-    await order.save()
+    await cart.save()
   } catch (error) {
     console.log(error)
   }
