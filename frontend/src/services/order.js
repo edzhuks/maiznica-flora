@@ -24,9 +24,12 @@ const useOrderService = () => {
     )
     return request
   }
-  const getPaymentStatus = () => {
+  const getPaymentStatus = (paymentReference) => {
     const config = makeConfig()
-    const request = axios.get(`${baseURL}/payment_status/`, config)
+    const request = axios.get(
+      `${baseURL}/payment_status?paymentReference=${paymentReference}`,
+      config
+    )
     return request
   }
   const updateOrder = (newOrder) => {
