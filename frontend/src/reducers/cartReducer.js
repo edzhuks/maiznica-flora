@@ -14,7 +14,7 @@ const initialState = {
   animate: false,
   animateTimeout: undefined,
   iframe: undefined,
-  orderStatus: undefined,
+  paymentStatus: undefined,
   paymentReference: undefined,
 }
 
@@ -64,8 +64,8 @@ const cartSlice = createSlice({
     clearIframe(state, action) {
       state.iframe = ''
     },
-    setOrderStatus(state, action) {
-      state.orderStatus = action.payload
+    setPaymentStatus(state, action) {
+      state.paymentStatus = action.payload
     },
     setPaymentReference(state, action) {
       state.paymentReference = action.payload
@@ -148,7 +148,7 @@ export const {
   clearAnimationTimeout,
   setIframe,
   clearIframe,
-  setOrderStatus,
+  setPaymentStatus,
   setPaymentReference,
 } = cartSlice.actions
 
@@ -273,7 +273,10 @@ export const useCartServiceDispatch = () => {
     return async (dispatch) => {
       orderService.getPaymentStatus(paymentReference).then((response) => {
         console.log(response.data)
-        dispatch(setOrderStatus(response.data.paymentStatus))
+        dispatch(setPaymentStatus(response.data.paymentStatus))
+        if (response.data.paymentStatus === 'failed') {
+          dispatch(clearIframe())
+        }
       })
     }
   }

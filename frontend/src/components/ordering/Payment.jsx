@@ -10,17 +10,17 @@ const Payment = ({ order, failedPayment }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)
-  const orderStatus = useSelector((state) => state.cart.orderStatus)
+  const paymentStatus = useSelector((state) => state.cart.paymentStatus)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { loadCart } = useCartServiceDispatch()
   useEffect(() => {
-    if (orderStatus === 'settled') {
+    if (paymentStatus === 'settled') {
       toast.success(lang.toast_order_successful)
       navigate('/info/ordered')
       dispatch(loadCart())
     }
-  }, [orderStatus])
+  }, [paymentStatus])
 
   console.log(iframe)
   const tryAcceptTerms = () => {
@@ -54,7 +54,7 @@ const Payment = ({ order, failedPayment }) => {
               width: '100%',
               height: '800px',
             }}>
-            {orderStatus === 'failed' ? (
+            {paymentStatus === 'failed' ? (
               <div>
                 {lang.payment_failed}
                 <br />
