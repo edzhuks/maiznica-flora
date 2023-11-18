@@ -164,61 +164,60 @@ const updatePaymentStatus = async (paymentReference) => {
         },
       }
     )
-    if (
-      response.data.payment_state === 'settled' &&
-      cart.paymentStatus !== 'settled'
-    ) {
-      const subtotal = cart.content
-        .map((i) => getPrice(i) * i.quantity)
-        .reduce((acc, cur) => acc + cur, 0)
-      const deliveryCost =
-        subtotal >= 6000
-          ? 0
-          : cart.deliveryMethod === 'courrier'
-          ? 599
-          : cart.deliveryMethod === 'bakery'
-          ? 0
-          : 399
-      const total = subtotal + deliveryCost
-      let order = new Order({
-        user: cart.user,
-        content: cart.content,
-        deliveryMethod: cart.deliveryMethod,
-        courrierAddress: cart.courrierAddress,
-        pickupPointData: cart.pickupPointData,
-        deliveryPhone: cart.deliveryPhone,
-        deliveryCost: cart.deliveryCost,
-        status: { status: 'placed' },
-        datePlaced: Date.now(),
-        subtotal: subtotal,
-        deliveryCost: deliveryCost,
-        total: total,
-        vat: total * 0.21,
-        paymentReference: cart.paymentReference,
-        paymentStatus: 'settled',
-      })
-      order = await order.save()
-      if (order.total !== cart.total) {
-        order.paymentStatus = 'price_mismatch'
+    if (response.data.payment_state === 'settled') {
+      if (cart.paymentStatus !== 'settled') {
+        const subtotal = cart.content
+          .map((i) => getPrice(i) * i.quantity)
+          .reduce((acc, cur) => acc + cur, 0)
+        const deliveryCost =
+          subtotal >= 6000
+            ? 0
+            : cart.deliveryMethod === 'courrier'
+            ? 599
+            : cart.deliveryMethod === 'bakery'
+            ? 0
+            : 399
+        const total = subtotal + deliveryCost
+        let order = new Order({
+          user: cart.user,
+          content: cart.content,
+          deliveryMethod: cart.deliveryMethod,
+          courrierAddress: cart.courrierAddress,
+          pickupPointData: cart.pickupPointData,
+          deliveryPhone: cart.deliveryPhone,
+          deliveryCost: cart.deliveryCost,
+          status: { status: 'placed' },
+          datePlaced: Date.now(),
+          subtotal: subtotal,
+          deliveryCost: deliveryCost,
+          total: total,
+          vat: total * 0.21,
+          paymentReference: cart.paymentReference,
+          paymentStatus: 'settled',
+        })
         order = await order.save()
-      }
-      if (!TEST_MODE) {
-        await order.populate([
-          { path: 'content', populate: { path: 'product' } },
-          { path: 'user' },
-        ])
-        sendReceiptEmail(order.user.email, order)
-      }
+        if (order.total !== cart.total) {
+          order.paymentStatus = 'price_mismatch'
+          order = await order.save()
+        }
+        if (!TEST_MODE) {
+          await order.populate([
+            { path: 'content', populate: { path: 'product' } },
+            { path: 'user' },
+          ])
+          sendReceiptEmail(order.user.email, order)
+        }
 
-      await cart.deleteOne()
-      const newCart = new Cart({
-        content: [],
-        user: order.user.id,
-        courrierAddress: cart.courrierAddress,
-        pickupPointData: cart.pickupPointData,
-        deliveryPhone: cart.deliveryPhone,
-      })
-      await newCart.save()
+        await cart.deleteOne()
+        const newCart = new Cart({
+          content: [],
+          user: order.user.id,
+          courrierAddress: cart.courrierAddress,
+          pickupPointData: cart.pickupPointData,
+          deliveryPhone: cart.deliveryPhone,
+        })
+        await newCart.save()
+      }
       return
     } else if (
       response.data.payment_state === 'abandoned' ||
