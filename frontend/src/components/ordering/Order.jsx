@@ -56,7 +56,7 @@ const Order = () => {
   useEffect(() => {
     if (iframe) {
       const interval = setInterval(() => {
-        dispatch(updatePaymentStatus())
+        // dispatch(updatePaymentStatus())
       }, 5000)
       return () => clearInterval(interval)
     }
