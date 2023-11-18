@@ -168,13 +168,6 @@ const updatePaymentStatus = async (paymentReference) => {
       response.data.payment_state === 'settled' &&
       cart.paymentStatus !== 'settled'
     ) {
-      if (!TEST_MODE) {
-        await cart.populate([
-          { path: 'content', populate: { path: 'product' } },
-          { path: 'user' },
-        ])
-        sendReceiptEmail(cart.user.email, order)
-      }
       const order = new Order({
         user: cart.user,
         content: cart.content,
@@ -192,6 +185,14 @@ const updatePaymentStatus = async (paymentReference) => {
         paymentReference: cart.paymentReference,
         paymentStatus: cart.paymentStatus,
       })
+      await order.save()
+      if (!TEST_MODE) {
+        await cart.populate([
+          { path: 'content', populate: { path: 'product' } },
+          { path: 'user' },
+        ])
+        sendReceiptEmail(cart.user.email, order)
+      }
 
       await cart.deleteOne()
       const newCart = new Cart({

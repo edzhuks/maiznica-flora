@@ -41,7 +41,6 @@ const Order = () => {
   const orderService = useOrderService()
   const cart = useSelector((state) => state.cart)
   const deliveryMethod = useSelector((state) => state.cart.deliveryMethod)
-  const [iframe, setIframe] = useState()
   const [orderId, setOrderId] = useState()
   const navigate = useNavigate()
   const [orderStatus, setOrderStatus] = useState()
@@ -67,7 +66,7 @@ const Order = () => {
             navigate('/info/ordered')
             dispatch(clearCart())
           } else if (response.data.paymentStatus === 'failed') {
-            setIframe(undefined)
+            // setIframe(undefined)
           }
         })
       }, 5000)
@@ -157,7 +156,6 @@ const Order = () => {
               element={
                 <Payment
                   order={order}
-                  iframe={iframe}
                   startOver={startOver}
                   orderStatus={orderStatus}
                   failedPayment={failedPayment}
