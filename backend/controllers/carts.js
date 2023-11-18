@@ -148,7 +148,7 @@ router.get(
 const updatePaymentStatus = async (paymentReference) => {
   const cart = await Cart.findOne({
     paymentReference,
-  })
+  }).populate([{ path: 'content', populate: { path: 'product' } }])
   try {
     const response = await axios.get(
       `https://igw-demo.every-pay.com/api/v4/payments/${cart.paymentReference}?api_username=${BANK_API_USERNAME}`,
