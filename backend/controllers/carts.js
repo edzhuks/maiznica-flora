@@ -172,7 +172,7 @@ const updatePaymentStatus = async (paymentReference) => {
         user: cart.user,
         content: cart.content,
         deliveryMethod: cart.deliveryMethod,
-        courrierAddress: courrierAddress,
+        courrierAddress: cart.courrierAddress,
         pickupPointData: cart.pickupPointData,
         deliveryPhone: cart.deliveryPhone,
         deliveryCost: deliveryCost,
@@ -273,8 +273,8 @@ router.get('/payment_landing', async (req, res) => {
 </style></head><body><div class="container"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div></body></html>`)
 })
 
-router.get('/payment_status/:id', async (req, res) => {
-  const cart = await Cart.findById(req.params.id)
+router.get('/payment_status/', userExtractor, async (req, res) => {
+  const cart = await Cart.findOne({ user: req.user.id })
   return res.status(200).send(cart)
 })
 
