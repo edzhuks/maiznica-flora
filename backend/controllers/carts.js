@@ -203,11 +203,11 @@ const updatePaymentStatus = async (paymentReference) => {
         order = await order.save()
       }
       if (!TEST_MODE) {
-        await cart.populate([
+        await order.populate([
           { path: 'content', populate: { path: 'product' } },
           { path: 'user' },
         ])
-        sendReceiptEmail(cart.user.email, order)
+        sendReceiptEmail(order.user.email, order)
       }
 
       await cart.deleteOne()
