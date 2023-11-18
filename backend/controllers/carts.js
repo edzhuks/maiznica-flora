@@ -110,14 +110,14 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
       : 399
   const total = subtotal + deliveryCost
   cart.total = total
-  await cart.save()
+  cart = await cart.save()
   const paymentData = await getPaymentData({
     cart: cart,
     selectedLang: req.body.selectedLang,
   })
   cart.paymentStatus = paymentData.payment_state
   cart.paymentReference = paymentData.payment_reference
-  await cart.save()
+  cart = await cart.save()
   res.send({
     paymentLink: paymentData.payment_link,
     orderId: cart._id,
@@ -218,6 +218,8 @@ const updatePaymentStatus = async (paymentReference) => {
 }
 
 router.get('/payment_status_callback', async (req, res) => {
+  console.log('callback')
+  console.log(req.query)
   updatePaymentStatus(req.query.payment_reference)
   return res.status(200).send()
 })
