@@ -4,7 +4,7 @@ import useField from '../../hooks/useField'
 import Input from '../basic/Input'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { clearCart } from '../../reducers/cartReducer'
+import { clearCart, useCartServiceDispatch } from '../../reducers/cartReducer'
 
 const Payment = ({ order, failedPayment }) => {
   const termsChecked = useField('checkbox')
@@ -13,11 +13,12 @@ const Payment = ({ order, failedPayment }) => {
   const orderStatus = useSelector((state) => state.cart.orderStatus)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { loadCart } = useCartServiceDispatch()
   useEffect(() => {
     if (orderStatus === 'settled') {
       toast.success(lang.toast_order_successful)
       navigate('/info/ordered')
-      dispatch(clearCart())
+      dispatch(loadCart())
     }
   }, [orderStatus])
 
