@@ -56,9 +56,10 @@ const Payment = ({ order, failedPayment }) => {
             }}>
             {paymentStatus === 'failed' ? (
               <div>
-                {lang.payment_failed}
-                <br />
-                <button onClick={tryAcceptTerms}>
+                <p className="card-text">{lang.payment_failed}</p>
+                <button
+                  className="full-width m-t"
+                  onClick={tryAcceptTerms}>
                   {lang.start_over_payment}
                 </button>
               </div>
