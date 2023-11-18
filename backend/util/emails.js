@@ -1101,7 +1101,8 @@ Codepen: https://codepen.io/supah/
                             </tr>
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                ${order.deliveryMethod.address.name} ${
+     ${
+       /*                           ${order.deliveryMethod.address.name} ${
     order.deliveryMethod.address.surname
       ? order.deliveryMethod.address.surname
       : ''
@@ -1115,7 +1116,8 @@ Codepen: https://codepen.io/supah/
       : ''
   }
                                 <br />
-                                ${order.deliveryMethod.address.city}
+${order.deliveryMethod.address.city}*/ ''
+     }
                                
                               </td>
                             </tr>
@@ -1142,7 +1144,7 @@ Codepen: https://codepen.io/supah/
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
                                 ${(() => {
-                                  switch (order.deliveryMethod.method) {
+                                  switch (order.deliveryMethod) {
                                     case 'courrier':
                                       return 'Piegāde ar kurjeru'
                                     case 'bakery':
@@ -1266,7 +1268,8 @@ const sendReceiptEmail = (email, order) => {
     Pavisam kopā (ar PVN) \t ${centsToEuro(order.total)}\n
     PVN \t ${centsToEuro(order.vat)}
     
-    Piegādes adrese\n
+   ${
+     /* Piegādes adrese\n
     ${order.deliveryMethod.address.name}
     ${
       order.deliveryMethod.address.surname
@@ -1294,7 +1297,8 @@ const sendReceiptEmail = (email, order) => {
         case 'pickupPoint':
           return 'DPD pakomāts'
       }
-    })()}
+    })()} */ ''
+   }
       `,
     html: receiptEmail(order),
   })
