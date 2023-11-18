@@ -298,6 +298,13 @@ router.get('/', userExtractor, async (req, res) => {
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',
   })
+  if (!cart || cart.paymentStatus === 'settled') {
+    cart = new Cart({
+      content: [],
+      user: req.user.id,
+    })
+    await cart.save()
+  }
   res.send(cart)
 })
 
@@ -316,10 +323,11 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
   })
 
   if (!cart || cart.paymentStatus === 'settled') {
-    cart = await new Cart({
+    cart = new Cart({
       content: [],
       user: req.user.id,
     })
+    await cart.save()
   }
 
   if (
