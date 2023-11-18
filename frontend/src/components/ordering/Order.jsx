@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   clearCart,
   selectCartTotal,
-  placeOrder,
+  useCartServiceDispatch,
 } from '../../reducers/cartReducer'
 import { toast } from 'react-toastify'
 import useOrderService from '../../services/order'
@@ -45,6 +45,7 @@ const Order = () => {
   const navigate = useNavigate()
   const [orderStatus, setOrderStatus] = useState()
   const [failedPayment, setFailedPayment] = useState()
+  const { placeOrder } = useCartServiceDispatch()
 
   const startOver = () => {
     console.log(orderId)
