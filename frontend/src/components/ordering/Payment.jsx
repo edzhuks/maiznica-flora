@@ -21,7 +21,7 @@ const Payment = ({ order, orderStatus, failedPayment }) => {
       {iframe && (
         <button
           className="m-d"
-          onClick={startOver}>
+          onClick={tryAcceptTerms}>
           {lang.start_over_payment}
         </button>
       )}
