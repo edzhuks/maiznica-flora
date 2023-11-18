@@ -213,7 +213,7 @@ const updatePaymentStatus = async (paymentReference) => {
       await cart.deleteOne()
       const newCart = new Cart({
         content: [],
-        user: req.user.id,
+        user: order.user.id,
         courrierAddress: cart.courrierAddress,
         pickupPointData: cart.pickupPointData,
         deliveryPhone: cart.deliveryPhone,
