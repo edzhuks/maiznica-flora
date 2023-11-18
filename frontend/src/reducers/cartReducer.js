@@ -15,6 +15,7 @@ const initialState = {
   animateTimeout: undefined,
   iframe: undefined,
   orderStatus: undefined,
+  paymentReference: undefined,
 }
 
 const cartSlice = createSlice({
@@ -65,6 +66,9 @@ const cartSlice = createSlice({
     },
     setOrderStatus(state, action) {
       state.orderStatus = action.payload
+    },
+    setPaymentReference(state, action) {
+      state.paymentReference = action.payload
     },
   },
 })
@@ -145,6 +149,7 @@ export const {
   setIframe,
   clearIframe,
   setOrderStatus,
+  setPaymentReference,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
@@ -257,13 +262,16 @@ export const useCartServiceDispatch = () => {
     return async (dispatch) => {
       orderService
         .placeOrder()
-        .then((response) => dispatch(setIframe(response.data.paymentLink)))
+        .then((response) => {
+          dispatch(setIframe(response.data.paymentLink))
+          dispatch(setPaymentReference(response.data.paymentReference))
+        })
         .catch((error) => console.log(error.response.data.error))
     }
   }
-  const updatePaymentStatus = () => {
+  const updatePaymentStatus = (paymentReference) => {
     return async (dispatch) => {
-      orderService.getPaymentStatus().then((response) => {
+      orderService.getPaymentStatus(paymentReference).then((response) => {
         console.log(response.data)
         dispatch(setOrderStatus(response.data.paymentStatus))
       })

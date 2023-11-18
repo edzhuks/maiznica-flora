@@ -41,6 +41,7 @@ const Order = () => {
   const { updatePaymentStatus } = useCartServiceDispatch()
   const cart = useSelector((state) => state.cart)
   const iframe = useSelector((state) => state.cart.iframe)
+  const paymentReference = useSelector((state) => state.cart.paymentReference)
   const navigate = useNavigate()
   const [failedPayment, setFailedPayment] = useState()
   const { placeOrder } = useCartServiceDispatch()
@@ -56,7 +57,7 @@ const Order = () => {
   useEffect(() => {
     if (iframe) {
       const interval = setInterval(() => {
-        dispatch(updatePaymentStatus())
+        dispatch(updatePaymentStatus(paymentReference))
       }, 5000)
       return () => clearInterval(interval)
     }

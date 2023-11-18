@@ -149,88 +149,90 @@ const updatePaymentStatus = async (paymentReference) => {
   const cart = await Cart.findOne({
     paymentReference,
   }).populate([{ path: 'content', populate: { path: 'product' } }])
-  try {
-    const response = await axios.get(
-      `https://igw-demo.every-pay.com/api/v4/payments/${cart.paymentReference}?api_username=${BANK_API_USERNAME}`,
+  if (cart) {
+    try {
+      const response = await axios.get(
+        `https://igw-demo.every-pay.com/api/v4/payments/${cart.paymentReference}?api_username=${BANK_API_USERNAME}`,
 
-      {
-        auth: {
-          username: BANK_API_USERNAME,
-          password: BANK_API_PASSWORD,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      }
-    )
-    if (response.data.payment_state === 'settled') {
-      if (cart.paymentStatus !== 'settled') {
-        const subtotal = cart.content
-          .map((i) => getPrice(i) * i.quantity)
-          .reduce((acc, cur) => acc + cur, 0)
-        const deliveryCost =
-          subtotal >= 6000
-            ? 0
-            : cart.deliveryMethod === 'courrier'
-            ? 599
-            : cart.deliveryMethod === 'bakery'
-            ? 0
-            : 399
-        const total = subtotal + deliveryCost
-        let order = new Order({
-          user: cart.user,
-          content: cart.content,
-          deliveryMethod: cart.deliveryMethod,
-          courrierAddress: cart.courrierAddress,
-          pickupPointData: cart.pickupPointData,
-          deliveryPhone: cart.deliveryPhone,
-          deliveryCost: cart.deliveryCost,
-          status: { status: 'placed' },
-          datePlaced: Date.now(),
-          subtotal: subtotal,
-          deliveryCost: deliveryCost,
-          total: total,
-          vat: total * 0.21,
-          paymentReference: cart.paymentReference,
-          paymentStatus: 'settled',
-        })
-        order = await order.save()
-        if (order.total !== cart.total) {
-          order.paymentStatus = 'price_mismatch'
+        {
+          auth: {
+            username: BANK_API_USERNAME,
+            password: BANK_API_PASSWORD,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      )
+      if (response.data.payment_state === 'settled') {
+        if (cart.paymentStatus !== 'settled') {
+          const subtotal = cart.content
+            .map((i) => getPrice(i) * i.quantity)
+            .reduce((acc, cur) => acc + cur, 0)
+          const deliveryCost =
+            subtotal >= 6000
+              ? 0
+              : cart.deliveryMethod === 'courrier'
+              ? 599
+              : cart.deliveryMethod === 'bakery'
+              ? 0
+              : 399
+          const total = subtotal + deliveryCost
+          let order = new Order({
+            user: cart.user,
+            content: cart.content,
+            deliveryMethod: cart.deliveryMethod,
+            courrierAddress: cart.courrierAddress,
+            pickupPointData: cart.pickupPointData,
+            deliveryPhone: cart.deliveryPhone,
+            deliveryCost: cart.deliveryCost,
+            status: { status: 'placed' },
+            datePlaced: Date.now(),
+            subtotal: subtotal,
+            deliveryCost: deliveryCost,
+            total: total,
+            vat: total * 0.21,
+            paymentReference: cart.paymentReference,
+            paymentStatus: 'settled',
+          })
           order = await order.save()
-        }
-        if (!TEST_MODE) {
-          await order.populate([
-            { path: 'content', populate: { path: 'product' } },
-            { path: 'user' },
-          ])
-          sendReceiptEmail(order.user.email, order)
-        }
+          if (order.total !== cart.total) {
+            order.paymentStatus = 'price_mismatch'
+            order = await order.save()
+          }
+          if (!TEST_MODE) {
+            await order.populate([
+              { path: 'content', populate: { path: 'product' } },
+              { path: 'user' },
+            ])
+            sendReceiptEmail(order.user.email, order)
+          }
 
-        await cart.deleteOne()
-        const newCart = new Cart({
-          content: [],
-          user: order.user.id,
-          courrierAddress: cart.courrierAddress,
-          pickupPointData: cart.pickupPointData,
-          deliveryPhone: cart.deliveryPhone,
-        })
-        await newCart.save()
+          await cart.deleteOne()
+          const newCart = new Cart({
+            content: [],
+            user: order.user.id,
+            courrierAddress: cart.courrierAddress,
+            pickupPointData: cart.pickupPointData,
+            deliveryPhone: cart.deliveryPhone,
+          })
+          await newCart.save()
+        }
+        return
+      } else if (
+        response.data.payment_state === 'abandoned' ||
+        response.data.payment_state === 'failed' ||
+        response.data.payment_state === 'voided'
+      ) {
+        cart.paymentStatus = 'failed'
+      } else {
+        cart.paymentStatus = response.data.payment_state
       }
-      return
-    } else if (
-      response.data.payment_state === 'abandoned' ||
-      response.data.payment_state === 'failed' ||
-      response.data.payment_state === 'voided'
-    ) {
-      cart.paymentStatus = 'failed'
-    } else {
-      cart.paymentStatus = response.data.payment_state
+      await cart.save()
+    } catch (error) {
+      console.log(error)
     }
-    await cart.save()
-  } catch (error) {
-    console.log(error)
   }
 }
 
@@ -289,8 +291,10 @@ router.get('/payment_landing', async (req, res) => {
 })
 
 router.get('/payment_status/', userExtractor, async (req, res) => {
-  const cart = await Cart.findOne({ user: req.user.id })
-  return res.status(200).send(cart)
+  const order = await Order.findOne({
+    paymentReference: req.query.paymentReference,
+  })
+  return res.status(200).send(order)
 })
 
 router.get('/', userExtractor, async (req, res) => {
