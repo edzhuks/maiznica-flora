@@ -105,6 +105,7 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
     cart = await cart.save()
     return res.send({
       paymentLink: paymentData.payment_link,
+      paymentReference: paymentData.payment_reference,
       orderId: cart._id,
     })
   } catch (error) {
