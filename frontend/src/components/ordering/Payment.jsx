@@ -1,14 +1,26 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import useField from '../../hooks/useField'
 import Input from '../basic/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { clearCart } from '../../reducers/cartReducer'
 
 const Payment = ({ order, failedPayment }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)
   const orderStatus = useSelector((state) => state.cart.orderStatus)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (orderStatus === 'settled') {
+      toast.success(lang.toast_order_successful)
+      navigate('/info/ordered')
+      dispatch(clearCart())
+    }
+  }, [orderStatus])
+
   console.log(iframe)
   const tryAcceptTerms = () => {
     if (!termsChecked) {

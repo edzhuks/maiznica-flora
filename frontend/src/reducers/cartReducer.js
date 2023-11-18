@@ -148,8 +148,6 @@ export const {
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
-  // const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const navigate = useNavigate()
   const cartService = useCartService()
   const orderService = useOrderService()
   const loadCart = () => {
@@ -263,21 +261,14 @@ export const useCartServiceDispatch = () => {
         .catch((error) => console.log(error.response.data.error))
     }
   }
-  // const updatePaymentStatus = () => {
-  //   return async (dispatch) => {
-  //     orderService.getPaymentStatus().then((response) => {
-  //       console.log(response.data)
-  //       setOrderStatus(response.data.paymentStatus)
-  //       if (response.data.paymentStatus === 'settled') {
-  //         toast.success(lang.toast_order_successful)
-  //         navigate('/info/ordered')
-  //         dispatch(clearCart())
-  //       } else if (response.data.paymentStatus === 'failed') {
-  //         // setIframe(undefined)
-  //       }
-  //     })
-  //   }
-  // }
+  const updatePaymentStatus = () => {
+    return async (dispatch) => {
+      orderService.getPaymentStatus().then((response) => {
+        console.log(response.data)
+        dispatch(setOrderStatus(response.data.paymentStatus))
+      })
+    }
+  }
   return {
     loadCart,
     addItem,
@@ -288,7 +279,7 @@ export const useCartServiceDispatch = () => {
     changePickupPointData,
     changeDeliveryMethod,
     placeOrder,
-    // updatePaymentStatus,
+    updatePaymentStatus,
   }
 }
 
