@@ -25,7 +25,7 @@ const useOrderService = () => {
     return request
   }
   const getPaymentStatus = () => {
-    const request = axios.get(`${baseURL}/payment_status/}`)
+    const request = axios.get(`${baseURL}/payment_status/`)
     return request
   }
   const updateOrder = (newOrder) => {
