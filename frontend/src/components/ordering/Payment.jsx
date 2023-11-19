@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { clearCart, useCartServiceDispatch } from '../../reducers/cartReducer'
 
-const Payment = ({ order, failedPayment }) => {
+const Payment = ({ order }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)

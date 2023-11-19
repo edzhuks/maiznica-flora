@@ -126,26 +126,6 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
   }
 })
 
-router.get(
-  '/pay/:id',
-  userExtractor,
-  verificationRequired,
-  async (req, res) => {
-    const cart = await Cart.findById(req.params.id)
-
-    const paymentData = await getPaymentData({
-      cart,
-      selectedLang: req.query.selectedLang,
-    })
-    cart.paymentStatus = paymentData.payment_state
-    cart.paymentReference = paymentData.payment_reference
-    await cart.save()
-    res.send({
-      paymentLink: paymentData.payment_link,
-    })
-  }
-)
-
 const updatePaymentStatus = async (paymentReference) => {
   const cart = await Cart.findOne({
     paymentReference,
@@ -196,6 +176,9 @@ const updatePaymentStatus = async (paymentReference) => {
             vat: total * 0.21,
             paymentReference: cart.paymentReference,
             paymentStatus: 'settled',
+            businessComments: cart.businessComments,
+            generalComments: cart.generalComments,
+            deliveryComments: cart.deliveryComments,
           })
           order = await order.save()
           if (order.total !== cart.total) {
@@ -217,6 +200,9 @@ const updatePaymentStatus = async (paymentReference) => {
             courrierAddress: cart.courrierAddress,
             pickupPointData: cart.pickupPointData,
             deliveryPhone: cart.deliveryPhone,
+            businessComments: cart.businessComments,
+            generalComments: cart.generalComments,
+            deliveryComments: cart.deliveryComments,
           })
           await newCart.save()
         }
@@ -371,7 +357,10 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     !req.body.courrierAddress &&
     !req.body.pickupPointData &&
     !req.body.deliveryPhone &&
-    !req.body.deliveryMethod
+    !req.body.deliveryMethod &&
+    !req.body.businessComments &&
+    !req.body.generalComments &&
+    !req.body.deliveryComments
   ) {
     return res.status(400).json({ error: 'Unknown fields' })
   }
@@ -394,6 +383,21 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     cart.deliveryPhone = req.body.deliveryPhone
     await cart.save()
     return res.status(201).send({ deliveryPhone: cart.deliveryPhone })
+  }
+  if (req.body.businessComments) {
+    cart.businessComments = req.body.businessComments
+    await cart.save()
+    return res.status(201).send({ businessComments: cart.businessComments })
+  }
+  if (req.body.generalComments) {
+    cart.generalComments = req.body.generalComments
+    await cart.save()
+    return res.status(201).send({ generalComments: cart.generalComments })
+  }
+  if (req.body.deliveryComments) {
+    cart.deliveryComments = req.body.deliveryComments
+    await cart.save()
+    return res.status(201).send({ deliveryComments: cart.deliveryComments })
   }
   cart.deliveryMethod = req.body.deliveryMethod
   await cart.save()
