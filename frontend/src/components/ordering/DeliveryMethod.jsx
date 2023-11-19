@@ -15,7 +15,7 @@ import {
 } from '../../reducers/cartReducer'
 import Input from '../basic/Input'
 import useField from '../../hooks/useField'
-import BussinessMap from '../contact/BussinessMap'
+import BusinessMap from '../contact/BusinessMap'
 
 const DeliveryOption = ({ deliveryMethod, children, map }) => {
   const dispatch = useDispatch()
@@ -75,7 +75,7 @@ const BakeryPickup = ({}) => {
   return (
     <DeliveryOption
       deliveryMethod="bakery"
-      map={<BussinessMap key="a" />}>
+      map={<BusinessMap key="a" />}>
       <p
         className="card-text"
         style={{ maxWidth: '300px' }}>
@@ -124,7 +124,7 @@ const PickupPoint = ({}) => {
       surname.changeValue(pickupPointData.surname)
       phone.changeValue(pickupPointData.phone)
     }
-  }, [pickupPointData])
+  }, [pickupPointData, allPickupPoints])
 
   return (
     <DeliveryOption

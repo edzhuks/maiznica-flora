@@ -29,6 +29,9 @@ const cartSchema = new mongoose.Schema({
   paymentStatus: String,
   paymentReference: String,
   total: Number,
+  businessComments: String,
+  generalComments: String,
+  deliveryComments: String,
 })
 
 cartSchema.set('toJSON', {

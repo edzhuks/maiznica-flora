@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { clearCart, useCartServiceDispatch } from '../../reducers/cartReducer'
 
-const Payment = ({ order, failedPayment }) => {
+const Payment = ({ order }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const iframe = useSelector((state) => state.cart.iframe)
@@ -18,6 +18,10 @@ const Payment = ({ order, failedPayment }) => {
     if (paymentStatus === 'settled') {
       toast.success(lang.toast_order_successful)
       navigate('/info/ordered')
+      dispatch(loadCart())
+    } else if (paymentStatus === 'price_mismatch') {
+      toast.error(lang.toast_price_mismatch)
+      navigate('/info/price_mismatch')
       dispatch(loadCart())
     }
   }, [paymentStatus])

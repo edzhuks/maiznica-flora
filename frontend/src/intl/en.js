@@ -233,6 +233,18 @@ const en = {
   delivery_time_pickupPoint: '2 - 3 days',
   toast_pickup_point_data:
     'Please fill in all required data for pickup point delivery',
+  price_mismatch:
+    'There was a mismatch between the cart total and the paid amount.\nWe will contact you via email to resolve the issue.',
+  toast_price_mismatch: 'Problem with paid amount',
+  to_comments: 'Add comments',
+  continue: 'Proceed',
+  comments: 'Comments',
+  businessComments: 'Business details for corporate clients',
+  businessComments_label: 'Name, address, Reg.nr...',
+  generalComments: 'Comments for Flora Bakery',
+  generalComments_label: 'Comment',
+  deliveryComments: 'Comments about the delivery',
+  deliveryComments_label: 'Comment',
 }
 
 export default en

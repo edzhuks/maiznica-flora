@@ -16,6 +16,9 @@ const initialState = {
   iframe: undefined,
   paymentStatus: undefined,
   paymentReference: undefined,
+  businessComments: undefined,
+  generalComments: undefined,
+  deliveryComments: undefined,
 }
 
 const cartSlice = createSlice({
@@ -69,6 +72,15 @@ const cartSlice = createSlice({
     },
     setPaymentReference(state, action) {
       state.paymentReference = action.payload
+    },
+    setBusinessComments(state, action) {
+      state.businessComments = action.payload
+    },
+    setGeneralComments(state, action) {
+      state.generalComments = action.payload
+    },
+    setDeliveryComments(state, action) {
+      state.deliveryComments = action.payload
     },
   },
 })
@@ -150,6 +162,9 @@ export const {
   clearIframe,
   setPaymentStatus,
   setPaymentReference,
+  setBusinessComments,
+  setDeliveryComments,
+  setGeneralComments,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
@@ -256,6 +271,36 @@ export const useCartServiceDispatch = () => {
         .catch((error) => console.log(error.response.data.error))
     }
   }
+  const changeBusinessComments = (comments) => {
+    return async (dispatch) => {
+      cartService
+        .changeBusinessComments(comments)
+        .then((response) =>
+          dispatch(setBusinessComments(response.data.businessComments))
+        )
+        .catch((error) => console.log(error.response.data.error))
+    }
+  }
+  const changeGeneralComments = (comments) => {
+    return async (dispatch) => {
+      cartService
+        .changeGeneralComments(comments)
+        .then((response) =>
+          dispatch(setGeneralComments(response.data.generalComments))
+        )
+        .catch((error) => console.log(error.response.data.error))
+    }
+  }
+  const changeDeliveryComments = (comments) => {
+    return async (dispatch) => {
+      cartService
+        .changeDeliveryComments(comments)
+        .then((response) =>
+          dispatch(setDeliveryComments(response.data.deliveryComments))
+        )
+        .catch((error) => console.log(error.response.data.error))
+    }
+  }
 
   const placeOrder = () => {
     return async (dispatch) => {
@@ -290,6 +335,9 @@ export const useCartServiceDispatch = () => {
     changeDeliveryMethod,
     placeOrder,
     updatePaymentStatus,
+    changeBusinessComments,
+    changeDeliveryComments,
+    changeGeneralComments,
   }
 }
 

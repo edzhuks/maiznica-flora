@@ -14,6 +14,7 @@ import Cart from './Cart'
 import CartSummary from './CartSummary'
 import DeliveryMethod from './DeliveryMethod'
 import Payment from './Payment'
+import Comments from './Comments'
 
 const OrderProcess = ({ stages, stage }) => {
   const currentIndex = stages.length - stages.indexOf(stage) - 1
@@ -108,8 +109,10 @@ const Order = () => {
       }
     } else if (stage === 'delivery') {
       if (checkDeliveryMethod()) {
-        navigate('payment')
+        navigate('comments')
       }
+    } else if (stage === 'comments') {
+      navigate('payment')
     }
   }
 
@@ -117,7 +120,10 @@ const Order = () => {
     switch (stage) {
       case 'cart':
         return 'delivery'
+
       case 'delivery':
+        return 'comments'
+      case 'comments':
         return 'payment'
       default:
         return undefined
@@ -127,7 +133,7 @@ const Order = () => {
     <div>
       <OrderProcess
         stage={stage}
-        stages={['cart', 'delivery', 'payment']}
+        stages={['cart', 'delivery', 'comments', 'payment']}
       />
       <div className="row wrap-reverse m-t">
         <div style={{ flex: '100 1 300px' }}>
@@ -142,12 +148,11 @@ const Order = () => {
             />
             <Route
               path="payment"
-              element={
-                <Payment
-                  order={order}
-                  failedPayment={failedPayment}
-                />
-              }
+              element={<Payment order={order} />}
+            />
+            <Route
+              path="comments"
+              element={<Comments />}
             />
           </Routes>
         </div>

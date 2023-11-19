@@ -59,6 +59,9 @@ const orderSchema = new mongoose.Schema({
   vat: Number,
   paymentStatus: String,
   paymentReference: String,
+  businessComments: String,
+  generalComments: String,
+  deliveryComments: String,
 })
 
 orderSchema.set('toJSON', {
