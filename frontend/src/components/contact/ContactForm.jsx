@@ -24,7 +24,7 @@ const ContactForm = (props) => {
         />
       </form>
       <div className="text-right">
-        <button className="m-m">{lang.send_message}</button>
+        <button className="btn m-m">{lang.send_message}</button>
       </div>
     </div>
   )

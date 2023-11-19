@@ -47,7 +47,7 @@ const ProductModal = ({ visible, activeCategory, onClose }) => {
     if (selectedProducts.value.length) {
       categoryService
         .addProducts({
-          productsToAdd: selectedProducts,
+          productsToAdd: selectedProducts.value.map((p) => p.value),
           parentCategory: activeCategory.id,
         })
         .then((newCatalogue) => {
@@ -71,6 +71,7 @@ const ProductModal = ({ visible, activeCategory, onClose }) => {
         <Input
           options={allProducts}
           {...selectedProducts}
+          isMulti={true}
           label={lang.products}
         />
       </div>

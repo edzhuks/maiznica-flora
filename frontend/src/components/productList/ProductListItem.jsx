@@ -76,20 +76,20 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         {!product.outOfStock ? (
           <>
             {inCart ? (
-              <div className="row m evenly m-t-0">
+              <div className="row m evenly m-t-0 align-cross-center">
                 <button
-                  className="inverted icon-button"
+                  className="btn inverted icon-button"
                   onClick={removeSome}>
                   <Minus className="icon-b" />
                 </button>
                 <p style={{ fontSize: '1.3rem' }}>{quantity}</p>
                 <button
-                  className="inverted icon-button"
+                  className="btn inverted icon-button"
                   onClick={addMore}>
-                  <Plus className="icon-m" />
+                  <Plus className="icon-b" />
                 </button>
                 <button
-                  className="inverted icon-button"
+                  className="btn inverted icon-button"
                   onClick={removeFromCart}>
                   <Trash className="icon-m" />
                 </button>
@@ -102,7 +102,11 @@ const ProductListItem = ({ inCart, product, quantity }) => {
                   className="m-0"
                 />
                 <div className="float-to-end">
-                  <button onClick={addToCart}>{lang.buy}</button>
+                  <button
+                    className="btn"
+                    onClick={addToCart}>
+                    {lang.buy}
+                  </button>
                 </div>
               </div>
             )}

@@ -238,18 +238,21 @@ const Header = () => {
           <div className="tab side-menu-tab">
             <MobileLang>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('lv'))
                 }}>
                 LV
               </button>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('en'))
                 }}>
                 EN
               </button>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('de'))
                 }}>
@@ -355,18 +358,21 @@ const Header = () => {
             )}
             <Lang>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('lv'))
                 }}>
                 LV
               </button>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('en'))
                 }}>
                 EN
               </button>
               <button
+                className="btn"
                 onClick={() => {
                   dispatch(changeLanguage('de'))
                 }}>
@@ -377,7 +383,7 @@ const Header = () => {
         )}
         {mobile && (
           <button
-            className="tab inverted"
+            className="btn tab inverted"
             onClick={() => setSideMenu(!sideMenu)}>
             {sideMenu ? (
               <CloseOutline className="icon-xb" />

@@ -52,7 +52,7 @@ const ResetPassword = () => {
             passwordRequiredReminderVisible={passwordRequiredReminderVisible}
           />
           <button
-            className="full-width m-t-m"
+            className="btn full-width m-t-m"
             type="submit">
             {lang.reset_password}
           </button>

@@ -18,7 +18,11 @@ const useField = (type, defaultValue) => {
   }
   const [value, setValue] = useState(defaultValue)
   const onChange = (event) => {
-    setValue(event.target.value)
+    if (type === 'select') {
+      setValue(event)
+    } else {
+      setValue(event.target.value)
+    }
   }
   useEffect(() => clear(), [])
   const clear = () => {

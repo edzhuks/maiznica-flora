@@ -149,7 +149,7 @@ a {
   color: var(--main);
 }
 
-button {
+.btn {
   cursor: pointer;
   border: 0;
   color: var(--surface);
@@ -168,7 +168,7 @@ button {
 .cancel {
   background-color: var(--bad);
 }
-button:hover {
+.btn:hover {
   background-color: var(--surface);
   color: var(--accent);
 }
@@ -260,6 +260,9 @@ textarea,
   font-family: var(--sans);
   transition: all 0.3s;
   height: 2.2rem;
+}
+.select input {
+  border-bottom: none !important;
 }
 input:required ~ .label::after,
 textarea:required ~ .label::after,
@@ -726,14 +729,14 @@ textarea:focus ~ .highlight {
   border-radius: 20px;
   box-shadow: var(--shadow);
 }
-button.badge {
+.btn.badge {
   background-color: var(--surface);
   color: var(--accent);
   font-family: var(--sans);
   font-weight: normal;
   text-transform: unset;
 }
-button.badge.active {
+.btn.badge.active {
   background-color: var(--accent);
   color: var(--surface);
 }
@@ -828,6 +831,10 @@ a:hover .product-title-small {
 .spacer-300 {
   height: 0;
   flex: 1 1 300px;
+}
+.spacer {
+  height: 0;
+  flex: 1000 1 0px;
 }
 .icon-m {
   width: 1.5rem;

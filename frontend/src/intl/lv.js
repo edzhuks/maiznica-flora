@@ -249,6 +249,21 @@ const lv = {
   delivery_time_pickupPoint: '2 - 3 dienās',
   toast_pickup_point_data:
     'Lūdzu ievadiet visu piegādei nepieciešamo infromāciju!',
+  price_mismatch:
+    'Groza summa nesakrīt ar samaksāto.\nMēs sazināsimies ar jums, lai atrisinātu šo problēmu.',
+  toast_price_mismatch: 'Summas nesakrīt',
+  to_comments: 'Pievienot komentārus',
+  continue: 'Turpināt',
+  comments: 'Komentāri',
+  businessComments: 'Rekvizīti juridiskiem klientiem',
+  businessComments_label: 'Nosaukums, adrese, reģ.nr...',
+  generalComments: 'Komentāri maiznīcai',
+  generalComments_label: 'Komentārs',
+  deliveryComments: 'Komantāri par piegādi',
+  deliveryComments_label: 'Komentārs',
+  sorting: 'Kārtošana',
+  select_category: 'Izvēlies kategoriju',
+  select_product: 'Izvēlies produktu',
 }
 
 export default lv

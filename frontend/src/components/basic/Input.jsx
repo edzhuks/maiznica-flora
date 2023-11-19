@@ -34,7 +34,7 @@ const Input = ({
       <Select
         {...props}
         className="m-t-m"
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={!props.isMulti}
         isMulti={props.isMulti}
         placeholder={label}
         options={options}
@@ -81,9 +81,7 @@ const Input = ({
           container: (provided, state) => ({
             ...provided,
             width: width,
-            borderBottom: state.isFocused
-              ? 'var(--accent) solid 3px !important'
-              : '',
+            boxShadow: state.isFocused ? '0 2px 0 var(--accent)' : '',
           }),
         }}
       />
@@ -96,14 +94,14 @@ const Input = ({
           onClick={() => {
             changeValue(true)
           }}
-          className={props.value && 'toggle-active'}>
+          className={`btn ${props.value && 'toggle-active'}`}>
           {option1}
         </button>
         <button
           onClick={() => {
             changeValue(false)
           }}
-          className={!props.value && 'toggle-active'}>
+          className={`btn ${!props.value && 'toggle-active'}`}>
           {option2}
         </button>
       </div>

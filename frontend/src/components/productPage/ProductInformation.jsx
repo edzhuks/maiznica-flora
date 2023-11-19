@@ -56,7 +56,11 @@ const StaticInformation = ({
                   width={150}
                   className="m-0"
                 />
-                <button onClick={onOrder}>{lang.add_to_cart}</button>
+                <button
+                  className="btn"
+                  onClick={onOrder}>
+                  {lang.add_to_cart}
+                </button>
               </div>
             </>
           ) : (

@@ -58,7 +58,7 @@ const Login = () => {
           />
 
           <button
-            className="full-width m-t-m"
+            className="btn full-width m-t-m"
             type="submit">
             {lang.sign_in}
           </button>

@@ -57,7 +57,7 @@ const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
               e.preventDefault()
               runChecksAndNavigate()
             }}>
-            <button>{lang.continue}</button>
+            <button className="btn">{lang.continue}</button>
           </Link>
         </div>
       )}
