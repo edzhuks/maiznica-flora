@@ -42,7 +42,7 @@ const SortableItem = ({ id, label, image, remove }) => {
       {...listeners}>
       <div className="row no-gap align-cross-center">
         <img
-          src={image}
+          src={`/images/${image}`}
           width={55}
           height={55}
         />
@@ -99,10 +99,12 @@ export const Sorting = () => {
     })
     productService.getAll().then((response) => {
       setAllProducts(
-        response.map((c) => {
+        response.map((p) => {
           return {
-            value: c,
-            label: c.name[selectedLang] || c.name.lv,
+            value: p,
+            label: `${p.name[selectedLang] || p.name.lv} ${gramsToKilos(
+              p.weight
+            )}`,
           }
         })
       )
