@@ -2,18 +2,19 @@ const express = require('express')
 const { userExtractor, adminRequired } = require('../util/middleware')
 const router = express.Router()
 const multer = require('multer')
-const path = require('path')
+const sharp = require('sharp')
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'images/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname) //Appending extension
-  },
-})
+const storage = multer.memoryStorage()
 
-const upload = multer({ storage: storage })
+const filter = (req, file, cb) => {
+  if (file.mimetype.split('/')[0] === 'image') {
+    cb(null, true)
+  } else {
+    cb(new Error('Only images are allowed!'))
+  }
+}
+
+const upload = multer({ storage: storage, fileFilter: filter })
 
 router.post(
   '/image',
@@ -21,8 +22,18 @@ router.post(
   adminRequired,
   upload.single('image'),
   async (req, res) => {
-    const imageName = req.file.filename
-    return res.status(201).send({ path: `${imageName}` })
+    const image = req.file
+    await sharp(image.buffer).toFile(`images/${image.originalname}`)
+    await sharp(image.buffer)
+      .resize(55, 55, { fit: 'inside' })
+      .toFile(`images/xs_${image.originalname}`)
+    await sharp(image.buffer)
+      .resize(200, 200, { fit: 'inside' })
+      .toFile(`images/md_${image.originalname}`)
+    await sharp(image.buffer)
+      .resize(400, 400, { fit: 'inside' })
+      .toFile(`images/lg_${image.originalname}`)
+    return res.status(201).send({ path: `${image.originalname}` })
   }
 )
 
