@@ -239,7 +239,7 @@ const NewProductFrom = () => {
             }
           : undefined,
       },
-      relatedProducts: relatedProducts.value,
+      relatedProducts: relatedProducts.value.map((p) => p.value),
       image: image.value,
     }
   }
@@ -334,7 +334,6 @@ const NewProductFrom = () => {
     formData.append('image', noDiacritics)
     uploadService.uploadImage(formData).then((response) => {
       image.changeValue(`${response.data.path}`)
-
     })
   }
 
@@ -363,7 +362,9 @@ const NewProductFrom = () => {
             accept="image/*"
             required
           />
-          <button onClick={onSubmit}>
+          <button
+            className="btn"
+            onClick={onSubmit}>
             {productId ? lang.save : lang.create}
           </button>
         </div>
@@ -615,6 +616,7 @@ const NewProductFrom = () => {
           options={allProducts}
           {...relatedProducts}
           label={lang.related_products}
+          isMulti={true}
         />
         {!productId && (
           <div className="row m-t">

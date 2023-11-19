@@ -20,78 +20,6 @@ const CategoryList = styled.ul`
   margin-left: 30px;
 `
 
-const ProductItemm = styled.li`
-  span {
-    color: ${(props) => (props.outOfStock ? props.theme.light : 'black')};
-    text-decoration: ${(props) => (props.invisible ? 'line-through' : 'none')};
-  }
-  position: relative;
-  background: ${(props) => props.theme.background};
-  span::before {
-    content: '';
-    height: 10000%;
-    width: 10px;
-    border-bottom: 2px solid ${(props) => props.theme.main};
-    border-left: 2px solid ${(props) => props.theme.main};
-    position: absolute;
-    bottom: 10px;
-    left: -10px;
-    z-index: -2;
-  }
-  span::after {
-    content: '';
-    height: 33px;
-    width: 400px;
-    background: ${(props) => props.theme.background};
-    position: absolute;
-    bottom: 10px;
-    left: 0px;
-    z-index: -1;
-  }
-  span {
-  }
-
-  button {
-  }
-`
-// const RemoveButton = styled.button`
-//   border-radius: 3px;
-//   padding: 3px;
-//   background: transparent;
-//   border: 0px;
-//   color: red;
-//   &:hover {
-//     background: red;
-//     color: ${(props) => props.theme.white};
-//   }
-// `
-// const EditButton = styled(RemoveButton)`
-//   color: ${(props) => props.theme.main};
-//   &:hover {
-//     background: ${(props) => props.theme.main};
-//     color: ${(props) => props.theme.white};
-//   }
-// `
-
-const CategoryItemm = styled(ProductItemm)`
-  font-weight: bold;
-  margin: 5px 0px;
-  button {
-    border-radius: 3px;
-    padding: 0px 3px 3px 3px;
-    background: transparent;
-    border: 0px;
-    color: ${(props) => props.theme.main};
-    &:hover {
-      background: ${(props) => props.theme.main};
-      color: ${(props) => props.theme.white};
-    }
-  }
-  span::after {
-    height: 43px;
-  }
-`
-
 const ProductItem = ({
   product,
   parentCategory,
@@ -110,7 +38,7 @@ const ProductItem = ({
         </span>
       </Link>
       <button
-        className="inverted icon-button cancel m-h-s"
+        className="btn inverted icon-button cancel m-h-s"
         onClick={(e) => {
           e.preventDefault()
           removeProduct(product.id, parentCategory.id)
@@ -118,21 +46,21 @@ const ProductItem = ({
         <Cross className="icon-s" />
       </button>
       <button
-        className="inverted icon-button m-h-s"
+        className="btn inverted icon-button m-h-s"
         onClick={() => {
           toggleShow(product)
         }}>
         <Eye className="icon-s" />
       </button>
       <button
-        className="inverted icon-button m-h-s"
+        className="btn inverted icon-button m-h-s"
         onClick={() => {
           toggleStock(product)
         }}>
         <BoxSeam className="icon-s" />
       </button>
       <Link to={`/management/new_product/${product.id}`}>
-        <button className="inverted icon-button m-h-s">
+        <button className="btn inverted icon-button m-h-s">
           <Edit className="icon-s" />
         </button>
       </Link>
@@ -158,7 +86,7 @@ const CategoryItem = ({
           {category.displayName[selectedLang] || category.displayName.lv}
           {category.id !== 'all' && category.id !== 'new' && (
             <button
-              className="inverted icon-button m-h-s cancel"
+              className="btn inverted icon-button m-h-s cancel"
               onClick={(e) => {
                 e.preventDefault()
                 removeCategory(category.id, parentCategory.id)
@@ -169,8 +97,16 @@ const CategoryItem = ({
         </span>
       </Link>
 
-      <button onClick={handleProductButton}>+ {lang.product}</button>
-      <button onClick={handleCategoryButton}>+ {lang.category}</button>
+      <button
+        className="btn m-h"
+        onClick={handleProductButton}>
+        + {lang.products}
+      </button>
+      <button
+        className="btn"
+        onClick={handleCategoryButton}>
+        + {lang.category}
+      </button>
     </div>
   )
 }

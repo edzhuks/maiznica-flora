@@ -239,6 +239,21 @@ const de = {
   delivery_time_pickupPoint: '2 - 3 Tage',
   toast_pickup_point_data:
     'Bitte geben Sie alle erforderlichen Daten für die Lieferung am Abholpunkt ein',
+  price_mismatch:
+    'Es gab eine Diskrepanz zwischen dem Gesamtbetrag des Warenkorbs und dem bezahlten Betrag.\nWir werden Sie per E-Mail kontaktieren, um das Problem zu lösen.',
+  toast_price_mismatch: 'Problem mit bezahltem Betrag',
+  to_comments: 'Kommentare hinzufügen',
+  continue: 'Weiter',
+  comments: 'Kommentare',
+  businessComments: 'Geschäftsangaben für Firmenkunden',
+  businessComments_label: 'Name, Adresse, ID...',
+  generalComments: 'Kommentare für die Bäckerei Flora',
+  generalComments_label: 'Kommentar',
+  deliveryComments: 'Kommentare zur Lieferung',
+  LieferungKommentare_label: 'Kommentar',
+  sorting: 'Sortierung',
+  select_category: 'Wählen Sie eine Kategorie',
+  select_product: 'Wählen Sie ein Produkt',
 }
 
 export default de

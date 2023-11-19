@@ -39,7 +39,7 @@ const Payment = ({ order }) => {
     <div>
       {iframe && (
         <button
-          className="m-d"
+          className="btn m-d"
           onClick={tryAcceptTerms}>
           {lang.start_over_payment}
         </button>
@@ -62,7 +62,7 @@ const Payment = ({ order }) => {
               <div>
                 <p className="card-text">{lang.payment_failed}</p>
                 <button
-                  className="full-width m-t"
+                  className="btn full-width m-t"
                   onClick={tryAcceptTerms}>
                   {lang.start_over_payment}
                 </button>
@@ -83,7 +83,7 @@ const Payment = ({ order }) => {
                 </div>
 
                 <button
-                  className="full-width m-t"
+                  className="btn full-width m-t"
                   onClick={() => {
                     tryAcceptTerms()
                   }}>

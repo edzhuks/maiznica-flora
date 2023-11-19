@@ -73,7 +73,7 @@ const UserData = () => {
           />
         )}
         <button
-          className="cancel full-width m-d-b  m-t-m"
+          className="btn cancel full-width m-d-b  m-t-m"
           onClick={deleteAccount}>
           {lang.delete_account}
         </button>

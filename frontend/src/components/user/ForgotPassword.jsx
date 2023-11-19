@@ -65,7 +65,7 @@ const ForgotPassword = () => {
           />
 
           <button
-            className="full-width m-t-m"
+            className="btn full-width m-t-m"
             type="submit">
             {lang.send_reset_instructions}
             {emailUnregisteredReminderVisisble && (

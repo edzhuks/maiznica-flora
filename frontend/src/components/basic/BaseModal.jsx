@@ -18,13 +18,17 @@ const BaseModal = ({
         <div>{children}</div>
         <div className="row end p-m">
           <button
-            className="cancel"
+            className="btn cancel"
             onClick={() => {
               onClose()
             }}>
             {lang.cancel}
           </button>
-          <button onClick={onSubmit}>{lang.add}</button>
+          <button
+            className="btn"
+            onClick={onSubmit}>
+            {lang.add}
+          </button>
         </div>
       </div>
     </div>

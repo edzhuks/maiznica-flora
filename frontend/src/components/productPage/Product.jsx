@@ -138,21 +138,25 @@ const Product = () => {
         />
         {user && user.admin && (
           <div className="row m-d">
-            <button onClick={() => navigate(`/management/new_product/${id}`)}>
+            <button
+              className="btn"
+              onClick={() => navigate(`/management/new_product/${id}`)}>
               {lang.edit_product}
             </button>
-            <button onClick={() => setDiscountModal(true)}>
+            <button
+              className="btn"
+              onClick={() => setDiscountModal(true)}>
               {lang.create_discount}
             </button>
             {product.discount && (
               <button
-                className="cancel"
+                className="btn cancel"
                 onClick={removeDiscount}>
                 {lang.remove_discount}
               </button>
             )}
             <button
-              className="cancel"
+              className="btn cancel"
               onClick={deleteProduct}>
               {lang.delete_product}
             </button>

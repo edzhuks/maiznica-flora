@@ -84,7 +84,7 @@ const ChangePassword = () => {
         )}
 
         <button
-          className="full-width m-t-m m-d-b"
+          className="btn full-width m-t-m m-d-b"
           type="submit">
           {lang.change_password}
         </button>

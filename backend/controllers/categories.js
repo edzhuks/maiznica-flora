@@ -222,6 +222,8 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
 
 categoryRouter.get('/', async (req, res) => {
   let categories = await Category.find({})
+    .populate({ path: 'products', match: { invisible: { $ne: true } } })
+    .populate('categories')
   res.send(categories)
 })
 

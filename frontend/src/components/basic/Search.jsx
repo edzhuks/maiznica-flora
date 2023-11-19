@@ -58,12 +58,13 @@ const Search = ({
 
       {value && (
         <button
-          className="inverted icon-button"
+          className="btn inverted icon-button"
           onClick={onClear}>
           <Cross className="icon-m" />
         </button>
       )}
       <StyledButton
+        className="btn"
         onClick={onSearch}
         style={{}}>
         <SearchOutline className="icon-m" />

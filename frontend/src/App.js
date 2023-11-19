@@ -47,6 +47,7 @@ import Ordered from './components/info/Ordered'
 import Registered from './components/info/Registered'
 import AddressesPage from './components/user/AdressesPage'
 import PriceMismatch from './components/info/PriceMismatch'
+import { Sorting } from './components/management/Sorting'
 
 const baseTheme = {
   main: '#45941e',
@@ -145,6 +146,10 @@ function App() {
                       <Route
                         path="categories"
                         element={<CategoryManagement />}
+                      />
+                      <Route
+                        path="sorting"
+                        element={<Sorting />}
                       />
 
                       <Route

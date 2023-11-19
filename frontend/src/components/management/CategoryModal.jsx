@@ -112,6 +112,7 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
             options={allCategories}
             {...selectedCategories}
             label={lang.categories}
+            isMulti={true}
           />
           {/* <Select
             isMulti

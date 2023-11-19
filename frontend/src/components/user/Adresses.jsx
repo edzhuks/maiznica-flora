@@ -166,15 +166,19 @@ const AddressForm = ({ submit, values, cancel }) => {
       />
       {!values ? (
         <button
-          className="m-t"
+          className="btn m-t"
           type="submit">
           {lang.add_new_address}
         </button>
       ) : (
         <div className="row m-t">
-          <button type="submit">{lang.save_short}</button>
           <button
-            className="cancel"
+            className="btn"
+            type="submit">
+            {lang.save_short}
+          </button>
+          <button
+            className="btn cancel"
             onClick={cancel}>
             {lang.cancel}
           </button>
@@ -322,13 +326,14 @@ const Addresses = ({
                     className="column"
                     style={{ flex: 1 }}>
                     <button
+                      className="btn"
                       onClick={() => {
                         setEditingId(address.id)
                       }}>
                       <Edit className="icon-m" />
                     </button>
                     <button
-                      className="cancel"
+                      className="btn cancel"
                       onClick={() => onDeleteAddress(address.id)}>
                       <Trash className="icon-m" />
                     </button>

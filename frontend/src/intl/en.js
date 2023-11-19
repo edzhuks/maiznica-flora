@@ -245,6 +245,9 @@ const en = {
   generalComments_label: 'Comment',
   deliveryComments: 'Comments about the delivery',
   deliveryComments_label: 'Comment',
+  sorting: 'Sorting',
+  select_category: 'Select a category',
+  select_product: 'Select a product',
 }
 
 export default en
