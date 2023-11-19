@@ -42,7 +42,7 @@ const SortableItem = ({ id, label, image, remove }) => {
       {...listeners}>
       <div className="row no-gap align-cross-center">
         <img
-          src={`/images/${image}`}
+          src={`/images/xs_${image}`}
           width={55}
           height={55}
         />
@@ -87,29 +87,29 @@ export const Sorting = () => {
   )
 
   useEffect(() => {
-    categoryService.getAll().then((response) => {
-      setAllCategories(
-        response.map((c) => {
-          return {
-            value: c,
-            label: c.displayName[selectedLang] || c.displayName.lv,
-          }
-        })
-      )
-    })
-    productService.getAll().then((response) => {
-      setAllProducts(
-        response.map((p) => {
-          return {
-            value: p,
-            label: `${p.name[selectedLang] || p.name.lv} ${gramsToKilos(
-              p.weight
-            )}`,
-          }
-        })
-      )
-    })
-  }, [])
+    if (selectedLang) {
+      categoryService.getAll().then((response) => {
+        setAllCategories(
+          response.map((c) => {
+            return {
+              value: c,
+              label: c.displayName[selectedLang] || c.displayName.lv,
+            }
+          })
+        )
+      })
+      productService.getAll().then((response) => {
+        setAllProducts(
+          response.map((p) => {
+            return {
+              value: p,
+              label: p.name[selectedLang] || p.name.lv,
+            }
+          })
+        )
+      })
+    }
+  }, [selectedLang])
   useEffect(() => {
     if (allCategories.length > 0) {
       selectCategory(allCategories[0])
@@ -264,9 +264,7 @@ export const Sorting = () => {
               {productItems.map((p) => (
                 <SortableItem
                   key={p.id}
-                  label={`${p.name[selectedLang] || p.name.lv} ${gramsToKilos(
-                    p.weight
-                  )}`}
+                  label={p.name[selectedLang] || p.name.lv}
                   id={p.id}
                   image={p.image}
                   remove={() => removeProduct(p)}
