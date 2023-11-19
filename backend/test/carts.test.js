@@ -109,7 +109,7 @@ describe('an user can', () => {
     expect(
       (await api.get('/api/cart').set('Authorization', `Bearer ${token}`)).body
         .content
-    ).toBeUndefined()
+    ).toHaveLength(0)
     console.log(product1)
     await api
       .post('/api/cart')
@@ -239,7 +239,7 @@ describe('an user cannot', () => {
     const response = await api
       .get('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-    expect(response.body.content).toBeUndefined()
+    expect(response.body.content).toHaveLength(0)
   })
 
   test('add a product with fractional quantity to their cart', async () => {
@@ -251,7 +251,7 @@ describe('an user cannot', () => {
     const response = await api
       .get('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-    expect(response.body.content).toBeUndefined()
+    expect(response.body.content).toHaveLength(0)
   })
   test('add a product with non-numeric quantity to their cart', async () => {
     await api
@@ -262,7 +262,7 @@ describe('an user cannot', () => {
     const response = await api
       .get('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-    expect(response.body.content).toBeUndefined()
+    expect(response.body.content).toHaveLength(0)
   })
   test('add a product with missing id to their cart', async () => {
     const badProduct = { ...product1 }
@@ -275,7 +275,7 @@ describe('an user cannot', () => {
     const response = await api
       .get('/api/cart')
       .set('Authorization', `Bearer ${token}`)
-    expect(response.body.content).toBeUndefined()
+    expect(response.body.content).toHaveLength(0)
   })
 })
 
