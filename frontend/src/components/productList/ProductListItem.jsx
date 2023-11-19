@@ -47,7 +47,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
       style={{ flex: '1 1 300px' }}>
       <Link to={`/products/${product.id}`}>
         <div className="product-image-small">
-          <img src={`/images/${product.image}`} />
+          <img src={`/images/md_${product.image}`} />
         </div>
       </Link>
       <div className="column no-gap">

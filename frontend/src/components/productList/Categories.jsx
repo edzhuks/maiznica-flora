@@ -15,7 +15,7 @@ const Categories = ({ categories, name, tight }) => {
             <Link
               className="card square category-spacer category-card m-d"
               style={{
-                background: `url(/images/${category.image}) center center`,
+                background: `url(/images/md_${category.image}) center center`,
               }}
               key={category.id}
               to={`/category/${category.id}`}>
