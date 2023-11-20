@@ -48,6 +48,7 @@ import Registered from './components/info/Registered'
 import AddressesPage from './components/user/AdressesPage'
 import PriceMismatch from './components/info/PriceMismatch'
 import { Sorting } from './components/management/Sorting'
+import BannerManagement from './components/management/BannerManagement'
 
 const baseTheme = {
   main: '#45941e',
@@ -151,7 +152,10 @@ function App() {
                         path="sorting"
                         element={<Sorting />}
                       />
-
+                      <Route
+                        path="banners"
+                        element={<BannerManagement />}
+                      />
                       <Route
                         path="new_product/:productId?"
                         element={<NewProductFrom />}

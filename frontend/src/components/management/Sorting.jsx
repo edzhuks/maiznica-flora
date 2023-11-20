@@ -68,13 +68,21 @@ export const Sorting = () => {
   const [allProducts, setAllProducts] = useState([])
   const activeCategory = useField('select')
   const newCategory = useField('select')
-  const [newCategories, setNewCategories] = useState([])
+
   const newProduct = useField('select')
-  const [newProducts, setNewProducts] = useState([])
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
-  const lang = useSelector((state) => state.lang[selectedLang])
+
   const [categoryItems, setCategoryItems] = useState([])
   const [productItems, setProductItems] = useState([])
+  const newCategories = activeCategory.value.value
+    ? allCategories
+        .filter((c) => c.value.id !== activeCategory.value.value.id)
+        .filter((c) => !categoryItems.find((cc) => cc.id === c.value.id))
+    : []
+  const newProducts = allProducts.filter(
+    (c) => !productItems.find((cc) => cc.id === c.value.id)
+  )
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const lang = useSelector((state) => state.lang[selectedLang])
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -87,55 +95,43 @@ export const Sorting = () => {
   )
 
   useEffect(() => {
-    if (selectedLang) {
-      categoryService.getAll().then((response) => {
-        setAllCategories(
-          response.map((c) => {
-            return {
-              value: c,
-              label: c.displayName[selectedLang] || c.displayName.lv,
-            }
-          })
-        )
-      })
-      productService.getAll().then((response) => {
-        setAllProducts(
-          response.map((p) => {
-            return {
-              value: p,
-              label: p.name[selectedLang] || p.name.lv,
-            }
-          })
-        )
-      })
-    }
-  }, [selectedLang])
-  useEffect(() => {
-    if (allCategories.length > 0) {
-      selectCategory(allCategories[0])
-    }
-  }, [allCategories])
+    categoryService.getAll().then((response) => {
+      setAllCategories(
+        response.map((c) => {
+          return {
+            value: c,
+            label: c.displayName[selectedLang] || c.displayName.lv,
+          }
+        })
+      )
+      selectCategory(
+        response.map((c) => {
+          return {
+            value: c,
+            label: c.displayName[selectedLang] || c.displayName.lv,
+          }
+        })[0]
+      )
+    })
+    productService.getAll().then((response) => {
+      setAllProducts(
+        response.map((p) => {
+          return {
+            value: p,
+            label: `${p.name[selectedLang] || p.name.lv} ${gramsToKilos(
+              p.weight
+            )}`,
+          }
+        })
+      )
+    })
+  }, [])
 
   const selectCategory = (category) => {
     setCategoryItems(category.value.categories)
     setProductItems(category.value.products)
     activeCategory.changeValue(category)
   }
-  useEffect(() => {
-    setNewCategories(
-      allCategories
-        .filter((c) => c.value.id !== activeCategory.value.value.id)
-        .filter((c) => !categoryItems.find((cc) => cc.id === c.value.id))
-    )
-  }, [categoryItems])
-
-  useEffect(() => {
-    setNewProducts(
-      allProducts.filter(
-        (c) => !productItems.find((cc) => cc.id === c.value.id)
-      )
-    )
-  }, [productItems])
 
   const saveChanges = () => {
     categoryService
@@ -170,6 +166,31 @@ export const Sorting = () => {
   }
   const removeProduct = (product) => {
     setProductItems(productItems.filter((c) => c.id !== product.id))
+  }
+
+  const handleDragEndCategories = (event) => {
+    const { active, over } = event
+
+    if (active.id !== over.id) {
+      setCategoryItems((categoryItems) => {
+        const oldIndex = categoryItems.findIndex((i) => i.id === active.id)
+        const newIndex = categoryItems.findIndex((i) => i.id === over.id)
+
+        return arrayMove(categoryItems, oldIndex, newIndex)
+      })
+    }
+  }
+  const handleDragEndProducts = (event) => {
+    const { active, over } = event
+
+    if (active.id !== over.id) {
+      setProductItems((productItems) => {
+        const oldIndex = productItems.findIndex((i) => i.id === active.id)
+        const newIndex = productItems.findIndex((i) => i.id === over.id)
+
+        return arrayMove(productItems, oldIndex, newIndex)
+      })
+    }
   }
 
   return (
@@ -291,29 +312,4 @@ export const Sorting = () => {
       </div>
     </div>
   )
-
-  function handleDragEndCategories(event) {
-    const { active, over } = event
-
-    if (active.id !== over.id) {
-      setCategoryItems((categoryItems) => {
-        const oldIndex = categoryItems.findIndex((i) => i.id === active.id)
-        const newIndex = categoryItems.findIndex((i) => i.id === over.id)
-
-        return arrayMove(categoryItems, oldIndex, newIndex)
-      })
-    }
-  }
-  function handleDragEndProducts(event) {
-    const { active, over } = event
-
-    if (active.id !== over.id) {
-      setProductItems((productItems) => {
-        const oldIndex = productItems.findIndex((i) => i.id === active.id)
-        const newIndex = productItems.findIndex((i) => i.id === over.id)
-
-        return arrayMove(productItems, oldIndex, newIndex)
-      })
-    }
-  }
 }

@@ -15,6 +15,9 @@ const ManagementPage = () => {
         <Link to="sorting">
           <button className="btn">{lang.sorting}</button>
         </Link>
+        <Link to="banners">
+          <button className="btn">{lang.banner}</button>
+        </Link>
       </div>
 
       <Outlet />

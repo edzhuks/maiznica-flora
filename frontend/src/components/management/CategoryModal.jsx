@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import BaseModal from '../basic/BaseModal'
 import useUploadService from '../../services/uploads'
 import Input from '../basic/Input'
+import { toEnglishAlphabet } from '../../util/convert'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const categoryService = useCategoryService()
@@ -83,10 +84,20 @@ const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
         })
     }
   }
+
   const imageSelected = (event) => {
     event.preventDefault()
     const formData = new FormData()
-    formData.append('image', event.target.files[0])
+    const blob = event.target.files[0]
+    const noDiacritics = new File(
+      [blob],
+      toEnglishAlphabet(blob.name),
+
+      {
+        type: blob.type,
+      }
+    )
+    formData.append('image', noDiacritics)
     uploadService.uploadImage(formData).then((response) => {
       setImage(`${response.data.path}`)
     })

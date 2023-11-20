@@ -8,7 +8,7 @@ import useProductService from '../../services/product'
 import { BoxArrowLeft } from '@styled-icons/bootstrap/BoxArrowLeft'
 import { BoxArrowRight } from '@styled-icons/bootstrap/BoxArrowRight'
 import useToast from '../../util/promiseToast'
-import { gramsToKilos } from '../../util/convert'
+import { gramsToKilos, toEnglishAlphabet } from '../../util/convert'
 import useUploadService from '../../services/uploads'
 import Input from '../basic/Input'
 
@@ -302,31 +302,8 @@ const NewProductFrom = () => {
     const blob = event.target.files[0]
     const noDiacritics = new File(
       [blob],
-      blob.name
-        .replace('ā', 'a')
-        .replace('č', 'c')
-        .replace('ē', 'e')
-        .replace('ģ', 'g')
-        .replace('ļ', 'l')
-        .replace('ķ', 'k')
-        .replace('ī', 'i')
-        .replace('ņ', 'n')
-        .replace('š', 's')
-        .replace('ū', 'u')
-        .replace('ž', 'z')
-        .replace('ŗ', 'r')
-        .replace('Ā', 'A')
-        .replace('Č', 'C')
-        .replace('Ē', 'E')
-        .replace('Ģ', 'G')
-        .replace('Ļ', 'L')
-        .replace('Ķ', 'K')
-        .replace('Ī', 'I')
-        .replace('Ņ', 'N')
-        .replace('Š', 'S')
-        .replace('Ū', 'U')
-        .replace('Ž', 'Z')
-        .replace('Ŗ', 'R'),
+      toEnglishAlphabet(blob.name),
+
       {
         type: blob.type,
       }

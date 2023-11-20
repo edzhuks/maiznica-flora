@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { CaretLeftFill } from '@styled-icons/bootstrap/CaretLeftFill'
 import { CaretRightFill } from '@styled-icons/bootstrap/CaretRightFill'
+import { useNavigate } from 'react-router-dom'
 
 const CarouselContainer = styled.div`
   width: 100%;
@@ -9,7 +10,7 @@ const CarouselContainer = styled.div`
 `
 
 const CarouselLeft = styled.div`
-  z-index: 2;
+  z-index: 3;
   width: 60px;
   cursor: pointer;
   position: absolute;
@@ -31,11 +32,10 @@ const CarouselRight = styled(CarouselLeft)`
   justify-content: end;
 `
 
-const CarouselImages = styled.div`
-  box-shadow: var(--shadow);
-`
+const CarouselImages = styled.div``
 
 const CarouselImage = styled.img`
+  box-shadow: var(--shadow);
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -44,8 +44,12 @@ const CarouselImage = styled.img`
   height: auto;
   opacity: 0;
   transition: all 1000ms linear 0s;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
   &.fade-in {
     opacity: 1;
+    z-index: 2;
   }
 `
 
@@ -70,34 +74,44 @@ const CarouselIndicator = styled.div`
   transition: 0.5s;
 `
 
-const CarouselItem = ({ image, active }) => {
+const CarouselItem = ({ bannerItem, active }) => {
+  const navigate = useNavigate()
   return (
     <CarouselImage
-      src={image}
+      onClick={() => {
+        if (bannerItem.category || bannerItem.product)
+          navigate(
+            bannerItem.category
+              ? `/category/${bannerItem.category}`
+              : `/products/${bannerItem.product}`
+          )
+      }}
+      src={`/images/xl_${bannerItem.image}`}
       active={active}
-      className={active && 'fade-in'}></CarouselImage>
+      className={active && 'fade-in'}
+    />
   )
 }
 
-const Carousel = ({ images, className }) => {
+const Carousel = ({ banners, className }) => {
   const [activeImage, setActiveImage] = useState(0)
   const [int, setInt] = useState(undefined)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveImage((activeImage) => (activeImage + 1) % images.length)
+      setActiveImage((activeImage) => (activeImage + 1) % banners.length)
     }, 6000)
     setInt(interval)
 
     return () => clearInterval(interval)
-  }, [images])
+  }, [banners])
 
   return (
     <CarouselContainer className={className}>
       <CarouselLeft
         onClick={() => {
           setActiveImage(
-            activeImage === 0 ? images.length - 1 : activeImage - 1
+            activeImage === 0 ? banners.length - 1 : activeImage - 1
           )
           clearInterval(int)
         }}>
@@ -107,18 +121,23 @@ const Carousel = ({ images, className }) => {
         />
       </CarouselLeft>
       <CarouselImages>
-        {images.map((image, index) => (
-          <CarouselItem
-            image={image}
-            key={image}
-            active={index === activeImage}
-          />
-        ))}
-        <PlaceholderImage src={images[0]} />
+        {banners.length > 0 &&
+          banners.map((bannerItem, index) => (
+            <CarouselItem
+              bannerItem={bannerItem}
+              key={bannerItem._id}
+              active={index === activeImage}
+            />
+          ))}
+        {/* <PlaceholderImage
+          src={'/images/banner_placeholder.jpg'}
+          key="placeholder"
+        /> */}
+        <div style={{ width: '100%', aspectRatio: '1.8' }} />
       </CarouselImages>
       <CarouselRight
         onClick={() => {
-          setActiveImage((activeImage + 1) % images.length)
+          setActiveImage((activeImage + 1) % banners.length)
           clearInterval(int)
         }}>
         <CaretRightFill
@@ -127,10 +146,10 @@ const Carousel = ({ images, className }) => {
         />
       </CarouselRight>
       <CarouselIndicators>
-        {images.map((image, index) => (
+        {banners.map((bannerItem, index) => (
           <CarouselIndicator
             active={index === activeImage}
-            key={image}
+            key={bannerItem._id}
           />
         ))}
       </CarouselIndicators>

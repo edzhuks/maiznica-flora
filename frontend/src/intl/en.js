@@ -248,6 +248,9 @@ const en = {
   sorting: 'Sorting',
   select_category: 'Select a category',
   select_product: 'Select a product',
+  banner: 'Banner',
+  links_to: 'Links to ',
+  links_to_nowhere: 'No link',
 }
 
 export default en

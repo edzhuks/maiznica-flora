@@ -264,6 +264,9 @@ const lv = {
   sorting: 'Kārtošana',
   select_category: 'Izvēlies kategoriju',
   select_product: 'Izvēlies produktu',
+  banner: 'Plakāts',
+  links_to: 'Ved uz ',
+  links_to_nowhere: 'Neved nekur',
 }
 
 export default lv

@@ -254,6 +254,9 @@ const de = {
   sorting: 'Sortierung',
   select_category: 'Wählen Sie eine Kategorie',
   select_product: 'Wählen Sie ein Produkt',
+  banner: 'Banner',
+  links_to: 'Links zu ',
+  links_to_nowhere: 'Kein Link',
 }
 
 export default de

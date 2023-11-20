@@ -13,8 +13,16 @@ const useUploadService = () => {
     })
     return request
   }
+  const uploadBanner = (image) => {
+    const config = makeConfig()
+    const request = axios.post(`${baseURL}/banner`, image, {
+      headers: { ...config.headers, 'Content-Type': 'multipart/form-data' },
+    })
+    return request
+  }
   return {
     uploadImage,
+    uploadBanner,
   }
 }
 export default useUploadService
