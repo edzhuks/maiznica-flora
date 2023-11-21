@@ -257,6 +257,12 @@ const de = {
   banner: 'Banner',
   links_to: 'Links zu ',
   links_to_nowhere: 'Kein Link',
+  enter_captcha: 'Captcha',
+  captcha_mismatch: 'Captcha falsch',
+  toast_contact_form_success: 'Nachricht gesendet!',
+  settings: 'Einstellungen',
+  contact_form_emails: 'Kontakt-Formular-Empfänger',
+  order_notification_emails: 'Empfänger von Bestellungen',
 }
 
 export default de

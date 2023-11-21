@@ -8,8 +8,8 @@
 //     ? 'http://192.168.0.108:3001'
 //     : 'http://new.maiznica.com'
 
-const apiURL = 'http://192.168.0.104:3001/api'
+const apiURL = 'http://192.168.0.108:3001/api'
 
-const backendURL = 'http://192.168.0.104:3001'
+const backendURL = 'http://192.168.0.108:3001'
 
 export { apiURL, backendURL }

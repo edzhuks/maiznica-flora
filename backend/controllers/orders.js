@@ -44,6 +44,20 @@ router.put('/:id', userExtractor, adminRequired, async (req, res) => {
   res.send(order)
 })
 
+router.get('/resend_email', userExtractor, async (req, res) => {
+  const order = await Order.findById(req.query.id).populate([
+    { path: 'content', populate: { path: 'product' } },
+    { path: 'user' },
+  ])
+  console.log(order.user._id)
+  console.log(req.user._id)
+  if (order.user._id.equals(req.user._id)) {
+    sendReceiptEmail(order.user.email, order)
+    return res.send()
+  }
+  return res.status(401).send({ error: 'This is not your order' })
+})
+
 router.get('/', userExtractor, async (req, res) => {
   const orders = await Order.find({ user: req.user.id }).populate([
     { path: 'content', populate: { path: 'product' } },

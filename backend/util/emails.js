@@ -7,7 +7,12 @@ const {
   EMAIL_PASSWORD,
 } = require('./config')
 const nodemailer = require('nodemailer')
-const { getPrice, centsToEuro, gramsToKilos } = require('./functions')
+const {
+  getPrice,
+  centsToEuro,
+  gramsToKilos,
+  escapeHTML,
+} = require('./functions')
 
 const verificationEmailHtml = (link) => {
   return `<!DOCTYPE html>
@@ -782,26 +787,26 @@ Codepen: https://codepen.io/supah/
   body { width: 100%; height: 100%; background-color: #eeeeee; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
   html { width: 100%; }
   p { padding: 0 !important; margin-top: 0 !important; margin-right: 0 !important; margin-bottom: 0 !important; margin-left: 0 !important; }
-  .visibleMobile { display: none; }
-  .hiddenMobile { display: block; }
+  // .visibleMobile { display: none; }
+  // .hiddenMobile { display: block; }
 
-  @media only screen and (max-width: 600px) {
-  body { width: auto !important; }
-  table[class=fullTable] { width: 96% !important; clear: both; }
-  table[class=fullPadding] { width: 85% !important; clear: both; }
-  table[class=col] { width: 45% !important; }
-  .erase { display: none; }
-  }
+  // @media only screen and (max-width: 600px) {
+  // body { width: auto !important; }
+  // table[class=fullTable] { width: 96% !important; clear: both; }
+  // table[class=fullPadding] { width: 85% !important; clear: both; }
+  // table[class=col] { width: 45% !important; }
+  // .erase { display: none; }
+  // }
 
-  @media only screen and (max-width: 420px) {
-  table[class=fullTable] { width: 100% !important; clear: both; }
-  table[class=fullPadding] { width: 85% !important; clear: both; }
-  table[class=col] { width: 100% !important; clear: both; }
-  table[class=col] td { text-align: left !important; }
-  .erase { display: none; font-size: 0; max-height: 0; line-height: 0; padding: 0; }
-  .visibleMobile { display: block !important; }
-  .hiddenMobile { display: none !important; }
-  }
+  // @media only screen and (max-width: 420px) {
+  // table[class=fullTable] { width: 100% !important; clear: both; }
+  // table[class=fullPadding] { width: 85% !important; clear: both; }
+  // table[class=col] { width: 100% !important; clear: both; }
+  // table[class=col] td { text-align: left !important; }
+  // .erase { display: none; font-size: 0; max-height: 0; line-height: 0; padding: 0; }
+  // .visibleMobile { display: block !important; }
+  // .hiddenMobile { display: none !important; }
+  // }
 </style>
 
 
@@ -813,11 +818,8 @@ Codepen: https://codepen.io/supah/
   <tr>
     <td>
       <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff" style="border-radius: 10px 10px 0 0;">
-        <tr class="hiddenMobile">
-          <td height="40"></td>
-        </tr>
-        <tr class="visibleMobile">
-          <td height="30"></td>
+        <tr >
+          <td height="70"></td>
         </tr>
 
         <tr>
@@ -825,17 +827,14 @@ Codepen: https://codepen.io/supah/
             <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
               <tbody>
                 <tr>
-                  <td>
+                  <td colspan="1">
                     <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                       <tbody>
                         <tr>
                           <td align="left"> <img src="https://maiznica.lv/wp-content/themes/maiznica/img/logo.png" width="32" height="32" alt="logo" border="0" /></td>
                         </tr>
-                        <tr class="hiddenMobile">
-                          <td height="40"></td>
-                        </tr>
-                        <tr class="visibleMobile">
-                          <td height="20"></td>
+                        <tr >
+                          <td height="60"></td>
                         </tr>
                         <tr>
                           <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
@@ -844,25 +843,19 @@ Codepen: https://codepen.io/supah/
                         </tr>
                       </tbody>
                     </table>
+                    </td>
+                    <td colspan="3">
                     <table width="220" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
                       <tbody>
-                        <tr class="visibleMobile">
-                          <td height="20"></td>
-                        </tr>
-                        <tr>
-                          <td height="5"></td>
-                        </tr>
+                        
                         <tr>
                           <td style="font-size: 21px; color: #45941e; letter-spacing: -1px; font-family: 'Open Sans', sans-serif; line-height: 1; vertical-align: top; text-align: right;">
                             Rēķins
                           </td>
                         </tr>
                         <tr>
-                        <tr class="hiddenMobile">
-                          <td height="50"></td>
-                        </tr>
-                        <tr class="visibleMobile">
-                          <td height="20"></td>
+                        <tr >
+                          <td height="60"></td>
                         </tr>
                         <tr>
                           <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
@@ -874,33 +867,9 @@ Codepen: https://codepen.io/supah/
                     </table>
                   </td>
                 </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<!-- /Header -->
-<!-- Order Details -->
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#eeeeee">
-  <tbody>
-    <tr>
-      <td>
-        <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff">
-          <tbody>
-            <tr>
-            <tr class="hiddenMobile">
-              <td height="60"></td>
-            </tr>
-            <tr class="visibleMobile">
-              <td height="40"></td>
-            </tr>
-            <tr>
-              <td>
-                <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-                  <tbody>
+                <tr >
+                          <td height="60"></td>
+                        </tr>
                     <tr>
                       <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: normal; line-height: 1; vertical-align: top; padding: 0 10px 7px 0;" width="52%" align="left">
                         Produkts
@@ -947,35 +916,10 @@ Codepen: https://codepen.io/supah/
                       .join('')}
                    
                   
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td height="20"></td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!-- /Order Details -->
-<!-- Total -->
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#eeeeee">
-  <tbody>
-    <tr>
-      <td>
-        <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff">
-          <tbody>
-            <tr>
-              <td>
-
-                <!-- Table Total -->
-                <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-                  <tbody>
+                  
                     <tr>
-                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
+                    <td rowspan="4"></td>
+                      <td colspan="2" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
                         Starpsumma
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;" width="80">
@@ -983,7 +927,7 @@ Codepen: https://codepen.io/supah/
                       </td>
                     </tr>
                     <tr>
-                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
+                      <td colspan="2" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
                        Piegāde
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
@@ -991,7 +935,7 @@ Codepen: https://codepen.io/supah/
                       </td>
                     </tr>
                     <tr>
-                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
+                      <td colspan="2" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
                         <strong>Pavisam kopā (ar PVN)</strong>
                       </td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
@@ -999,104 +943,19 @@ Codepen: https://codepen.io/supah/
                       </td>
                     </tr>
                     <tr>
-                      <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #b0b0b0; line-height: 22px; vertical-align: top; text-align:right; "><small>PVN</small></td>
+                      <td colspan="2" style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #b0b0b0; line-height: 22px; vertical-align: top; text-align:right; "><small>PVN</small></td>
                       <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #b0b0b0; line-height: 22px; vertical-align: top; text-align:right; ">
                         <small>${centsToEuro(order.vat)}</small>
                       </td>
                     </tr>
-                  </tbody>
-                </table>
-                <!-- /Table Total -->
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!-- /Total -->
-<!-- Information -->
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#eeeeee">
-  <tbody>
-    <tr>
-      <td>
-        <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff">
-          <tbody>
-            <tr>
-            <tr class="hiddenMobile">
-              <td height="60"></td>
-            </tr>
-            <tr class="visibleMobile">
-              <td height="40"></td>
-            </tr>
-            <!-- <tr>
-              <td>
-                <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-                  <tbody>
+                  
+                   
                     <tr>
-                      <td>
-                        <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-
-                          <tbody>
-                            <tr>
-                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
-                                <strong>BILLING INFORMATION</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                Philip Brooks<br> Public Wales, Somewhere<br> New York NY<br> 4468, United States<br> T: 202-555-0133
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-
-
-                        <table width="220" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
-                          <tbody>
-                            <tr class="visibleMobile">
-                              <td height="20"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
-                                <strong>PAYMENT METHOD</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                Credit Card<br> Credit Card Type: Visa<br> Worldpay Transaction ID: <a href="#" style="color: #45941e; text-decoration:underline;">4185939336</a><br>
-                                <a href="#" style="color:#b0b0b0;">Right of Withdrawal</a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr> -->
-            <tr>
-              <td>
-                <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
-                  <tbody>
-                    <tr>
-                      <td>
+                      <td colspan="4">
                         <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                           <tbody>
-                            <tr class="hiddenMobile">
-                              <td height="35"></td>
-                            </tr>
-                            <tr class="visibleMobile">
-                              <td height="20"></td>
+                            <tr >
+                               <td height="60"></td>
                             </tr>
                             <tr>
                               <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
@@ -1108,50 +967,85 @@ Codepen: https://codepen.io/supah/
                             </tr>
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-${(() => {
-  switch (order.deliveryMethod) {
-    case 'courrier':
-      return ` ${escapeHTML(order.courrierAddress.name)}
-                    ${escapeHTML(order.courrierAddress.surname)}<br>
-                    ${escapeHTML(order.courrierAddress.phone)}<br>
-                    ${escapeHTML(order.courrierAddress.street)} 
-                    ${escapeHTML(order.courrierAddress.house)}-${escapeHTML(
-        order.courrierAddress.apartment
-      )}<br>
-                    ${escapeHTML(order.courrierAddress.city)}`
-    case 'bakery':
-      return `Ražotne: Vecvaltes<br>
-           Krimuldas pagasts,
-        <br>
-        Siguldas novads<br>Latvija, LV-2144
-        <br>
-        Reģ nr. 50003251341
-        <br>
-        Tālrunis: +371 67521291
-       <br>
-        E-pasts: flora@maiznica.lv`
-    case 'pickupPoint':
-      return ` ${escapeHTML(order.pickupPointData.name)}
-                    ${escapeHTML(order.pickupPointData.surname)}<br>
-                    ${escapeHTML(order.pickupPointData.phone)}<br>
-                    ${escapeHTML(order.pickupPointData.id)} 
-                    `
-  }
-})()} 
+                                              ${(() => {
+                                                switch (order.deliveryMethod) {
+                                                  case 'courrier':
+                                                    return ` ${escapeHTML(
+                                                      order.courrierAddress.name
+                                                    )}
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .courrierAddress
+                                                                      .surname
+                                                                  )}<br>
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .courrierAddress
+                                                                      .phone
+                                                                  )}<br>
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .courrierAddress
+                                                                      .street
+                                                                  )} 
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .courrierAddress
+                                                                      .house
+                                                                  )}-${escapeHTML(
+                                                      order.courrierAddress
+                                                        .apartment
+                                                    )}<br>
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .courrierAddress
+                                                                      .city
+                                                                  )}`
+                                                  case 'bakery':
+                                                    return `Ražotne: Vecvaltes<br>
+                                                        Krimuldas pagasts,
+                                                      <br>
+                                                      Siguldas novads<br>Latvija, LV-2144
+                                                      <br>
+                                                      Reģ nr. 50003251341
+                                                      <br>
+                                                      Tālrunis: +371 67521291
+                                                    <br>
+                                                      E-pasts: flora@maiznica.lv`
+                                                  case 'pickupPoint':
+                                                    return ` ${escapeHTML(
+                                                      order.pickupPointData.name
+                                                    )}
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .pickupPointData
+                                                                      .surname
+                                                                  )}<br>
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .pickupPointData
+                                                                      .phone
+                                                                  )}<br>
+                                                                  ${escapeHTML(
+                                                                    order
+                                                                      .pickupPointData
+                                                                      .id
+                                                                  )} 
+                                                                  `
+                                                }
+                                              })()} 
                                
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                        
 
 
-                        <table width="220" border="0" cellpadding="0" cellspacing="0" align="right" class="col">
+                        <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                           <tbody>
-                            <tr class="hiddenMobile">
-                              <td height="35"></td>
-                            </tr>
-                            <tr class="visibleMobile">
-                              <td height="20"></td>
+                            <tr >
+                              <td height="60"></td>
                             </tr>
                             <tr>
                               <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
@@ -1179,15 +1073,85 @@ ${(() => {
                         </table>
                       </td>
                     </tr>
+                    <tr>
+                    <td>
+                    ${
+                      order.businessComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="60"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Pasūtītāja rekvizīti</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.businessComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>`
+                        : ''
+                    }
+                    ${
+                      order.generalComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="60"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Komentāri</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.generalComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>`
+                        : ''
+                    }
+                    ${
+                      order.deliveryComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="60"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Piegādes komentāri</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.deliveryComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>`
+                        : ''
+                    }
+                    </td>
+                    </tr>
                   </tbody>
                 </table>
               </td>
-            </tr>
-            <tr class="hiddenMobile">
-              <td height="60"></td>
-            </tr>
-            <tr class="visibleMobile">
-              <td height="30"></td>
             </tr>
           </tbody>
         </table>
@@ -1201,13 +1165,16 @@ ${(() => {
   <tr>
     <td>
       <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#ffffff" style="border-radius: 0 0 10px 10px;">
-        <tr>
+      <tr class="spacer">
+          <td height="50"></td>
+        </tr>  
+      <tr>
           <td>
             <table width="480" border="0" cellpadding="0" cellspacing="0" align="center" class="fullPadding">
               <tbody>
                 <tr>
                   <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
-                    
+                    ${`${FRONTEND_URL}/orders/${order._id}`}
                   </td>
                 </tr>
               </tbody>
@@ -1324,7 +1291,15 @@ const sendReceiptEmail = (email, order) => {
         case 'pickupPoint':
           return 'DPD pakomāts'
       }
-    })()} \n
+    })()} \n${
+      order.businessComments
+        ? `Pasūtītāja rekvizīti: ${order.businessComments}`
+        : ''
+    }\n${order.generalComments ? `Komentāri: ${order.generalComments}` : ''}\n${
+      order.deliveryComments
+        ? `Piegādes komentāri: ${order.deliveryComments}`
+        : ''
+    }
    }`,
     html: receiptEmail(order),
   })

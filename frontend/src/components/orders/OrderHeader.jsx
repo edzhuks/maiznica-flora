@@ -6,6 +6,7 @@ import {
   _OrderHeader,
 } from './styledComponents'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import useOrderService from '../../services/order'
 
 const OrderHeader = ({
   status,
@@ -17,7 +18,7 @@ const OrderHeader = ({
   id,
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-
+  const orderService = useOrderService()
   return (
     <_OrderHeader>
       <Status>
@@ -32,6 +33,7 @@ const OrderHeader = ({
         {datePlaced ? formatDistanceToNow(new Date(datePlaced)) : 'long time '}{' '}
         ago
       </PlacementDate>
+      <button onClick={() => orderService.resendEmail(id)}>email</button>
       {expanded && (
         <CloseButton
           href="#"

@@ -267,6 +267,12 @@ const lv = {
   banner: 'Plakāts',
   links_to: 'Ved uz ',
   links_to_nowhere: 'Neved nekur',
+  enter_captcha: 'Cilvēktests',
+  captcha_mismatch: 'Cilvēkpārbaude neizdevās!',
+  toast_contact_form_success: 'Ziņa nosūtīta!',
+  settings: 'Iestatījumi',
+  contact_form_emails: 'Saziņas formas saņeēmēji',
+  order_notification_emails: 'Pasūtījumu saņēmēji',
 }
 
 export default lv

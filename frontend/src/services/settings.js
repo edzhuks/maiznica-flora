@@ -15,10 +15,26 @@ const useSettingsService = () => {
     const request = axios.get(`${baseURL}/contact_form_emails`, config)
     return request
   }
+  const updateOrderNotificationEmails = (emails) => {
+    const config = makeConfig()
+    const request = axios.post(
+      `${baseURL}/order_notification_emails`,
+      emails,
+      config
+    )
+    return request
+  }
+  const getOrderNotificationEmails = () => {
+    const config = makeConfig()
+    const request = axios.get(`${baseURL}/order_notification_emails`, config)
+    return request
+  }
 
   return {
     updateContactFormEmails,
     getContactFormEmails,
+    updateOrderNotificationEmails,
+    getOrderNotificationEmails,
   }
 }
 export default useSettingsService

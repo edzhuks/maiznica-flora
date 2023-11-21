@@ -26,7 +26,12 @@ const useOrderService = () => {
     const request = axios.get(baseURL, config)
     return request.then((response) => response.data)
   }
-  return { updateOrder, getAll, get }
+  const resendEmail = (id) => {
+    const config = makeConfig()
+    const request = axios.get(`${baseURL}/resend_email?id=${id}`, config)
+    return request.then((response) => response.data)
+  }
+  return { updateOrder, getAll, get, resendEmail }
 }
 
 export default useOrderService

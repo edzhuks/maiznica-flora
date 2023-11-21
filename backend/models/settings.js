@@ -2,14 +2,7 @@ const mongoose = require('mongoose')
 
 const settingSchema = new mongoose.Schema({
   contactFormEmails: [{ email: String }],
-  orderUsers: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    },
-  ],
+  orderNotificationEmails: [{ email: String }],
 })
 
 settingSchema.set('toJSON', {

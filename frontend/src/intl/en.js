@@ -255,6 +255,8 @@ const en = {
   captcha_mismatch: 'Captcha incorrect',
   toast_contact_form_success: 'Message sent!',
   settings: 'Settings',
+  contact_form_emails: 'Contact form receivers',
+  order_notification_emails: 'Order notification receivers',
 }
 
 export default en

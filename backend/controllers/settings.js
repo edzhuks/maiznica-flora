@@ -29,4 +29,30 @@ settingRouter.get(
     res.send({ contactFormEmails: settings.contactFormEmails })
   }
 )
+settingRouter.post(
+  '/order_notification_emails',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let settings = await Settings.findOne({})
+    if (!settings) {
+      settings = new Settings()
+    }
+    settings.orderNotificationEmails = req.body
+    await settings.save()
+    res.send({ orderNotificationEmails: settings.orderNotificationEmails })
+  }
+)
+settingRouter.get(
+  '/order_notification_emails',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let settings = await Settings.findOne({})
+    if (!settings) {
+      settings = new Settings()
+    }
+    res.send({ orderNotificationEmails: settings.orderNotificationEmails })
+  }
+)
 module.exports = settingRouter
