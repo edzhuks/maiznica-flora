@@ -12,6 +12,7 @@ const {
   TEST_MODE,
   BANK_API_USERNAME,
   BANK_API_PASSWORD,
+  BANK_API_URL,
 } = require('../util/config')
 const axios = require('axios')
 const crypto = require('crypto')
@@ -109,6 +110,7 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
       orderId: cart._id,
     })
   } catch (error) {
+    console.log(error)
     if (error.response.data.error.code === 4024) {
       await cart.deleteOne()
       const newCart = new Cart({
