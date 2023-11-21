@@ -1096,7 +1096,9 @@ Codepen: https://codepen.io/supah/
                               </td>
                             </tr>
                           </tbody>
-                        </table>`
+                        </table>
+                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                        <tbody><tr><td height="20"></td></tr></tbody></table>`
                         : ''
                     }
                     ${
@@ -1120,7 +1122,9 @@ Codepen: https://codepen.io/supah/
                               </td>
                             </tr>
                           </tbody>
-                        </table>`
+                        </table>
+                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                        <tbody><tr><td height="20"></td></tr></tbody></table>`
                         : ''
                     }
                     ${
