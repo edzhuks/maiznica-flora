@@ -135,7 +135,10 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
 const updatePaymentStatus = async (paymentReference) => {
   const cart = await Cart.findOne({
     paymentReference,
-  }).populate([{ path: 'content', populate: { path: 'product' } }])
+  }).populate([
+    { path: 'content', populate: { path: 'product' } },
+    { path: 'courrierAddress' },
+  ])
   if (cart) {
     try {
       const response = await axios.get(
@@ -166,6 +169,7 @@ const updatePaymentStatus = async (paymentReference) => {
               ? 0
               : 399
           const total = subtotal + deliveryCost
+          console.log(cart)
           let order = new Order({
             user: cart.user,
             content: cart.content,
@@ -186,6 +190,7 @@ const updatePaymentStatus = async (paymentReference) => {
             generalComments: cart.generalComments,
             deliveryComments: cart.deliveryComments,
           })
+          console.log(order)
           order = await order.save()
           if (order.total !== cart.total) {
             order.paymentStatus = 'price_mismatch'
