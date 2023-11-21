@@ -949,13 +949,98 @@ Codepen: https://codepen.io/supah/
                       </td>
                     </tr>
                   
-                   
+                   <tr><td height="30"> </td></tr>
+                   <tr>
+                  <td colspan="4" style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
+                    ${`${FRONTEND_URL}/orders/${order._id}`}
+                  </td>
+                </tr>
+                 <tr>
+                    <td colspan="4">
+                    ${
+                      order.businessComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="30"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Pasūtītāja rekvizīti</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.businessComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                        <tbody><tr><td height="20"></td></tr></tbody></table>`
+                        : ''
+                    }
+                    ${
+                      order.generalComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="30"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Komentāri</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.generalComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                        <tbody><tr><td height="20"></td></tr></tbody></table>`
+                        : ''
+                    }
+                    ${
+                      order.deliveryComments
+                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
+                          <tbody>
+                            <tr >
+                               <td height="30"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
+                                <strong>Piegādes komentāri</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td width="100%" height="10"></td>
+                            </tr>
+                            <tr>
+                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
+                                    ${order.deliveryComments}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>`
+                        : ''
+                    }
+                    </td>
+                    </tr>
                     <tr>
                       <td colspan="4">
                         <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                           <tbody>
                             <tr >
-                               <td height="60"></td>
+                               <td height="30"></td>
                             </tr>
                             <tr>
                               <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
@@ -1045,7 +1130,7 @@ Codepen: https://codepen.io/supah/
                         <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                           <tbody>
                             <tr >
-                              <td height="60"></td>
+                              <td height="30"></td>
                             </tr>
                             <tr>
                               <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
@@ -1073,86 +1158,7 @@ Codepen: https://codepen.io/supah/
                         </table>
                       </td>
                     </tr>
-                    <tr>
-                    <td colspan="4">
-                    ${
-                      order.businessComments
-                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                          <tbody>
-                            <tr >
-                               <td height="60"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
-                                <strong>Pasūtītāja rekvizīti</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                    ${order.businessComments}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                        <tbody><tr><td height="20"></td></tr></tbody></table>`
-                        : ''
-                    }
-                    ${
-                      order.generalComments
-                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                          <tbody>
-                            <tr >
-                               <td height="60"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
-                                <strong>Komentāri</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                    ${order.generalComments}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table width="40" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                        <tbody><tr><td height="20"></td></tr></tbody></table>`
-                        : ''
-                    }
-                    ${
-                      order.deliveryComments
-                        ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
-                          <tbody>
-                            <tr >
-                               <td height="60"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 11px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 1; vertical-align: top; ">
-                                <strong>Piegādes komentāri</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="100%" height="10"></td>
-                            </tr>
-                            <tr>
-                              <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                    ${order.deliveryComments}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>`
-                        : ''
-                    }
-                    </td>
-                    </tr>
+                   
                   </tbody>
                 </table>
               </td>
@@ -1178,7 +1184,6 @@ Codepen: https://codepen.io/supah/
               <tbody>
                 <tr>
                   <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
-                    ${`${FRONTEND_URL}/orders/${order._id}`}
                   </td>
                 </tr>
               </tbody>
