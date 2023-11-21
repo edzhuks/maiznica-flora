@@ -11,6 +11,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL
 const BACKEND_URL = process.env.BACKEND_URL
 const BANK_API_USERNAME = process.env.BANK_API_USERNAME
 const BANK_API_PASSWORD = process.env.BANK_API_PASSWORD
+const BANK_API_URL = process.env.BANK_API_URL
 const DPD_AUTH_HEADER = {
   headers: { Authorization: `Bearer ${process.env.DPD_KEY}` },
 }
@@ -34,4 +35,5 @@ module.exports = {
   BACKEND_URL,
   BANK_API_PASSWORD,
   BANK_API_USERNAME,
+  BANK_API_URL,
 }
