@@ -40,7 +40,7 @@ const SortableItem = ({ id, label, image, remove }) => {
       style={style}
       {...attributes}
       {...listeners}>
-      <div className="row no-gap align-cross-center">
+      <div className="row no-gap align-cross-center p-r">
         <img
           src={`/images/xs_${image}`}
           width={55}
@@ -53,7 +53,7 @@ const SortableItem = ({ id, label, image, remove }) => {
           onClick={(e) => {
             remove()
           }}
-          className="btn inverted cancel">
+          className="btn icon-button inverted cancel">
           <Cross className="icon-b" />
         </button>
       </div>
@@ -213,7 +213,7 @@ export const Sorting = () => {
       </div>
 
       <div className="row m-t">
-        <div className="column">
+        <div className="column small-gap">
           <div className="card p-h p-d row align-cross-end">
             <Input
               width={300}
@@ -261,7 +261,7 @@ export const Sorting = () => {
             </div>
           )}
         </div>
-        <div className="column no-gap">
+        <div className="column small-gap">
           <div className="card p-h p-d row align-cross-end">
             <Input
               width={300}

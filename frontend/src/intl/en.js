@@ -251,6 +251,10 @@ const en = {
   banner: 'Banner',
   links_to: 'Links to ',
   links_to_nowhere: 'No link',
+  enter_captcha: 'Captcha',
+  captcha_mismatch: 'Captcha incorrect',
+  toast_contact_form_success: 'Message sent!',
+  settings: 'Settings',
 }
 
 export default en

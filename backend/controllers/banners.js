@@ -6,7 +6,7 @@ const bannerRouter = express.Router()
 bannerRouter.get('/', async (req, res) => {
   let allBanners = await Banner.findOne({})
   if (!allBanners || !allBanners.banners || !allBanners.inactiveBanners) {
-    allBanners = new Banner({ banners: [], allBanners: [] })
+    allBanners = new Banner({ banners: [], inactiveBanners: [] })
     await allBanners.save()
   }
   if (allBanners) {

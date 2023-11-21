@@ -11,8 +11,9 @@
   --mobile-width: 1130px;
   --serif: 'Roboto Slab', serif;
   --sans: 'Roboto', sans-serif;
-  --shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  --shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075),
+    0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075),
+    0 16px 16px hsl(0deg 0% 0% / 0.075);
   --shadow-inset: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px inset,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px inset;
   --accent: #45941e;
@@ -571,6 +572,9 @@ textarea:focus ~ .highlight {
 }
 .no-gap {
   gap: 0 !important;
+}
+.small-gap {
+  gap: calc(var(--space) / 2) !important;
 }
 .column {
   display: flex;

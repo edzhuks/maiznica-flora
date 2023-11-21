@@ -54,7 +54,7 @@ const SortableBanner = ({ id, category, product, image, remove }) => {
       {...attributes}
       {...listeners}>
       <div
-        className="row no-gap align-cross-center"
+        className="row no-gap align-cross-center p-r"
         style={{ minHeight: '150px' }}>
         <img
           src={`/images/xl_${image}`}
@@ -79,7 +79,7 @@ const SortableBanner = ({ id, category, product, image, remove }) => {
           onClick={(e) => {
             remove()
           }}
-          className="btn inverted cancel">
+          className="btn icon-button inverted cancel">
           <Cross className="icon-b" />
         </button>
       </div>

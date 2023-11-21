@@ -18,6 +18,10 @@ const ManagementPage = () => {
         <Link to="banners">
           <button className="btn">{lang.banner}</button>
         </Link>
+
+        <Link to="settings">
+          <button className="btn">{lang.settings}</button>
+        </Link>
       </div>
 
       <Outlet />

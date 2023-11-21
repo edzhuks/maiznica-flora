@@ -1,4 +1,11 @@
-const { BACKEND_URL, EMAIL_PASS, FRONTEND_URL } = require('./config')
+const {
+  BACKEND_URL,
+  EMAIL_PASS,
+  FRONTEND_URL,
+  EMAIL_HOST,
+  EMAIL_NAME,
+  EMAIL_PASSWORD,
+} = require('./config')
 const nodemailer = require('nodemailer')
 const { getPrice, centsToEuro, gramsToKilos } = require('./functions')
 
@@ -1101,23 +1108,36 @@ Codepen: https://codepen.io/supah/
                             </tr>
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-     ${
-       /*                           ${order.deliveryMethod.address.name} ${
-    order.deliveryMethod.address.surname
-      ? order.deliveryMethod.address.surname
-      : ''
+${(() => {
+  switch (order.deliveryMethod) {
+    case 'courrier':
+      return ` ${escapeHTML(order.courrierAddress.name)}
+                    ${escapeHTML(order.courrierAddress.surname)}<br>
+                    ${escapeHTML(order.courrierAddress.phone)}<br>
+                    ${escapeHTML(order.courrierAddress.street)} 
+                    ${escapeHTML(order.courrierAddress.house)}-${escapeHTML(
+        order.courrierAddress.apartment
+      )}<br>
+                    ${escapeHTML(order.courrierAddress.city)}`
+    case 'bakery':
+      return `Ražotne: Vecvaltes<br>
+           Krimuldas pagasts,
+        <br>
+        Siguldas novads<br>Latvija, LV-2144
+        <br>
+        Reģ nr. 50003251341
+        <br>
+        Tālrunis: +371 67521291
+       <br>
+        E-pasts: flora@maiznica.lv`
+    case 'pickupPoint':
+      return ` ${escapeHTML(order.pickupPointData.name)}
+                    ${escapeHTML(order.pickupPointData.surname)}<br>
+                    ${escapeHTML(order.pickupPointData.phone)}<br>
+                    ${escapeHTML(order.pickupPointData.id)} 
+                    `
   }
-                                <br >
-                                ${order.deliveryMethod.address.street} ${
-    order.deliveryMethod.address.house ? order.deliveryMethod.address.house : ''
-  }-${
-    order.deliveryMethod.address.apartment
-      ? order.deliveryMethod.address.apartment
-      : ''
-  }
-                                <br />
-${order.deliveryMethod.address.city}*/ ''
-     }
+})()} 
                                
                               </td>
                             </tr>
@@ -1208,28 +1228,24 @@ ${order.deliveryMethod.address.city}*/ ''
 }
 const sendEmail = (email, { subject, text, html }) => {
   var smtpTransport = nodemailer.createTransport({
-    service: 'Gmail',
+    host: EMAIL_HOST,
     auth: {
-      user: 'maiznicaa@gmail.com',
-      pass: EMAIL_PASS,
+      user: EMAIL_NAME,
+      pass: EMAIL_PASSWORD,
     },
   })
   var mailOptions = {
-    from: 'maiznica@maiznica.lv',
+    from: 'noreply@maiznica.lv',
     to: email,
     subject: subject,
     text: text,
     html: html,
   }
-  smtpTransport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-    }
-  })
+  return smtpTransport.sendMail(mailOptions)
 }
 
 const sendVerificationEmail = (email, token) => {
-  sendEmail(email, {
+  return sendEmail(email, {
     subject: 'Apstipriniet e-pastu',
     text: `verify your email by clicking the link below</br>${BACKEND_URL}/api/users/verifyEmail/${token}`,
     html: verificationEmailHtml(
@@ -1238,7 +1254,7 @@ const sendVerificationEmail = (email, token) => {
   })
 }
 const sendResetEmail = (email, token) => {
-  sendEmail(email, {
+  return sendEmail(email, {
     subject: 'Password reset',
     text: `Reset your password by clicking the link below</br>${FRONTEND_URL}/finish_reset_password/?token=${token}`,
     html: resetEmailHtml(
@@ -1246,50 +1262,61 @@ const sendResetEmail = (email, token) => {
     ),
   })
 }
+const sendContactFormEmail = (email, name, message) => {
+  return sendEmail(email, {
+    subject: 'Jauns epasts no saziņas formas',
+    text: `No: ${name}\nE-pasts: ${email}\nZiņa: ${message}`,
+  })
+}
+const sendContactFormConfirmEmail = (email, name, message) => {
+  return sendEmail(email, {
+    subject: 'Jūs noosūtījāt ziņu maiznīcai Flora',
+    text: `No: ${name}\nE-pasts: ${email}\nZiņa: ${message}`,
+  })
+}
+const sendContactFormFailedEmail = (email, message) => {
+  return sendEmail(email, {
+    subject: 'Jūsu nosūtītā ziņa netika saņemta',
+    text: `Jūsu nosūtītā ziņa netika saņemta, lūdzu sazinieties ar mums pa epastu.\nZiņa:${message}`,
+  })
+}
 const sendReceiptEmail = (email, order) => {
-  sendEmail(email, {
+  return sendEmail(email, {
     subject: 'Maiznīcas Flora internetveikala rēķins',
-    text: `
-    Paldies, ka iepirkāties Maiznīcas Flora internetveikalā!\n
-    Pasūtījums #${order._id}\n
-    ${order.datePlaced}\n
-    ${order.content
+    text: `Paldies, ka iepirkāties Maiznīcas Flora internetveikalā!\nPasūtījums #${
+      order._id
+    }\n${order.datePlaced}\n${order.content
       .map(
         (item) => `
-          ${item.product.name.lv} ${gramsToKilos(item.product.weight)}\t
-          ${centsToEuro(getPrice(item))}\t
-          ${item.quantity}\t
-          ${centsToEuro(getPrice(item) * item.quantity)}
-    `
+          ${item.product.name.lv} ${gramsToKilos(
+          item.product.weight
+        )}\t${centsToEuro(getPrice(item))}\t${item.quantity}\t${centsToEuro(
+          getPrice(item) * item.quantity
+        )}`
       )
-      .join('\n')}
-    Starpsumma \t ${centsToEuro(order.subtotal)}\n
-    Piegāde \t ${centsToEuro(order.deliveryCost)}\n
-    Pavisam kopā (ar PVN) \t ${centsToEuro(order.total)}\n
-    PVN \t ${centsToEuro(order.vat)}
-    
-   ${
-     /* Piegādes adrese\n
-    ${order.deliveryMethod.address.name}
-    ${
-      order.deliveryMethod.address.surname
-        ? order.deliveryMethod.address.surname
-        : ''
-    }\n
-    ${order.deliveryMethod.address.street} 
-    ${
-      order.deliveryMethod.address.house
-        ? order.deliveryMethod.address.house
-        : ''
-    }-${
-      order.deliveryMethod.address.apartment
-        ? order.deliveryMethod.address.apartment
-        : ''
-    }\n
-    ${order.deliveryMethod.address.city}
-    Piegādes veids\n
-    ${(() => {
-      switch (order.deliveryMethod.method) {
+      .join('\n')}\nStarpsumma \t ${centsToEuro(
+      order.subtotal
+    )}\nPiegāde \t ${centsToEuro(
+      order.deliveryCost
+    )}\nPavisam kopā (ar PVN) \t ${centsToEuro(
+      order.total
+    )}\nPVN \t ${centsToEuro(order.vat)}\nPiegādes adrese\n${(() => {
+      switch (order.deliveryMethod) {
+        case 'courrier':
+          return `${order.courrierAddress.name} ${
+            order.courrierAddress.surname
+          }\n${order.courrierAddress.phone}\n${order.courrierAddress.street} ${
+            order.courrierAddress.house || ''
+          }-${order.courrierAddress.apartment || ''}\n${
+            order.courrierAddress.city
+          }`
+        case 'bakery':
+          return `Ražotne: Vecvaltes\nKrimuldas pagasts,\nSiguldas novads\nLatvija, LV-2144\nReģ nr. 50003251341\nTālrunis: +371 67521291\nE-pasts: flora@maiznica.lv`
+        case 'pickupPoint':
+          return `${order.pickupPointData.name} ${order.pickupPointData.surname}\n${order.pickupPointData.phone}\n${order.pickupPointData.id} `
+      }
+    })()}\nPiegādes veids\n${(() => {
+      switch (order.deliveryMethod) {
         case 'courrier':
           return 'Piegāde ar kurjeru'
         case 'bakery':
@@ -1297,11 +1324,17 @@ const sendReceiptEmail = (email, order) => {
         case 'pickupPoint':
           return 'DPD pakomāts'
       }
-    })()} */ ''
-   }
-      `,
+    })()} \n
+   }`,
     html: receiptEmail(order),
   })
 }
 
-module.exports = { sendVerificationEmail, sendResetEmail, sendReceiptEmail }
+module.exports = {
+  sendVerificationEmail,
+  sendResetEmail,
+  sendReceiptEmail,
+  sendContactFormConfirmEmail,
+  sendContactFormEmail,
+  sendContactFormFailedEmail,
+}

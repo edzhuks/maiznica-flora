@@ -133,7 +133,7 @@ const updatePaymentStatus = async (paymentReference) => {
   if (cart) {
     try {
       const response = await axios.get(
-        `https://igw-demo.every-pay.com/api/v4/payments/${cart.paymentReference}?api_username=${BANK_API_USERNAME}`,
+        `${BANK_API_URL}/${cart.paymentReference}?api_username=${BANK_API_USERNAME}`,
 
         {
           auth: {

@@ -34,6 +34,19 @@ const gramsToKilos = (grams) => {
   })
   return grams < 1000 ? `${grams}g` : `${kilos.format(grams / 1000)}kg`
 }
+const escapeHTML = (s) => {
+  if (!s) {
+    return ''
+  }
+  let lookup = {
+    '&': '&amp;',
+    '"': '&quot;',
+    "'": '&apos;',
+    '<': '&lt;',
+    '>': '&gt;',
+  }
+  return s.replace(/[&"'<>]/g, (c) => lookup[c])
+}
 
 module.exports = {
   isPositiveInteger,
@@ -41,4 +54,5 @@ module.exports = {
   getPrice,
   gramsToKilos,
   isInteger,
+  escapeHTML,
 }

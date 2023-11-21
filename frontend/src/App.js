@@ -49,6 +49,7 @@ import AddressesPage from './components/user/AdressesPage'
 import PriceMismatch from './components/info/PriceMismatch'
 import { Sorting } from './components/management/Sorting'
 import BannerManagement from './components/management/BannerManagement'
+import SettingsPage from './components/management/Settings'
 
 const baseTheme = {
   main: '#45941e',
@@ -159,6 +160,11 @@ function App() {
                       <Route
                         path="new_product/:productId?"
                         element={<NewProductFrom />}
+                      />
+
+                      <Route
+                        path="settings"
+                        element={<SettingsPage />}
                       />
                     </Route>
                     <Route
