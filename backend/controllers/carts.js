@@ -20,7 +20,7 @@ const { log } = require('console')
 
 const getPaymentData = async ({ cart, selectedLang }) => {
   const response = await axios.post(
-    `$${BANK_API_URL}/oneoff`,
+    `${BANK_API_URL}/oneoff`,
     {
       timestamp: new Date(),
       api_username: BANK_API_USERNAME,
