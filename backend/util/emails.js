@@ -1305,7 +1305,7 @@ const sendReceiptEmail = (email, order) => {
         : ''
     }\nApskatīt sūtījumu: ${`${FRONTEND_URL}/orders/${order._id}`}
    }`,
-    html: receiptEmail(order),
+    // html: receiptEmail(order),
   })
 }
 
