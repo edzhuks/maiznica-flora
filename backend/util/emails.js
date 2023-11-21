@@ -1299,7 +1299,7 @@ const sendReceiptEmail = (email, order) => {
       order.deliveryComments
         ? `Piegādes komentāri: ${order.deliveryComments}`
         : ''
-    }
+    }\nApskatīt sūtījumu: ${`${FRONTEND_URL}/orders/${order._id}`}
    }`,
     html: receiptEmail(order),
   })
