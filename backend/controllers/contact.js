@@ -20,7 +20,6 @@ contactRouter.post('/contact_form', async (req, res) => {
   }
   try {
     const settings = await Settings.findOne({})
-    console.log(settings)
     await sendContactFormEmail(
       settings.contactFormEmails.map((e) => e.email),
       req.body.name,

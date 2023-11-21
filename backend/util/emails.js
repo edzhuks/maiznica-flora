@@ -1074,7 +1074,7 @@ Codepen: https://codepen.io/supah/
                       </td>
                     </tr>
                     <tr>
-                    <td>
+                    <td colspan="4">
                     ${
                       order.businessComments
                         ? `<table width="120" border="0" cellpadding="0" cellspacing="0" align="left" class="col">

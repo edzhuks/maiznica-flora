@@ -17,6 +17,7 @@ const {
 const axios = require('axios')
 const crypto = require('crypto')
 const { log } = require('console')
+const Settings = require('../models/settings')
 
 const getPaymentData = async ({ cart, selectedLang }) => {
   const response = await axios.post(
@@ -195,7 +196,18 @@ const updatePaymentStatus = async (paymentReference) => {
               { path: 'content', populate: { path: 'product' } },
               { path: 'user' },
             ])
-            sendReceiptEmail(order.user.email, order)
+            const settings = await Settings.findOne({})
+            try {
+              await sendReceiptEmail(
+                [
+                  ...settings.orderNotificationEmails.map((e) => e.email),
+                  order.user.email,
+                ],
+                order
+              )
+            } catch (error) {
+              console.error(error)
+            }
           }
 
           await cart.deleteOne()
