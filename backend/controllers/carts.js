@@ -28,7 +28,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
       nonce: crypto.randomBytes(16).toString('base64'),
       account_name: 'EUR3D1',
       amount: (cart.total / 100).toFixed(2),
-      customer_url: `http://new.maiznica.com/api/cart/payment_landing`,
+      customer_url: `https://new.maiznica.com/api/cart/payment_landing`,
       order_reference: cart._id.toString(),
       locale: selectedLang,
     },

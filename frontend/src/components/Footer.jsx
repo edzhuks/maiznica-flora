@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import FloraAddress from './contact/Address'
 
 const FooterContainer = styled.div`
-  background-image: url(http://new.maiznica.com/images/bg.jpg);
+  background-image: url(/images/bg.jpg);
   background-repeat: repeat;
   background-position: center;
   background-attachment: fixed;
