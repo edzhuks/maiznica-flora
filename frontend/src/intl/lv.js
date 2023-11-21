@@ -271,7 +271,7 @@ const lv = {
   captcha_mismatch: 'Cilvēkpārbaude neizdevās!',
   toast_contact_form_success: 'Ziņa nosūtīta!',
   settings: 'Iestatījumi',
-  contact_form_emails: 'Saziņas formas saņeēmēji',
+  contact_form_emails: 'Saziņas formas saņēmēji',
   order_notification_emails: 'Pasūtījumu saņēmēji',
 }
 

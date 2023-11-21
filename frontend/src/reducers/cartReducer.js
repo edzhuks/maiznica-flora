@@ -86,7 +86,7 @@ const cartSlice = createSlice({
 })
 const selectContent = (state) => state.cart.content
 const selectDeliveryMethod = (state) => state.cart.deliveryMethod
-const selectCartTotal = createSelector(selectContent, (content) =>
+const selectCartTotal = createSelector([selectContent], (content) =>
   content
     .map((i) => {
       if (
@@ -110,9 +110,10 @@ const selectCartTotal = createSelector(selectContent, (content) =>
 
 const DELIVERY_THRESHOLD = 6000
 
-const selectCartOverThreshold = createSelector(
-  (selectCartTotal, (total) => total > DELIVERY_THRESHOLD)
-)
+const selectCartOverThreshold = createSelector([selectCartTotal], (total) => {
+  console.log(total)
+  return total > DELIVERY_THRESHOLD
+})
 
 const getDeliveryCost = (method) => {
   switch (method) {

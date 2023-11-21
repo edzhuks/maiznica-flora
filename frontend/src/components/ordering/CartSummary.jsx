@@ -27,6 +27,10 @@ const SummaryTile = ({ title, subtitle, price, price2 }) => {
 const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
   const total = useSelector(selectCartTotal)
   const deliveryCost = useSelector(selectDeliveryCost)
+  const overThreshold = useSelector(selectCartOverThreshold)
+  console.log(total)
+  console.log(deliveryCost)
+  console.log(overThreshold)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div className="card">
