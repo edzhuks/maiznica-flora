@@ -19,7 +19,7 @@ const { log } = require('console')
 
 const getPaymentData = async ({ cart, selectedLang }) => {
   const response = await axios.post(
-    'https://igw-demo.every-pay.com/api/v4/payments/oneoff',
+    `$${BANK_API_URL}/oneoff`,
     {
       timestamp: new Date(),
       api_username: BANK_API_USERNAME,
@@ -117,6 +117,9 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
         courrierAddress: cart.courrierAddress,
         pickupPointData: cart.pickupPointData,
         deliveryPhone: cart.deliveryPhone,
+        businessComments: cart.businessComments,
+        generalComments: cart.generalComments,
+        deliveryComments: cart.deliveryComments,
       })
       await newCart.save()
       res.status(400).send({ error: 'already paid' })
