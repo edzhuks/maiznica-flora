@@ -1,12 +1,12 @@
 const apiURL =
   process.env.NODE_ENV === 'development'
     ? 'http://192.168.0.108:3001/api'
-    : 'https://new.maiznica.com/api'
+    : 'https://www.maiznica.lv/api'
 
 const backendURL =
   process.env.NODE_ENV === 'development'
     ? 'http://192.168.0.108:3001'
-    : 'https://new.maiznica.com'
+    : 'https://www.maiznica.lv'
 
 // const apiURL = 'http://192.168.0.104:3001/api'
 
