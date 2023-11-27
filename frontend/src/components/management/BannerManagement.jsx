@@ -219,9 +219,15 @@ const BannerManagement = () => {
     setBannerItems([banner, ...bannerItems])
   }
   const update = () => {
-    bannerService.update(bannerItems).then((response) => {
-      toast.success(lang.toast_changes_saved)
-    })
+    bannerService
+      .update(
+        bannerItems.map((i) => {
+          return { ...i, id: undefined, _id: undefined }
+        })
+      )
+      .then((response) => {
+        toast.success(lang.toast_changes_saved)
+      })
   }
   const removeBanner = (banner) => {
     setBannerItems(bannerItems.filter((c) => c.id !== banner.id))
