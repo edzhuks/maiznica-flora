@@ -2,3 +2,4 @@
 **/.env
 **/build
 backend/images
+backend/log

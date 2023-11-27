@@ -89,6 +89,9 @@ const CarouselItem = ({ bannerItem, active }) => {
       src={`/images/xl_${bannerItem.image}`}
       active={active}
       className={active && 'fade-in'}
+      style={{
+        cursor: (bannerItem.category || bannerItem.product) && 'pointer',
+      }}
     />
   )
 }
