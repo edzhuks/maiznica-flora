@@ -14,5 +14,21 @@
     "serverKeyType": "RSA-2048",
     "subscriberEmail": "edgars.gaisins@gmail.com"
   },
-  "sites": []
+  "sites": [
+    {
+      "subject": "new.maiznica.com",
+      "altnames": [
+        "new.maiznica.com"
+      ],
+      "renewAt": 1704741183001
+    },
+    {
+      "subject": "maiznica.lv",
+      "altnames": [
+        "maiznica.lv",
+        "www.maiznica.lv"
+      ],
+      "renewAt": 1704820596232
+    }
+  ]
 }
