@@ -9,7 +9,7 @@ const useField = (type, defaultValue) => {
     } else if (type === 'toggle') {
       defaultValue = true
     } else if (type === 'number') {
-      defaultValue = undefined
+      defaultValue = ''
     } else if (type === 'image') {
       defaultValue = 'placeholder.jpeg'
     } else {
