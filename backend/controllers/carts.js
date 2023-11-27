@@ -3,7 +3,7 @@ const Cart = require('../models/cart')
 const { userExtractor, verificationRequired } = require('../util/middleware')
 const { isInteger, makeOrderID } = require('../util/functions')
 const Address = require('../models/address')
-const { BACKEND_URL } = require('../util/config')
+const { BACKEND_URL, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
 const Order = require('../models/order')
 const { sendReceiptEmail } = require('../util/emails')
@@ -27,7 +27,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
       nonce: crypto.randomBytes(16).toString('base64'),
       account_name: 'EUR3D1',
       amount: (cart.total / 100).toFixed(2),
-      customer_url: `https://www.maiznica.lv/api/cart/payment_landing`,
+      customer_url: `${FRONTEND_URL}/order_process/payment`,
       order_reference: cart._id.toString(),
       locale: selectedLang,
     },
@@ -105,11 +105,7 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
     cart.paymentStatus = paymentData.payment_state
     cart.paymentReference = paymentData.payment_reference
     cart = await cart.save()
-    return res.send({
-      paymentLink: paymentData.payment_link,
-      paymentReference: paymentData.payment_reference,
-      orderId: cart._id,
-    })
+    return res.redirect(paymentData.payment_link)
   } catch (error) {
     console.log(error)
     if (error.response.data.error.code === 4024) {
