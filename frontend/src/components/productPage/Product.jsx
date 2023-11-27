@@ -94,7 +94,7 @@ const Product = () => {
     if (!user) {
       navigate('/login')
     } else {
-      dispatch(addItem({ quantity: quantity, product }))
+      dispatch(addItem({ quantity: quantity, productId: product.id }))
     }
   }
 

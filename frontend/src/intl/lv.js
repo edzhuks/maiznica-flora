@@ -258,7 +258,7 @@ const lv = {
   businessComments_label: 'Nosaukums, adrese, reģ.nr...',
   generalComments: 'Komentāri maiznīcai',
   generalComments_label: 'Komentārs',
-  deliveryComments: 'Komantāri par piegādi',
+  deliveryComments: 'Komentāri par piegādi',
   deliveryComments_label: 'Komentārs',
   sorting: 'Kārtošana',
   select_category: 'Izvēlies kategoriju',
