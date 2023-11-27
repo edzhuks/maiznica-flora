@@ -13,12 +13,14 @@ const useProductService = () => {
   }
 
   const getAll = () => {
-    const request = axios.get(baseURL)
+    const config = makeConfig()
+    const request = axios.get(baseURL, config)
     return request.then((response) => response.data)
   }
 
   const getById = (productId) => {
-    const request = axios.get(`${baseURL}/${productId}`)
+    const config = makeConfig()
+    const request = axios.get(`${baseURL}/${productId}`, config)
     return request.then((response) => response.data)
   }
 

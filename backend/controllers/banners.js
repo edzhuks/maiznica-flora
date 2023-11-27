@@ -16,14 +16,19 @@ bannerRouter.get('/', async (req, res) => {
   }
 })
 
-bannerRouter.get('/inactive', async (req, res) => {
-  let allBanners = await Banner.findOne({})
-  if (allBanners) {
-    res.send({ banners: allBanners.inactiveBanners })
-  } else {
-    res.send({ banners: [] })
+bannerRouter.get(
+  '/inactive',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let allBanners = await Banner.findOne({})
+    if (allBanners) {
+      res.send({ banners: allBanners.inactiveBanners })
+    } else {
+      res.send({ banners: [] })
+    }
   }
-})
+)
 
 bannerRouter.post('/', userExtractor, adminRequired, async (req, res) => {
   const banners = await Banner.findOne({})

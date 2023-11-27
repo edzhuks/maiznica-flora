@@ -24,6 +24,7 @@ const orderSchema = new mongoose.Schema({
     street: String,
     house: String,
     apartment: String,
+    postIndex: String,
   },
   pickupPointData: {
     id: String,
@@ -34,6 +35,33 @@ const orderSchema = new mongoose.Schema({
   deliveryPhone: String,
   deliveryCost: Number,
   datePlaced: Date,
+  latestStatus: {
+    type: String,
+    enum: [
+      'placed',
+      'ready_for_pickup',
+      'completed',
+      'ready_for_delivery',
+      'waiting_for_courrier',
+      'delivering',
+    ],
+  },
+  statusHistory: [
+    {
+      status: {
+        type: String,
+        enum: [
+          'placed',
+          'ready_for_pickup',
+          'completed',
+          'ready_for_delivery',
+          'waiting_for_courrier',
+          'delivering',
+        ],
+      },
+      time: Date,
+    },
+  ],
   status: {
     status: {
       type: String,
@@ -54,7 +82,6 @@ const orderSchema = new mongoose.Schema({
     lastModified: Date,
   },
   subtotal: Number,
-  deliveryCost: Number,
   total: Number,
   vat: Number,
   paymentStatus: String,
@@ -62,6 +89,8 @@ const orderSchema = new mongoose.Schema({
   businessComments: String,
   generalComments: String,
   deliveryComments: String,
+  shipmentID: String,
+  prettyID: String,
 })
 
 orderSchema.set('toJSON', {

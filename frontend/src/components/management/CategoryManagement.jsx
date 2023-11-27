@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import { Link } from 'react-router-dom'
+import { Link, useMatch, useParams } from 'react-router-dom'
 import CategoryModal from './CategoryModal'
 import ProductModal from './ProductModal'
 import { useSelector } from 'react-redux'
@@ -32,7 +32,10 @@ const ProductItem = ({
     <div>
       <Link
         to={`/products/${product.id}`}
-        style={{ textDecoration: 'none' }}>
+        style={{
+          textDecoration: product.outOfStock ? 'line-through' : 'none',
+          color: product.invisible ? 'var(--subtle)' : 'unset',
+        }}>
         <span>
           {product.name[selectedLang] || product.name.lv} {product.weight}g
         </span>
@@ -74,39 +77,61 @@ const CategoryItem = ({
   parentCategory,
   handleCategoryButton,
   handleProductButton,
+  toggleShowCategory,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
-      <Link
-        to={`/category/${category.id}`}
-        style={{ textDecoration: 'none' }}>
-        <span>
-          {category.displayName[selectedLang] || category.displayName.lv}
+      {category.displayName && (
+        <>
+          <Link
+            to={`/category/${category.id}`}
+            style={{
+              textDecoration: 'none',
+              color: category.invisible ? 'var(--subtle)' : 'unset',
+            }}>
+            <span>
+              {category.displayName[selectedLang] || category.displayName.lv}
+            </span>
+          </Link>
           {category.id !== 'all' && category.id !== 'new' && (
-            <button
-              className="btn inverted icon-button m-h-s cancel"
-              onClick={(e) => {
-                e.preventDefault()
-                removeCategory(category.id, parentCategory.id)
-              }}>
-              <Cross className="icon-m" />
-            </button>
+            <>
+              <button
+                className="btn inverted icon-button m-h-s cancel"
+                onClick={(e) => {
+                  e.preventDefault()
+                  removeCategory(category.id, parentCategory.id)
+                }}>
+                <Cross className="icon-m" />
+              </button>
+              <Link to={`/management/new_category/${category.id}`}>
+                <button className="btn inverted icon-button m-h-s">
+                  <Edit className="icon-m" />
+                </button>
+              </Link>
+              <button
+                className="btn inverted icon-button m-h-s"
+                onClick={() => {
+                  toggleShowCategory(category)
+                }}>
+                <Eye className="icon-m" />
+              </button>
+            </>
           )}
-        </span>
-      </Link>
 
-      <button
-        className="btn m-h"
-        onClick={handleProductButton}>
-        + {lang.products}
-      </button>
-      <button
-        className="btn"
-        onClick={handleCategoryButton}>
-        + {lang.category}
-      </button>
+          <button
+            className="btn m-h"
+            onClick={handleProductButton}>
+            + {lang.products}
+          </button>
+          <button
+            className="btn"
+            onClick={handleCategoryButton}>
+            + {lang.category}
+          </button>
+        </>
+      )}
     </div>
   )
 }
@@ -120,6 +145,7 @@ const CategoryTab = ({
   parentCategory,
   toggleShow,
   toggleStock,
+  toggleShowCategory,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -139,9 +165,10 @@ const CategoryTab = ({
         parentCategory={parentCategory}
         handleCategoryButton={handleCategoryButton}
         handleProductButton={handleProductButton}
+        toggleShowCategory={toggleShowCategory}
       />
       <CategoryList>
-        {category.categories &&
+        {category.products &&
           category.products.map((product) => (
             <ProductItem
               key={product.id}
@@ -166,6 +193,7 @@ const CategoryTab = ({
               toggleStock={toggleStock}
               removeCategory={removeCategory}
               parentCategory={category}
+              toggleShowCategory={toggleShowCategory}
             />
           ))}
       </CategoryList>
@@ -173,7 +201,10 @@ const CategoryTab = ({
   )
 }
 
-const CategoryManagement = () => {
+const CategoryManagement = ({}) => {
+  const match = useMatch('/management/categories/:category')
+  const category = match.params.category
+
   const categoryService = useCategoryService()
   const productService = useProductService()
   const [catalogue, setCatalogue] = useState(null)
@@ -214,22 +245,29 @@ const CategoryManagement = () => {
       productService.hideProduct(product.id).then(() => refresh())
     }
   }
-  const toggleStock = (product) => {
-    if (product.inStock) {
-      productService.outOfStock(product.id).then(() => refresh())
+  const toggleShowCategory = (category) => {
+    if (category.invisible) {
+      categoryService.showCategory(category.id).then(() => refresh())
     } else {
+      categoryService.hideCategory(category.id).then(() => refresh())
+    }
+  }
+  const toggleStock = (product) => {
+    if (product.outOfStock) {
       productService.inStock(product.id).then(() => refresh())
+    } else {
+      productService.outOfStock(product.id).then(() => refresh())
     }
   }
   const refresh = () => {
-    categoryService.getFullCatalogue().then((result) => {
+    categoryService.getCategory(category).then((result) => {
       setCatalogue(result)
     })
   }
 
   useEffect(() => {
     refresh()
-  }, [])
+  }, [category])
 
   return (
     <>
@@ -253,6 +291,7 @@ const CategoryManagement = () => {
             toggleShow={toggleShow}
             toggleStock={toggleStock}
             removeCategory={removeCategory}
+            toggleShowCategory={toggleShowCategory}
             category={catalogue}
           />
         ) : (

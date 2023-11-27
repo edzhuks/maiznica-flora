@@ -285,7 +285,9 @@ export const Sorting = () => {
               {productItems.map((p) => (
                 <SortableItem
                   key={p.id}
-                  label={p.name[selectedLang] || p.name.lv}
+                  label={`${p.name[selectedLang] || p.name.lv} ${gramsToKilos(
+                    p.weight
+                  )}`}
                   id={p.id}
                   image={p.image}
                   remove={() => removeProduct(p)}

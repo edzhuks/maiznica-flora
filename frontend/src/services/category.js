@@ -14,7 +14,11 @@ const useCategoryService = () => {
       { newCategory, parentCategory },
       config
     )
-    showErrorToast(request)
+    return request.then((response) => response.data)
+  }
+  const edit = ({ newCategory, id }) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseUrl}/${id}`, { newCategory }, config)
     return request.then((response) => response.data)
   }
 
@@ -82,8 +86,19 @@ const useCategoryService = () => {
   }
 
   const getAll = () => {
-    const request = axios.get(`${baseUrl}/`)
+    const config = makeConfig()
+    const request = axios.get(`${baseUrl}/`, config)
     return request.then((response) => response.data)
+  }
+  const hideCategory = (categoryId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseUrl}/hide/${categoryId}`, {}, config)
+    return request
+  }
+  const showCategory = (categoryId) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseUrl}/show/${categoryId}`, {}, config)
+    return request
   }
 
   const getFullCatalogue = () => {
@@ -98,7 +113,8 @@ const useCategoryService = () => {
   }
 
   const getCategory = (category) => {
-    const request = axios.get(`${baseUrl}/${category}`)
+    const config = makeConfig()
+    const request = axios.get(`${baseUrl}/${category}`, config)
     return request.then((response) => response.data)
   }
 
@@ -115,6 +131,9 @@ const useCategoryService = () => {
     removeProducts,
     removeCategories,
     getAll,
+    hideCategory,
+    showCategory,
+    edit,
   }
 }
 export default useCategoryService

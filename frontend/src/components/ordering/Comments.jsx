@@ -16,7 +16,7 @@ const CommentCard = ({ name, update }) => {
   }, [savedComments])
   return (
     <div className="card p-b between align-cross-center">
-      <h3 className="card-heading">{lang[name]}</h3>
+      <h3 className="card-heading m-d-b">{lang[name]}</h3>
       <Input
         {...comment}
         onBlur={() => dispatch(update(comment.value))}

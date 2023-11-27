@@ -1,4 +1,7 @@
 import Select, { components } from 'react-select'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+import { isSupportedCountry } from 'react-phone-number-input'
 const { ValueContainer, Placeholder, Control } = components
 
 const CustomValueContainer = ({ children, ...props }) => {
@@ -137,6 +140,25 @@ const Input = ({
             placeholder=" "
           />
           <span className="label">{label}</span>
+          <span className="bar"></span>
+        </label>
+      </div>
+    )
+  }
+  if (type === 'phone') {
+    return (
+      <div
+        style={{ width: width }}
+        className={`phone-input input-group ${className ? className : ''}`}>
+        <label>
+          <PhoneInput
+            required={required}
+            {...props}
+            defaultCountry="LV"
+          />
+          <span className={`label ${props.value ? 'label-active' : ''}`}>
+            {label}
+          </span>
           <span className="bar"></span>
         </label>
       </div>

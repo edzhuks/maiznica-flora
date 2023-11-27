@@ -11,7 +11,9 @@ const DistanceAgreementPage = () => {
         flexDirection: 'column',
       }}>
       <h1 className="big-title m-d">{lang.distance_agreement}</h1>
-      <div style={{ maxWidth: '800px' }}>
+      <div
+        style={{ maxWidth: '800px' }}
+        className="legal-text">
         <h3>Maiznīca Flora e-veikala preču pirkšanas-pārdošanas noteikumi</h3>
         <h4>1. Termini un vispārējie nosacījumi</h4>
         <p>
@@ -76,11 +78,12 @@ const DistanceAgreementPage = () => {
           3.2. Pircējam ir jāaizpilda reģistrācijas laikā pieprasītie personīgie
           dati - elektroniskā pasta adrese. Noformējot pasūtījumu, ja izvēlēta
           piegāde ar kurjeru, jānorāda arī piegādei nepieciešamie dati - vārds,
-          uzvārds, mobilā tālruņa numurs, preču piegādes adrese. Lai tiktu
-          veikta pircēja profila reģistrācija, datu ievadei jāizmanto latīņu
-          alfabēta burti. Pircējs ir atbildīgs par pareizas un patiesas
-          informācijas sniegšanu, tai skaitā par reģistrācijas anketā norādīto
-          datu precizitāti, pilnīgumu un ticamību.
+          uzvārds, mobilā tālruņa numurs, preču piegādes adrese.Ja izvēlēta
+          piegāde uz DPD pakomātu jānorāda vārds, uzvārds, mobilā tālruņa numurs
+          un pakomāts. Lai tiktu veikta pircēja profila reģistrācija, datu
+          ievadei jāizmanto latīņu alfabēta burti. Pircējs ir atbildīgs par
+          pareizas un patiesas informācijas sniegšanu, tai skaitā par
+          reģistrācijas anketā norādīto datu precizitāti, pilnīgumu un ticamību.
         </p>
 
         <p>
@@ -218,6 +221,13 @@ const DistanceAgreementPage = () => {
           obligāti norādot pasūtījuma numuru. Pircējam tiek atgriezta samaksātā
           nauda par pasūtījumu atbilstoši Noteikumu 7.8.punktā norādītajam.
         </p>
+        <p>
+          4.12. Veidojot pasūtījumu klientam ir iespēja norādīt uzņēmuma
+          rekvizītus, ja pasūtījumu veic juridiska persone. Klientam ir iespēja
+          nodot komentāru par pasūtījumu maiznīcai. Klientam ir iespēja nodot
+          komentāru par piegādi. Ja tiek izmantota piegāde ar kurjeru vai uz
+          pakomātu, komentārs var tikt nodots DPD.
+        </p>
 
         <h4>5. Preču saņemšanas un piegādes noteikumi</h4>
         <p>
@@ -228,13 +238,15 @@ const DistanceAgreementPage = () => {
         <p>
           5.2 Pircējis var izvēlēties saņemt preces SIA Maiznīca Flora atrašanās
           vietā, adrese "Vecvaltes" Krimuldas pagasts, Siguldas novads, Latvija.
-          Darba laiks no 9.00 līdz 17.00 darba dienās.
+          Darba laiks no 9.00 līdz 17.00 darba dienās. Pircējs tik informēts par
+          pasūtījuma gatavību pa e-pastu un, ja pasūtīšanas brīdī ir norādīts
+          tālruņa numurs, var tikt informēts arī ar zvanu vai SMS.
         </p>
 
         <p>
           5.3 Preču piegādes cena E-veikala pircējiem ir atkarīga no pasūtījuma
-          summas: pasūtījumiem virs 50&euro; (summa apmaksai pēc atlaižu
-          piemērošanas) - bezmaksas, pasūtījumiem līdz 50&euro; piegādes maksa
+          summas: pasūtījumiem virs 60&euro; (summa apmaksai pēc atlaižu
+          piemērošanas) - bezmaksas, pasūtījumiem līdz 60&euro; piegādes maksa
           uz DPD pakomātu ir 3.99&euro;, kurjera piegādes maksa ir 5.99&euro; .
         </p>
 

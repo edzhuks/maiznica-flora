@@ -15,9 +15,13 @@ const reviewRouter = require('./controllers/reviews')
 const userRouter = require('./controllers/users')
 const dpdRouter = require('./controllers/dpd')
 const scriptRouter = require('./controllers/scripts')
-const app = express()
+const morgan = require('morgan')
+const rfs = require('rotating-file-stream') // version 2.x
 const mongoose = require('mongoose')
 const { tokenExtractor } = require('./util/middleware')
+const { formatDate } = require('./util/functions')
+
+const app = express()
 mongoose.set('strictQuery', false)
 
 const url = config.MONGODB_URI
@@ -33,13 +37,44 @@ mongoose
     console.log('error connecting to MongoDB:', error.message)
   })
 
+const pad = (num) => (num > 9 ? '' : '0') + num
+const generator = (time, index) => {
+  if (!time) return 'file.log'
+
+  var month = time.getFullYear() + '' + pad(time.getMonth() + 1)
+  var day = pad(time.getDate())
+  var hour = pad(time.getHours())
+  var minute = pad(time.getMinutes())
+
+  return `${month}${day}-${hour}${minute}-${index}-file.log`
+}
+
+// create a rotating write stream
+var accessLogStream = rfs.createStream(generator, {
+  interval: '1d', // rotate daily
+  path: path.join(__dirname, 'log'),
+})
+morgan.token('postbody', function (req) {
+  return req.method === 'POST' || req.method === 'PUT'
+    ? JSON.stringify(req.body)
+    : ' '
+})
+
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build', { maxAge: 1000 * 60 * 60 }))
 app.use(tokenExtractor)
+app.use('/api/login', loginRouter)
+app.use('/api/users', userRouter)
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :postbody',
+    { stream: accessLogStream }
+  )
+)
+app.use(morgan('tiny'))
 app.use('/api/products', productRouter)
 app.use('/api/uploads', uploadRouter)
-app.use('/api/login', loginRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/categories', categoryRouter)
 app.use('/api/banners', bannerRouter)
@@ -47,7 +82,6 @@ app.use('/api/contact', contactRouter)
 app.use('/api/settings', settingsRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/reviews', reviewRouter)
-app.use('/api/users', userRouter)
 app.use('/api/dpd', dpdRouter)
 app.use('/api/scripts', scriptRouter)
 app.use('/images', express.static('images'))

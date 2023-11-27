@@ -6,11 +6,14 @@ const ManagementPage = () => {
   return (
     <div>
       <div className="row">
-        <Link to="categories">
+        <Link to="categories/complete">
           <button className="btn">{lang.categories}</button>
         </Link>
         <Link to="new_product">
           <button className="btn">{lang.new_product}</button>
+        </Link>
+        <Link to="new_category">
+          <button className="btn">{lang.new_category}</button>
         </Link>
         <Link to="sorting">
           <button className="btn">{lang.sorting}</button>

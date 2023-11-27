@@ -182,7 +182,7 @@ const Header = () => {
               <NavLink
                 className="tab side-menu-tab"
                 onClick={() => setSideMenu(false)}
-                to="/management/categories">
+                to="/management/categories/complete">
                 {lang.management}
               </NavLink>
               <div className="card-divider" />
@@ -306,7 +306,7 @@ const Header = () => {
         {user ? (
           <NavLink
             className="tab relative"
-            to="/order/cart">
+            to="/order_process/cart">
             <AnimatedShoppingCart
               animate={cart.animate}
               key={JSON.stringify(cart)}>
@@ -332,7 +332,7 @@ const Header = () => {
               <>
                 <NavLink
                   className="tab"
-                  to="/management/categories">
+                  to="/management/categories/complete">
                   <ScrewdriverWrench className="icon-b" />
                 </NavLink>
                 <NavLink

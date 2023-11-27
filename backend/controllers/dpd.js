@@ -3,12 +3,12 @@ const router = express.Router()
 const NodeCache = require('node-cache')
 const cache = new NodeCache()
 const axios = require('axios')
-const { DPD_AUTH_HEADER } = require('../util/config')
+const { DPD_AUTH_HEADER, DPD_API_URL } = require('../util/config')
 
 router.get('/pickup_points', async (request, response) => {
   if (!cache.get('lockers')) {
     const res = await axios.get(
-      'https://eserviss.dpd.lv/api/v1/lockers/?countryCode=lv',
+      `${DPD_API_URL}/lockers/?countryCode=lv`,
       DPD_AUTH_HEADER
     )
 

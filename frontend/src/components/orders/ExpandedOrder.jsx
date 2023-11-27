@@ -1,148 +1,493 @@
-import OrderHeader from './OrderHeader'
-import { ActionTile, Question, _ExpandedOrder } from './styledComponents'
-import ProductTile from './ProductTile'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import useOrderService from '../../services/order'
+import { useEffect, useState } from 'react'
+import {
+  calculateWeight,
+  centsToEuro,
+  countProducts,
+  gramsToKilos,
+  gramsToKilosSimple,
+  useDateTimeFormat,
+} from '../../util/convert'
 
-const OrderAction = ({
-  question,
-  action1text,
-  action2text,
-  action1callback,
-  action2callback,
-}) => {
+import { Person } from '@styled-icons/evaicons-solid/Person'
+import { Phone } from '@styled-icons/boxicons-solid/Phone'
+import { Home } from '@styled-icons/boxicons-solid/Home'
+import { Mail } from '@styled-icons/entypo/Mail'
+import BaseModal from '../basic/BaseModal'
+import useField from '../../hooks/useField'
+import Input from '../basic/Input'
+
+const AddressInfo = ({ person, email, phone, address }) => {
   return (
-    <ActionTile>
-      <Question>{question}</Question>
-      <div className="row evenly">
-        <button onClick={action1callback}>{action1text}</button>
-        {action2text && (
-          <button
-            className="cancel"
-            onClick={action2callback}>
-            {action2text}
-          </button>
-        )}
-      </div>
-    </ActionTile>
+    <div>
+      <p className="card-text m-r">
+        <Person className="icon-m m-r-s m-d-s" />
+        {person}
+      </p>
+      <p className="card-text m-r">
+        <Mail className="icon-m m-r-s m-d-s" />
+        {email}
+      </p>
+      <p className="card-text m-r">
+        <Phone className="icon-m m-r-s m-d-s" />
+        {phone}
+      </p>
+      <p className="card-text m-r">
+        <Home className="icon-m m-r-s m-d-s" />
+        {address}
+      </p>
+    </div>
   )
 }
-
-const ExpandedOrder = ({ close, order, closing, updateOrder, fixed }) => {
+const ShipmentModal = ({ visible, close, order, submit }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const allPacked = () => {
-    return order.content.every((o) => o.packed)
-  }
-
-  const copyOrder = () => {
-    let newOrder = JSON.parse(JSON.stringify(order))
-    newOrder.status = {}
-    newOrder.content = newOrder.content.map((i) => ({
-      ...i,
-      product: i.product.id,
-    }))
-    return newOrder
-  }
-
-  const changeItemPacked = (id, isItPacked) => {
-    let newOrder = copyOrder()
-    newOrder.content.find((i) => i._id === id).packed = isItPacked
-    if (newOrder.content.find((i) => i.packed === true)) {
-      newOrder.status.status = 'packing'
-    } else {
-      newOrder.status.status = 'accepted'
+  const name = useField('text')
+  const email = useField('email')
+  const phone = useField('phone')
+  const street = useField('text')
+  const streetNo = useField('text')
+  const flatNo = useField('text')
+  const city = useField('text')
+  const postalCode = useField('text')
+  const contactInfo = useField('text')
+  const totalWeight = calculateWeight(order.content)
+  const [parcels, setParcels] = useState([])
+  const orderService = useOrderService()
+  useEffect(() => {
+    if (order.deliveryMethod === 'courrier') {
+      name.changeValue(
+        `${order.courrierAddress.name} ${order.courrierAddress.surname}`
+      )
+      phone.changeValue(order.courrierAddress.phone)
+      street.changeValue(order.courrierAddress.street)
+      streetNo.changeValue(order.courrierAddress.house)
+      flatNo.changeValue(order.courrierAddress.apartment)
+      city.changeValue(order.courrierAddress.city)
+      postalCode.changeValue(order.courrierAddress.postIndex.replace(/\D/g, ''))
+    } else if (order.deliveryMethod === 'pickupPoint') {
+      name.changeValue(
+        `${order.pickupPointData.name} ${order.pickupPointData.surname}`
+      )
+      phone.changeValue(order.pickupPointData.phone)
     }
-    updateOrder(newOrder)
+    email.changeValue(order.user.email)
+    setParcels([
+      {
+        weight:
+          totalWeight > 3150 ? undefined : gramsToKilosSimple(totalWeight),
+      },
+    ])
+  }, [order, visible])
+
+  const onSubmit = () => {
+    orderService
+      .makeReadyForDelivery(order.id, {
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+        street: street.value,
+        streetNo: streetNo.value,
+        flatNo: flatNo.value,
+        city: city.value,
+        postalCode: postalCode.value,
+        contactInfo: contactInfo.value,
+        parcels,
+      })
+      .then((response) => submit(response))
   }
 
-  const acceptOrder = () => {
-    let newOrder = copyOrder()
-    newOrder.status.status = 'accepted'
-    updateOrder(newOrder)
-  }
-
-  const refuseOrder = () => {
-    let newOrder = copyOrder()
-    newOrder.status.status = 'refused'
-    updateOrder(newOrder)
-  }
-
-  const makeOrderReadyForDelivery = () => {
-    let newOrder = copyOrder()
-    newOrder.status.status = 'waitingForDelivery'
-    updateOrder(newOrder)
-  }
-
-  const startDeliveringOrder = () => {
-    let newOrder = copyOrder()
-    newOrder.status.status = 'delivering'
-    updateOrder(newOrder)
-  }
-
-  const completeDelivery = () => {
-    let newOrder = copyOrder()
-    newOrder.status.status = 'completed'
-    updateOrder(newOrder)
+  const onClose = () => {
+    name.clear()
+    email.clear()
+    phone.clear()
+    street.clear()
+    streetNo.clear()
+    flatNo.clear()
+    city.clear()
+    postalCode.clear()
+    contactInfo.clear()
+    setParcels([])
+    close()
   }
 
   return (
-    <_ExpandedOrder
-      status={order.status?.status}
-      closing={closing}>
-      <OrderHeader
-        status={order.status?.status}
-        close={close}
-        lastModified={order.status?.lastModified}
-        lastModifiedBy={order.status?.lastModifiedBy}
-        datePlaced={order.datePlaced}
-        id={order.id}
-        expanded={true}
-      />
-      {order.content.map((i) => (
-        <ProductTile
-          key={i._id}
-          item={i}
-          disabled={
-            order.status?.status !== 'accepted' &&
-            order.status?.status !== 'packing'
-          }
-          changeItemPacked={changeItemPacked}
+    <BaseModal
+      visible={visible}
+      onClose={onClose}
+      title={lang.create_shipment}
+      onSubmit={onSubmit}>
+      <div className="row">
+        <div className="p">
+          {order.deliveryMethod === 'pickupPoint' && (
+            <AddressInfo
+              person={`${order.pickupPointData.name} ${order.pickupPointData.surname}`}
+              email={order.user.email}
+              phone={order.pickupPointData.phone}
+              address={order.pickupPointData.id}
+            />
+          )}
+          {order.deliveryMethod === 'courrier' && (
+            <AddressInfo
+              person={`${order.courrierAddress.name} ${order.courrierAddress.surname}`}
+              email={order.user.email}
+              phone={order.courrierAddress.phone}
+              address={`${order.courrierAddress.city},
+                          ${order.courrierAddress.street}
+                          ${order.courrierAddress.house}
+                          ${
+                            order.courrierAddress.apartment &&
+                            order.courrierAddress.house &&
+                            '-'
+                          }
+                          ${order.courrierAddress.apartment},
+                          ${order.courrierAddress.postIndex}`}
+            />
+          )}
+          <p className="m-t">
+            {lang.deliveryComments}:<br /> {order.deliveryComments}
+          </p>
+          <p className="m-t">
+            {lang.total} {gramsToKilosSimple(totalWeight)}kg
+          </p>
+          {parcels.map((p, i) => (
+            <Input
+              width={100}
+              label={lang.weight}
+              value={p.weight}
+              type="number"
+              onChange={(e) =>
+                setParcels(
+                  parcels.map((pp, ii) =>
+                    ii === i ? { weight: e.target.value } : pp
+                  )
+                )
+              }
+            />
+          ))}
+          <button
+            className="btn m-t"
+            onClick={() => setParcels([...parcels, { weight: undefined }])}>
+            {lang.add}
+          </button>
+        </div>
+        <form className="p">
+          <Input
+            {...name}
+            maxLength={35}
+            required
+            label={`${lang.name} ${lang.surname} / ${lang.company_name}`}
+          />
+          <Input
+            {...phone}
+            maxLength={30}
+            required
+            label={lang.phone}
+          />
+          <Input
+            {...email}
+            maxLength={100}
+            required
+            label={lang.email}
+          />
+          {order.deliveryMethod === 'courrier' && (
+            <>
+              <Input
+                {...street}
+                maxLength={35}
+                required
+                label={lang.street}
+              />
+              <Input
+                {...streetNo}
+                maxLength={8}
+                label={lang.house}
+              />
+              <Input
+                {...flatNo}
+                maxLength={8}
+                label={lang.apt}
+              />
+              <Input
+                {...city}
+                maxLength={35}
+                required
+                label={lang.city}
+              />
+              <Input
+                {...postalCode}
+                maxLength={7}
+                required
+                label={lang.post_index}
+              />
+            </>
+          )}
+          <Input
+            label={lang.contact_info}
+            maxLength={35}
+            {...contactInfo}
+          />
+        </form>
+      </div>
+    </BaseModal>
+  )
+}
+const ExpandedOrder = ({ withManagement }) => {
+  const id = useParams().id
+  const orderService = useOrderService()
+  const [order, setOrder] = useState()
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+  const { formatFull } = useDateTimeFormat()
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+
+  const [makingShipment, setMakingShipment] = useState(false)
+
+  useEffect(() => {
+    orderService.getById(id).then((response) => setOrder(response))
+  }, [id])
+
+  const makeReadyForPickup = () => {
+    orderService.makeReadyForPickup(order.id).then((response) => {
+      setOrder(response)
+    })
+  }
+  const makeCompleted = () => {
+    orderService.makeCompleted(order.id).then((response) => {
+      setOrder(response)
+    })
+  }
+  const makeWaitingForCourrier = () => {
+    orderService.makeWaitingForCourrier(order.id).then((response) => {
+      setOrder(response)
+    })
+  }
+  const makeDelivering = () => {
+    orderService.makeDelivering(order.id).then((response) => {
+      setOrder(response)
+    })
+  }
+
+  return (
+    <div>
+      {order && order.latestStatus === 'placed' && withManagement && (
+        <ShipmentModal
+          order={order}
+          visible={makingShipment}
+          close={() => setMakingShipment(false)}
+          submit={setOrder}
         />
-      ))}
-      {!fixed && (
-        <>
-          {order.status?.status === 'placed' && (
-            <OrderAction
-              question={lang.accept_order}
-              action1text={lang.accept}
-              action2text={lang.refuse}
-              action1callback={acceptOrder}
-              action2callback={refuseOrder}
-            />
-          )}
-          {order.status?.status === 'packing' && allPacked() && (
-            <OrderAction
-              question={lang.ready_for_delivery}
-              action1text={lang.ready}
-              action1callback={makeOrderReadyForDelivery}
-            />
-          )}
-          {order.status?.status === 'waitingForDelivery' && (
-            <OrderAction
-              question={lang.out_for_delivery}
-              action1text={lang.deliver}
-              action1callback={startDeliveringOrder}
-            />
-          )}
-          {order.status?.status === 'delivering' && (
-            <OrderAction
-              question={lang.delivery_completed}
-              action1text={lang.completed}
-              action1callback={completeDelivery}
-            />
-          )}
-        </>
       )}
-    </_ExpandedOrder>
+      <div
+        style={{
+          position: 'sticky',
+          top: 'calc(var(--space)  + var(--header-height))',
+        }}>
+        {order && (
+          <div>
+            <div className="card row between p m-d m-t-s">
+              <h3 className="card-heading">
+                {formatFull(new Date(order.datePlaced))}
+              </h3>
+              <h3 className="card-heading">#{order.prettyID}</h3>
+            </div>
+            <div className="card row m-d">
+              <div className="p">
+                {order.statusHistory.map((s) => (
+                  <p className="card-text ">
+                    <b>{lang.order_status[s.status]}</b>
+                  </p>
+                ))}
+              </div>
+              <div className="p">
+                {order.statusHistory.map((s) => (
+                  <p className="card-text">{formatFull(new Date(s.time))}</p>
+                ))}
+              </div>
+            </div>
+            {order.content.map((i) => (
+              <div
+                className="card m-d-s"
+                key={i.product.id}>
+                <div className="row no-wrap no-gap align-cross-center">
+                  <img
+                    src={`/images/xs_${i.product.image}`}
+                    width={55}
+                    height={55}
+                  />
+                  <h3
+                    className="title m-l"
+                    style={{ fontSize: '1.5rem' }}>
+                    {i.quantity}
+                  </h3>
+                  <p className=" p card-text">
+                    {i.product.name[selectedLang]}{' '}
+                    <b>{gramsToKilos(i.product.weight)}</b>
+                  </p>
+                  <div className="spacer" />
+                </div>
+              </div>
+            ))}
+            <div className="row m-t m-d wrap-reverse">
+              <div
+                className="card p"
+                style={{ flex: '1 1 auto' }}>
+                {order.deliveryMethod === 'bakery' && (
+                  <>
+                    <h3 className="card-heading">{lang.delivery_bakery}</h3>
+                    <div className="card-divider m-t-s m-d-s" />
+                    <p className="card-text m-r">
+                      <Mail className="icon-m m-r-s m-d-s" />
+                      {order.user.email}
+                    </p>
+                    {order.deliveryPhone && (
+                      <p className="card-text m-r">
+                        <Phone className="icon-m m-r-s m-d-s" />
+                        {order.deliveryPhone}
+                      </p>
+                    )}
+                    {order.latestStatus === 'placed' && withManagement && (
+                      <button
+                        className="btn"
+                        onClick={makeReadyForPickup}>
+                        {lang.ready}
+                      </button>
+                    )}
+                    {order.latestStatus === 'ready_for_pickup' &&
+                      withManagement && (
+                        <button
+                          className="btn"
+                          onClick={makeCompleted}>
+                          {lang.order_status.completed}
+                        </button>
+                      )}
+                  </>
+                )}
+                {order.deliveryMethod === 'pickupPoint' && (
+                  <>
+                    <h3 className="card-heading">
+                      {lang.delivery_pickupPoint}
+                    </h3>
+                    <div className="card-divider m-t-s m-d-s" />
+                    <AddressInfo
+                      person={`${order.pickupPointData.name} ${order.pickupPointData.surname}`}
+                      email={order.user.email}
+                      phone={order.pickupPointData.phone}
+                      address={order.pickupPointData.id}
+                    />
+                  </>
+                )}
+                {order.deliveryMethod === 'courrier' && (
+                  <>
+                    <h3 className="card-heading">{lang.delivery_courrier}</h3>
+                    <div className="card-divider m-t-s m-d-s" />
+                    <AddressInfo
+                      person={`${order.courrierAddress.name} ${order.courrierAddress.surname}`}
+                      email={order.user.email}
+                      phone={order.courrierAddress.phone}
+                      address={`${order.courrierAddress.city},
+                      ${order.courrierAddress.street}
+                      ${order.courrierAddress.house}
+                      ${
+                        order.courrierAddress.apartment &&
+                        order.courrierAddress.house &&
+                        '-'
+                      }
+                      ${order.courrierAddress.apartment},
+                      ${order.courrierAddress.postIndex}`}
+                    />
+                  </>
+                )}
+                {(order.deliveryMethod === 'pickupPoint' ||
+                  order.deliveryMethod === 'courrier') && (
+                  <>
+                    {withManagement && (
+                      <>
+                        {order.latestStatus === 'placed' && (
+                          <button
+                            className="btn"
+                            onClick={() => setMakingShipment(true)}>
+                            {lang.ready}
+                          </button>
+                        )}
+                        {order.latestStatus === 'ready_for_delivery' && (
+                          <button
+                            className="btn"
+                            onClick={makeWaitingForCourrier}>
+                            {lang.request_courrier}
+                          </button>
+                        )}
+                        {order.latestStatus === 'waiting_for_courrier' && (
+                          <button
+                            className="btn"
+                            onClick={makeDelivering}>
+                            {lang.handed_to_courrier}
+                          </button>
+                        )}
+                        {order.latestStatus === 'delivering' && (
+                          <button
+                            className="btn"
+                            onClick={makeCompleted}>
+                            {lang.completed}
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="card p">
+                <div className="row no-wrap">
+                  <p className="card-text text-right">
+                    <b>{countProducts(order.content)} </b>
+                    {lang.products}
+                    <br /> {lang.sum}
+                    <br />
+                    {lang.delivery}
+                    <br />
+                    <b>{lang.total}</b>
+                    <br />
+                    {lang.vat}
+                  </p>
+                  <p className="card-text">
+                    <b> {gramsToKilos(calculateWeight(order.content))}</b>
+                    <br />
+                    {centsToEuro(order.subtotal)}
+                    <br />
+                    {centsToEuro(order.deliveryCost)}
+                    <br />
+                    <b>{centsToEuro(order.total)}</b>
+                    <br />
+                    {centsToEuro(order.vat)}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {order.deliveryComments && (
+              <div className="card m-d p">
+                <h3 className="card-heading">{lang.deliveryComments}</h3>
+                <div className="card-divider m-t-s m-d-s" />
+                <p className="card-text">{order.deliveryComments}</p>
+              </div>
+            )}
+            {order.businessComments && (
+              <div className="card m-d p">
+                <h3 className="card-heading">{lang.businessComments}</h3>
+                <div className="card-divider m-t-s m-d-s" />
+                <p className="card-text">{order.businessComments}</p>
+              </div>
+            )}
+            {order.generalComments && (
+              <div className="card m-d p">
+                <h3 className="card-heading">{lang.generalComments}</h3>
+                <div className="card-divider m-t-s m-d-s" />
+                <p className="card-text">{order.generalComments}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 

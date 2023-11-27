@@ -20,7 +20,7 @@ const useCartService = () => {
     const config = makeConfig()
     const request = axios.post(
       baseURL,
-      { product, quantity: -999999999999 },
+      { productId: product.id, quantity: -999999999999 },
       config
     )
     showErrorToast(request)

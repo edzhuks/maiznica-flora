@@ -47,6 +47,30 @@ const escapeHTML = (s) => {
   }
   return s.replace(/[&"'<>]/g, (c) => lookup[c])
 }
+const formatDate = (date) => {
+  const formatterFull = new Intl.DateTimeFormat('lv-LV', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+  return formatterFull.format(date)
+}
+
+const makeOrderID = () => {
+  const formatterFull = new Intl.DateTimeFormat('lv-LV', {
+    hour: '2-digit',
+    minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+  const parts = formatterFull.formatToParts(new Date())
+  return `${parts[4].value}${parts[2].value}${parts[0].value}-${Math.floor(
+    Math.random() * (10000000 - 1000000) + 1000000
+  )}`
+}
 
 module.exports = {
   isPositiveInteger,
@@ -54,5 +78,7 @@ module.exports = {
   getPrice,
   gramsToKilos,
   isInteger,
+  formatDate,
   escapeHTML,
+  makeOrderID,
 }

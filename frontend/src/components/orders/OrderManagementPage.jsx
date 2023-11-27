@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
-import { OrderList } from './styledComponents'
 import Order from './Order'
 import useOrderService from '../../services/order'
+import ExpandedOrder from './ExpandedOrder'
+import { Outlet } from 'react-router-dom'
+import CompactOrder from './CompactOrder'
+import OrderList from './OrderList'
 
 const OrderManagementPage = () => {
   const orderService = useOrderService()
@@ -22,17 +25,7 @@ const OrderManagementPage = () => {
         )
       )
   }
-  return (
-    <OrderList>
-      {orders.map((o) => (
-        <Order
-          order={o}
-          updateOrder={updateOrder}
-          key={o.id}
-        />
-      ))}
-    </OrderList>
-  )
+  return <OrderList orders={orders} />
 }
 
 export default OrderManagementPage

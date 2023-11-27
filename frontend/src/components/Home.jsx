@@ -13,7 +13,7 @@ const HomePage = () => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const [banners, setBanners] = useState([])
   console.log(banners)
-  const [newProducts, setNewProducts] = useState({
+  const [homeItems, setHomeItems] = useState({
     products: [],
     displayName: '',
   })
@@ -27,7 +27,7 @@ const HomePage = () => {
   })
 
   useEffect(() => {
-    categoryService.getNewProducts().then((p) => setNewProducts(p))
+    categoryService.getCategory('home').then((p) => setHomeItems(p))
     categoryService
       .getDiscountedProducts()
       .then((p) => setDiscountedProducts(p))
@@ -57,14 +57,21 @@ const HomePage = () => {
             <ProductList products={discountedProducts.products} />
           </div>
         )}
-        {newProducts.products.length > 0 && (
+        {homeItems.categories &&
+          homeItems.categories.map((c) => (
+            <div>
+              <h1 className="big-title m-d">{c.displayName[selectedLang]}</h1>
+              <ProductList products={c.products} />
+            </div>
+          ))}
+        {/* {newProducts.products.length > 0 && (
           <div>
             <h1 className="big-title m-d">
               {newProducts.displayName[selectedLang]}
             </h1>
             <ProductList products={newProducts.products} />
           </div>
-        )}
+        )} */}
       </div>
       <div
         className="column"

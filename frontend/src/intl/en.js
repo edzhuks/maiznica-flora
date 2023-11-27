@@ -76,13 +76,13 @@ const en = {
   delivery_completed: 'Delivery completed?',
   completed: 'completed',
   order_status: {
-    placed: 'placed',
-    accepted: 'accepted',
-    refused: 'refused',
-    packing: 'packing',
-    waitingForDelivery: 'waiting for delivery',
-    delivering: 'delivering',
-    completed: 'completed',
+    placed: 'Placed',
+    accepted: 'Accepted',
+    refused: 'Refused',
+    packing: 'Packing',
+    waitingForDelivery: 'Waiting for delivery',
+    delivering: 'Delivering',
+    completed: 'Completed',
   },
   last_modified_by: 'last modified by',
   confirm_delete: 'Are you sure you want to delete this product?',
@@ -257,6 +257,9 @@ const en = {
   settings: 'Settings',
   contact_form_emails: 'Contact form receivers',
   order_notification_emails: 'Order notification receivers',
+  delivery_short_bakery: 'Bakery',
+  delivery_short_courrier: 'Courrier',
+  delivery_short_pickupPoint: 'Pickup point',
 }
 
 export default en

@@ -18,7 +18,9 @@ const useField = (type, defaultValue) => {
   }
   const [value, setValue] = useState(defaultValue)
   const onChange = (event) => {
-    if (type === 'select') {
+    if (type === 'phone') {
+      setValue(event)
+    } else if (type === 'select') {
       setValue(event)
     } else {
       setValue(event.target.value)

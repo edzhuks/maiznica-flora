@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   image: String,
+  invisible: Boolean,
   displayName: {
     lv: { type: String, required: true },
     en: { type: String, required: false },

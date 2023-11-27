@@ -23,8 +23,9 @@ const SearchInput = styled.div`
   .inverted {
     position: absolute;
     z-index: 20;
-    right: 45px;
-    top: 7px;
+    left: 175px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `
 
@@ -39,37 +40,38 @@ const Search = ({
 }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
-    <SearchInput
-      style={style}
-      className={className}>
-      <Input
-        label={lang.search}
-        className="m-0 "
-        width={200}
-        type="search"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            onEnter()
-          }
-        }}
-      />
-
-      {value && (
-        <button
-          className="btn inverted icon-button"
-          onClick={onClear}>
-          <Cross className="icon-m" />
-        </button>
-      )}
-      <StyledButton
-        className="btn"
-        onClick={onSearch}
-        style={{}}>
-        <SearchOutline className="icon-m" />
-      </StyledButton>
-    </SearchInput>
+    <div
+      className={className}
+      style={style}>
+      <SearchInput>
+        <Input
+          label={lang.search}
+          className="m-0 "
+          width={200}
+          type="search"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              onEnter()
+            }
+          }}
+        />
+        {value && (
+          <button
+            className="btn inverted icon-button"
+            onClick={onClear}>
+            <Cross className="icon-m" />
+          </button>
+        )}
+        <StyledButton
+          className="btn"
+          onClick={onSearch}
+          style={{}}>
+          <SearchOutline className="icon-m" />
+        </StyledButton>
+      </SearchInput>
+    </div>
   )
 }
 export default Search

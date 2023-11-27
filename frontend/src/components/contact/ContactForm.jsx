@@ -33,6 +33,11 @@ const ContactForm = (props) => {
         })
         .then(() => {
           toast.success(lang.toast_contact_form_success)
+          loadCaptchaEnginge(6)
+          captcha.clear()
+          name.clear()
+          email.clear()
+          message.clear()
         })
         .catch((error) => toast.error(error.response.data.error))
     } else {

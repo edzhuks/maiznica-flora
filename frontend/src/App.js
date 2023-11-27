@@ -50,6 +50,9 @@ import PriceMismatch from './components/info/PriceMismatch'
 import { Sorting } from './components/management/Sorting'
 import BannerManagement from './components/management/BannerManagement'
 import SettingsPage from './components/management/Settings'
+import ExpandedOrder from './components/orders/ExpandedOrder'
+import CategoryManagementPage from './components/management/CategoryManagementPage'
+import NewCategory from './components/management/NewCategory'
 
 const baseTheme = {
   main: '#45941e',
@@ -131,7 +134,7 @@ function App() {
                       element={<ProductListWithCategories />}
                     />
                     <Route
-                      path="/order/*"
+                      path="/order_process/*"
                       element={<Order />}
                     />
                     <Route
@@ -147,8 +150,24 @@ function App() {
                       element={<ManagementPage />}>
                       <Route
                         path="categories"
-                        element={<CategoryManagement />}
-                      />
+                        element={<CategoryManagementPage />}>
+                        <Route
+                          path="complete"
+                          element={<CategoryManagement />}
+                        />
+                        <Route
+                          path="unlisted"
+                          element={<CategoryManagement />}
+                        />
+                        <Route
+                          path="unavailable"
+                          element={<CategoryManagement />}
+                        />
+                        <Route
+                          path="uncategorized"
+                          element={<CategoryManagement />}
+                        />
+                      </Route>
                       <Route
                         path="sorting"
                         element={<Sorting />}
@@ -161,6 +180,10 @@ function App() {
                         path="new_product/:productId?"
                         element={<NewProductFrom />}
                       />
+                      <Route
+                        path="new_category/:categoryId?"
+                        element={<NewCategory />}
+                      />
 
                       <Route
                         path="settings"
@@ -169,7 +192,15 @@ function App() {
                     </Route>
                     <Route
                       path="/orders"
-                      element={<OrderManagementPage />}
+                      element={<OrderManagementPage />}>
+                      <Route
+                        path=":id"
+                        element={<ExpandedOrder withManagement={true} />}
+                      />
+                    </Route>
+                    <Route
+                      path="/order/:id"
+                      element={<ExpandedOrder />}
                     />
                     <Route
                       path="/login"
@@ -224,8 +255,12 @@ function App() {
                       />
                       <Route
                         path="previous_orders"
-                        element={<Orders />}
-                      />
+                        element={<Orders />}>
+                        <Route
+                          path=":id"
+                          element={<ExpandedOrder withManagement={false} />}
+                        />
+                      </Route>
                       <Route
                         path="user_data"
                         element={<UserData />}

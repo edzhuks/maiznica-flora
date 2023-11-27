@@ -93,7 +93,8 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.surname ||
     !req.body.phone ||
     !req.body.city ||
-    !req.body.street
+    !req.body.street ||
+    !req.body.postIndex
   ) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
@@ -112,7 +113,8 @@ router.put('/address', userExtractor, async (req, res) => {
     !req.body.phone ||
     !req.body.city ||
     !req.body.street ||
-    !req.body.id
+    !req.body.id ||
+    !req.body.postIndex
   ) {
     return res.status(400).json({ error: 'Missing required fields or id' })
   }

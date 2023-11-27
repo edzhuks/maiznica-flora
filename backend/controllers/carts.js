@@ -1,7 +1,7 @@
 const express = require('express')
 const Cart = require('../models/cart')
 const { userExtractor, verificationRequired } = require('../util/middleware')
-const { isInteger } = require('../util/functions')
+const { isInteger, makeOrderID } = require('../util/functions')
 const Address = require('../models/address')
 const { BACKEND_URL } = require('../util/config')
 const router = express.Router()
@@ -50,6 +50,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
 router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
   let cart = await Cart.findOne({ user: req.user.id }).populate([
     { path: 'content', populate: { path: 'product' } },
+    { path: 'courrierAddress' },
   ])
   if (!cart) {
     return res.status(400).json({ error: 'User does not have a cart' })
@@ -178,7 +179,6 @@ const updatePaymentStatus = async (paymentReference) => {
             pickupPointData: cart.pickupPointData,
             deliveryPhone: cart.deliveryPhone,
             deliveryCost: cart.deliveryCost,
-            status: { status: 'placed' },
             datePlaced: Date.now(),
             subtotal: subtotal,
             deliveryCost: deliveryCost,
@@ -189,6 +189,9 @@ const updatePaymentStatus = async (paymentReference) => {
             businessComments: cart.businessComments,
             generalComments: cart.generalComments,
             deliveryComments: cart.deliveryComments,
+            latestStatus: 'placed',
+            statusHistory: [{ status: 'placed', time: Date.now() }],
+            prettyID: makeOrderID(),
           })
           console.log(order)
           order = await order.save()
@@ -253,7 +256,6 @@ router.get('/payment_status_callback', async (req, res) => {
 })
 
 router.get('/payment_landing', async (req, res) => {
-  updatePaymentStatus(req.query.payment_reference)
   res.status(200).send(`<html><head><style>.container{
     width:100vw;
     height:100vh;
@@ -330,11 +332,8 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
   if (!isInteger(req.body.quantity)) {
     return res.status(400).json({ error: 'Quantity must be a whole number' })
   }
-  if (!req.body.product) {
+  if (!req.body.productId) {
     return res.status(400).json({ error: 'Product missing' })
-  }
-  if (!req.body.product.id) {
-    return res.status(400).json({ error: 'Product id missing' })
   }
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',
@@ -348,13 +347,11 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     await cart.save()
   }
 
-  if (
-    (item = cart.content.find((p) => p.product.equals(req.body.product.id)))
-  ) {
+  if ((item = cart.content.find((p) => p.product.equals(req.body.productId)))) {
     item.quantity += Number(req.body.quantity)
     if (item.quantity <= 0) {
       cart.content = cart.content.filter(
-        (item) => !item.product.equals(req.body.product.id)
+        (item) => !item.product.equals(req.body.productId)
       )
     }
   } else {
@@ -362,7 +359,7 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
       return res.status(400).json({ error: 'Cannot add less than 1 item' })
     }
     cart.content = cart.content.concat({
-      product: req.body.product.id,
+      product: req.body.productId,
       quantity: Number(req.body.quantity),
     })
   }

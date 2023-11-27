@@ -7,9 +7,11 @@ const {
   userExtractor,
   productChecker,
   adminRequired,
+  optionalUser,
 } = require('../util/middleware')
 const { isPositiveInteger } = require('../util/functions')
 const category = require('../models/category')
+const user = require('../models/user')
 const router = express.Router()
 
 router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
@@ -64,22 +66,28 @@ router.delete(
   }
 )
 
-router.get('/', async (req, res) => {
-  const products = await Product.find({ invisible: { $ne: true } }).populate(
-    'relatedProducts'
-  )
+router.get('/', optionalUser, async (req, res) => {
+  let products = await Product.find().populate('relatedProducts')
+  if (req.user && req.user.admin) {
+    return res.send(products)
+  }
+  products = products.filter((p) => !p.invisible)
   res.send(products)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', optionalUser, async (req, res) => {
   const product = await Product.findOne({
     _id: req.params.id,
-    invisible: { $ne: true },
   }).populate('relatedProducts')
   if (!product) {
     return res.status(404).json({ error: 'The product does not exist' })
   }
-  res.send(product)
+  if (req.user && req.user.admin) {
+    return res.send(product)
+  }
+  if (!product.invisible) {
+    return res.send(product)
+  }
 })
 
 router.delete('/:id', userExtractor, adminRequired, async (req, res) => {
@@ -170,6 +178,7 @@ router.post(
   productChecker,
   async (req, res) => {
     const createdProduct = new Product(req.body.product)
+    createdProduct.invisible = true
     await createdProduct.save()
     if (req.body.addToAll) {
       const topCategory = await Category.findById('all')

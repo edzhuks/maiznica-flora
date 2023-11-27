@@ -12,6 +12,7 @@ const {
   centsToEuro,
   gramsToKilos,
   escapeHTML,
+  formatDate,
 } = require('./functions')
 
 const verificationEmailHtml = (link) => {
@@ -764,7 +765,7 @@ const resetEmailHtml = (link) => {
 </html>
 `
 }
-const receiptEmail = (order) => {
+const receiptEmail = (order, orderURL) => {
   return `
   <!--
 
@@ -859,8 +860,8 @@ Codepen: https://codepen.io/supah/
                         </tr>
                         <tr>
                           <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
-                            <small>Pasūtījums</small> #${order._id}<br />
-                            <small>${order.datePlaced}</small>
+                            <small>Pasūtījums</small> #${order.prettyID}<br />
+                            <small>${formatDate(order.datePlaced)}</small>
                           </td>
                         </tr>
                       </tbody>
@@ -952,7 +953,7 @@ Codepen: https://codepen.io/supah/
                    <tr><td height="30"> </td></tr>
                    <tr>
                   <td colspan="4" style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
-                    ${`${FRONTEND_URL}/orders/${order._id}`}
+                    ${orderURL}
                   </td>
                 </tr>
                  <tr>
@@ -1211,8 +1212,9 @@ const sendEmail = (email, { subject, text, html }) => {
     },
   })
   var mailOptions = {
-    from: 'noreply@maiznica.lv',
+    from: EMAIL_NAME,
     to: email,
+    bcc: EMAIL_NAME,
     subject: subject,
     text: text,
     html: html,
@@ -1246,7 +1248,7 @@ const sendContactFormEmail = (email, name, message) => {
 }
 const sendContactFormConfirmEmail = (email, name, message) => {
   return sendEmail(email, {
-    subject: 'Jūs noosūtījāt ziņu maiznīcai Flora',
+    subject: 'Jūs nosūtījāt ziņu maiznīcai Flora',
     text: `No: ${name}\nE-pasts: ${email}\nZiņa: ${message}`,
   })
 }
@@ -1256,12 +1258,12 @@ const sendContactFormFailedEmail = (email, message) => {
     text: `Jūsu nosūtītā ziņa netika saņemta, lūdzu sazinieties ar mums pa epastu.\nZiņa:${message}`,
   })
 }
-const sendReceiptEmail = (email, order) => {
+const sendReceiptEmail = (email, order, orderURL) => {
   return sendEmail(email, {
     subject: 'Maiznīcas Flora internetveikala rēķins',
     text: `Paldies, ka iepirkāties Maiznīcas Flora internetveikalā!\nPasūtījums #${
-      order._id
-    }\n${order.datePlaced}\n${order.content
+      order.prettyID
+    }\n${formatDate(order.datePlaced)}\n${order.content
       .map(
         (item) => `
           ${item.product.name.lv} ${gramsToKilos(
@@ -1308,9 +1310,9 @@ const sendReceiptEmail = (email, order) => {
       order.deliveryComments
         ? `Piegādes komentāri: ${order.deliveryComments}`
         : ''
-    }\nApskatīt sūtījumu: ${`${FRONTEND_URL}/orders/${order._id}`}
+    }\nApskatīt sūtījumu: ${orderURL}
    `,
-    html: receiptEmail(order),
+    html: receiptEmail(order, orderURL),
   })
 }
 

@@ -36,7 +36,7 @@ const DeliveryOption = ({ deliveryMethod, children, map }) => {
           }
         }}>
         <div className="column align-cross-center center">
-          <h3 className="card-heading">{lang[`delivery_${deliveryMethod}`]}</h3>
+          <h3 className="title">{lang[`delivery_${deliveryMethod}`]}</h3>
           <Price
             className="m-v"
             price={getDeliveryCost(deliveryMethod)}
@@ -145,7 +145,7 @@ const PickupPoint = ({}) => {
         label={lang.select_point}
         options={allPickupPoints}
         isMulti={false}
-        width={300}
+        width={350}
         required={true}
         onChange={(selected) => {
           dispatch(
@@ -153,33 +153,44 @@ const PickupPoint = ({}) => {
           )
         }}
       />
-      <Input
-        {...name}
-        label={lang.name}
-        required
-        onBlur={() =>
-          dispatch(
-            changePickupPointData({ ...pickupPointData, name: name.value })
-          )
-        }
-      />
-      <Input
-        {...surname}
-        label={lang.surname}
-        required
-        onBlur={() =>
-          dispatch(
-            changePickupPointData({
-              ...pickupPointData,
-              surname: surname.value,
-            })
-          )
-        }
-      />
+      <div
+        className="row"
+        style={{ width: '350px' }}>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            {...name}
+            label={lang.name}
+            required
+            width={'unset'}
+            onBlur={() =>
+              dispatch(
+                changePickupPointData({ ...pickupPointData, name: name.value })
+              )
+            }
+          />
+        </div>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            {...surname}
+            label={lang.surname}
+            required
+            width={'unset'}
+            onBlur={() =>
+              dispatch(
+                changePickupPointData({
+                  ...pickupPointData,
+                  surname: surname.value,
+                })
+              )
+            }
+          />
+        </div>
+      </div>
       <Input
         {...phone}
         label={lang.phone}
         required
+        width={350}
         onBlur={() =>
           dispatch(
             changePickupPointData({ ...pickupPointData, phone: phone.value })

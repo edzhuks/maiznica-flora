@@ -1,7 +1,11 @@
 const express = require('express')
 const Category = require('../models/category')
 const Product = require('../models/product')
-const { userExtractor, adminRequired } = require('../util/middleware')
+const {
+  userExtractor,
+  adminRequired,
+  optionalUser,
+} = require('../util/middleware')
 const categoryRouter = express.Router()
 
 categoryRouter.get('/ids', async (req, res) => {
@@ -75,12 +79,138 @@ categoryRouter.get(
     res.send(catalogue)
   }
 )
-
-categoryRouter.get('/:category', async (req, res) => {
-  let categories = await Category.findById(req.params.category)
+categoryRouter.get(
+  '/unlisted',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let unlistedProducts = await Product.find({ invisible: true })
+    let unlistedCategories = await Category.find({ invisible: true }).populate([
+      {
+        path: 'categories',
+        populate: [
+          {
+            path: 'categories',
+            populate: [
+              {
+                path: 'categories',
+                populate: [
+                  {
+                    path: 'categories',
+                    populate: [
+                      {
+                        path: 'categories',
+                        populate: [
+                          {
+                            path: 'categories',
+                            populate: { path: 'categories' },
+                          },
+                          { path: 'products' },
+                        ],
+                      },
+                      { path: 'products' },
+                    ],
+                  },
+                  { path: 'products' },
+                ],
+              },
+              { path: 'products' },
+            ],
+          },
+          { path: 'products' },
+        ],
+      },
+      { path: 'products' },
+    ])
+    res.send({ products: unlistedProducts, categories: unlistedCategories })
+  }
+)
+categoryRouter.get(
+  '/unavailable',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let unavailable = await Product.find({ outOfStock: true })
+    res.send({ products: unavailable })
+  }
+)
+categoryRouter.get(
+  '/uncategorized',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    let allProducts = await Product.find()
+    let allCategories = await Category.find().populate([
+      {
+        path: 'categories',
+        populate: [
+          {
+            path: 'categories',
+            populate: [
+              {
+                path: 'categories',
+                populate: [
+                  {
+                    path: 'categories',
+                    populate: [
+                      {
+                        path: 'categories',
+                        populate: [
+                          {
+                            path: 'categories',
+                            populate: { path: 'categories' },
+                          },
+                          { path: 'products' },
+                        ],
+                      },
+                      { path: 'products' },
+                    ],
+                  },
+                  { path: 'products' },
+                ],
+              },
+              { path: 'products' },
+            ],
+          },
+          { path: 'products' },
+        ],
+      },
+      { path: 'products' },
+    ])
+    let categorizedProducts = []
+    let categorizedCategories = []
+    for (const c of allCategories) {
+      categorizedProducts = categorizedProducts.concat(
+        c.products.map((p) => p._id)
+      )
+      categorizedCategories = categorizedCategories.concat(
+        c.categories.map((c) => c._id)
+      )
+    }
+    res.send({
+      products: allProducts.filter(
+        (p) => !categorizedProducts.find((pp) => pp.equals(p._id))
+      ),
+      categories: allCategories
+        .filter((p) => !categorizedCategories.find((pp) => pp === p._id))
+        .filter((c) => c._id !== 'all'),
+    })
+  }
+)
+categoryRouter.get('/home', async (req, res) => {
+  let category = await Category.findById('home')
     .populate({ path: 'products', match: { invisible: { $ne: true } } })
-    .populate('categories')
-  res.send(categories)
+    .populate({ path: 'categories', populate: [{ path: 'products' }] })
+  res.send(category)
+})
+categoryRouter.get('/:category', optionalUser, async (req, res) => {
+  let category = await Category.findById(req.params.category)
+    .populate({ path: 'products', match: { invisible: { $ne: true } } })
+    .populate({ path: 'categories' })
+  if (category.invisible && (!req.user || (req.user && !req.user.admin))) {
+    return res.status(404).send()
+  }
+  res.send(category)
 })
 
 categoryRouter.post('/init', userExtractor, adminRequired, async (req, res) => {
@@ -164,9 +294,6 @@ categoryRouter.delete(
 )
 
 categoryRouter.post('/', userExtractor, adminRequired, async (req, res) => {
-  if (!req.body.parentCategory) {
-    return res.status(400).json({ error: 'Parent category msut be defined' })
-  }
   if (!req.body.newCategory) {
     return res.status(400).json({ error: 'New category missing' })
   }
@@ -187,13 +314,35 @@ categoryRouter.post('/', userExtractor, adminRequired, async (req, res) => {
     _id: req.body.newCategory.id,
     categories: [],
     products: [],
+    invisible: true,
   })
   await newCategory.save()
-  const parentCategory = await Category.findById(req.body.parentCategory)
-  parentCategory.categories.push(newCategory)
-  await parentCategory.save()
   res.status(201).send(newCategory)
 })
+
+categoryRouter.put(
+  '/hide/:id',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    const category = await Category.findById(req.params.id)
+    category.invisible = true
+    await category.save()
+
+    res.status(201).send(category)
+  }
+)
+categoryRouter.put(
+  '/show/:id',
+  userExtractor,
+  adminRequired,
+  async (req, res) => {
+    const category = await Category.findById(req.params.id)
+    category.invisible = false
+    await category.save()
+    res.status(201).send(category)
+  }
+)
 
 categoryRouter.put(
   '/products',
@@ -220,11 +369,40 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
   res.status(200).send(parentCategory)
 })
 
-categoryRouter.get('/', async (req, res) => {
+categoryRouter.put('/:id', userExtractor, adminRequired, async (req, res) => {
+  if (!req.body.newCategory) {
+    return res.status(400).json({ error: 'New category missing' })
+  }
+  if (
+    !req.body.newCategory.displayName ||
+    !req.body.newCategory.displayName.lv
+  ) {
+    return res.status(400).json({ error: 'New category display name missing' })
+  }
+  if (!req.body.newCategory.image) {
+    return res.status(400).json({ error: 'New category image missing' })
+  }
+  const category = await Category.findById(req.params.id)
+  if (!category) {
+    return res.status(404).send({ error: 'Category not found' })
+  }
+  category.displayName = req.body.newCategory.displayName
+  category.image = req.body.newCategory.image
+  await category.save()
+
+  res.status(200).send(category)
+})
+
+categoryRouter.get('/', optionalUser, async (req, res) => {
   let categories = await Category.find({})
     .populate({ path: 'products', match: { invisible: { $ne: true } } })
     .populate('categories')
-  res.send(categories)
+  if (req.user && req.user.admin) {
+    return res.send(categories)
+  } else {
+    categories = categories.filter((c) => c._id !== 'all' && c._id !== 'home')
+    return res.send(categories.filter((c) => !c.invisible))
+  }
 })
 
 module.exports = { categoryRouter, getCatalogue }

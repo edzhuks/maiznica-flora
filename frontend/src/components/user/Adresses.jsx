@@ -79,11 +79,12 @@ const AddressForm = ({ submit, values, cancel }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const name = useField('text')
   const surname = useField('text')
-  const phone = useField('text')
+  const phone = useField('phone')
   const city = useField('text')
   const street = useField('text')
   const house = useField('text')
   const apartment = useField('text')
+  const postIndex = useField('text')
 
   useEffect(() => {
     if (values) {
@@ -94,6 +95,7 @@ const AddressForm = ({ submit, values, cancel }) => {
       street.changeValue(values.street)
       house.changeValue(values.house)
       apartment.changeValue(values.apartment)
+      postIndex.changeValue(values.postIndex)
     }
   }, [values])
 
@@ -104,17 +106,11 @@ const AddressForm = ({ submit, values, cancel }) => {
       !surname.value ||
       !phone.value ||
       !city.value ||
-      !street.value
+      !street.value ||
+      !postIndex.value
     ) {
       toast.error(lang.toast_all_fields_required)
     } else {
-      name.clear()
-      surname.clear()
-      phone.clear()
-      city.clear()
-      street.clear()
-      house.clear()
-      apartment.clear()
       submit({
         name: name.value,
         surname: surname.value,
@@ -123,8 +119,17 @@ const AddressForm = ({ submit, values, cancel }) => {
         street: street.value,
         house: house.value,
         apartment: apartment.value,
+        postIndex: postIndex.value,
         id: values && values.id,
       })
+      name.clear()
+      surname.clear()
+      phone.clear()
+      city.clear()
+      street.clear()
+      house.clear()
+      apartment.clear()
+      postIndex.clear()
     }
   }
   return (
@@ -134,33 +139,70 @@ const AddressForm = ({ submit, values, cancel }) => {
       <Input
         label={lang.city}
         required
+        width="350px"
         {...city}
       />
+      <div
+        className="row"
+        style={{ width: '350px' }}>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            label={lang.street}
+            required
+            {...street}
+            width="unset"
+          />
+        </div>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            label={lang.post_index}
+            required
+            {...postIndex}
+            width="unset"
+          />
+        </div>
+      </div>
+      <div
+        className="row"
+        style={{ width: '350px' }}>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            label={lang.house}
+            width="unset"
+            {...house}
+          />
+        </div>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            label={lang.apt}
+            width="unset"
+            {...apartment}
+          />
+        </div>
+      </div>
+      <div
+        className="row"
+        style={{ width: '350px' }}>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            required
+            label={lang.name}
+            width="unset"
+            {...name}
+          />
+        </div>
+        <div style={{ flex: '1 1 150px' }}>
+          <Input
+            required
+            label={lang.surname}
+            width="unset"
+            {...surname}
+          />
+        </div>
+      </div>
       <Input
-        label={lang.street}
         required
-        {...street}
-      />
-      <Input
-        label={lang.house}
-        {...house}
-      />
-      <Input
-        label={lang.apt}
-        {...apartment}
-      />
-      <Input
-        required
-        label={lang.name}
-        {...name}
-      />
-      <Input
-        required
-        label={lang.surname}
-        {...surname}
-      />
-      <Input
-        required
+        width="350px"
         label={lang.phone}
         {...phone}
       />
@@ -281,7 +323,7 @@ const Addresses = ({
   }
   return (
     <div
-      className={`column align-cross-center ${className ? className : ''}`}
+      className={`column  no-gap ${className ? className : ''}`}
       style={style}>
       <div>
         {user?.addresses.map((address) => (
@@ -319,7 +361,7 @@ const Addresses = ({
                       <Home className="icon-m m-r-s m-d-s" />
                       {address.city}, {address.street} {address.house}
                       {address.apartment && address.house && '-'}
-                      {address.apartment}
+                      {address.apartment}, {address.postIndex}
                     </p>
                   </div>
                   <div

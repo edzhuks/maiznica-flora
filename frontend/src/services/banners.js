@@ -14,9 +14,15 @@ const useBannerService = () => {
     const request = axios.get(`${baseURL}`)
     return request
   }
+  const getInactive = () => {
+    const config = makeConfig()
+    const request = axios.get(`${baseURL}/inactive`, config)
+    return request
+  }
 
   return {
     update,
+    getInactive,
     get,
   }
 }

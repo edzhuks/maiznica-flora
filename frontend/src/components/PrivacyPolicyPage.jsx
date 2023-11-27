@@ -11,7 +11,9 @@ const PrivacyPolicyPage = () => {
         flexDirection: 'column',
       }}>
       <div className="big-title m-d">{lang.privacy_policy}</div>
-      <div style={{ maxWidth: '800px' }}>
+      <div
+        style={{ maxWidth: '800px' }}
+        className="legal-text">
         <h3>SIA Maiznīca Flora E-veikala PRIVĀTUMA POLITIKA</h3>
         <h4>1. Vispārīgā informācija</h4>
         <p>

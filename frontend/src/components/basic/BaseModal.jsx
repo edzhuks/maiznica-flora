@@ -1,13 +1,6 @@
 import { useSelector } from 'react-redux'
 
-const BaseModal = ({
-  children,
-  visible,
-  title,
-  onClose,
-  onSubmit,
-  padding,
-}) => {
+const BaseModal = ({ children, visible, title, onClose, onSubmit }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div

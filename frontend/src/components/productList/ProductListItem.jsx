@@ -23,22 +23,24 @@ const ProductListItem = ({ inCart, product, quantity }) => {
     if (!user) {
       navigate('/login')
     } else {
-      dispatch(addItem({ quantity: quantityToAdd.value, product }))
+      dispatch(
+        addItem({ quantity: quantityToAdd.value, productId: product.id })
+      )
     }
   }
   useEffect(() => {
     quantityToAdd.changeValue(product.bulkThreshold ? product.bulkThreshold : 1)
-  })
+  }, [])
   const removeFromCart = () => {
     dispatch(removeItem(product))
   }
 
   const addMore = async () => {
-    dispatch(changeQuantityOfItem({ product, quantity: 1 }))
+    dispatch(changeQuantityOfItem({ productId: product.id, quantity: 1 }))
   }
 
   const removeSome = async () => {
-    dispatch(changeQuantityOfItem({ product, quantity: -1 }))
+    dispatch(changeQuantityOfItem({ productId: product.id, quantity: -1 }))
   }
 
   return (
@@ -95,19 +97,18 @@ const ProductListItem = ({ inCart, product, quantity }) => {
                 </button>
               </div>
             ) : (
-              <div className="row align-cross-end m m-t-0">
+              <div className="row align-cross-end m m-t-0 between no-gap">
                 <Input
                   {...quantityToAdd}
-                  width={100}
+                  width={70}
                   className="m-0"
                 />
-                <div className="float-to-end">
-                  <button
-                    className="btn"
-                    onClick={addToCart}>
-                    {lang.buy}
-                  </button>
-                </div>
+
+                <button
+                  className="btn"
+                  onClick={addToCart}>
+                  {lang.buy}
+                </button>
               </div>
             )}
           </>

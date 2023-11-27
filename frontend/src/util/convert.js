@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux'
+
 const centsToEuro = (cents) => {
   const euros = new Intl.NumberFormat('en-EU', {
     style: 'currency',
@@ -14,6 +16,12 @@ const gramsToKilos = (grams) => {
     minimumFractionDigits: 1,
   })
   return grams < 1000 ? `${grams}g` : `${kilos.format(grams / 1000)}kg`
+}
+const gramsToKilosSimple = (grams) => {
+  const kilos = new Intl.NumberFormat('en-EU', {
+    minimumFractionDigits: 1,
+  })
+  return kilos.format(grams / 1000)
 }
 const toEnglishAlphabet = (text) => {
   return text
@@ -43,4 +51,53 @@ const toEnglishAlphabet = (text) => {
     .replace('Ŗ', 'R')
 }
 
-export { centsToEuro, toEnglishAlphabet, gramsToKilos, addVat }
+const useDateTimeFormat = () => {
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
+
+  const formatter = new Intl.DateTimeFormat(
+    selectedLang === 'lv' ? 'lv-LV' : selectedLang === 'en' ? 'en-GB' : 'de-DE',
+    {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )
+  const formatterFull = new Intl.DateTimeFormat(
+    selectedLang === 'lv' ? 'lv-LV' : selectedLang === 'en' ? 'en-GB' : 'de-DE',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }
+  )
+  const format = (date) => {
+    return formatter.format(date)
+  }
+  const formatFull = (date) => {
+    return formatterFull.format(date)
+  }
+  return { format, formatFull }
+}
+const countProducts = (contents) => {
+  return contents.reduce((acc, cur) => acc + cur.quantity, 0)
+}
+const calculateWeight = (contents) => {
+  return contents.reduce(
+    (acc, cur) => acc + cur.quantity * cur.product.weight,
+    0
+  )
+}
+export {
+  centsToEuro,
+  countProducts,
+  calculateWeight,
+  toEnglishAlphabet,
+  gramsToKilos,
+  addVat,
+  useDateTimeFormat,
+  gramsToKilosSimple,
+}

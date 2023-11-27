@@ -35,7 +35,7 @@ const OrderProcess = ({ stages, stage }) => {
 }
 
 const Order = () => {
-  const match = useMatch('/order/:stage')
+  const match = useMatch('/order_process/:stage')
   const stage = match.params.stage
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()

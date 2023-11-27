@@ -23,6 +23,14 @@ const userExtractor = async (request, response, next) => {
   request.user = await User.findById(decodedToken.id)
   next()
 }
+const optionalUser = async (request, response, next) => {
+  if (request.token) {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    request.user = await User.findById(decodedToken.id)
+  }
+
+  next()
+}
 
 const adminRequired = async (request, response, next) => {
   if (!request.user.admin) {
@@ -91,4 +99,5 @@ module.exports = {
   productChecker,
   adminRequired,
   verificationRequired,
+  optionalUser,
 }

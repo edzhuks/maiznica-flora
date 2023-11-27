@@ -62,7 +62,6 @@ const UserData = () => {
           label={lang.email}
           {...email}
           disabled
-          style={{ color: 'var(--subtle)' }}
         />
         {deleteClicked && (
           <Input
