@@ -205,7 +205,7 @@ const updatePaymentStatus = async (paymentReference) => {
               { path: 'user' },
             ])
             const settings = await Settings.findOne({})
-             try {
+            try {
               await sendReceiptEmail(
                 [...settings.orderNotificationEmails.map((e) => e.email)],
                 order,

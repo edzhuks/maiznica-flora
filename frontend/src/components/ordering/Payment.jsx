@@ -28,7 +28,7 @@ const Payment = ({ order }) => {
 
   console.log(iframe)
   const tryAcceptTerms = () => {
-    if (!termsChecked) {
+    if (!termsChecked.value) {
       toast.error(lang.toast_must_agree)
     } else {
       order()
