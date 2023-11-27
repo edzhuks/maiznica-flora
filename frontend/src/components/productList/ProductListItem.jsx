@@ -60,20 +60,18 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             {product.name[selectedLang] || product.name.lv}{' '}
             {gramsToKilos(product.weight)}
           </h3>
-          {!product.outOfStock && (
-            <div
-              className="center-vh"
-              style={{ flex: '10 1 auto' }}>
-              <Price
-                price={product.price}
-                discount={product.discount}
-                weight={product.weight}
-                bulkPrice={product.bulkPrice}
-                bulkThreshold={product.bulkThreshold}
-                isSmall
-              />
-            </div>
-          )}
+          <div
+            className="center-vh"
+            style={{ flex: '10 1 auto' }}>
+            <Price
+              price={product.price}
+              discount={product.discount}
+              weight={product.weight}
+              bulkPrice={product.bulkPrice}
+              bulkThreshold={product.bulkThreshold}
+              isSmall
+            />
+          </div>
         </Link>
         {!product.outOfStock ? (
           <>
@@ -115,7 +113,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
         ) : (
           <div
             className="center-vh"
-            style={{ flex: '10 1 auto' }}>
+            style={{ flex: '1 1 auto' }}>
             <p className="hint-text">{lang.currently_unavailable}</p>
           </div>
         )}
