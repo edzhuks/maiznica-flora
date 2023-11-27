@@ -28,7 +28,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
       nonce: crypto.randomBytes(16).toString('base64'),
       account_name: 'EUR3D1',
       amount: (cart.total / 100).toFixed(2),
-      customer_url: `https://new.maiznica.com/api/cart/payment_landing`,
+      customer_url: `https://www.maiznica.lv/api/cart/payment_landing`,
       order_reference: cart._id.toString(),
       locale: selectedLang,
     },
@@ -207,11 +207,14 @@ const updatePaymentStatus = async (paymentReference) => {
             const settings = await Settings.findOne({})
             try {
               await sendReceiptEmail(
-                [
-                  ...settings.orderNotificationEmails.map((e) => e.email),
-                  order.user.email,
-                ],
-                order
+                [...settings.orderNotificationEmails.map((e) => e.email)],
+                order,
+                `${BACKEND_URL}/orders/${order._id}`
+              )
+              await sendReceiptEmail(
+                [order.user.email],
+                order,
+                `${BACKEND_URL}/account/previous_orders/${order._id}`
               )
             } catch (error) {
               console.error(error)

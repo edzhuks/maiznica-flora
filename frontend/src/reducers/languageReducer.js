@@ -3,7 +3,7 @@ import lv from '../intl/lv'
 import en from '../intl/en'
 import de from '../intl/de'
 const initialState = {
-  selectedLang: 'en',
+  selectedLang: 'lv',
   en: en,
   lv: lv,
   de: de,

@@ -42,7 +42,7 @@ const lv = {
   about_us: 'Par mums',
   values: 'Vērtības kuras godājam',
   nature: 'Daba',
-  people: 'Vilvēks',
+  people: 'Cilvēks',
   quality: 'Kvalitāte',
   how_products_are_made: 'KĀ TOP MAIZNĪCAs FLORA PRODUKTI?',
   product: 'Produkts',
