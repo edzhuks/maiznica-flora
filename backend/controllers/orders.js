@@ -19,7 +19,6 @@ const {
 const router = express.Router()
 const axios = require('axios')
 const crypto = require('crypto')
-const { log } = require('console')
 
 const updateStatus = async (id, status) => {
   const order = await Order.findById(id).populate([
@@ -104,7 +103,6 @@ router.put(
         ],
         DPD_AUTH_HEADER
       )
-      console.log(response)
       order = await updateStatus(req.body.id, 'ready_for_delivery')
       order.shipmentID = response.data[0].id
       await order.save()

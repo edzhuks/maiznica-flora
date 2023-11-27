@@ -177,7 +177,7 @@ const lv = {
   export_manager: 'Eksporta projektu vadītāja',
   bread_manager: 'Maizes ražošanas un kvalitātes vadītāja',
   pastry_manager: 'Konditorejas ražošanas un kvalitātes vadītāja',
-  currently_unavailable: 'Pašreiz nav pārdošanā',
+  currently_unavailable: 'Pieejams pēc pasūtījuma',
   forgot_password: 'Aizmirsi paroli? Spied šeit.',
   reset_password: 'Atjaunot paroli',
   send_reset_instructions: 'Sūtīt atjaunošanas e-pastu',

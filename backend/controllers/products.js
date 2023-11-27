@@ -149,7 +149,6 @@ router.put(
     await Product.updateOne({ _id: req.params.id }, req.body.product)
     const products = await Product.find()
     for (const p of products) {
-      console.log(p.relatedProducts)
       if (
         req.body.product.relatedProducts.find((r) => r === p.id) &&
         !p.relatedProducts.find((r) => r.equals(req.params.id))
@@ -160,9 +159,7 @@ router.put(
         !req.body.product.relatedProducts.find((r) => r === p.id) &&
         p.relatedProducts.find((r) => r.equals(req.params.id))
       ) {
-        console.log(p.relatedProducts)
         p.relatedProducts.pull(req.params.id)
-        console.log(p.relatedProducts)
         await p.save()
       }
     }

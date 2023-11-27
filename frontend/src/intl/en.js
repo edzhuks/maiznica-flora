@@ -77,10 +77,9 @@ const en = {
   completed: 'completed',
   order_status: {
     placed: 'Placed',
-    accepted: 'Accepted',
-    refused: 'Refused',
-    packing: 'Packing',
-    waitingForDelivery: 'Waiting for delivery',
+    ready_for_pickup: 'Ready',
+    ready_for_delivery: 'Deliverable',
+    waiting_for_courrier: 'Awaiting courrier',
     delivering: 'Delivering',
     completed: 'Completed',
   },
@@ -229,8 +228,8 @@ const en = {
   delivery_courrier: 'DPD Courrier delivery',
   delivery_pickupPoint: 'DPD pickup point',
   delivery_time_bakery: 'Next workday',
-  delivery_time_courrier: '2 - 3 days',
-  delivery_time_pickupPoint: '2 - 3 days',
+  delivery_time_courrier: '2 - 7 days',
+  delivery_time_pickupPoint: '2 - 7 days',
   toast_pickup_point_data:
     'Please fill in all required data for pickup point delivery',
   price_mismatch:
@@ -260,6 +259,20 @@ const en = {
   delivery_short_bakery: 'Bakery',
   delivery_short_courrier: 'Courrier',
   delivery_short_pickupPoint: 'Pickup point',
+  post_index: 'Postal code',
+  vat: 'VAT',
+  request_courrier: 'Request courrier',
+  handed_to_courrier: 'Given to courrier',
+  create_shipment: 'Create shipment',
+  company_name: 'Company name',
+  contact_info: 'Contact info',
+  catalogue: 'Catalogue',
+  unlisted: 'Invisible',
+  unavailable: 'Unavailable',
+  uncategorized: 'Uncategorized',
+  active: 'Active',
+  inactive: 'Inactive',
+  new_category: 'New category',
 }
 
 export default en

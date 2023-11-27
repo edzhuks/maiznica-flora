@@ -38,31 +38,30 @@ const StaticInformation = ({
               ))}
             </div>
           )}
+
+          <Price
+            price={product.price}
+            discount={product.discount}
+            weight={product.weight}
+            bulkPrice={product.bulkPrice}
+            bulkThreshold={product.bulkThreshold}
+            isSmall={false}
+          />
           {!product.outOfStock ? (
-            <>
-              <Price
-                price={product.price}
-                discount={product.discount}
-                weight={product.weight}
-                bulkPrice={product.bulkPrice}
-                bulkThreshold={product.bulkThreshold}
-                isSmall={false}
+            <div className="row align-cross-end">
+              <Input
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+                type="number"
+                width={150}
+                className="m-0"
               />
-              <div className="row align-cross-end">
-                <Input
-                  value={quantity}
-                  onChange={(event) => setQuantity(event.target.value)}
-                  type="number"
-                  width={150}
-                  className="m-0"
-                />
-                <button
-                  className="btn"
-                  onClick={onOrder}>
-                  {lang.add_to_cart}
-                </button>
-              </div>
-            </>
+              <button
+                className="btn"
+                onClick={onOrder}>
+                {lang.add_to_cart}
+              </button>
+            </div>
           ) : (
             <p className="hint-text">{lang.currently_unavailable}</p>
           )}

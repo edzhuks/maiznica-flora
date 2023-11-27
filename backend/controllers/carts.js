@@ -16,7 +16,6 @@ const {
 } = require('../util/config')
 const axios = require('axios')
 const crypto = require('crypto')
-const { log } = require('console')
 const Settings = require('../models/settings')
 
 const getPaymentData = async ({ cart, selectedLang }) => {
@@ -170,7 +169,6 @@ const updatePaymentStatus = async (paymentReference) => {
               ? 0
               : 399
           const total = subtotal + deliveryCost
-          console.log(cart)
           let order = new Order({
             user: cart.user,
             content: cart.content,
@@ -193,7 +191,6 @@ const updatePaymentStatus = async (paymentReference) => {
             statusHistory: [{ status: 'placed', time: Date.now() }],
             prettyID: makeOrderID(),
           })
-          console.log(order)
           order = await order.save()
           if (order.total !== cart.total) {
             order.paymentStatus = 'price_mismatch'
@@ -252,8 +249,6 @@ const updatePaymentStatus = async (paymentReference) => {
 }
 
 router.get('/payment_status_callback', async (req, res) => {
-  console.log('callback')
-  console.log(req.query)
   updatePaymentStatus(req.query.payment_reference)
   return res.status(200).send()
 })

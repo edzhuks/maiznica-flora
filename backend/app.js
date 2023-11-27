@@ -66,6 +66,7 @@ app.use(express.static('build', { maxAge: 1000 * 60 * 60 }))
 app.use(tokenExtractor)
 app.use('/api/login', loginRouter)
 app.use('/api/users', userRouter)
+app.use('/images', express.static('images'))
 app.use(
   morgan(
     ':method :url :status :res[content-length] - :response-time ms :postbody',
@@ -84,7 +85,6 @@ app.use('/api/order', orderRouter)
 app.use('/api/reviews', reviewRouter)
 app.use('/api/dpd', dpdRouter)
 app.use('/api/scripts', scriptRouter)
-app.use('/images', express.static('images'))
 app.get('/api/version', (request, response) => {
   response.send('1')
 })
