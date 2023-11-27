@@ -170,6 +170,8 @@ export const {
 
 export const useCartServiceDispatch = () => {
   const cartService = useCartService()
+  const navigate = useNavigate()
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const loadCart = () => {
     return async (dispatch) => {
       cartService
@@ -321,7 +323,16 @@ export const useCartServiceDispatch = () => {
         console.log(response.data)
         dispatch(setPaymentStatus(response.data.paymentStatus))
         if (response.data.paymentStatus === 'failed') {
-          dispatch(clearIframe())
+          navigate('/order_process/payment')
+        }
+        if (response.data.paymentStatus === 'settled') {
+          toast.success(lang.toast_order_successful)
+          navigate('/info/ordered')
+          dispatch(loadCart())
+        } else if (response.data.paymentStatus === 'price_mismatch') {
+          toast.error(lang.toast_price_mismatch)
+          navigate('/info/price_mismatch')
+          dispatch(loadCart())
         }
       })
     }

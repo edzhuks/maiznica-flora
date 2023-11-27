@@ -27,7 +27,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
       nonce: crypto.randomBytes(16).toString('base64'),
       account_name: 'EUR3D1',
       amount: (cart.total / 100).toFixed(2),
-      customer_url: `${FRONTEND_URL}/order_process/payment`,
+      customer_url: `${FRONTEND_URL}/order_process/check_status`,
       order_reference: cart._id.toString(),
       locale: selectedLang,
     },

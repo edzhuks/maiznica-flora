@@ -15,15 +15,7 @@ const Payment = ({ order }) => {
   const dispatch = useDispatch()
   const { loadCart } = useCartServiceDispatch()
   useEffect(() => {
-    if (paymentStatus === 'settled') {
-      toast.success(lang.toast_order_successful)
-      navigate('/info/ordered')
-      dispatch(loadCart())
-    } else if (paymentStatus === 'price_mismatch') {
-      toast.error(lang.toast_price_mismatch)
-      navigate('/info/price_mismatch')
-      dispatch(loadCart())
-    }
+    
   }, [paymentStatus])
 
   console.log(iframe)

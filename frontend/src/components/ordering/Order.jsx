@@ -15,6 +15,7 @@ import CartSummary from './CartSummary'
 import DeliveryMethod from './DeliveryMethod'
 import Payment from './Payment'
 import Comments from './Comments'
+import CheckStatus from './CheckStatus'
 
 const OrderProcess = ({ stages, stage }) => {
   const currentIndex = stages.length - stages.indexOf(stage) - 1
@@ -55,14 +56,7 @@ const Order = () => {
     // })
   }
 
-  useEffect(() => {
-    // if (iframe) {
-    //   const interval = setInterval(() => {
-    //     dispatch(updatePaymentStatus(paymentReference))
-    //   }, 5000)
-    //   return () => clearInterval(interval)
-    // }
-  }, [iframe])
+
 
   const order = async () => {
     if (checkDeliveryMethod() && checkCartEmpty()) {
@@ -153,6 +147,10 @@ const Order = () => {
             <Route
               path="comments"
               element={<Comments />}
+            />
+            <Route
+              path="check_status"
+              element={<CheckStatus />}
             />
           </Routes>
         </div>
