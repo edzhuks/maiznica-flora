@@ -308,7 +308,8 @@ export const useCartServiceDispatch = () => {
       cartService
         .placeOrder()
         .then((response) => {
-          dispatch(setIframe(response.data.paymentLink))
+          window.location.href = response.data.paymentLink
+          // dispatch(setIframe(response.data.paymentLink))
           dispatch(setPaymentReference(response.data.paymentReference))
         })
         .catch((error) => console.log(error.response.data.error))

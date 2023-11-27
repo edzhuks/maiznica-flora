@@ -105,7 +105,11 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
     cart.paymentStatus = paymentData.payment_state
     cart.paymentReference = paymentData.payment_reference
     cart = await cart.save()
-    return res.redirect(paymentData.payment_link)
+    return res.send({
+      paymentLink: paymentData.payment_link,
+      paymentReference: paymentData.payment_reference,
+      orderId: cart._id,
+    })
   } catch (error) {
     console.log(error)
     if (error.response.data.error.code === 4024) {

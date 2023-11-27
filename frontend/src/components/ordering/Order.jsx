@@ -56,12 +56,12 @@ const Order = () => {
   }
 
   useEffect(() => {
-    if (iframe) {
-      const interval = setInterval(() => {
-        dispatch(updatePaymentStatus(paymentReference))
-      }, 5000)
-      return () => clearInterval(interval)
-    }
+    // if (iframe) {
+    //   const interval = setInterval(() => {
+    //     dispatch(updatePaymentStatus(paymentReference))
+    //   }, 5000)
+    //   return () => clearInterval(interval)
+    // }
   }, [iframe])
 
   const order = async () => {
