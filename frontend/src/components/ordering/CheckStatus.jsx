@@ -31,7 +31,7 @@ const CheckStatus = () => {
     }
   }, [paymentStatus])
   return (
-    <div className="spinner">
+    <div className="spinner column">
       <div class="container">
         <div class="lds-ring">
           <div></div>

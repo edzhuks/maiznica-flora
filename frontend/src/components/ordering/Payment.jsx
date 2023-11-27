@@ -14,9 +14,7 @@ const Payment = ({ order }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { loadCart } = useCartServiceDispatch()
-  useEffect(() => {
-    
-  }, [paymentStatus])
+  useEffect(() => {}, [paymentStatus])
 
   console.log(iframe)
   const tryAcceptTerms = () => {
@@ -32,7 +30,7 @@ const Payment = ({ order }) => {
       {iframe && (
         <button
           className="btn m-d"
-          onClick={tryAcceptTerms}>
+          onClick={order}>
           {lang.start_over_payment}
         </button>
       )}
@@ -55,7 +53,7 @@ const Payment = ({ order }) => {
                 <p className="card-text">{lang.payment_failed}</p>
                 <button
                   className="btn full-width m-t"
-                  onClick={tryAcceptTerms}>
+                  onClick={order}>
                   {lang.start_over_payment}
                 </button>
               </div>
