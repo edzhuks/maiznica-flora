@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import useOrderService from '../../services/order'
 import { useEffect } from 'react'
-import Order from '../orders/Order'
 import OrderList from '../orders/OrderList'
 
 const Orders = () => {

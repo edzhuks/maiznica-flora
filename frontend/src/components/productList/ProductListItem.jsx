@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { Plus } from '@styled-icons/entypo/Plus'
 import { Minus } from '@styled-icons/entypo/Minus'
 import { Trash } from '@styled-icons/boxicons-solid/Trash'

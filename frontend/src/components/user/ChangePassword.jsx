@@ -14,7 +14,6 @@ const ChangePassword = () => {
   const password2 = useField('password')
   const userService = useUserService()
   const { showPromiseToast } = useToast()
-  const navigate = useNavigate()
   const [passwordRequiredReminderVisible, setPasswordRequiredReminderVisible] =
     useState(false)
   const [

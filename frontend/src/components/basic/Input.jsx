@@ -1,7 +1,5 @@
 import Select, { components } from 'react-select'
 import PhoneInput from 'react-phone-number-input'
-import 'react-phone-number-input/style.css'
-import { isSupportedCountry } from 'react-phone-number-input'
 const { ValueContainer, Placeholder, Control } = components
 
 const CustomValueContainer = ({ children, ...props }) => {

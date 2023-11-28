@@ -1,6 +1,5 @@
 import { Link, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import CategoryManagement from './CategoryManagement'
 
 const CategoryManagementPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])

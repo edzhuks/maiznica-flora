@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  clearCart,
-  selectCartTotal,
-  useCartServiceDispatch,
-} from '../../reducers/cartReducer'
+import { useCartServiceDispatch } from '../../reducers/cartReducer'
 import { toast } from 'react-toastify'
-import useOrderService from '../../services/order'
 
 import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 import Cart from './Cart'
@@ -55,8 +50,6 @@ const Order = () => {
     //   setIframe(response.data.paymentLink)
     // })
   }
-
-
 
   const order = async () => {
     if (checkDeliveryMethod() && checkCartEmpty()) {

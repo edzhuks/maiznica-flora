@@ -4,7 +4,6 @@ import Carousel from './basic/Carousel'
 import ProductList from './productList/ProductList'
 import { useSelector } from 'react-redux'
 import useCategoryService from '../services/category'
-import styled from 'styled-components'
 import useBannerService from '../services/banners'
 
 const HomePage = () => {

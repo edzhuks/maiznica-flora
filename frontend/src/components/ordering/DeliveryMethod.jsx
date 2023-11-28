@@ -1,16 +1,13 @@
-import styled, { css, useTheme } from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import Price from '../basic/Price'
 import { Calendar3 } from '@styled-icons/bootstrap/Calendar3'
-import ReactSelect from 'react-select'
-import { useReducer, useState } from 'react'
+import { useState } from 'react'
 import { useEffect } from 'react'
 import useDPDservice from '../../services/dpd'
 import Addresses from '../user/Adresses'
 import AddressWithMap from '../contact/AddressWithMap'
 import {
   getDeliveryCost,
-  setDeliveryMethod,
   useCartServiceDispatch,
 } from '../../reducers/cartReducer'
 import Input from '../basic/Input'

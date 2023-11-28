@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
-import { useState } from 'react'
 import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
-import BaseModal from '../basic/BaseModal'
 import useUploadService from '../../services/uploads'
 import Input from '../basic/Input'
 import { toEnglishAlphabet } from '../../util/convert'
@@ -15,7 +13,6 @@ const NewCategory = () => {
   const categoryId = useParams().categoryId
   const categoryService = useCategoryService()
   const uploadService = useUploadService()
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const name_lv = useField('text')
   const name_en = useField('text')

@@ -1,14 +1,6 @@
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-const ProjectList = styled.div`
-  display: flex;
-  flex-direction: column;
-  img {
-    align-self: center;
-  }
-`
-
 const EuProjects = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const selectedLang = useSelector((state) => state.lang.selectedLang)

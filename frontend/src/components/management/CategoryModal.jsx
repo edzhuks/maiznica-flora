@@ -4,12 +4,10 @@ import useCategoryService from '../../services/category'
 import useField from '../../hooks/useField'
 import { useSelector } from 'react-redux'
 import BaseModal from '../basic/BaseModal'
-import useUploadService from '../../services/uploads'
 import Input from '../basic/Input'
 
 const CategoryModal = ({ visible, activeCategory, onClose, catalogue }) => {
   const categoryService = useCategoryService()
-  const uploadService = useUploadService()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [allCategories, setAllCategories] = useState([])

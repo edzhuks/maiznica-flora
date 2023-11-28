@@ -1,6 +1,3 @@
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import CategoryItem from './CategoryItem'
 
 const Categories = ({ categories, name, tight }) => {

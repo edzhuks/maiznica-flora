@@ -53,10 +53,6 @@ const CarouselImage = styled.img`
   }
 `
 
-const PlaceholderImage = styled(CarouselImage)`
-  position: static;
-`
-
 const CarouselIndicators = styled.div`
   display: flex;
   position: absolute;
@@ -132,10 +128,7 @@ const Carousel = ({ banners, className }) => {
               active={index === activeImage}
             />
           ))}
-        {/* <PlaceholderImage
-          src={'/images/banner_placeholder.jpg'}
-          key="placeholder"
-        /> */}
+
         <div style={{ width: '100%', aspectRatio: '1.8' }} />
       </CarouselImages>
       <CarouselRight

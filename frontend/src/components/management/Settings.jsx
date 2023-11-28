@@ -1,29 +1,8 @@
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import useBannerService from '../../services/banners'
 import { Cross } from '@styled-icons/entypo/Cross'
-import {
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import useField from '../../hooks/useField'
 import Input from '../basic/Input'
 import { useSelector } from 'react-redux'
-import { gramsToKilos, toEnglishAlphabet } from '../../util/convert'
-import useUploadService from '../../services/uploads'
-import useCategoryService from '../../services/category'
-import useProductService from '../../services/product'
-import { CSS } from '@dnd-kit/utilities'
 import { toast } from 'react-toastify'
 import useSettingsService from '../../services/settings'
 

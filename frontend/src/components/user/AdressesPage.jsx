@@ -1,6 +1,6 @@
 import Addresses from './Adresses'
 
-const AddressesPage = ({}) => {
+const AddressesPage = () => {
   return (
     <div className="card p-b">
       <Addresses noSelection={true} />

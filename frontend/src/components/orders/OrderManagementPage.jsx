@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
-import Order from './Order'
 import useOrderService from '../../services/order'
-import ExpandedOrder from './ExpandedOrder'
-import { Outlet } from 'react-router-dom'
-import CompactOrder from './CompactOrder'
 import OrderList from './OrderList'
 
 const OrderManagementPage = () => {
@@ -16,15 +12,6 @@ const OrderManagementPage = () => {
     })
   }, [])
 
-  const updateOrder = (newOrder) => {
-    orderService
-      .updateOrder(newOrder)
-      .then((updatedOrder) =>
-        setOrders(
-          orders.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
-        )
-      )
-  }
   return <OrderList orders={orders} />
 }
 

@@ -1,20 +1,13 @@
 import { useSelector } from 'react-redux'
-import OrderHeader from './OrderHeader'
-import { CompactOrderItem, _CompactOrder } from './styledComponents'
 import {
   calculateWeight,
   countProducts,
   gramsToKilos,
-  useDateTimeFormat,
 } from '../../util/convert'
-import { Link, NavLink } from 'react-router-dom'
-import { useContext } from 'react'
-import MobileContext from '../../contexts/mobileContext'
+import { NavLink } from 'react-router-dom'
 
 const CompactOrder = ({ order, expand }) => {
-  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const { format } = useDateTimeFormat()
   const to = window.innerWidth <= 800 ? `/order/${order.id}` : order.id
 
   return (
