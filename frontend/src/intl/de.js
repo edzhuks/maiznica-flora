@@ -279,6 +279,8 @@ const de = {
   active: 'Aktiv',
   inactive: 'Inaktiv',
   new_category: 'Neue Kategorie',
+  page_not_found: 'Seite nicht gefunden',
+  to_home: 'Zur Homepage',
 }
 
 export default de

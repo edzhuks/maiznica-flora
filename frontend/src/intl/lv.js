@@ -289,6 +289,8 @@ const lv = {
   active: 'Aktīvie',
   inactive: 'Neaktīvie',
   new_category: 'Jauna kategorija',
+  page_not_found: 'Lapa netika atrasta',
+  to_home: 'Uz sākumlapu',
 }
 
 export default lv

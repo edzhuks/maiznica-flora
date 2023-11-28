@@ -29,8 +29,8 @@ const DiscountModal = ({ visible, onSubmit, onCancel }) => {
       onSubmit={() =>
         onSubmit({
           discountPrice: discountPrice.value,
-          startDate: startDate,
-          endDate: endDate,
+          startDate: startDate.value,
+          endDate: endDate.value,
         })
       }>
       <form className="p-m">
@@ -123,7 +123,7 @@ const Product = () => {
         successMessage: lang.toast_discount_removed,
       })
       promise.then((r) => {
-        setProduct(r)
+        setProduct(r.data)
       })
     }
   }

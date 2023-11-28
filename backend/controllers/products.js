@@ -50,7 +50,7 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
       discount: discount,
     },
     { new: 'true' }
-  )
+  ).populate('relatedProducts')
   res.status(200).send(newProduct)
 })
 
@@ -59,7 +59,9 @@ router.delete(
   userExtractor,
   adminRequired,
   async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findById(req.params.id).populate(
+      'relatedProducts'
+    )
     product.discount = undefined
     await product.save()
     res.status(200).send(product)

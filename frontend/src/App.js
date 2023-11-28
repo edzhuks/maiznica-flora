@@ -53,6 +53,7 @@ import SettingsPage from './components/management/Settings'
 import ExpandedOrder from './components/orders/ExpandedOrder'
 import CategoryManagementPage from './components/management/CategoryManagementPage'
 import NewCategory from './components/management/NewCategory'
+import NotFoundPage from './components/NotFoundPage'
 
 const baseTheme = {
   main: '#45941e',
@@ -286,6 +287,10 @@ function App() {
                         element={<PriceMismatch />}
                       />
                     </Route>
+                    <Route
+                      path="*"
+                      element={<NotFoundPage />}
+                    />
                   </Routes>
                 </div>
               </div>

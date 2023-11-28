@@ -273,6 +273,8 @@ const en = {
   active: 'Active',
   inactive: 'Inactive',
   new_category: 'New category',
+  page_not_found: 'Page not found',
+  to_home: 'To homepage',
 }
 
 export default en
