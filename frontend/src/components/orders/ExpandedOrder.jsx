@@ -73,11 +73,11 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
       if (order.courrierAddress.street.length <= 35) {
         street.changeValue(order.courrierAddress.street)
       }
-      if (order.courrierAddress.streetNo.length <= 8) {
-        streetNo.changeValue(order.courrierAddress.streetNo)
+      if (order.courrierAddress.house.length <= 8) {
+        streetNo.changeValue(order.courrierAddress.house)
       }
-      if (order.courrierAddress.flatNo.length <= 8) {
-        flatNo.changeValue(order.courrierAddress.flatNo)
+      if (order.courrierAddress.apartment.length <= 8) {
+        flatNo.changeValue(order.courrierAddress.apartment)
       }
       if (order.courrierAddress.city.length <= 35) {
         city.changeValue(order.courrierAddress.city)

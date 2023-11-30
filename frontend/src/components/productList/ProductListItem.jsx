@@ -61,9 +61,9 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             />
           </div>
         </Link>
-        <div className="row align-cross-end m-t-0 end ">
+        <div className="row align-cross-end m-t-0 end">
           {product.outOfStock && (
-            <div className="tooltip m-l">
+            <div className="tooltip">
               <Warning className="icon-b subtle" />
               <span className="tooltiptext">{lang.special_order}</span>
             </div>

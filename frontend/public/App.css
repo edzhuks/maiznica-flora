@@ -45,6 +45,7 @@
   img {
     filter: brightness(0.8) contrast(1.2);
   }
+
   #canv {
     filter: invert();
   }
@@ -535,6 +536,9 @@ input:disabled {
 }
 .almost-main {
   color: var(--almost-main) !important;
+}
+.main {
+  color: var(--main) !important;
 }
 .crossed-out::before {
   content: '';

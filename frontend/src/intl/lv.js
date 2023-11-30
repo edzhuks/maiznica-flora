@@ -284,7 +284,7 @@ const lv = {
   contact_info: 'Contact info',
   catalogue: 'Katalogs',
   unlisted: 'Neredzami',
-  unavailable: 'Nepārdodās',
+  unavailable: 'Pasūtījuma',
   uncategorized: 'Nekategorizēti',
   active: 'Aktīvie',
   inactive: 'Neaktīvie',

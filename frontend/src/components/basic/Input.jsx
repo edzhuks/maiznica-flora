@@ -63,7 +63,8 @@ const Input = ({
                 ? 'label-active'
                 : ''
             } ${required ? 'required' : ''}`,
-          menu: () => 'is_surface',
+          menu: () => 'is-surface',
+          singleValue: () => 'main',
         }}
         components={{
           ValueContainer: CustomValueContainer,

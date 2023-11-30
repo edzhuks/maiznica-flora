@@ -32,8 +32,6 @@ const CarouselRight = styled(CarouselLeft)`
   justify-content: end;
 `
 
-const CarouselImages = styled.div``
-
 const CarouselImage = styled.img`
   box-shadow: var(--shadow);
   width: 100%;
@@ -47,8 +45,10 @@ const CarouselImage = styled.img`
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+  display: none;
   &.fade-in {
     opacity: 1;
+    display: block;
   }
 `
 
@@ -120,7 +120,7 @@ const Carousel = ({ banners, className }) => {
           size="2rem"
         />
       </CarouselLeft>
-      <CarouselImages>
+      <div>
         {banners.length > 0 &&
           banners.map((bannerItem, index) => (
             <CarouselItem
@@ -131,7 +131,7 @@ const Carousel = ({ banners, className }) => {
           ))}
 
         <div style={{ width: '100%', aspectRatio: '1.8' }} />
-      </CarouselImages>
+      </div>
       <CarouselRight
         onClick={() => {
           setActiveImage((activeImage + 1) % banners.length)
