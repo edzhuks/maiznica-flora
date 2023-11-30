@@ -20,7 +20,7 @@
   --bad: #bd5757;
   --secondary: #777;
   --almost-main: #555;
-  --background: #eee;
+  --background: #f1f1f1;
   --white: #eee;
 }
 @media (prefers-color-scheme: dark) {
@@ -482,13 +482,14 @@ input:disabled {
   text-transform: uppercase;
   text-align: center;
   font-family: 'Roboto Slab';
-  font-size: 3rem;
+  color: var(--white);
 }
 .big-text {
   text-align: center;
   font-family: 'Roboto Slab', serif;
   font-size: 1.5rem;
   line-height: 2.2rem;
+  color: var(--white);
 }
 .surface {
   background-color: var(--surface);
