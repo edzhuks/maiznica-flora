@@ -21,15 +21,24 @@ router.post('/', async (request, response) => {
   const { password, email, admin, maintainer, emailVerified } = request.body
 
   if (!password) {
-    return response.status(400).json({ error: 'password is required' })
+    return response
+      .status(400)
+      .json({ error: { en: 'password is required', lv: 'Parole ir obligāta' } })
   }
   if (!email) {
-    return response.status(400).json({ error: 'email is required' })
+    return response
+      .status(400)
+      .json({ error: { en: 'email is required', lv: 'E-pasts ir obligāts' } })
   }
 
   let user = await User.findOne({ email })
   if (user) {
-    return response.status(400).json({ error: 'This email is already used.' })
+    return response.status(400).json({
+      error: {
+        en: 'This email is already used.',
+        lv: 'Konts ar šādu e-pastu jau eksistē',
+      },
+    })
   }
 
   if (
@@ -39,8 +48,10 @@ router.post('/', async (request, response) => {
     !/[a-zA-Z]/.test(password)
   ) {
     return response.status(400).json({
-      error:
-        'Password too weak. Letter, Number and one of !@#$%^&*  is required.',
+      error: {
+        en: 'Password is too weak',
+        lv: 'Parole par vāju',
+      },
     })
   }
 
@@ -96,7 +107,9 @@ router.post('/address', userExtractor, async (req, res) => {
     !req.body.street ||
     !req.body.postIndex
   ) {
-    return res.status(400).json({ error: 'Missing required fields' })
+    return res.status(400).json({
+      error: { en: 'Missing required fields', lv: 'Trūkst obligāto lauku' },
+    })
   }
   let user = await User.findById(req.user.id)
   const address = new Address(req.body)
@@ -116,7 +129,12 @@ router.put('/address', userExtractor, async (req, res) => {
     !req.body.id ||
     !req.body.postIndex
   ) {
-    return res.status(400).json({ error: 'Missing required fields or id' })
+    return res.status(400).json({
+      error: {
+        en: 'Missing required fields or ID',
+        lv: 'Trūkst obligāto lauku vai ID',
+      },
+    })
   }
   await Address.updateOne({ _id: req.body.id }, req.body)
   const address = await Address.findById(req.body.id)
@@ -131,12 +149,19 @@ router.post('/initiate_reset_password', async (request, response) => {
   const { email } = request.body
 
   if (!email) {
-    return response.status(400).json({ error: 'email is required' })
+    return response
+      .status(400)
+      .json({ error: { en: 'email is required', lv: 'E-pasts ir obligāts' } })
   }
 
   let user = await User.findOne({ email })
   if (!user) {
-    return response.status(404).json({ error: 'This email is not registered.' })
+    return response.status(404).json({
+      error: {
+        en: 'This email is not registered.',
+        lv: 'Nav konta ar šādu e-pastu',
+      },
+    })
   }
 
   const resetToken = crypto.randomBytes(128).toString('base64url')
@@ -156,14 +181,22 @@ router.post('/reset_password', async (request, response) => {
   const { token, password } = request.body
 
   if (!token) {
-    return response.status(400).json({ error: 'token is required' })
+    return response.status(400).json({
+      error: {
+        en: 'token is required',
+        lv: 'Nav norādīta paroles atjaunošanas pilnvara',
+      },
+    })
   }
 
   let user = await User.findOne({ resetToken: token })
   if (!user) {
-    return response
-      .status(404)
-      .json({ error: 'Cannot find a user with that token.' })
+    return response.status(404).json({
+      error: {
+        en: 'Cannot find a user with that token.',
+        lv: 'Neatrada kontu',
+      },
+    })
   }
   user.resetToken = undefined
   if (Date.now() - user.resetTokenCreatedAt < 1000 * 60 * 60) {
@@ -173,23 +206,35 @@ router.post('/reset_password', async (request, response) => {
     await user.save()
     return response.status(200).send()
   }
-  return response.status(400).json({ error: 'The token has expired' })
+  return response.status(400).json({
+    error: { en: 'The token has expired', lv: 'Pilnvara ir izbeigusies' },
+  })
 })
 
 router.post('/change_password', userExtractor, async (request, response) => {
   const { oldPassword, newPassword } = request.body
 
   if (!oldPassword) {
-    return response.status(400).json({ error: 'Previous password is required' })
+    return response.status(400).json({
+      error: {
+        en: 'Previous password is required',
+        lv: 'Jānorāda iepriekšējā parole',
+      },
+    })
   }
   if (!newPassword) {
-    return response.status(400).json({ error: 'New password is required' })
+    return response.status(400).json({
+      error: { en: 'New password is required', lv: 'Jānorāda jaunā parole' },
+    })
   }
   let user = await User.findById(request.user.id)
   if (!user) {
-    return response
-      .status(404)
-      .json({ error: 'Cannot find a user with that token.' })
+    return response.status(404).json({
+      error: {
+        en: 'Cannot find a user with that token.',
+        lv: 'Neatrada kontu',
+      },
+    })
   }
   const passwordCorrect = await bcrypt.compare(oldPassword, user.passwordHash)
 
@@ -200,7 +245,12 @@ router.post('/change_password', userExtractor, async (request, response) => {
     await user.save()
     return response.status(200).send()
   }
-  return response.status(400).json({ error: 'Previous password incorrect.' })
+  return response.status(400).json({
+    error: {
+      en: 'Previous password incorrect.',
+      lv: 'Iepriekšējā parole ir nepareiza',
+    },
+  })
 })
 
 router.delete('/', userExtractor, async (request, response) => {
@@ -212,7 +262,10 @@ router.delete('/', userExtractor, async (request, response) => {
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
-      error: 'invalid email or password',
+      error: {
+        en: 'invalid email or password',
+        lv: 'Nepareizs e-pasts vai parole',
+      },
     })
   }
   await User.deleteOne({ _id: user._id })

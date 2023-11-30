@@ -281,6 +281,14 @@ const de = {
   new_category: 'Neue Kategorie',
   page_not_found: 'Seite nicht gefunden',
   to_home: 'Zur Homepage',
+  reason: 'Grund',
+  delivered: 'Geliefert',
+  picked_up: 'Abgeholt',
+  confirm_make_completed: 'Ist die Bestellung abgeschlossen?',
+  quantity: 'Stk.',
+  resend_receipt: 'Erneut per E-Mail senden',
+  special_order:
+    'Wird auf Anfrage erstellt.\nDie Bestellung wird innerhalb von 10 Arbeitstagen ausgeführt.',
 }
 
 export default de

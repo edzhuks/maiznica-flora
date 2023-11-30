@@ -241,11 +241,11 @@ const lv = {
   phone_use_info:
     'Jūs saņemsiet visu pasūtījuma informāciju pa e-pastu.\nJa vēlaties, varat norādīt telefona numuru vieglākai saziņai.',
   delivery_bakery: 'Saņemt maiznīcā',
-  delivery_courrier: 'Piegāde ar DPD kurjeru',
+  delivery_courrier: 'Piegāde ar kurjeru',
   delivery_pickupPoint: 'Piegāde uz DPD pakomātu',
   delivery_time_bakery: 'Nākamajā darbadienā',
-  delivery_time_courrier: '2 - 3 dienās',
-  delivery_time_pickupPoint: '2 - 3 dienās',
+  delivery_time_courrier: '2 - 7 dienās',
+  delivery_time_pickupPoint: '2 - 7 dienās',
   toast_pickup_point_data:
     'Lūdzu ievadiet visu piegādei nepieciešamo infromāciju!',
   price_mismatch:
@@ -291,6 +291,14 @@ const lv = {
   new_category: 'Jauna kategorija',
   page_not_found: 'Lapa netika atrasta',
   to_home: 'Uz sākumlapu',
+  reason: 'Iemesls',
+  delivered: 'Piegādāts',
+  picked_up: 'Saņemts',
+  confirm_make_completed: 'Pasūtījums ir pabeigts?',
+  quantity: 'gab.',
+  resend_receipt: 'Nosūtīt rēķinu uz e-pastu',
+  special_order:
+    'Gatavots pēc pasūtījuma.\nViss pasūtījums tiks sagatavots 10 darbadienu laikā.',
 }
 
 export default lv

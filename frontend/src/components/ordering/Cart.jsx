@@ -1,5 +1,6 @@
 import ProductListItem from '../productList/ProductListItem'
 import { useSelector } from 'react-redux'
+import CartProductItem from './CartProductItem'
 
 const Cart = ({ content }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -9,17 +10,15 @@ const Cart = ({ content }) => {
       {content && (
         <div>
           {content.length > 0 ? (
-            <div className="row stretch no-row-gap">
+            <div className="order-table cart-table">
               {content.map((item, index) => (
-                <ProductListItem
+                <CartProductItem
                   inCart
                   quantity={item.quantity}
                   product={item.product}
                   key={item.product.id}
                 />
               ))}
-              <div className="spacer-300" />
-              <div className="spacer-300" />
             </div>
           ) : (
             <h3 className="card-heading">{lang.empty_cart}</h3>

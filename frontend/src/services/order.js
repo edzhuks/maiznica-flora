@@ -37,9 +37,13 @@ const useOrderService = () => {
     return request.then((response) => response.data)
   }
 
-  const makeReadyForPickup = (id) => {
+  const makeReadyForPickup = (id, { message }) => {
     const config = makeConfig()
-    const request = axios.put(`${baseURL}/ready_for_pickup`, { id }, config)
+    const request = axios.put(
+      `${baseURL}/ready_for_pickup`,
+      { id, message },
+      config
+    )
     return request.then((response) => response.data)
   }
   const makeCompleted = (id) => {

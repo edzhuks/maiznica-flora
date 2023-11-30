@@ -36,7 +36,7 @@ const SmallPrice = ({
         style={style}>
         <p>
           <span className="hint-text small m-r-s">
-            {`${lang.when_buying} ${bulkThreshold} ${lang.or_more} `}
+            {`${lang.when_buying} ${bulkThreshold}+ `}
           </span>
           <span className="price-main accented">
             <strong>{centsToEuro(bulkPrice)}</strong>
@@ -45,7 +45,7 @@ const SmallPrice = ({
 
         <p>
           <span className="hint-text small m-r-s">{`${lang.when_buying} 1`}</span>
-          <span className="price-main medium">{centsToEuro(price)}</span>
+          <span className="price-main medium small">{centsToEuro(price)}</span>
         </p>
       </div>
     )

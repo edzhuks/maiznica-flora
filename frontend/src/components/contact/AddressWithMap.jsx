@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
 import { useEffect } from 'react'
-const MapContainerContainer = styled.div`
-  height: ${(props) => (props.theme.isMobile ? '300px' : '400px')};
-  width: 100% !important;
-`
+
 const Recenter = ({ latlon }) => {
   const map = useMap()
   useEffect(() => {
@@ -20,7 +17,7 @@ const AddressWithMap = ({ latlon, ...props }) => {
           <div
             className="card"
             style={{ flex: '10 0 60%' }}>
-            <MapContainerContainer>
+            <div className="map-container">
               <MapContainer
                 style={{ height: '100%', width: '100%' }}
                 center={latlon}
@@ -34,7 +31,7 @@ const AddressWithMap = ({ latlon, ...props }) => {
                 <Marker position={latlon} />
                 {latlon && <Recenter latlon={latlon} />}
               </MapContainer>
-            </MapContainerContainer>
+            </div>
           </div>
           {props.children && (
             <div

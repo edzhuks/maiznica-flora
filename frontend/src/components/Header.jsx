@@ -27,14 +27,14 @@ const pop = keyframes`
     transform: scale(80%);
   }
   20%{
-    color: ${(props) => props.theme.main};
+    color: var(--accent);
 
   }
   50%{
     transform: scale(200%);
   }
   80%{
-    color: ${(props) => props.theme.main};
+    color: var(--accent);
 
   }90%{
     transform: scale(90%);
@@ -60,7 +60,7 @@ const CartBadge = styled.div`
   bottom: -0.7rem;
   /* margin-right: -15px; */
   /* margin-bottom: -15px; */
-  background: ${(props) => props.theme.main};
+  background: var(--accent);
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 100%;
@@ -68,7 +68,7 @@ const CartBadge = styled.div`
     display: block;
     text-align: center;
     width: 100%;
-    color: ${(props) => props.theme.white};
+    color: var(--surface);
     margin-top: 1px;
     font-size: 1rem;
   }
@@ -81,11 +81,11 @@ const Lang = styled.div`
     transition: 0.2s;
     box-shadow: none;
     &:hover {
-      background: ${(props) => props.theme.main};
-      color: ${(props) => props.theme.white};
+      background: var(--main);
+      color: var(--surface);
     }
-    background: ${(props) => props.theme.lighter};
-    color: ${(props) => props.theme.dark};
+    background: var(--subtler);
+    color: var(--almost-main);
     font-size: 12px;
     font-weight: bold;
     padding: 8px;
@@ -102,7 +102,7 @@ const MobileLang = styled(Lang)`
 `
 
 const Logo = styled.img`
-  height: calc(${(props) => props.theme.headerHeight} - 10px);
+  height: calc(var(--header-height) - 10px);
 `
 
 const Header = () => {

@@ -41,6 +41,7 @@ const Footer = () => {
                 to="/privacy_policy">
                 {lang.privacy_policy}
               </Link>
+              <p className="card-text">© 2023 Edgars Gaisiņš</p>
             </div>
           </div>
         </div>

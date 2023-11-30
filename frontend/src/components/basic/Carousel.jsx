@@ -49,7 +49,6 @@ const CarouselImage = styled.img`
   z-index: 1;
   &.fade-in {
     opacity: 1;
-    z-index: 2;
   }
 `
 
@@ -60,13 +59,15 @@ const CarouselIndicators = styled.div`
   left: 0;
   bottom: 0;
   justify-content: center;
+  z-index: 2;
 `
 
 const CarouselIndicator = styled.div`
   width: 35px;
   height: 5px;
   margin: 10px 5px;
-  background-color: ${(props) => (props.active ? 'gray' : 'lightgray')};
+  background-color: ${(props) =>
+    props.active ? 'var(--subtle)' : 'var(--subtler)'};
   transition: 0.5s;
 `
 
@@ -99,7 +100,7 @@ const Carousel = ({ banners, className }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveImage((activeImage) => (activeImage + 1) % banners.length)
-    }, 6000)
+    }, 12000)
     setInt(interval)
 
     return () => clearInterval(interval)

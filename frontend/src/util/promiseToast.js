@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 
 const useToast = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const selectedLang = useSelector((state) => state.lang.selectedLang)
   const showPromiseToast = ({ promise, successMessage }) => {
     toast.promise(promise, {
       success: successMessage ? successMessage : lang.toast_success,
@@ -11,11 +12,13 @@ const useToast = () => {
         render({ data }) {
           return (
             <>
-              <p>{lang.toast_failed}</p>
               {data.response.data.error ? (
-                <p>Reason: {data.response.data.error}</p>
+                <p>
+                  {data.response.data.error[selectedLang] ||
+                    data.response.data.error.en}
+                </p>
               ) : (
-                <></>
+                <p>{lang.toast_failed}</p>
               )}
             </>
           )
@@ -27,34 +30,47 @@ const useToast = () => {
     toast.promise(promise, {
       error: {
         render({ data }) {
-          if (data.response.status === 403) {
-            return (
-              <>
-                <p>{lang.toast_unauthorized}</p>
-                {data.response.data.error ? (
-                  <p>Reason: {data.response.data.error}</p>
-                ) : (
-                  <></>
-                )}
-              </>
-            )
-          } else if (data.response.status === 400) {
-            return (
-              <>
-                <p>{lang.toast_failed}</p>
-                {data.response.data.error ? (
-                  <p>Reason: {data.response.data.error}</p>
-                ) : (
-                  <></>
-                )}
-              </>
-            )
-          }
+          return (
+            <>
+              {data.response.data && data.response.data.error ? (
+                <p>
+                  {data.response.data.error[selectedLang] ||
+                    data.response.data.error.en}
+                </p>
+              ) : (
+                <>
+                  {data.response.status === 403 ? (
+                    <p>{lang.toast_unauthorized}</p>
+                  ) : (
+                    <p>{lang.toast_failed}</p>
+                  )}
+                </>
+              )}
+            </>
+          )
         },
       },
     })
   }
-  return { showPromiseToast, showErrorToast }
+  const showErrorToastNoPromise = (error) => {
+    toast.error(
+      error.response.data && error.response.data.error ? (
+        <p>
+          {error.response.data.error[selectedLang] ||
+            error.response.data.error.en}
+        </p>
+      ) : (
+        <>
+          {error.response.status === 403 ? (
+            <p>{lang.toast_unauthorized}</p>
+          ) : (
+            <p>{lang.toast_failed}</p>
+          )}
+        </>
+      )
+    )
+  }
+  return { showPromiseToast, showErrorToast, showErrorToastNoPromise }
 }
 
 export default useToast

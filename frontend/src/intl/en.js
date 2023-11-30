@@ -161,7 +161,7 @@ const en = {
   export_manager: 'Export Manager',
   bread_manager: 'Bread Production and Quality Manager',
   pastry_manager: 'Pastry Production and Quality Manager',
-  currently_unavailable: 'Out of stock',
+  currently_unavailable: 'Only by request',
   forgot_password: 'Forgot your password? Click here.',
   reset_password: 'Reset password',
   send_reset_instructions: 'Send reset email',
@@ -275,6 +275,14 @@ const en = {
   new_category: 'New category',
   page_not_found: 'Page not found',
   to_home: 'To homepage',
+  reason: 'Reason',
+  delivered: 'Delivered',
+  picked_up: 'Picked up',
+  confirm_make_completed: 'Is the order completed?',
+  quantity: 'pcs.',
+  resend_receipt: 'Resend receipt email',
+  special_order:
+    'Prepared upon request.\nThe order will be done within 10 working days.',
 }
 
 export default en

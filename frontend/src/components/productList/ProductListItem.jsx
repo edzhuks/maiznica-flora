@@ -1,8 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useEffect } from 'react'
-import { Plus } from '@styled-icons/entypo/Plus'
-import { Minus } from '@styled-icons/entypo/Minus'
-import { Trash } from '@styled-icons/boxicons-solid/Trash'
+
 import { gramsToKilos } from '../../util/convert'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from '../../reducers/cartReducer'
@@ -10,9 +8,10 @@ import UserContext from '../../contexts/userContext'
 import Price from '../basic/Price'
 import Input from '../basic/Input'
 import useField from '../../hooks/useField'
+import { Warning } from '@styled-icons/ionicons-solid/Warning'
 
 const ProductListItem = ({ inCart, product, quantity }) => {
-  const { addItem, removeItem, changeQuantityOfItem } = useCartServiceDispatch()
+  const { addItem } = useCartServiceDispatch()
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user] = useContext(UserContext)
@@ -31,38 +30,27 @@ const ProductListItem = ({ inCart, product, quantity }) => {
   useEffect(() => {
     quantityToAdd.changeValue(product.bulkThreshold ? product.bulkThreshold : 1)
   }, [])
-  const removeFromCart = () => {
-    dispatch(removeItem(product))
-  }
-
-  const addMore = async () => {
-    dispatch(changeQuantityOfItem({ productId: product.id, quantity: 1 }))
-  }
-
-  const removeSome = async () => {
-    dispatch(changeQuantityOfItem({ productId: product.id, quantity: -1 }))
-  }
 
   return (
     <div
       className="card product-card row no-wrap no-gap stretch m-d"
-      style={{ flex: '1 1 300px' }}>
+      style={{ flex: '1 1 400px' }}>
       <Link to={`/products/${product.id}`}>
         <div className="product-image-small">
-          <img src={`/images/md_${product.image}`} />
+          <img src={`/images/lg_${product.image}`} />
         </div>
       </Link>
-      <div className="column no-gap">
+      <div className="p column no-gap">
         <Link
-          className="column no-gap"
+          className="column "
           to={`/products/${product.id}`}>
-          <h3 className="product-title-small m m-d-0">
+          <h3 className="product-title-small ">
             {product.name[selectedLang] || product.name.lv}{' '}
             {gramsToKilos(product.weight)}
           </h3>
           <div
-            className="center-vh"
-            style={{ flex: '10 1 auto' }}>
+            className=" center-vh"
+            style={{ flex: '1 1 auto' }}>
             <Price
               price={product.price}
               discount={product.discount}
@@ -73,50 +61,25 @@ const ProductListItem = ({ inCart, product, quantity }) => {
             />
           </div>
         </Link>
-        {!product.outOfStock ? (
-          <>
-            {inCart ? (
-              <div className="row m evenly m-t-0 align-cross-center">
-                <button
-                  className="btn inverted icon-button"
-                  onClick={removeSome}>
-                  <Minus className="icon-b" />
-                </button>
-                <p style={{ fontSize: '1.3rem' }}>{quantity}</p>
-                <button
-                  className="btn inverted icon-button"
-                  onClick={addMore}>
-                  <Plus className="icon-b" />
-                </button>
-                <button
-                  className="btn inverted icon-button"
-                  onClick={removeFromCart}>
-                  <Trash className="icon-m" />
-                </button>
-              </div>
-            ) : (
-              <div className="row align-cross-end m m-t-0 between no-gap">
-                <Input
-                  {...quantityToAdd}
-                  width={70}
-                  className="m-0"
-                />
+        <div className="row align-cross-end m-t-0 end ">
+          {product.outOfStock && (
+            <div className="tooltip m-l">
+              <Warning className="icon-b subtle" />
+              <span className="tooltiptext">{lang.special_order}</span>
+            </div>
+          )}
+          <Input
+            {...quantityToAdd}
+            width={70}
+            className="m-0"
+          />
 
-                <button
-                  className="btn"
-                  onClick={addToCart}>
-                  {lang.buy}
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <div
-            className="center-vh"
-            style={{ flex: '1 1 auto' }}>
-            <p className="hint-text">{lang.currently_unavailable}</p>
-          </div>
-        )}
+          <button
+            className="btn"
+            onClick={addToCart}>
+            {lang.buy}
+          </button>
+        </div>
       </div>
     </div>
   )

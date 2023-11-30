@@ -67,7 +67,7 @@ const makeOrderID = () => {
     year: 'numeric',
   })
   const parts = formatterFull.formatToParts(new Date())
-  return `${parts[4].value}${parts[2].value}${parts[0].value}-${Math.floor(
+  return `${parts[4].value}${parts[0].value}${parts[2].value}-${Math.floor(
     Math.random() * (10000000 - 1000000) + 1000000
   )}`
 }

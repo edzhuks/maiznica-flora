@@ -4,6 +4,8 @@ import useOrderService from '../services/order'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import useToast from '../util/promiseToast'
+import { calculateItemPrice } from '../util/convert'
 const initialState = {
   content: [],
   deliveryMethod: undefined,
@@ -86,23 +88,10 @@ const cartSlice = createSlice({
 })
 const selectContent = (state) => state.cart.content
 const selectDeliveryMethod = (state) => state.cart.deliveryMethod
+
 const selectCartTotal = createSelector([selectContent], (content) =>
   content
-    .map((i) => {
-      if (
-        i.product.discount &&
-        Date.parse(i.product.discount.startDate) <= new Date() &&
-        Date.parse(i.product.discount.endDate) >= new Date()
-      ) {
-        return i.product.discount.discountPrice * i.quantity
-      } else if (
-        i.product.bulkThreshold &&
-        i.product.bulkThreshold <= i.quantity
-      ) {
-        return i.product.bulkPrice * i.quantity
-      }
-      return i.product.price * i.quantity
-    })
+    .map((i) => calculateItemPrice(i))
     .reduce((acc, cur) => {
       return acc + cur
     }, 0)
@@ -170,12 +159,16 @@ export const {
 
 export const useCartServiceDispatch = () => {
   const cartService = useCartService()
+  const { showErrorToastNoPromise } = useToast()
   const loadCart = () => {
     return async (dispatch) => {
       cartService
         .getCart()
         .then((response) => dispatch(setCart(response.data)))
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
 
@@ -188,7 +181,10 @@ export const useCartServiceDispatch = () => {
           dispatch(animateCart())
           dispatch(clearIframe())
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
 
@@ -201,7 +197,10 @@ export const useCartServiceDispatch = () => {
           dispatch(animateCart())
           dispatch(clearIframe())
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
 
@@ -228,7 +227,10 @@ export const useCartServiceDispatch = () => {
           dispatch(animateCart())
           dispatch(clearIframe())
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeDeliveryMethod = (method) => {
@@ -239,7 +241,10 @@ export const useCartServiceDispatch = () => {
           dispatch(setDeliveryMethod(response.data.deliveryMethod))
           dispatch(clearIframe())
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeCourrierAddress = (address) => {
@@ -249,7 +254,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setCourrierAddress(response.data.courrierAddress))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changePickupPointData = (data) => {
@@ -259,7 +267,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setPickupPointData(response.data.pickupPointData))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeDeliveryPhone = (phone) => {
@@ -269,7 +280,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setDeliveryPhone(response.data.deliveryPhone))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeBusinessComments = (comments) => {
@@ -279,7 +293,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setBusinessComments(response.data.businessComments))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeGeneralComments = (comments) => {
@@ -289,7 +306,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setGeneralComments(response.data.generalComments))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const changeDeliveryComments = (comments) => {
@@ -299,7 +319,10 @@ export const useCartServiceDispatch = () => {
         .then((response) =>
           dispatch(setDeliveryComments(response.data.deliveryComments))
         )
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
 
@@ -312,7 +335,10 @@ export const useCartServiceDispatch = () => {
           // dispatch(setIframe(response.data.paymentLink))
           dispatch(setPaymentReference(response.data.paymentReference))
         })
-        .catch((error) => console.log(error.response.data.error))
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
     }
   }
   const updatePaymentStatus = (paymentReference) => {

@@ -18,6 +18,7 @@ import { Mail } from '@styled-icons/entypo/Mail'
 import BaseModal from '../basic/BaseModal'
 import useField from '../../hooks/useField'
 import Input from '../basic/Input'
+import { Warning } from '@styled-icons/ionicons-solid/Warning'
 
 const AddressInfo = ({ person, email, phone, address }) => {
   return (
@@ -57,26 +58,54 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
   const orderService = useOrderService()
   useEffect(() => {
     if (order.deliveryMethod === 'courrier') {
-      name.changeValue(
-        `${order.courrierAddress.name} ${order.courrierAddress.surname}`
-      )
-      phone.changeValue(order.courrierAddress.phone)
-      street.changeValue(order.courrierAddress.street)
-      streetNo.changeValue(order.courrierAddress.house)
-      flatNo.changeValue(order.courrierAddress.apartment)
-      city.changeValue(order.courrierAddress.city)
-      postalCode.changeValue(order.courrierAddress.postIndex.replace(/\D/g, ''))
+      if (
+        order.courrierAddress.name.length +
+          order.courrierAddress.surname.length <=
+        34
+      ) {
+        name.changeValue(
+          `${order.courrierAddress.name} ${order.courrierAddress.surname}`
+        )
+      }
+      if (order.courrierAddress.phone.length <= 30) {
+        phone.changeValue(order.courrierAddress.phone)
+      }
+      if (order.courrierAddress.street.length <= 35) {
+        street.changeValue(order.courrierAddress.street)
+      }
+      if (order.courrierAddress.streetNo.length <= 8) {
+        streetNo.changeValue(order.courrierAddress.streetNo)
+      }
+      if (order.courrierAddress.flatNo.length <= 8) {
+        flatNo.changeValue(order.courrierAddress.flatNo)
+      }
+      if (order.courrierAddress.city.length <= 35) {
+        city.changeValue(order.courrierAddress.city)
+      }
+      if (order.courrierAddress.postIndex.replace(/\D/g, '') <= 7) {
+        postalCode.changeValue(
+          order.courrierAddress.postIndex.replace(/\D/g, '')
+        )
+      }
     } else if (order.deliveryMethod === 'pickupPoint') {
-      name.changeValue(
-        `${order.pickupPointData.name} ${order.pickupPointData.surname}`
-      )
-      phone.changeValue(order.pickupPointData.phone)
+      if (
+        order.pickupPointData.name.length +
+          order.pickupPointData.surname.length <=
+        34
+      ) {
+        name.changeValue(
+          `${order.pickupPointData.name} ${order.pickupPointData.surname}`
+        )
+      }
+      if (order.pickupPointData.phone.length <= 30) {
+        phone.changeValue(order.pickupPointData.phone)
+      }
     }
     email.changeValue(order.user.email)
     setParcels([
       {
         weight:
-          totalWeight > 3150 ? undefined : gramsToKilosSimple(totalWeight),
+          totalWeight > 31500 ? undefined : gramsToKilosSimple(totalWeight),
       },
     ])
   }, [order, visible])
@@ -145,7 +174,7 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
                           ${order.courrierAddress.postIndex}`}
             />
           )}
-          <p className="m-t">
+          <p className="m-t wrap-n">
             {lang.deliveryComments}:<br /> {order.deliveryComments}
           </p>
           <p className="m-t">
@@ -233,6 +262,62 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
     </BaseModal>
   )
 }
+const ReadyForPickupModal = ({ visible, close, order, submit }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const message = useField('textarea')
+  useEffect(() => {
+    message.changeValue(
+      `Pasūtījums Nr.${order.prettyID} ir gatavs saņemšanai Maiznīca Flora ražotnē:\n"Vecvaltes", Krimuldas pagasts, Siguldas novads\nTālrunis: +371 67521291`
+    )
+  }, [order, visible])
+  const orderService = useOrderService()
+
+  const onSubmit = () => {
+    orderService
+      .makeReadyForPickup(order.id, {
+        message: message.value,
+      })
+      .then((response) => submit(response))
+  }
+
+  const onClose = () => {
+    message.clear()
+
+    close()
+  }
+
+  return (
+    <BaseModal
+      visible={visible}
+      onClose={onClose}
+      title={lang.order_status.ready_for_pickup}
+      onSubmit={onSubmit}>
+      <div className="row">
+        <div
+          className="column p"
+          style={{ maxWidth: '400px' }}>
+          <h3 className="card-heading">{lang.deliveryComments}</h3>
+          <p className="card-text wrap-n">{order.deliveryComments}</p>
+          <div className="card-divider" />
+          <h3 className="card-heading">{lang.businessComments}</h3>
+          <p className="card-text wrap-n">{order.businessComments}</p>
+          <div className="card-divider" />
+          <h3 className="card-heading">{lang.generalComments}</h3>
+          <p className="card-text wrap-n">{order.generalComments}</p>
+        </div>
+        <form className="p">
+          <Input
+            {...message}
+            required
+            width="min(500px, 90vw)"
+            expanded="true"
+            label={lang.message}
+          />
+        </form>
+      </div>
+    </BaseModal>
+  )
+}
 const ExpandedOrder = ({ withManagement }) => {
   const id = useParams().id
   const orderService = useOrderService()
@@ -242,20 +327,18 @@ const ExpandedOrder = ({ withManagement }) => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
 
   const [makingShipment, setMakingShipment] = useState(false)
+  const [makingReadyForPickup, setMakingReadyForPickup] = useState(false)
 
   useEffect(() => {
     orderService.getById(id).then((response) => setOrder(response))
   }, [id])
 
-  const makeReadyForPickup = () => {
-    orderService.makeReadyForPickup(order.id).then((response) => {
-      setOrder(response)
-    })
-  }
   const makeCompleted = () => {
-    orderService.makeCompleted(order.id).then((response) => {
-      setOrder(response)
-    })
+    if (window.confirm(lang.confirm_make_completed)) {
+      orderService.makeCompleted(order.id).then((response) => {
+        setOrder(response)
+      })
+    }
   }
   const makeWaitingForCourrier = () => {
     orderService.makeWaitingForCourrier(order.id).then((response) => {
@@ -269,12 +352,20 @@ const ExpandedOrder = ({ withManagement }) => {
   }
 
   return (
-    <div>
+    <>
       {order && order.latestStatus === 'placed' && withManagement && (
         <ShipmentModal
           order={order}
           visible={makingShipment}
           close={() => setMakingShipment(false)}
+          submit={setOrder}
+        />
+      )}
+      {order && order.latestStatus === 'placed' && withManagement && (
+        <ReadyForPickupModal
+          order={order}
+          visible={makingReadyForPickup}
+          close={() => setMakingReadyForPickup(false)}
           submit={setOrder}
         />
       )}
@@ -285,7 +376,7 @@ const ExpandedOrder = ({ withManagement }) => {
         }}>
         {order && (
           <div>
-            <div className="card row between p m-d m-t-s">
+            <div className="card row between p m-d  ">
               <h3 className="card-heading">
                 {formatFull(new Date(order.datePlaced))}
               </h3>
@@ -324,7 +415,12 @@ const ExpandedOrder = ({ withManagement }) => {
                     {i.product.name[selectedLang]}{' '}
                     <b>{gramsToKilos(i.product.weight)}</b>
                   </p>
-                  <div className="spacer" />
+                  {i.product.outOfStock && (
+                    <div className="tooltip m-l">
+                      <Warning className="icon-b bad" />
+                      <span className="tooltiptext">{lang.special_order}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -349,18 +445,10 @@ const ExpandedOrder = ({ withManagement }) => {
                     {order.latestStatus === 'placed' && withManagement && (
                       <button
                         className="btn"
-                        onClick={makeReadyForPickup}>
+                        onClick={() => setMakingReadyForPickup(true)}>
                         {lang.ready}
                       </button>
                     )}
-                    {order.latestStatus === 'ready_for_pickup' &&
-                      withManagement && (
-                        <button
-                          className="btn"
-                          onClick={makeCompleted}>
-                          {lang.order_status.completed}
-                        </button>
-                      )}
                   </>
                 )}
                 {order.deliveryMethod === 'pickupPoint' && (
@@ -424,16 +512,18 @@ const ExpandedOrder = ({ withManagement }) => {
                             {lang.handed_to_courrier}
                           </button>
                         )}
-                        {order.latestStatus === 'delivering' && (
-                          <button
-                            className="btn"
-                            onClick={makeCompleted}>
-                            {lang.completed}
-                          </button>
-                        )}
                       </>
                     )}
                   </>
+                )}
+                {order.latestStatus !== 'completed' && withManagement && (
+                  <button
+                    className="btn m-l"
+                    onClick={makeCompleted}>
+                    {order.deliveryMethod === 'bakery'
+                      ? lang.picked_up
+                      : lang.delivered}
+                  </button>
                 )}
               </div>
               <div className="card p">
@@ -467,27 +557,34 @@ const ExpandedOrder = ({ withManagement }) => {
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.deliveryComments}</h3>
                 <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text">{order.deliveryComments}</p>
+                <p className="card-text wrap-n">{order.deliveryComments}</p>
               </div>
             )}
             {order.businessComments && (
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.businessComments}</h3>
                 <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text">{order.businessComments}</p>
+                <p className="card-text wrap-n">{order.businessComments}</p>
               </div>
             )}
             {order.generalComments && (
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.generalComments}</h3>
                 <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text">{order.generalComments}</p>
+                <p className="card-text wrap-n">{order.generalComments}</p>
               </div>
+            )}
+            {!withManagement && (
+              <button
+                className="btn"
+                onClick={() => orderService.resendEmail(order.id)}>
+                {lang.resend_receipt}
+              </button>
             )}
           </div>
         )}
       </div>
-    </div>
+    </>
   )
 }
 

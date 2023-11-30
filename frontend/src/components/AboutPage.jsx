@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
-
 const AboutTextList = styled.ul`
   width: 70%;
   margin: 0 auto;
@@ -86,11 +85,9 @@ const AboutPage = () => {
   return (
     <div>
       <div className="big-image">
-        <h1 className="bigger-title surface-color p-b">{lang.about_us}</h1>
+        <h1 className="bigger-title  p-b">{lang.about_us}</h1>
         {selectedLang === 'lv' && (
-          <p className="big-text surface-color p-b p-t-0">
-            {lang.about_text_top}
-          </p>
+          <p className="big-text  p-b p-t-0">{lang.about_text_top}</p>
         )}
       </div>
 

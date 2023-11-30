@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import useField from '../../hooks/useField'
 import { toast } from 'react-toastify'
 import useContactService from '../../services/contact'
+import useToast from '../../util/promiseToast'
 
 const ContactForm = (props) => {
   const name = useField('text')
@@ -16,7 +17,7 @@ const ContactForm = (props) => {
   const message = useField('textarea')
   const captcha = useField('text')
   const contactService = useContactService()
-
+  const { showErrorToastNoPromise } = useToast
   useEffect(() => {
     loadCaptchaEnginge(6)
   }, [])
@@ -39,7 +40,7 @@ const ContactForm = (props) => {
           email.clear()
           message.clear()
         })
-        .catch((error) => toast.error(error.response.data.error))
+        .catch((error) => showErrorToastNoPromise(error))
     } else {
       toast.error(lang.captcha_mismatch)
       loadCaptchaEnginge(6)

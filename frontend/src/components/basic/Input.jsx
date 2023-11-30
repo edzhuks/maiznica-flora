@@ -63,6 +63,7 @@ const Input = ({
                 ? 'label-active'
                 : ''
             } ${required ? 'required' : ''}`,
+          menu: () => 'is_surface',
         }}
         components={{
           ValueContainer: CustomValueContainer,
@@ -172,9 +173,10 @@ const Input = ({
             case 'textarea':
               return (
                 <textarea
+                  className={props.expanded ? 'expanded' : ''}
                   required={required}
                   {...props}
-                  placeholder=" "
+                  placeholder={props.placeholder ? props.placeholder : ' '}
                 />
               )
 

@@ -7,6 +7,7 @@ import {
   selectCartTotal,
   selectDeliveryCost,
 } from '../../reducers/cartReducer'
+import { Warning } from '@styled-icons/ionicons-solid/Warning'
 
 const SummaryTile = ({ title, subtitle, price, price2 }) => {
   return (
@@ -27,11 +28,10 @@ const SummaryTile = ({ title, subtitle, price, price2 }) => {
 const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
   const total = useSelector(selectCartTotal)
   const deliveryCost = useSelector(selectDeliveryCost)
-  const overThreshold = useSelector(selectCartOverThreshold)
-  console.log(total)
-  console.log(deliveryCost)
-  console.log(overThreshold)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const specialOrder = useSelector((state) =>
+    state.cart.content.find((i) => i.product.outOfStock)
+  )
   return (
     <div className="card">
       <SummaryTile
@@ -52,9 +52,17 @@ const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
         price={deliveryCost[0] + total}
         price2={deliveryCost[1] && deliveryCost[1] + total}
       />
-
+      {specialOrder && (
+        <div className="row p-h m-d no-wrap bad align-cross-center">
+          <Warning
+            className="icon-b "
+            style={{ flexShrink: '0' }}
+          />
+          <p className="card-text wrap-n">{lang.special_order}</p>
+        </div>
+      )}
       {nextStage && (
-        <div className="row end p">
+        <div className="row end p p-t-0">
           <Link
             to={`/order/${nextStage}`}
             onClick={(e) => {

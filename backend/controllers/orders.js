@@ -1,24 +1,19 @@
 const express = require('express')
-const Cart = require('../models/cart')
 const Order = require('../models/order')
-const {
-  userExtractor,
-  adminRequired,
-  verificationRequired,
-} = require('../util/middleware')
-const Address = require('../models/address')
-const { sendReceiptEmail } = require('../util/emails')
-const { getPrice } = require('../util/functions')
-const {
-  TEST_MODE,
-  BANK_API_USERNAME,
-  BANK_API_PASSWORD,
-  DPD_API_URL,
-  DPD_AUTH_HEADER,
-} = require('../util/config')
+const { userExtractor, adminRequired } = require('../util/middleware')
+const { sendReceiptEmail, sendReadyForPickupEmail } = require('../util/emails')
+const { DPD_API_URL, DPD_AUTH_HEADER, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
 const axios = require('axios')
-const crypto = require('crypto')
+
+const idRequired = async (request, response, next) => {
+  if (!request.body.id) {
+    return res.status(400).send({
+      error: { en: 'ID is required', lv: 'nav norādīts pasūtījuma ID' },
+    })
+  }
+  next()
+}
 
 const updateStatus = async (id, status) => {
   const order = await Order.findById(id).populate([
@@ -35,29 +30,29 @@ router.put(
   '/ready_for_pickup',
   userExtractor,
   adminRequired,
+  idRequired,
   async (req, res) => {
-    if (!req.body.id) {
-      return res.status(400).send({ error: 'ID is required' })
-    }
     const order = await updateStatus(req.body.id, 'ready_for_pickup')
+    sendReadyForPickupEmail(order.user.email, req.body.message)
     return res.send(order)
   }
 )
-router.put('/completed', userExtractor, adminRequired, async (req, res) => {
-  if (!req.body.id) {
-    return res.status(400).send({ error: 'ID is required' })
+router.put(
+  '/completed',
+  userExtractor,
+  adminRequired,
+  idRequired,
+  async (req, res) => {
+    const order = await updateStatus(req.body.id, 'completed')
+    return res.send(order)
   }
-  const order = await updateStatus(req.body.id, 'completed')
-  return res.send(order)
-})
+)
 router.put(
   '/ready_for_delivery',
   userExtractor,
   adminRequired,
+  idRequired,
   async (req, res) => {
-    if (!req.body.id) {
-      return res.status(400).send({ error: 'ID is required' })
-    }
     let order = await Order.findById(req.body.id).populate([
       { path: 'content', populate: { path: 'product' } },
       { path: 'user' },
@@ -120,46 +115,22 @@ router.put(
   '/waiting_for_courrier',
   userExtractor,
   adminRequired,
+  idRequired,
   async (req, res) => {
-    if (!req.body.id) {
-      return res.status(400).send({ error: 'ID is required' })
-    }
     const order = await updateStatus(req.body.id, 'waiting_for_courrier')
     return res.send(order)
   }
 )
-router.put('/delivering', userExtractor, adminRequired, async (req, res) => {
-  if (!req.body.id) {
-    return res.status(400).send({ error: 'ID is required' })
+router.put(
+  '/delivering',
+  userExtractor,
+  adminRequired,
+  idRequired,
+  async (req, res) => {
+    const order = await updateStatus(req.body.id, 'delivering')
+    return res.send(order)
   }
-  const order = await updateStatus(req.body.id, 'delivering')
-  return res.send(order)
-})
-
-router.put('/:id', userExtractor, adminRequired, async (req, res) => {
-  let newOrder = { status: req.body.status }
-  if (
-    ![
-      'placed',
-      'accepted',
-      'refused',
-      'packing',
-      'waitingForDelivery',
-      'delivering',
-      'completed',
-    ].find((s) => s === newOrder.status.status)
-  ) {
-    return res.status(400).json({ error: 'Invalid order status' })
-  }
-  newOrder.status.lastModifiedBy = req.user.id
-  newOrder.status.lastModified = new Date()
-  await Order.updateOne({ _id: req.params.id }, newOrder)
-  const order = await Order.findById(req.params.id).populate([
-    { path: 'content', populate: { path: 'product' } },
-    { path: 'status', populate: { path: 'lastModifiedBy' } },
-  ])
-  res.send(order)
-})
+)
 
 router.get('/resend_email', userExtractor, async (req, res) => {
   const order = await Order.findById(req.query.id).populate([
@@ -168,13 +139,15 @@ router.get('/resend_email', userExtractor, async (req, res) => {
   ])
   if (order.user._id.equals(req.user._id)) {
     sendReceiptEmail(
-      order.user.email,
+      [order.user.email],
       order,
       `${FRONTEND_URL}/account/previous_orders/${order._id}`
     )
     return res.send()
   }
-  return res.status(401).send({ error: 'This is not your order' })
+  return res.status(401).send({
+    error: { en: 'This is not your order', lv: 'Šis nav tavs pasūtījums' },
+  })
 })
 
 router.get('/all', userExtractor, adminRequired, async (req, res) => {
@@ -194,7 +167,9 @@ router.get('/:id', userExtractor, async (req, res) => {
   if (order.user.id === req.user.id || req.user.admin) {
     return res.send(order)
   }
-  return res.status(401).send({ error: 'This is not your order' })
+  return res.status(401).send({
+    error: { en: 'This is not your order', lv: 'Šis nav tavs pasūtījums' },
+  })
 })
 router.get('/', userExtractor, async (req, res) => {
   const orders = await Order.find({ user: req.user.id }).populate([

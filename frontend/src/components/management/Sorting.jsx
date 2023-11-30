@@ -42,9 +42,8 @@ const SortableItem = ({ id, label, image, remove }) => {
       {...listeners}>
       <div className="row no-gap align-cross-center p-r">
         <img
+          className="image-xs"
           src={`/images/xs_${image}`}
-          width={55}
-          height={55}
         />
         <p className=" p card-text">{label}</p>
         <div className="spacer" />

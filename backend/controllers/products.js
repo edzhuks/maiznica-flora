@@ -18,18 +18,24 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
   const product = await Product.findById(req.params.id)
   if (!req.body.discount) {
     return res.status(400).json({
-      error: 'No discount in request body',
+      error: { en: 'No discount in request body', lv: 'Trūkst atlaide' },
     })
   }
   if (!isPositiveInteger(req.body.discount.discountPrice)) {
     return res.status(400).json({
-      error: 'Discounted price must be a positive integer amount in cents',
+      error: {
+        en: 'Discounted price must be a positive integer amount in cents',
+        lv: 'Cenai jābūt veselam pozitīvam skaitlim centos',
+      },
     })
   }
   if (product.price < req.body.discount.discountPrice) {
-    return res
-      .status(400)
-      .json({ error: 'Discounted price must be smaller than base price' })
+    return res.status(400).json({
+      error: {
+        en: 'Discounted price must be smaller than base price',
+        lv: 'Cenai ar atlaidi jābūt mazaākai par pamata cenu',
+      },
+    })
   }
   const discount = {
     discountPrice: req.body.discount.discountPrice,
@@ -41,7 +47,10 @@ router.put('/discount/:id', userExtractor, adminRequired, async (req, res) => {
 
   if (discount.endDate < discount.startDate) {
     return res.status(400).json({
-      error: 'End date can not be earlier than start date',
+      error: {
+        en: 'End date can not be earlier than start date',
+        lv: 'Beigu datums nevar būt pirms sākuma datuma',
+      },
     })
   }
   const newProduct = await Product.findByIdAndUpdate(
@@ -82,7 +91,9 @@ router.get('/:id', optionalUser, async (req, res) => {
     _id: req.params.id,
   }).populate('relatedProducts')
   if (!product) {
-    return res.status(404).json({ error: 'The product does not exist' })
+    return res.status(404).json({
+      error: { en: 'The product does not exist', lv: 'Produkts neeksistē' },
+    })
   }
   if (req.user && req.user.admin) {
     return res.send(product)
@@ -90,6 +101,9 @@ router.get('/:id', optionalUser, async (req, res) => {
   if (!product.invisible) {
     return res.send(product)
   }
+  return res.status(404).json({
+    error: { en: 'The product does not exist', lv: 'Produkts neeksistē' },
+  })
 })
 
 router.delete('/:id', userExtractor, adminRequired, async (req, res) => {

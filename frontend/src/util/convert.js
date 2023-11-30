@@ -91,6 +91,21 @@ const calculateWeight = (contents) => {
     0
   )
 }
+const calculateItemPrice = (item) => {
+  if (
+    item.product.discount &&
+    Date.parse(item.product.discount.startDate) <= new Date() &&
+    Date.parse(item.product.discount.endDate) >= new Date()
+  ) {
+    return item.product.discount.discountPrice * item.quantity
+  } else if (
+    item.product.bulkThreshold &&
+    item.product.bulkThreshold <= item.quantity
+  ) {
+    return item.product.bulkPrice * item.quantity
+  }
+  return item.product.price * item.quantity
+}
 export {
   centsToEuro,
   countProducts,
@@ -100,4 +115,5 @@ export {
   addVat,
   useDateTimeFormat,
   gramsToKilosSimple,
+  calculateItemPrice,
 }

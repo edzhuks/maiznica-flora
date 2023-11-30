@@ -15,7 +15,7 @@ const CommentCard = ({ name, update }) => {
     }
   }, [savedComments])
   return (
-    <div className="card p-b between align-cross-center">
+    <div className="card p-m between align-cross-center">
       <h3 className="card-heading m-d-b">{lang[name]}</h3>
       <Input
         {...comment}

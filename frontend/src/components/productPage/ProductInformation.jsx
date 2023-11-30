@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Barcode } from '@styled-icons/icomoon/Barcode'
 import Price from '../basic/Price'
 import Input from '../basic/Input'
-
+import { Warning } from '@styled-icons/ionicons-solid/Warning'
 const StaticInformation = ({
   product,
   quantity,
@@ -47,24 +47,29 @@ const StaticInformation = ({
             bulkThreshold={product.bulkThreshold}
             isSmall={false}
           />
-          {!product.outOfStock ? (
-            <div className="row align-cross-end">
-              <Input
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-                type="number"
-                width={150}
-                className="m-0"
+          {product.outOfStock && (
+            <div className="row p-h-b no-wrap bad align-cross-center">
+              <Warning
+                className="icon-b "
+                style={{ flexShrink: '0' }}
               />
-              <button
-                className="btn"
-                onClick={onOrder}>
-                {lang.add_to_cart}
-              </button>
+              <p className="card-text wrap-n">{lang.special_order}</p>
             </div>
-          ) : (
-            <p className="hint-text">{lang.currently_unavailable}</p>
           )}
+          <div className="row align-cross-end">
+            <Input
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              type="number"
+              width={150}
+              className="m-0"
+            />
+            <button
+              className="btn"
+              onClick={onOrder}>
+              {lang.add_to_cart}
+            </button>
+          </div>
         </div>
         {(product.description.lv ||
           product.bio ||

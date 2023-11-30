@@ -18,7 +18,7 @@ const EditTab = styled.div`
   left: ${(props) => (props.editTabOpen ? '00px' : '-485px')};
   background: color-mix(in srgb, var(--surface) 90%, transparent);
   z-index: 2;
-  box-shadow: ${(props) => props.theme.shadow};
+  box-shadow: var(--shadow);
   padding: var(--space);
   transition: 0.5s;
 `
@@ -52,7 +52,7 @@ const BadgeSelection = ({
         return (
           <button
             key={badge}
-            className={`badge ${selected ? 'active' : ''}`}
+            className={`btn badge ${selected ? 'active' : ''}`}
             selected={selected}
             onClick={() => badgeClicked(badge, selected)}>
             {lang[badge]}
@@ -324,6 +324,7 @@ const NewProductFrom = () => {
       }}>
       <EditTab editTabOpen={editTabOpen}>
         <EditTabButton
+          className="btn"
           onClick={(e) => {
             e.preventDefault()
             setEditTabOpen(!editTabOpen)

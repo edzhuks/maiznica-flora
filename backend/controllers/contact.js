@@ -10,27 +10,37 @@ const Settings = require('../models/settings')
 
 contactRouter.post('/contact_form', async (req, res) => {
   if (!req.body.name) {
-    return res.status(400).send({ error: 'Name is required' })
+    return res
+      .status(400)
+      .send({ error: { en: 'Name is required', lv: 'Nav norādīts vārds' } })
   }
   if (!req.body.email) {
-    return res.status(400).send({ error: 'Email is required' })
+    return res
+      .status(400)
+      .send({ error: { en: 'Email is required', lv: 'Nav norādīts e-pasts' } })
   }
   if (!req.body.message) {
-    return res.status(400).send({ error: 'Message is required' })
+    return res
+      .status(400)
+      .send({ error: { en: 'Message is required', lv: 'Nav ziņojuma' } })
   }
   try {
     const settings = await Settings.findOne({})
     await sendContactFormEmail(
       settings.contactFormEmails.map((e) => e.email),
       req.body.name,
-      req.body.message
+      req.body.message,
+      req.body.email
     )
   } catch (error) {
     try {
       await sendContactFormFailedEmail(req.body.email, req.body.message)
-      return res
-        .status(400)
-        .send({ error: 'Failed to send form, please send an email' })
+      return res.status(400).send({
+        error: {
+          en: 'Failed to send form, please send an email',
+          lv: 'Neizdevās nosūtīt ziņojumu, lūdzu sazinieties pa e-pastu',
+        },
+      })
     } catch (error) {
       console.log(error)
     }
@@ -43,9 +53,12 @@ contactRouter.post('/contact_form', async (req, res) => {
     )
     return res.status(200).send()
   } catch (error) {
-    return res
-      .status(400)
-      .send({ error: 'Failed to send form, please send an email' })
+    return res.status(400).send({
+      error: {
+        en: 'Failed to send form, please send an email',
+        lv: 'Neizdevās nosūtīt ziņojumu, lūdzu sazinieties pa e-pastu',
+      },
+    })
   }
 })
 module.exports = contactRouter

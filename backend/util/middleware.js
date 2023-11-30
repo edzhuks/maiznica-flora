@@ -14,13 +14,25 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
   if (!request.token) {
-    return response.status(401).json({ error: 'token not provided' })
+    return response.status(401).json({
+      error: {
+        en: 'token not provided',
+        lv: 'Lietotāja marķieris nav norādīts',
+      },
+    })
   }
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+    return response.status(401).json({
+      error: { en: 'token invalid', lv: 'Lietotāja marķieris nepareizs' },
+    })
   }
   request.user = await User.findById(decodedToken.id)
+  if (!request.user) {
+    return response.status(401).json({
+      error: { en: 'token invalid', lv: 'Lietotāja marķieris nepareizs' },
+    })
+  }
   next()
 }
 const optionalUser = async (request, response, next) => {
@@ -34,14 +46,21 @@ const optionalUser = async (request, response, next) => {
 
 const adminRequired = async (request, response, next) => {
   if (!request.user.admin) {
-    return response.status(403).json({ error: 'Only admins can do that' })
+    return response.status(403).json({
+      error: {
+        en: 'Only admins can do that',
+        lv: 'Šo darbību var veikt tikai administratori',
+      },
+    })
   }
   next()
 }
 
 const verificationRequired = async (request, response, next) => {
   if (!request.user.emailVerified) {
-    return response.status(403).json({ error: 'Email not verified' })
+    return response.status(403).json({
+      error: { en: 'Email not verified', lv: 'E-pasts nav apstiprināts' },
+    })
   }
   next()
 }
@@ -49,7 +68,9 @@ const verificationRequired = async (request, response, next) => {
 const productChecker = async (req, res, next) => {
   const product = req.body.product
   if (!product) {
-    return res.status(400).json({ error: 'Product missing' })
+    return res
+      .status(400)
+      .json({ error: { en: 'Product missing', lv: 'Neatrada produktu' } })
   }
   if (
     !product.name ||
@@ -60,19 +81,28 @@ const productChecker = async (req, res, next) => {
     !product.ingredients.lv ||
     !product.image
   ) {
-    return res
-      .status(400)
-      .json({ error: 'Missing name, weight, price, ingredients, or image' })
+    return res.status(400).json({
+      error: {
+        en: 'Missing name, weight, price, ingredients, or image',
+        lv: 'Nav nosaukuma, svara, cenas, sastāvdaļu vai attēla',
+      },
+    })
   }
   if (!isPositiveInteger(product.weight)) {
-    return res
-      .status(400)
-      .json({ error: 'Weight must be a positive integer amount in grams' })
+    return res.status(400).json({
+      error: {
+        en: 'Weight must be a positive integer amount in grams',
+        lv: 'Svaram ir jābūt naturālam skaitlim gramos',
+      },
+    })
   }
   if (!isPositiveInteger(product.price)) {
-    return res
-      .status(400)
-      .json({ error: 'Price must be a positive integer amount in cents' })
+    return res.status(400).json({
+      error: {
+        en: 'Price must be a positive integer amount in grams',
+        lv: 'Cenai ir jābūt naturālam skaitlim gramos',
+      },
+    })
   }
   if (
     product.nutrition &&
@@ -82,12 +112,14 @@ const productChecker = async (req, res, next) => {
       product.nutrition.carbs === undefined ||
       product.nutrition.sugar === undefined ||
       product.nutrition.protein === undefined ||
-      product.nutrition.salt === undefined ||
-      product.nutrition.fiber === undefined)
+      product.nutrition.salt === undefined)
   ) {
-    return res
-      .status(400)
-      .json({ error: 'Nutrition information must be complete' })
+    return res.status(400).json({
+      error: {
+        en: 'Nutrition information must be complete (except fiber, D3)',
+        lv: 'Uzturvērtībai jābūt pilnīgai (izņemot Šķiedrvielas, D3)',
+      },
+    })
   }
 
   next()

@@ -13,7 +13,10 @@ router.post('/', async (request, response) => {
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
-      error: 'invalid username or password',
+      error: {
+        en: 'invalid username or password',
+        lv: 'Nepareizs lietotājvārds vai parole',
+      },
     })
   }
 

@@ -248,10 +248,20 @@ categoryRouter.delete(
   adminRequired,
   async (req, res) => {
     if (!req.body.parentCategory) {
-      return res.status(400).json({ error: 'Parent category must be defined' })
+      return res.status(400).json({
+        error: {
+          en: 'Parent category must be defined',
+          lv: 'Nav norādīta virskategorija',
+        },
+      })
     }
     if (!req.body.productId) {
-      return res.status(400).json({ error: 'Product id must be given' })
+      return res.status(400).json({
+        error: {
+          en: 'Product id must be given',
+          lv: 'Nav norādīts produkts',
+        },
+      })
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
     parentCategory.products.pull({ _id: req.body.productId })
@@ -266,10 +276,20 @@ categoryRouter.delete(
   adminRequired,
   async (req, res) => {
     if (!req.body.parentCategory) {
-      return res.status(400).json({ error: 'Parent category must be defined' })
+      return res.status(400).json({
+        error: {
+          en: 'Parent category must be defined',
+          lv: 'Nav norādīta virskategorija',
+        },
+      })
     }
     if (!req.body.categoryId) {
-      return res.status(400).json({ error: 'Category id must be given' })
+      return res.status(400).json({
+        error: {
+          en: 'Product id must be given',
+          lv: 'Nav norādīta kategorija',
+        },
+      })
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
     parentCategory.categories.pull({ _id: req.body.categoryId })
@@ -295,19 +315,33 @@ categoryRouter.delete(
 
 categoryRouter.post('/', userExtractor, adminRequired, async (req, res) => {
   if (!req.body.newCategory) {
-    return res.status(400).json({ error: 'New category missing' })
+    return res
+      .status(400)
+      .json({ error: { en: 'New category missing', lv: 'Trūkst kategorijas' } })
   }
   if (!req.body.newCategory.id) {
-    return res.status(400).json({ error: 'New category id missing' })
+    return res.status(400).json({
+      error: {
+        en: 'New category id missing',
+        lv: 'Nav norādīts kategorijas identifikators',
+      },
+    })
   }
   if (
     !req.body.newCategory.displayName ||
     !req.body.newCategory.displayName.lv
   ) {
-    return res.status(400).json({ error: 'New category display name missing' })
+    return res.status(400).json({
+      error: {
+        en: 'New category display name missing',
+        lv: 'Nav norādīts kategorijas nosaukums',
+      },
+    })
   }
   if (!req.body.newCategory.image) {
-    return res.status(400).json({ error: 'New category image missing' })
+    return res.status(400).json({
+      error: { en: 'New category image missing', lv: 'Nav norādīts attēls' },
+    })
   }
   const newCategory = new Category({
     ...req.body.newCategory,
@@ -350,7 +384,12 @@ categoryRouter.put(
   adminRequired,
   async (req, res) => {
     if (!req.body.parentCategory) {
-      return res.status(400).json({ error: 'Parent category msut be defined' })
+      return res.status(400).json({
+        error: {
+          en: 'Parent category must be defined',
+          lv: 'Nav norādīta virskategorija',
+        },
+      })
     }
     const parentCategory = await Category.findById(req.body.parentCategory)
     parentCategory.products = req.body.productsToAdd
@@ -361,7 +400,12 @@ categoryRouter.put(
 
 categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
   if (!req.body.parentCategory) {
-    return res.status(400).json({ error: 'Parent category msut be defined' })
+    return res.status(400).json({
+      error: {
+        en: 'Parent category must be defined',
+        lv: 'Nav norādīta virskategorija',
+      },
+    })
   }
   const parentCategory = await Category.findById(req.body.parentCategory)
   parentCategory.categories = req.body.categoriesToAdd
@@ -371,20 +415,33 @@ categoryRouter.put('/', userExtractor, adminRequired, async (req, res) => {
 
 categoryRouter.put('/:id', userExtractor, adminRequired, async (req, res) => {
   if (!req.body.newCategory) {
-    return res.status(400).json({ error: 'New category missing' })
+    return res
+      .status(400)
+      .json({ error: { en: 'Category missing', lv: 'Trūkst kategorijas' } })
   }
   if (
     !req.body.newCategory.displayName ||
     !req.body.newCategory.displayName.lv
   ) {
-    return res.status(400).json({ error: 'New category display name missing' })
+    return res.status(400).json({
+      error: {
+        en: 'Category display name missing',
+        lv: 'Nav norādīts kategorijas nosaukums',
+      },
+    })
   }
   if (!req.body.newCategory.image) {
-    return res.status(400).json({ error: 'New category image missing' })
+    return res.status(400).json({
+      error: { en: 'Category image missing', lv: 'Nav norādīts attēls' },
+    })
   }
   const category = await Category.findById(req.params.id)
   if (!category) {
-    return res.status(404).send({ error: 'Category not found' })
+    return res
+      .status(404)
+      .send({
+        error: { en: 'Category not found', lv: 'Kategorija netika atrasta' },
+      })
   }
   category.displayName = req.body.newCategory.displayName
   category.image = req.body.newCategory.image

@@ -52,23 +52,33 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
     { path: 'courrierAddress' },
   ])
   if (!cart) {
-    return res.status(400).json({ error: 'User does not have a cart' })
+    return res.status(400).json({
+      error: { en: 'User does not have a cart', lv: 'Grozs netika atrasts' },
+    })
   }
   if (cart.content.length < 1) {
-    return res.status(400).json({ error: 'Cannot order an empty cart' })
+    return res.status(400).json({
+      error: {
+        en: 'Cannot order an empty cart',
+        lv: 'Nevar pasūtīt tukšu grozu',
+      },
+    })
   }
   if (!cart.deliveryMethod) {
-    return res.status(400).json({ error: 'Delivery method is required' })
+    return res.status(400).json({
+      error: {
+        en: 'Delivery method is required',
+        lv: 'Nav izvēlēta piegādes metode',
+      },
+    })
   }
-  let courrierAddress
-  if (cart.deliveryMethod === 'courrier') {
-    if (!cart.courrierAddress) {
-      return res.status(400).json({ error: 'Delivery address is required' })
-    }
-    courrierAddress = await Address.findById(cart.courrierAddress)
-    if (!courrierAddress) {
-      return res.status(400).json({ error: 'Delivery address is required' })
-    }
+  if (cart.deliveryMethod === 'courrier' && !cart.courrierAddress) {
+    return res.status(400).json({
+      error: {
+        en: 'Delivery address is required',
+        lv: 'Nav norādīta piegādes adrese',
+      },
+    })
   }
   if (
     cart.deliveryMethod === 'pickupPoint' &&
@@ -78,9 +88,12 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
       !cart.pickupPointData.surname ||
       !cart.pickupPointData.phone)
   ) {
-    return res
-      .status(400)
-      .json({ error: 'Pickup point delivery data is missing' })
+    return res.status(400).json({
+      error: {
+        en: 'Pickup point delivery data is missing',
+        lv: 'Trūkst piegādes infromāciajas',
+      },
+    })
   }
 
   const subtotal = cart.content
@@ -111,7 +124,6 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
       orderId: cart._id,
     })
   } catch (error) {
-    console.log(error)
     if (error.response.data.error.code === 4024) {
       await cart.deleteOne()
       const newCart = new Cart({
@@ -125,7 +137,12 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
         deliveryComments: cart.deliveryComments,
       })
       await newCart.save()
-      res.status(400).send({ error: 'already paid' })
+      res.status(400).send({
+        error: {
+          en: 'Order is already paid',
+          lv: 'Pasūtījums jau ir apmaksāts',
+        },
+      })
     }
     console.log(error)
     console.log(error.response.data.error)
@@ -206,12 +223,12 @@ const updatePaymentStatus = async (paymentReference) => {
               await sendReceiptEmail(
                 [...settings.orderNotificationEmails.map((e) => e.email)],
                 order,
-                `${BACKEND_URL}/orders/${order._id}`
+                `${FRONTEND_URL}/orders/${order._id}`
               )
               await sendReceiptEmail(
                 [order.user.email],
                 order,
-                `${BACKEND_URL}/account/previous_orders/${order._id}`
+                `${FRONTEND_URL}/account/previous_orders/${order._id}`
               )
             } catch (error) {
               console.error(error)
@@ -253,52 +270,6 @@ router.get('/payment_status_callback', async (req, res) => {
   return res.status(200).send()
 })
 
-router.get('/payment_landing', async (req, res) => {
-  res.status(200).send(`<html><head><style>.container{
-    width:100vw;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  .lds-ring {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid #45941e;
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #45941e transparent transparent transparent;
-}
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style></head><body><div class="container"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div></body></html>`)
-})
-
 router.get('/payment_status/', userExtractor, async (req, res) => {
   const order = await Order.findOne({
     paymentReference: req.query.paymentReference,
@@ -328,10 +299,17 @@ router.get('/', userExtractor, async (req, res) => {
 
 router.post('/', userExtractor, verificationRequired, async (req, res) => {
   if (!isInteger(req.body.quantity)) {
-    return res.status(400).json({ error: 'Quantity must be a whole number' })
+    return res.status(400).json({
+      error: {
+        en: 'Quantity must be a whole number',
+        lv: 'Daudzumam ir jābūt veselam skaitlim',
+      },
+    })
   }
   if (!req.body.productId) {
-    return res.status(400).json({ error: 'Product missing' })
+    return res.status(400).json({
+      error: { en: 'Product not specified', lv: 'Produkts nav norādīts' },
+    })
   }
   let cart = await Cart.findOne({ user: req.user.id }).populate({
     path: 'content.product',
@@ -354,7 +332,12 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
     }
   } else {
     if (Number(req.body.quantity) <= 0) {
-      return res.status(400).json({ error: 'Cannot add less than 1 item' })
+      return res.status(400).json({
+        error: {
+          en: 'Cannot add less than 1 item',
+          lv: 'Nevar ielikt grozā mazāk par 1 vienību',
+        },
+      })
     }
     cart.content = cart.content.concat({
       product: req.body.productId,
@@ -379,7 +362,9 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     !req.body.generalComments &&
     !req.body.deliveryComments
   ) {
-    return res.status(400).json({ error: 'Unknown fields' })
+    return res
+      .status(400)
+      .json({ error: { en: 'Unknown fields', lv: 'Nezināmi lauki' } })
   }
   let cart = await Cart.findOne({ user: req.user.id })
   if (req.body.courrierAddress) {

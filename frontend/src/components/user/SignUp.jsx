@@ -5,14 +5,14 @@ import UserContext from '../../contexts/userContext'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import PasswordWithValidation from '../basic/PasswordValidation'
-import { toast } from 'react-toastify'
 import Input from '../basic/Input'
+import useToast from '../../util/promiseToast'
 
 const SignUp = () => {
   const userService = useUserService()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [, setUser] = useContext(UserContext)
-
+  const { showErrorToastNoPromise } = useToast()
   const email = useField('email')
   const password1 = useField('password')
   const password2 = useField('password')
@@ -32,8 +32,7 @@ const SignUp = () => {
     return password1.value === password2.value
   }
   const [blinkRequirements, setBlinkRequirements] = useState(false)
-  const [emailUsedReminderVisible, setEmailUsedReminderVisible] =
-    useState(false)
+
   const navigate = useNavigate()
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -64,24 +63,11 @@ const SignUp = () => {
           navigate('/info/registered')
         })
         .catch((error) => {
-          console.log(error)
-          if (
-            error.response.status === 400 &&
-            error.response.data.error === 'This email is already used.'
-          ) {
-            setEmailUsedReminderVisible(true)
-          } else if (
-            error.response &&
-            error.response.data &&
-            error.response.data.error
-          ) {
-            toast.error(error.response.data.error)
-          }
+          showErrorToastNoPromise(error)
         })
     }
     setTimeout(() => {
       setBlinkRequirements(false)
-      setEmailUsedReminderVisible(false)
     }, 3000)
   }
 
@@ -108,11 +94,7 @@ const SignUp = () => {
             validLength={validLength()}
             blink={blinkRequirements}
           />
-          {emailUsedReminderVisible && (
-            <ul className="validation blink">
-              <li>{lang.email_already_used}</li>
-            </ul>
-          )}
+
           <button
             className="btn full-width m-t-m"
             type="submit">

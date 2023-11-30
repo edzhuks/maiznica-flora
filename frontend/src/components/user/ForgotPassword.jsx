@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import useToast from '../../util/promiseToast'
 import Input from '../basic/Input'
 const ValidationFailed = styled.div`
-  color: ${(props) => props.theme.error};
+  color: var(--bad);
   ul {
     font-size: 14px;
     margin: 0;

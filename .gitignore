@@ -5,3 +5,4 @@ backend/images
 backend/log
 backend/greenlock.d
 backend/.greenlockrc
+.vscode/

@@ -36,15 +36,17 @@ const Radio = styled.label`
     display: block;
     height: 25px;
     width: 25px;
-    background-color: ${(props) => props.theme.lighter};
+    background-color: var(--subtler);
     border-radius: 50%;
     transition: 0.2s;
   }
 
   /* On mouse-over or when checked add a main background color */
-  &:hover input ~ .radio,
+  &:hover input ~ .radio {
+    background-color: var(--subtle);
+  }
   input:checked ~ .radio {
-    background-color: ${(props) => props.theme.main};
+    background-color: var(--accent);
   }
 
   /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -57,7 +59,7 @@ const Radio = styled.label`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: ${(props) => props.theme.white};
+    background: var(--surface);
   }
 
   /* Show the indicator (dot/circle) when checked */

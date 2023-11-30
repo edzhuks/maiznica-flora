@@ -63,14 +63,6 @@ const HomePage = () => {
               <ProductList products={c.products} />
             </div>
           ))}
-        {/* {newProducts.products.length > 0 && (
-          <div>
-            <h1 className="big-title m-d">
-              {newProducts.displayName[selectedLang]}
-            </h1>
-            <ProductList products={newProducts.products} />
-          </div>
-        )} */}
       </div>
       <div
         className="column"
