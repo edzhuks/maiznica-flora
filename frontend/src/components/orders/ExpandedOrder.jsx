@@ -182,6 +182,7 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
           </p>
           {parcels.map((p, i) => (
             <Input
+              key={i}
               width={100}
               label={lang.weight}
               value={p.weight}
@@ -385,14 +386,20 @@ const ExpandedOrder = ({ withManagement }) => {
             <div className="card row m-d">
               <div className="p">
                 {order.statusHistory.map((s) => (
-                  <p className="card-text ">
+                  <p
+                    className="card-text "
+                    key={s._id}>
                     <b>{lang.order_status[s.status]}</b>
                   </p>
                 ))}
               </div>
               <div className="p">
                 {order.statusHistory.map((s) => (
-                  <p className="card-text">{formatFull(new Date(s.time))}</p>
+                  <p
+                    className="card-text"
+                    key={s._id}>
+                    {formatFull(new Date(s.time))}
+                  </p>
                 ))}
               </div>
             </div>

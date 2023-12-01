@@ -207,7 +207,10 @@ categoryRouter.get('/:category', optionalUser, async (req, res) => {
   let category = await Category.findById(req.params.category)
     .populate({ path: 'products', match: { invisible: { $ne: true } } })
     .populate({ path: 'categories' })
-  if (category.invisible && (!req.user || (req.user && !req.user.admin))) {
+  if (
+    !category ||
+    (category.invisible && (!req.user || (req.user && !req.user.admin)))
+  ) {
     return res.status(404).send()
   }
   res.send(category)
@@ -437,11 +440,9 @@ categoryRouter.put('/:id', userExtractor, adminRequired, async (req, res) => {
   }
   const category = await Category.findById(req.params.id)
   if (!category) {
-    return res
-      .status(404)
-      .send({
-        error: { en: 'Category not found', lv: 'Kategorija netika atrasta' },
-      })
+    return res.status(404).send({
+      error: { en: 'Category not found', lv: 'Kategorija netika atrasta' },
+    })
   }
   category.displayName = req.body.newCategory.displayName
   category.image = req.body.newCategory.image
