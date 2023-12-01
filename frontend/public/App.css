@@ -870,10 +870,12 @@ input:disabled {
   height: 100%;
 }
 .product-image-small img {
+  position: relative;
   transition: 0.3s cubic-bezier(0.31, 0.27, 0, 1.61);
   width: 10rem;
 }
 .product-image-small:hover img {
+  z-index: 3000;
   transform: scale(1.5) translateY(-40px) translateX(-20px);
   box-shadow: var(--shadow);
 }
