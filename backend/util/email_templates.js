@@ -1,3 +1,11 @@
+const {
+  getPrice,
+  centsToEuro,
+  gramsToKilos,
+  escapeHTML,
+  formatDate,
+} = require('./functions')
+
 const basicEmailHtml = ({ title, content, action, footer }) => {
   return `<!DOCTYPE html>
 <html>
