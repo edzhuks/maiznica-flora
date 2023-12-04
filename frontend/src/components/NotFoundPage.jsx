@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const NotFoundPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -7,7 +8,9 @@ const NotFoundPage = () => {
       <div className="card">
         <div className="text-center">
           <h1 className="big-title m-b">{lang.page_not_found}</h1>
-          <button className="btn  m-b m-t-0">{lang.to_home}</button>
+          <Link to="/">
+            <button className="btn  m-b m-t-0">{lang.to_home}</button>
+          </Link>
         </div>
       </div>
     </div>
