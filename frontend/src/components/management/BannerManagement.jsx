@@ -57,7 +57,7 @@ const SortableBanner = ({ id, category, product, image, remove }) => {
         className="row no-gap align-cross-center p-r"
         style={{ minHeight: '150px' }}>
         <img
-          src={`/images/xl_${image}`}
+          src={`https://www.maiznica.lv/images/xl_${image}`}
           style={{ width: '300px', height: 'auto' }}
         />
         {category ? (

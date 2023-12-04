@@ -33,7 +33,7 @@ const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
     state.cart.content.find((i) => i.product.outOfStock)
   )
   return (
-    <div className="card">
+    <div className="card ">
       <SummaryTile
         title={lang.sum}
         price={total}
@@ -53,7 +53,7 @@ const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
         price2={deliveryCost[1] && deliveryCost[1] + total}
       />
       {specialOrder && (
-        <div className="row p-h m-d no-wrap bad align-cross-center">
+        <div className="row p-h p-d no-wrap bad align-cross-center">
           <Warning
             className="icon-b "
             style={{ flexShrink: '0' }}

@@ -82,6 +82,7 @@ const en = {
     waiting_for_courrier: 'Awaiting courrier',
     delivering: 'Delivering',
     completed: 'Completed',
+    invoiced: 'Invoiced',
   },
   last_modified_by: 'last modified by',
   confirm_delete: 'Are you sure you want to delete this product?',
@@ -283,6 +284,24 @@ const en = {
   resend_receipt: 'Resend receipt email',
   special_order:
     'Prepared upon request.\nThe order will be done within 10 working days.',
+  latvia: 'Latvia',
+  country: 'Country',
+  address: 'Address',
+  regNo: 'Reg. No.',
+  pay_now: 'Pay now',
+  toast_incomplete_business_comments: 'Business details incomplete',
+  online_payment: 'Payment',
+  receipt_payment: 'Invoice payment',
+  receive_receipt: 'Receive invoice',
+  receipt_instructions:
+    'An invoice will be sent to your email.\nPacking will begin only after receival of payment.',
+  online_payment_instructions: 'Payment with online banking or payment card',
+  latvia_delivery: 'Currently delivering only within Latvia.',
+  vatNo: 'VAT reg. No.',
+  paid: 'Paid',
+  order_invoiced: 'Invoice sent',
+  order_invoiced_info:
+    'We have sent you an invoice.\nWe will begin packing the order once payment is completed.\nThe invoice is valid for 7 days.',
 }
 
 export default en

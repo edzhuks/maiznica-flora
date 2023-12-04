@@ -12,16 +12,37 @@ const ResetPassword = () => {
 
   const password1 = useField('password')
   const password2 = useField('password')
+  const validLength = () => {
+    return password1.value.length >= 8
+  }
+  const hasDigit = () => {
+    return /\d/.test(password1.value)
+  }
+  const hasSpecial = () => {
+    return /[!@#$%^&* ]/.test(password1.value)
+  }
+  const hasLetter = () => {
+    return /[a-zA-Z]/.test(password1.value)
+  }
+  const doMatch = () => {
+    return password1.value === password2.value
+  }
+  const [blinkRequirements, setBlinkRequirements] = useState(false)
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { showPromiseToast } = useToast()
-  const [passwordRequiredReminderVisible, setPasswordRequiredReminderVisible] =
-    useState(false)
+
   const navigate = useNavigate()
   const onSubmit = async (event) => {
     event.preventDefault()
-    if (password1.value.length < 1 || password2.value.length < 1) {
-      setPasswordRequiredReminderVisible(true)
+    if (
+      !validLength() ||
+      !hasDigit() ||
+      !hasLetter() ||
+      !hasSpecial() ||
+      !doMatch()
+    ) {
+      setBlinkRequirements(true)
     } else {
       const promise = userService.resetPassword({
         token: searchParams.get('token'),
@@ -31,14 +52,9 @@ const ResetPassword = () => {
       promise.then(() => navigate('/login'))
     }
     setTimeout(() => {
-      setPasswordRequiredReminderVisible(false)
+      setBlinkRequirements(false)
     }, 3000)
   }
-  useEffect(() => {
-    console.log(password1.value)
-    console.log(password2.value)
-    console.log(password1.value === password2.value)
-  }, [password1, password2])
   return (
     <div className="center-h">
       <div className="card">
@@ -49,7 +65,12 @@ const ResetPassword = () => {
           <PasswordWithValidation
             password1={password1}
             password2={password2}
-            passwordRequiredReminderVisible={passwordRequiredReminderVisible}
+            hasDigit={hasDigit()}
+            hasLetter={hasLetter()}
+            hasSpecial={hasSpecial()}
+            doMatch={doMatch()}
+            validLength={validLength()}
+            blink={blinkRequirements}
           />
           <button
             className="btn full-width m-t-m"

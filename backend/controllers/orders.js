@@ -48,6 +48,16 @@ router.put(
   }
 )
 router.put(
+  '/paid',
+  userExtractor,
+  adminRequired,
+  idRequired,
+  async (req, res) => {
+    const order = await updateStatus(req.body.id, 'placed')
+    return res.send(order)
+  }
+)
+router.put(
   '/ready_for_delivery',
   userExtractor,
   adminRequired,
@@ -137,7 +147,7 @@ router.get('/resend_email', userExtractor, async (req, res) => {
     { path: 'content', populate: { path: 'product' } },
     { path: 'user' },
   ])
-  if (order.user._id.equals(req.user._id)) {
+  if (order.user._id.equals(req.user._id) || req.user.admin) {
     sendReceiptEmail(
       [order.user.email],
       order,
@@ -153,7 +163,6 @@ router.get('/resend_email', userExtractor, async (req, res) => {
 router.get('/all', userExtractor, adminRequired, async (req, res) => {
   const orders = await Order.find().populate([
     { path: 'content', populate: { path: 'product' } },
-    { path: 'status', populate: { path: 'lastModifiedBy' } },
   ])
   res.send(orders)
 })

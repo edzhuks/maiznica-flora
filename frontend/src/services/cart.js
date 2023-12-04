@@ -83,6 +83,12 @@ const useCartService = () => {
     showErrorToast(request)
     return request
   }
+  const invoice = () => {
+    const config = makeConfig()
+    const request = axios.post(`${baseURL}/invoice/`, { selectedLang }, config)
+    showErrorToast(request)
+    return request
+  }
 
   const getPaymentStatus = (paymentReference) => {
     const config = makeConfig()
@@ -106,6 +112,7 @@ const useCartService = () => {
     changeBusinessComments,
     changeDeliveryComments,
     changeGeneralComments,
+    invoice,
   }
 }
 export default useCartService

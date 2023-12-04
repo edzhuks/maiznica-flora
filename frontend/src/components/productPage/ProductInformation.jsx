@@ -17,7 +17,7 @@ const StaticInformation = ({
     <div className={`row center ${className ? className : ''}`}>
       <img
         className="product-image"
-        src={`/images/${product.image}`}
+        src={`https://www.maiznica.lv/images/${product.image}`}
       />
       <div
         className="column align-cross-start"
@@ -86,7 +86,7 @@ const StaticInformation = ({
               <div className="row ">
                 {product.bio && (
                   <img
-                    src="/images/eurobio.jpg"
+                    src="https://www.maiznica.lv/images/eurobio.jpg"
                     width={100}
                     height={66}
                   />

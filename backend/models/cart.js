@@ -29,7 +29,7 @@ const cartSchema = new mongoose.Schema({
   paymentStatus: String,
   paymentReference: String,
   total: Number,
-  businessComments: String,
+  businessComments: { name: String, address: String, regNo: String },
   generalComments: String,
   deliveryComments: String,
 })

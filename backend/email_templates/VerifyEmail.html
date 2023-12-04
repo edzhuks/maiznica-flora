@@ -15,7 +15,6 @@
         padding: 0;
         background: #eeeeee;
         font-family: 'Roboto', sans-serif;
-        color: #eee !important;
       }
       div,
       p,
@@ -32,7 +31,8 @@
         margin: 0;
         padding: 0;
         -webkit-font-smoothing: antialiased;
-        background-color: #eee;
+        background-color: #eee !important;
+        color: #333;
       }
       html {
         width: 100%;
@@ -152,12 +152,12 @@
                   font-size: 16px;
                   line-height: 24px;
                 ">
-                <p style="margin: 0">${content}</p>
+                <p style="margin: 0; white-space: pre-line">${content}</p>
               </td>
             </tr>
             <!-- end copy -->
 
-            ${ action && `
+            ${ action ? `
             <!-- start button -->
             <tr>
               <td
@@ -208,23 +208,21 @@
                 </table>
               </td>
             </tr>
-            <!-- end button -->` }
-
-            <!-- start copy -->
+            <!-- end button -->` : '' } ${ footer ? `<!-- start copy -->
             <tr>
               <td
                 align="left"
                 bgcolor="#ffffff"
                 style="
                   padding: 24px;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                  font-family: 'Roboto' sans-serif;
                   font-size: 12px;
                   line-height: 24px;
                 ">
                 ${footer}
               </td>
             </tr>
-            <!-- end copy -->
+            <!-- end copy -->` : '' }
           </table>
         </td>
       </tr>

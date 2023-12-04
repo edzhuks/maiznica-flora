@@ -119,17 +119,17 @@ const AboutPage = () => {
       <div className="row stretch center m-t-m">
         <Value
           title="nature"
-          image="/images/newicon2.png"
+          image="https://www.maiznica.lv/images/newicon2.png"
           text="nature_text"
         />
         <Value
           title="people"
-          image="/images/newicon3.png"
+          image="https://www.maiznica.lv/images/newicon3.png"
           text="people_text"
         />
         <Value
           title="quality"
-          image="/images/newicon1.png"
+          image="https://www.maiznica.lv/images/newicon1.png"
           text="quality_text"
         />
       </div>

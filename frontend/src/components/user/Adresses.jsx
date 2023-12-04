@@ -139,6 +139,12 @@ const AddressForm = ({ submit, values, cancel }) => {
       className="column align-cross-end no-gap"
       onSubmit={onSubmit}>
       <Input
+        value={lang.latvia}
+        disabled
+        label={lang.country}
+        width="350px"
+      />
+      <Input
         label={lang.city}
         required
         width="350px"

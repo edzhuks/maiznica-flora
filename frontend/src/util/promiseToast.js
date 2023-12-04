@@ -53,22 +53,24 @@ const useToast = () => {
     })
   }
   const showErrorToastNoPromise = (error) => {
-    toast.error(
-      error.response.data && error.response.data.error ? (
-        <p>
-          {error.response.data.error[selectedLang] ||
-            error.response.data.error.en}
-        </p>
-      ) : (
-        <>
-          {error.response.status === 403 ? (
-            <p>{lang.toast_unauthorized}</p>
-          ) : (
-            <p>{lang.toast_failed}</p>
-          )}
-        </>
+    if (error && error.response) {
+      toast.error(
+        error.response.data && error.response.data.error ? (
+          <p>
+            {error.response.data.error[selectedLang] ||
+              error.response.data.error.en}
+          </p>
+        ) : (
+          <>
+            {error.response.status === 403 ? (
+              <p>{lang.toast_unauthorized}</p>
+            ) : (
+              <p>{lang.toast_failed}</p>
+            )}
+          </>
+        )
       )
-    )
+    }
   }
   return { showPromiseToast, showErrorToast, showErrorToastNoPromise }
 }

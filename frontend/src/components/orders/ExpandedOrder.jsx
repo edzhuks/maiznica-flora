@@ -301,7 +301,9 @@ const ReadyForPickupModal = ({ visible, close, order, submit }) => {
           <p className="card-text wrap-n">{order.deliveryComments}</p>
           <div className="card-divider" />
           <h3 className="card-heading">{lang.businessComments}</h3>
-          <p className="card-text wrap-n">{order.businessComments}</p>
+          <p className="card-text wrap-n">{order.businessComments.name}</p>
+          <p className="card-text wrap-n">{order.businessComments.address}</p>
+          <p className="card-text wrap-n">{order.businessComments.regNo}</p>
           <div className="card-divider" />
           <h3 className="card-heading">{lang.generalComments}</h3>
           <p className="card-text wrap-n">{order.generalComments}</p>
@@ -351,6 +353,11 @@ const ExpandedOrder = ({ withManagement }) => {
       setOrder(response)
     })
   }
+  const makePaid = () => {
+    orderService.makePaid(order.id).then((response) => {
+      setOrder(response)
+    })
+  }
 
   return (
     <>
@@ -374,6 +381,10 @@ const ExpandedOrder = ({ withManagement }) => {
         style={{
           position: 'sticky',
           top: 'calc(var(--space)  + var(--header-height))',
+          overflowY: 'auto',
+          overflowX: 'visible',
+          width: '100%',
+          height: 'calc(100vh - var(--header-height) - var(--space))',
         }}>
         {order && (
           <div>
@@ -409,7 +420,7 @@ const ExpandedOrder = ({ withManagement }) => {
                 key={i.product.id}>
                 <div className="row no-wrap no-gap align-cross-center">
                   <img
-                    src={`/images/xs_${i.product.image}`}
+                    src={`https://www.maiznica.lv/images/xs_${i.product.image}`}
                     width={55}
                     height={55}
                   />
@@ -523,6 +534,13 @@ const ExpandedOrder = ({ withManagement }) => {
                     )}
                   </>
                 )}
+                {order.latestStatus === 'invoiced' && withManagement && (
+                  <button
+                    className="btn"
+                    onClick={makePaid}>
+                    {lang.paid}
+                  </button>
+                )}
                 {order.latestStatus !== 'completed' && withManagement && (
                   <button
                     className="btn m-l"
@@ -571,7 +589,15 @@ const ExpandedOrder = ({ withManagement }) => {
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.businessComments}</h3>
                 <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text wrap-n">{order.businessComments}</p>
+                <p className="card-text wrap-n">
+                  {order.businessComments.name}
+                </p>
+                <p className="card-text wrap-n">
+                  {order.businessComments.address}
+                </p>
+                <p className="card-text wrap-n">
+                  {order.businessComments.regNo}
+                </p>
               </div>
             )}
             {order.generalComments && (
@@ -581,13 +607,13 @@ const ExpandedOrder = ({ withManagement }) => {
                 <p className="card-text wrap-n">{order.generalComments}</p>
               </div>
             )}
-            {!withManagement && (
-              <button
-                className="btn"
-                onClick={() => orderService.resendEmail(order.id)}>
-                {lang.resend_receipt}
-              </button>
-            )}
+            {/* {!withManagement && ( */}
+            <button
+              className="btn m-d"
+              onClick={() => orderService.resendEmail(order.id)}>
+              {lang.resend_receipt}
+            </button>
+            {/* )} */}
           </div>
         )}
       </div>

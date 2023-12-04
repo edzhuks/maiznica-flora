@@ -2,18 +2,25 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import useField from '../../hooks/useField'
 import Input from '../basic/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { selectIsBusiness } from '../../reducers/cartReducer'
 import { useEffect } from 'react'
 
-const Payment = ({ order }) => {
+const Payment = ({ order, invoice }) => {
   const termsChecked = useField('checkbox')
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const iframe = useSelector((state) => state.cart.iframe)
   const paymentStatus = useSelector((state) => state.cart.paymentStatus)
-  useEffect(() => {}, [paymentStatus])
+  const isBusiness = useSelector(selectIsBusiness)
+  const navigate = useNavigate()
 
-  console.log(iframe)
-  const tryAcceptTerms = () => {
+  useEffect(() => {
+    if (paymentStatus === 'invoiced') {
+      toast.success(lang.order_invoiced)
+      navigate('/info/invoiced')
+    }
+  }, [paymentStatus])
+
+  const tryOrder = () => {
     if (!termsChecked.value) {
       toast.error(lang.toast_must_agree)
     } else {
@@ -21,63 +28,84 @@ const Payment = ({ order }) => {
     }
   }
 
+  const tryInvoice = () => {
+    if (!termsChecked.value) {
+      toast.error(lang.toast_must_agree)
+    } else {
+      invoice()
+    }
+  }
   return (
-    <div>
-      {iframe && (
-        <button
-          className="btn m-d"
-          onClick={order}>
-          {lang.start_over_payment}
-        </button>
-      )}
-      <div className="card column">
-        {iframe ? (
-          <iframe
-            style={{ height: '800px', border: 'none' }}
-            src={iframe}
-            title="payment"
-          />
-        ) : (
-          <div
-            className="center-vh"
-            style={{
-              width: '100%',
-              height: '800px',
-            }}>
-            {paymentStatus === 'failed' ? (
-              <div>
-                <p className="card-text">{lang.payment_failed}</p>
-                <button
-                  className="btn full-width m-t"
-                  onClick={order}>
-                  {lang.start_over_payment}
-                </button>
-              </div>
-            ) : (
-              <div>
-                <div className="row align-cross-end">
-                  <Input
-                    {...termsChecked}
-                    label={<div>{lang.agree_terms}</div>}
-                  />
-                  <Link
-                    className="text-link"
-                    to="/distance_agreement"
-                    onClick={(event) => event.stopPropagation()}>
-                    {lang.to_distance_agreement}
-                  </Link>
-                </div>
-
-                <button
-                  className="btn full-width m-t"
-                  onClick={() => {
-                    tryAcceptTerms()
-                  }}>
-                  {lang.pay}
-                </button>
-              </div>
-            )}
+    <div className="row align-cross-stretch center">
+      {isBusiness && (
+        <div
+          className="card column p-b align-cross-center"
+          style={{ maxWidth: '600px' }}>
+          <h3 className="card-heading m-d-m">{lang.receipt_payment}</h3>
+          <p className="card-text wrap-n ">{lang.receipt_instructions}</p>
+          <div className="spacer" />
+          <div className="row align-cross-end">
+            <Input
+              {...termsChecked}
+              label={<div>{lang.agree_terms}</div>}
+            />
+            <Link
+              className="text-link"
+              to="/distance_agreement"
+              onClick={(event) => event.stopPropagation()}>
+              {lang.to_distance_agreement}
+            </Link>
           </div>
+
+          <button
+            className="btn full-width m-t"
+            onClick={() => {
+              tryInvoice()
+            }}>
+            {lang.receive_receipt}
+          </button>
+        </div>
+      )}
+      <div
+        className="card column p-b align-cross-center"
+        style={{ maxWidth: '600px' }}>
+        {paymentStatus === 'failed' ? (
+          <div>
+            <p className="card-text">{lang.payment_failed}</p>
+            <button
+              className="btn full-width m-t"
+              onClick={order}>
+              {lang.start_over_payment}
+            </button>
+          </div>
+        ) : (
+          <>
+            <h3 className="card-heading m-d-m">{lang.online_payment}</h3>
+            <p className="card-text wrap-n ">
+              {lang.online_payment_instructions}
+            </p>
+            <div className="spacer" />
+            <div className="row align-cross-end">
+              <Input
+                {...termsChecked}
+                label={<div>{lang.agree_terms}</div>}
+              />
+              <Link
+                className="text-link"
+                to="/distance_agreement"
+                onClick={(event) => event.stopPropagation()}>
+                {lang.to_distance_agreement}
+              </Link>
+            </div>
+
+            <button
+              className="btn full-width m-t"
+              onClick={() => {
+                tryOrder()
+              }}>
+              {isBusiness ? lang.pay_now : lang.pay}
+            </button>
+          </>
         )}
       </div>
     </div>

@@ -82,6 +82,7 @@ const de = {
     waiting_for_courrier: 'Auf Kurier wartend',
     delivering: 'Ausliefern',
     completed: 'Abgeschlossen',
+    invoiced: 'Fakturiert',
   },
   last_modified_by: 'zuletzt geändert von',
   confirm_delete: 'Sind Sie sicher, dass Sie dieses Produkt löschen wollen?',
@@ -289,6 +290,24 @@ const de = {
   resend_receipt: 'Erneut per E-Mail senden',
   special_order:
     'Wird auf Anfrage erstellt.\nDie Bestellung wird innerhalb von 10 Arbeitstagen ausgeführt.',
+  latvia: 'Lettland',
+  country: 'Land',
+  Adresse: 'Adresse',
+  regNo: 'Reg. Nr.',
+  pay_now: 'Jetzt bezahlen',
+  toast_incomplete_business_comments: 'Geschäftsangaben unvollständig',
+  online_payment: 'Zahlung',
+  receipt_payment: 'Rechnungszahlung',
+  receive_receipt: 'Rechnung erhalten',
+  receipt_instructions:
+    'Eine Rechnung wird an Ihre E-Mail gesendet.\nDas Verpacken beginnt erst nach Zahlungseingang.',
+  online_payment_instructions: 'Zahlung mit Onlinebanking oder Zahlungskarte',
+  latvia_delivery: 'Derzeit wird nur in Lettland geliefert.',
+  vatNo: 'USt-IdNr.',
+  paid: 'Bezahlt',
+  order_invoiced: 'Rechnung gesendet',
+  order_invoiced_info:
+    'Wir haben Ihnen eine Rechnung geschickt.\nWir beginnen mit dem Verpacken der Bestellung, sobald die Zahlung erfolgt ist.\nDie Rechnung ist 7 Tage lang gültig.',
 }
 
 export default de

@@ -14,49 +14,49 @@ const ChangePassword = () => {
   const password2 = useField('password')
   const userService = useUserService()
   const { showPromiseToast } = useToast()
-  const [passwordRequiredReminderVisible, setPasswordRequiredReminderVisible] =
-    useState(false)
-  const [
-    previousPasswordRequiredReminderVisible,
-    setPreviousPasswordRequiredReminderVisible,
-  ] = useState(false)
-  const [
-    previousPasswordIncorrectReminderVisible,
-    setPreviousPasswordIncorrectReminderVisible,
-  ] = useState(false)
+
+  const validLength = () => {
+    return password1.value.length >= 8
+  }
+  const hasDigit = () => {
+    return /\d/.test(password1.value)
+  }
+  const hasSpecial = () => {
+    return /[!@#$%^&* ]/.test(password1.value)
+  }
+  const hasLetter = () => {
+    return /[a-zA-Z]/.test(password1.value)
+  }
+  const doMatch = () => {
+    return password1.value === password2.value
+  }
+  const [blinkRequirements, setBlinkRequirements] = useState(false)
+
   const onSubmit = (event) => {
     event.preventDefault()
-    if (password1.value.length < 1 || password2.value.length < 1) {
-      setPasswordRequiredReminderVisible(true)
-    } else if (previousPassword.length < 1) {
-      setPasswordRequiredReminderVisible(true)
+    if (
+      !validLength() ||
+      !hasDigit() ||
+      !hasLetter() ||
+      !hasSpecial() ||
+      !doMatch()
+    ) {
+      setBlinkRequirements(true)
     } else {
       const promise = userService.changePassword({
         oldPassword: previousPassword.value,
         newPassword: password1.value,
       })
       showPromiseToast({ promise, successMessage: lang.toast_password_reset })
-      promise
-        .then(() => {
-          password1.clear()
-          password2.clear()
-          previousPassword.clear()
-        })
-        .catch((error) => {
-          console.log(error)
-          if (
-            error.response.status === 400 &&
-            error.response.data.error === 'Previous password incorrect.'
-          ) {
-            setPreviousPasswordIncorrectReminderVisible(true)
-          }
-        })
+      promise.then(() => {
+        password1.clear()
+        password2.clear()
+        previousPassword.clear()
+      })
     }
     setTimeout(() => {
-      setPasswordRequiredReminderVisible(false)
-      setPreviousPasswordIncorrectReminderVisible(false)
-      setPreviousPasswordRequiredReminderVisible(false)
-    }, 5000)
+      setBlinkRequirements(false)
+    }, 3000)
   }
 
   return (
@@ -74,13 +74,13 @@ const ChangePassword = () => {
         <PasswordWithValidation
           password1={password1}
           password2={password2}
-          passwordRequiredReminderVisible={passwordRequiredReminderVisible}
+          hasDigit={hasDigit()}
+          hasLetter={hasLetter()}
+          hasSpecial={hasSpecial()}
+          doMatch={doMatch()}
+          validLength={validLength()}
+          blink={blinkRequirements}
         />
-        {previousPasswordIncorrectReminderVisible && (
-          <ul className="validation blink">
-            <li>{lang.previous_password_incorrect}</li>
-          </ul>
-        )}
 
         <button
           className="btn full-width m-t-m m-d-b"

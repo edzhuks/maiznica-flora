@@ -26,7 +26,7 @@ const WrappablePart = ({ product, quantity }) => {
   }
   return (
     <>
-      <td style={{ width: '100%' }}>
+      <td style={{ width: '100%', minWidth: '9.5rem' }}>
         <Price
           price={product.price}
           discount={product.discount}
@@ -81,7 +81,7 @@ const CartProductItem = ({ inCart, product, quantity }) => {
         <td to={`/products/${product.id}`}>
           <img
             className="image-xs"
-            src={`/images/xs_${product.image}`}
+            src={`https://www.maiznica.lv/images/xs_${product.image}`}
           />
         </td>
         <td style={{ width: '100%' }}>

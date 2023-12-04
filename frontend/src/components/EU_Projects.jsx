@@ -32,7 +32,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/Publicitates-3-1024x725.jpg"
+              src="https://www.maiznica.lv/images/Publicitates-3-1024x725.jpg"
               sizes="(max-width: 1024px) 100vw, 1024px"
             />
 
@@ -49,7 +49,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/LV_ID_EU_logo_ansamblis_ERAF.jpg"
+              src="https://www.maiznica.lv/images/LV_ID_EU_logo_ansamblis_ERAF.jpg"
               data-id="4893"
               data-link="http://www.maiznica.lv/projekti/lv_id_eu_logo_ansamblis_eraf/"
             />
@@ -71,7 +71,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2019-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2019-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -93,7 +93,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_2-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_2-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -115,7 +115,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_1-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_1-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -137,7 +137,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2016-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2016-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -160,7 +160,7 @@ const EuProjects = () => {
               </a>
             </p>
 
-            <img src="/images/Publicitates-4-1024x725.jpg" />
+            <img src="https://www.maiznica.lv/images/Publicitates-4-1024x725.jpg" />
 
             <p>
               LTD “Bakery Flora” has purchased the fixed assets required for
@@ -182,7 +182,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2019-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2019-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -210,7 +210,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_2-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_2-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -235,7 +235,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_1-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_1-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -260,7 +260,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2016-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2016-1024x725.jpg"
               width="1024"
               height="725"
             />
@@ -289,7 +289,7 @@ const EuProjects = () => {
               </a>
             </p>
 
-            <img src="/images/Publicitates-5-1024x725.jpg" />
+            <img src="https://www.maiznica.lv/images/Publicitates-5-1024x725.jpg" />
 
             <p>
               Die Bäckerei „Flora“ hat sich mit der Unterstützung der im Rahmen
@@ -315,7 +315,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2019-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2019-1024x725.jpg"
               alt="This image has an empty alt attribute; its file name is 2019-1024x725.jpg"
               width="1024"
               height="725"
@@ -345,7 +345,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_2-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_2-1024x725.jpg"
               alt="This image has an empty alt attribute; its file name is 2017_2-1024x725.jpg"
               width="1024"
               height="725"
@@ -374,7 +374,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2017_1-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2017_1-1024x725.jpg"
               alt="This image has an empty alt attribute; its file name is 2017_1-1024x725.jpg"
               width="1024"
               height="725"
@@ -403,7 +403,7 @@ const EuProjects = () => {
             </p>
 
             <img
-              src="/images/2016-1024x725.jpg"
+              src="https://www.maiznica.lv/images/2016-1024x725.jpg"
               alt="This image has an empty alt attribute; its file name is 2016-1024x725.jpg"
               width="1024"
               height="725"

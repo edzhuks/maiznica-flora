@@ -54,6 +54,7 @@ import ExpandedOrder from './components/orders/ExpandedOrder'
 import CategoryManagementPage from './components/management/CategoryManagementPage'
 import NewCategory from './components/management/NewCategory'
 import NotFoundPage from './components/NotFoundPage'
+import Invoiced from './components/info/Invoiced'
 
 const baseTheme = {
   main: '#45941e',
@@ -285,6 +286,11 @@ function App() {
                       <Route
                         path="price_mismatch"
                         element={<PriceMismatch />}
+                      />
+
+                      <Route
+                        path="invoiced"
+                        element={<Invoiced />}
                       />
                     </Route>
                     <Route

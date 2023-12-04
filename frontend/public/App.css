@@ -235,17 +235,7 @@ a {
 .card {
   background-color: var(--surface);
   border-radius: var(--border-radius);
-  position: relative;
-  &:before {
-    content: '';
-    box-shadow: var(--shadow);
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    z-index: -1;
-  }
+  box-shadow: var(--shadow);
 }
 .card-divider {
   width: 100%;
@@ -630,6 +620,9 @@ input:disabled {
 .align-cross-center {
   align-items: center;
 }
+.align-cross-stretch {
+  align-items: stretch;
+}
 .no-row-gap {
   row-gap: 0 !important;
 }
@@ -943,7 +936,7 @@ a:hover .product-title-small {
   height: calc(30px * 1.4);
   color: var(--almost-main);
   position: relative;
-  background-color: var(--subtler);
+  background-color: var(--surface);
   z-index: 3;
   display: flex;
   justify-content: center;
@@ -962,7 +955,7 @@ a:hover .product-title-small {
   background-color: var(--background);
 }
 .process-stage::after {
-  background-color: var(--subtler);
+  background-color: var(--surface);
   left: auto;
   right: -15px;
 }
@@ -984,7 +977,7 @@ a:hover .product-title-small {
     transform: translateX(-50%);
     height: 100%;
     width: 100vw;
-    background: url('/images/Uznemuma-bilde2019.jpg');
+    background: url('https://www.maiznica.lv/images/Uznemuma-bilde2019.jpg');
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;

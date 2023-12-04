@@ -7,7 +7,7 @@ const CategoryItem = ({ category, name }) => {
     <Link
       className="card square category-spacer category-card m-d"
       style={{
-        background: `url(/images/lg_${category.image}) center center`,
+        background: `url(https://www.maiznica.lv/images/lg_${category.image}) center center`,
       }}
       key={category.id}
       to={`/category/${category.id}`}>

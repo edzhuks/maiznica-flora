@@ -268,7 +268,7 @@ const Header = () => {
           to="/">
           <Logo
             style={{ height: 'calc(var(--header-height) - 10px)' }}
-            src={`/images/logo-${selectedLang}.png`}
+            src={`https://www.maiznica.lv/images/logo-${selectedLang}.png`}
             alt="logo"
           />
         </Link>

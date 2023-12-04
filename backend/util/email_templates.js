@@ -24,7 +24,7 @@ const basicEmailHtml = ({ title, content, action, footer }) => {
         padding: 0;
         background: #eeeeee;
         font-family: 'Roboto', sans-serif;
-        color: #eee !important;
+        color: #333 !important;
       }
       div,
       p,
@@ -286,7 +286,7 @@ const basicEmailHtml = ({ title, content, action, footer }) => {
 
 const receiptEmail = (order, orderURL) => {
   return `
-  <meta
+ <meta
   http-equiv="Content-Type"
   content="text/html; charset=utf-8" />
 <title>Order confirmation</title>
@@ -452,7 +452,116 @@ const receiptEmail = (order, orderURL) => {
                   </td>
                 </tr>
                 <tr>
-                  <td height="60"></td>
+                  <td height="30"></td>
+                </tr>
+                ${
+                  order.businessComments && order.businessComments.name
+                    ? `
+                <tr>
+                  <td colspan="4">
+                    <table
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      width="220"
+                      align="left">
+                      <tbody>
+                        <tr>
+                          <td height="30"></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              font-size: 11px;
+                              font-family: 'Open Sans', sans-serif;
+                              color: #5b5b5b;
+                              line-height: 1;
+                              vertical-align: top;
+                            ">
+                            <strong>Pasūtītājs</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100%"
+                            height="10"></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              font-size: 12px;
+                              font-family: 'Open Sans', sans-serif;
+                              color: #5b5b5b;
+                              line-height: 20px;
+                              vertical-align: top;
+                            ">
+                            Nosaukums: ${order.businessComments.name}<br />
+                            Reģ. Nr.: ${order.businessComments.regNo}<br />
+                            PVN reģ. Nr.: LV${
+                              order.businessComments.regNo
+                            }<br />
+                            Adrese: ${order.businessComments.address}<br />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table
+                      border="0"
+                      cellpadding="0"
+                      cellspacing="0"
+                      width="220">
+                      <tbody>
+                        <tr>
+                          <td height="30"></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              font-size: 11px;
+                              font-family: 'Open Sans', sans-serif;
+                              color: #5b5b5b;
+                              line-height: 1;
+                              vertical-align: top;
+                            ">
+                            <strong>Piegādātājs</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100%"
+                            height="10"></td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              font-size: 12px;
+                              font-family: 'Open Sans', sans-serif;
+                              color: #5b5b5b;
+                              line-height: 20px;
+                              vertical-align: top;
+                            ">
+                            Nosaukums: Maiznīca Flora SIA<br />
+                            Reģ. Nr.: 50003251341<br />
+                            PVN reģ. Nr.: LV50003251341<br />
+                            Adrese:Vecvaltes, Krimuldas pagasts, Siguldas
+                            novads, Latvija, LV-2144<br />
+                            Norēķinu konts: LV49UNLA0034304403100
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+<tr><td colspan="4">Rēķins derīgs līdz ${formatDate(
+                        new Date(
+                          new Date().setDate(order.datePlaced.getDate() + 7)
+                        )
+                      )}</td></tr>
+                `
+                    : ''
+                }
+                <tr>
+                  <td height="30"></td>
                 </tr>
                 <tr>
                   <th
@@ -698,78 +807,19 @@ const receiptEmail = (order, orderURL) => {
                       vertical-align: top;
                       text-align: left;
                     ">
-                    <p> Varat sekot savam pasūtījumam savā profilā:<br/>
-                    <a href="${orderURL}">
-                    ${orderURL}</a></p>
+                    <p>
+                      Varat sekot savam pasūtījumam savā profilā:<br />
+                      <a href="${orderURL}"> ${orderURL}</a>
+                    </p>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="4">
                     ${
-                      order.businessComments
+                      order.generalComments
                         ? `
                     <table
-                      width="120"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      align="left"
-                      class="col">
-                      <tbody>
-                        <tr>
-                          <td height="30"></td>
-                        </tr>
-                        <tr>
-                          <td
-                            style="
-                              font-size: 11px;
-                              font-family: 'Open Sans', sans-serif;
-                              color: #5b5b5b;
-                              line-height: 1;
-                              vertical-align: top;
-                            ">
-                            <strong>Pasūtītāja rekvizīti</strong>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td
-                            width="100%"
-                            height="10"></td>
-                        </tr>
-                        <tr>
-                          <td
-                            style="
-                              font-size: 12px;
-                              font-family: 'Open Sans', sans-serif;
-                              color: #5b5b5b;
-                              line-height: 20px;
-                              vertical-align: top;
-                            ">
-                            ${order.businessComments}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      width="40"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      align="left"
-                      class="col">
-                      <tbody>
-                        <tr>
-                          <td height="20"></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    `
-                        : ''
-                    } ${
-    order.generalComments
-      ? `
-                    <table
-                      width="120"
+                      width="220"
                       border="0"
                       cellpadding="0"
                       cellspacing="0"
@@ -810,26 +860,14 @@ const receiptEmail = (order, orderURL) => {
                         </tr>
                       </tbody>
                     </table>
-                    <table
-                      width="40"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      align="left"
-                      class="col">
-                      <tbody>
-                        <tr>
-                          <td height="20"></td>
-                        </tr>
-                      </tbody>
-                    </table>
+
                     `
-      : ''
-  } ${
+                        : ''
+                    } ${
     order.deliveryComments
       ? `
                     <table
-                      width="120"
+                      width="220"
                       border="0"
                       cellpadding="0"
                       cellspacing="0"
@@ -1073,6 +1111,7 @@ const receiptEmail = (order, orderURL) => {
     <td height="20"></td>
   </tr>
 </table>
+
 `
 }
 

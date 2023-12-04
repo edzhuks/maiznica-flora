@@ -46,7 +46,7 @@ const getPaymentData = async ({ cart, selectedLang }) => {
   return response.data
 }
 
-router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
+const prepareForOrder = async (req, res, next) => {
   let cart = await Cart.findOne({ user: req.user.id }).populate([
     { path: 'content', populate: { path: 'product' } },
     { path: 'courrierAddress' },
@@ -110,44 +110,135 @@ router.post('/pay', userExtractor, verificationRequired, async (req, res) => {
   const total = subtotal + deliveryCost
   cart.total = total
   cart = await cart.save()
-  try {
-    const paymentData = await getPaymentData({
-      cart: cart,
-      selectedLang: req.body.selectedLang,
-    })
-    cart.paymentStatus = paymentData.payment_state
-    cart.paymentReference = paymentData.payment_reference
-    cart = await cart.save()
-    return res.send({
-      paymentLink: paymentData.payment_link,
-      paymentReference: paymentData.payment_reference,
-      orderId: cart._id,
-    })
-  } catch (error) {
-    if (error.response.data.error.code === 4024) {
-      await cart.deleteOne()
-      const newCart = new Cart({
-        content: [],
-        user: req.user.id,
-        courrierAddress: cart.courrierAddress,
-        pickupPointData: cart.pickupPointData,
-        deliveryPhone: cart.deliveryPhone,
-        businessComments: cart.businessComments,
-        generalComments: cart.generalComments,
-        deliveryComments: cart.deliveryComments,
+  req.cart = cart
+  next()
+}
+
+router.post(
+  '/pay',
+  userExtractor,
+  verificationRequired,
+  prepareForOrder,
+  async (req, res) => {
+    const cart = req.cart
+    try {
+      const paymentData = await getPaymentData({
+        cart: cart,
+        selectedLang: req.body.selectedLang,
       })
-      await newCart.save()
-      res.status(400).send({
-        error: {
-          en: 'Order is already paid',
-          lv: 'Pasūtījums jau ir apmaksāts',
-        },
+      cart.paymentStatus = paymentData.payment_state
+      cart.paymentReference = paymentData.payment_reference
+      cart = await cart.save()
+      return res.send({
+        paymentLink: paymentData.payment_link,
+        paymentReference: paymentData.payment_reference,
+        orderId: cart._id,
       })
+    } catch (error) {
+      if (error.response.data.error.code === 4024) {
+        await cart.deleteOne()
+        const newCart = new Cart({
+          content: [],
+          user: req.user.id,
+          courrierAddress: cart.courrierAddress,
+          pickupPointData: cart.pickupPointData,
+          deliveryPhone: cart.deliveryPhone,
+          businessComments: cart.businessComments,
+          generalComments: cart.generalComments,
+          deliveryComments: cart.deliveryComments,
+        })
+        await newCart.save()
+        res.status(400).send({
+          error: {
+            en: 'Order is already paid',
+            lv: 'Pasūtījums jau ir apmaksāts',
+          },
+        })
+      }
+      console.log(error)
+      console.log(error.response.data.error)
     }
-    console.log(error)
-    console.log(error.response.data.error)
   }
-})
+)
+
+router.post(
+  '/invoice',
+  userExtractor,
+  verificationRequired,
+  prepareForOrder,
+  async (req, res) => {
+    const cart = req.cart
+    const subtotal = cart.content
+      .map((i) => getPrice(i) * i.quantity)
+      .reduce((acc, cur) => acc + cur, 0)
+    const deliveryCost =
+      subtotal >= 6000
+        ? 0
+        : cart.deliveryMethod === 'courrier'
+        ? 599
+        : cart.deliveryMethod === 'bakery'
+        ? 0
+        : 399
+    const total = subtotal + deliveryCost
+    let order = new Order({
+      user: cart.user,
+      content: cart.content,
+      deliveryMethod: cart.deliveryMethod,
+      courrierAddress: cart.courrierAddress,
+      pickupPointData: cart.pickupPointData,
+      deliveryPhone: cart.deliveryPhone,
+      deliveryCost: cart.deliveryCost,
+      datePlaced: Date.now(),
+      subtotal: subtotal,
+      deliveryCost: deliveryCost,
+      total: total,
+      vat: total * 0.21,
+      businessComments: cart.businessComments,
+      generalComments: cart.generalComments,
+      deliveryComments: cart.deliveryComments,
+      latestStatus: 'invoiced',
+      statusHistory: [{ status: 'invoiced', time: Date.now() }],
+      prettyID: makeOrderID(),
+    })
+    order = await order.save()
+    if (!TEST_MODE) {
+      await order.populate([
+        { path: 'content', populate: { path: 'product' } },
+        { path: 'user' },
+      ])
+      const settings = await Settings.findOne({})
+      try {
+        await sendReceiptEmail(
+          [...settings.orderNotificationEmails.map((e) => e.email)],
+          order,
+          `${FRONTEND_URL}/orders/${order._id}`
+        )
+        await sendReceiptEmail(
+          [order.user.email],
+          order,
+          `${FRONTEND_URL}/account/previous_orders/${order._id}`
+        )
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    await cart.deleteOne()
+    const newCart = new Cart({
+      content: [],
+      user: order.user.id,
+      courrierAddress: cart.courrierAddress,
+      pickupPointData: cart.pickupPointData,
+      deliveryPhone: cart.deliveryPhone,
+      businessComments: cart.businessComments,
+      generalComments: cart.generalComments,
+      deliveryComments: cart.deliveryComments,
+    })
+    await newCart.save()
+
+    return res.status(200).send()
+  }
+)
 
 const updatePaymentStatus = async (paymentReference) => {
   const cart = await Cart.findOne({
@@ -354,20 +445,20 @@ router.post('/', userExtractor, verificationRequired, async (req, res) => {
 
 router.put('/', userExtractor, verificationRequired, async (req, res) => {
   if (
-    !req.body.courrierAddress &&
-    !req.body.pickupPointData &&
-    !req.body.deliveryPhone &&
-    !req.body.deliveryMethod &&
-    !req.body.businessComments &&
-    !req.body.generalComments &&
-    !req.body.deliveryComments
+    !req.body.hasOwnProperty('courrierAddress') &&
+    !req.body.hasOwnProperty('pickupPointData') &&
+    !req.body.hasOwnProperty('deliveryPhone') &&
+    !req.body.hasOwnProperty('deliveryMethod') &&
+    !req.body.hasOwnProperty('businessComments') &&
+    !req.body.hasOwnProperty('generalComments') &&
+    !req.body.hasOwnProperty('deliveryComments')
   ) {
     return res
       .status(400)
       .json({ error: { en: 'Unknown fields', lv: 'Nezināmi lauki' } })
   }
   let cart = await Cart.findOne({ user: req.user.id })
-  if (req.body.courrierAddress) {
+  if (req.body.hasOwnProperty('courrierAddress')) {
     if (req.body.courrierAddress === 'unset') {
       cart.courrierAddress = undefined
     } else {
@@ -376,27 +467,27 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     await cart.save()
     return res.status(201).send({ courrierAddress: cart.courrierAddress })
   }
-  if (req.body.pickupPointData) {
+  if (req.body.hasOwnProperty('pickupPointData')) {
     cart.pickupPointData = { ...req.body.pickupPointData }
     await cart.save()
     return res.status(201).send({ pickupPointData: cart.pickupPointData })
   }
-  if (req.body.deliveryPhone) {
+  if (req.body.hasOwnProperty('deliveryPhone')) {
     cart.deliveryPhone = req.body.deliveryPhone
     await cart.save()
     return res.status(201).send({ deliveryPhone: cart.deliveryPhone })
   }
-  if (req.body.businessComments) {
+  if (req.body.hasOwnProperty('businessComments')) {
     cart.businessComments = req.body.businessComments
     await cart.save()
     return res.status(201).send({ businessComments: cart.businessComments })
   }
-  if (req.body.generalComments) {
+  if (req.body.hasOwnProperty('generalComments')) {
     cart.generalComments = req.body.generalComments
     await cart.save()
     return res.status(201).send({ generalComments: cart.generalComments })
   }
-  if (req.body.deliveryComments) {
+  if (req.body.hasOwnProperty('deliveryComments')) {
     cart.deliveryComments = req.body.deliveryComments
     await cart.save()
     return res.status(201).send({ deliveryComments: cart.deliveryComments })

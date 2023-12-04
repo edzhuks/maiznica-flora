@@ -14,6 +14,7 @@ const DistanceAgreementPage = () => {
       <div
         style={{ maxWidth: '800px' }}
         className="legal-text card p-m">
+        <h3 className="card-heading m-d bad">{lang.latvia_delivery}</h3>
         <h3>Maiznīca Flora e-veikala preču pirkšanas-pārdošanas noteikumi</h3>
         <h4>1. Termini un vispārējie nosacījumi</h4>
         <p>

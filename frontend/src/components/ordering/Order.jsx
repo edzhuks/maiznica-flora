@@ -1,7 +1,8 @@
-import { useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
-import { useCartServiceDispatch } from '../../reducers/cartReducer'
+import {
+  selectIsBusiness,
+  useCartServiceDispatch,
+} from '../../reducers/cartReducer'
 import { toast } from 'react-toastify'
 
 import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
@@ -35,27 +36,37 @@ const Order = () => {
   const stage = match.params.stage
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const dispatch = useDispatch()
-  const { updatePaymentStatus } = useCartServiceDispatch()
   const cart = useSelector((state) => state.cart)
-  const iframe = useSelector((state) => state.cart.iframe)
-  const paymentReference = useSelector((state) => state.cart.paymentReference)
+  const isBusiness = useSelector(selectIsBusiness)
   const navigate = useNavigate()
-  const [failedPayment, setFailedPayment] = useState()
-  const { placeOrder } = useCartServiceDispatch()
-
-  const startOver = () => {
-    // console.log(orderId)
-    // const promise = orderService.startOver(orderId)
-    // promise.then((response) => {
-    //   setIframe(response.data.paymentLink)
-    // })
-  }
+  const { placeOrder, invoice } = useCartServiceDispatch()
 
   const order = async () => {
-    if (checkDeliveryMethod() && checkCartEmpty()) {
+    if (checkDeliveryMethod() && checkCartEmpty() && checkBusinessComments()) {
       dispatch(placeOrder())
     }
   }
+
+  const sendInvoice = async () => {
+    if (checkDeliveryMethod() && checkCartEmpty() && checkBusinessComments()) {
+      dispatch(invoice())
+    }
+  }
+
+  const checkBusinessComments = () => {
+    if (
+      cart.businessComments &&
+      (cart.businessComments.name ||
+        cart.businessComments.address ||
+        cart.businessComments.regNo) &&
+      !isBusiness
+    ) {
+      toast.error(lang.toast_incomplete_business_comments)
+      return false
+    }
+    return true
+  }
+
   const checkDeliveryMethod = () => {
     if (!cart.deliveryMethod) {
       toast.error(lang.toast_select_delivery_method)
@@ -99,7 +110,9 @@ const Order = () => {
         navigate('comments')
       }
     } else if (stage === 'comments') {
-      navigate('payment')
+      if (checkBusinessComments()) {
+        navigate('payment')
+      }
     }
   }
 
@@ -135,7 +148,12 @@ const Order = () => {
             />
             <Route
               path="payment"
-              element={<Payment order={order} />}
+              element={
+                <Payment
+                  order={order}
+                  invoice={sendInvoice}
+                />
+              }
             />
             <Route
               path="comments"

@@ -71,6 +71,11 @@ const useOrderService = () => {
     const request = axios.put(`${baseURL}/delivering`, { id }, config)
     return request.then((response) => response.data)
   }
+  const makePaid = (id) => {
+    const config = makeConfig()
+    const request = axios.put(`${baseURL}/paid`, { id }, config)
+    return request.then((response) => response.data)
+  }
   return {
     updateOrder,
     getAll,
@@ -82,6 +87,7 @@ const useOrderService = () => {
     makeReadyForDelivery,
     makeReadyForPickup,
     makeWaitingForCourrier,
+    makePaid,
   }
 }
 

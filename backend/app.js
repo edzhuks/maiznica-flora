@@ -72,7 +72,11 @@ app.use(
     { stream: accessLogStream }
   )
 )
-app.use(morgan('tiny'))
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :postbody'
+  )
+)
 app.use('/api/products', productRouter)
 app.use('/api/uploads', uploadRouter)
 app.use('/api/cart', cartRouter)

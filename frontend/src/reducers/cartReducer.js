@@ -15,10 +15,9 @@ const initialState = {
   paid: false,
   animate: false,
   animateTimeout: undefined,
-  iframe: undefined,
   paymentStatus: undefined,
   paymentReference: undefined,
-  businessComments: undefined,
+  businessComments: { name: undefined, regNo: undefined, address: undefined },
   generalComments: undefined,
   deliveryComments: undefined,
 }
@@ -63,12 +62,6 @@ const cartSlice = createSlice({
     setPaid(state, action) {
       state.paid = action.payload
     },
-    setIframe(state, action) {
-      state.iframe = action.payload
-    },
-    clearIframe(state, action) {
-      state.iframe = ''
-    },
     setPaymentStatus(state, action) {
       state.paymentStatus = action.payload
     },
@@ -88,6 +81,7 @@ const cartSlice = createSlice({
 })
 const selectContent = (state) => state.cart.content
 const selectDeliveryMethod = (state) => state.cart.deliveryMethod
+const selectBusinessComments = (state) => state.cart.businessComments
 
 const selectCartTotal = createSelector([selectContent], (content) =>
   content
@@ -127,11 +121,21 @@ const selectDeliveryCost = createSelector(
     }
   }
 )
+
+const selectIsBusiness = createSelector(
+  [selectBusinessComments],
+  (businessComments) =>
+    businessComments &&
+    businessComments.name &&
+    businessComments.address &&
+    businessComments.regNo
+)
 export {
   selectCartTotal,
   selectCartOverThreshold,
   DELIVERY_THRESHOLD,
   selectDeliveryCost,
+  selectIsBusiness,
   getDeliveryCost,
 }
 
@@ -148,8 +152,6 @@ export const {
   setAnimateTimeout,
   stopAnimate,
   clearAnimationTimeout,
-  setIframe,
-  clearIframe,
   setPaymentStatus,
   setPaymentReference,
   setBusinessComments,
@@ -174,33 +176,19 @@ export const useCartServiceDispatch = () => {
 
   const addItem = (item) => {
     return async (dispatch) => {
-      cartService
-        .addToCart(item)
-        .then((response) => {
-          dispatch(setContent(response.data.content))
-          dispatch(animateCart())
-          dispatch(clearIframe())
-        })
-        .catch((error) => {
-          console.log(error.response.data.error)
-          showErrorToastNoPromise(error)
-        })
+      cartService.addToCart(item).then((response) => {
+        dispatch(setContent(response.data.content))
+        dispatch(animateCart())
+      })
     }
   }
 
   const removeItem = (item) => {
     return async (dispatch) => {
-      cartService
-        .removeFromCart(item)
-        .then((response) => {
-          dispatch(setContent(response.data.content))
-          dispatch(animateCart())
-          dispatch(clearIframe())
-        })
-        .catch((error) => {
-          console.log(error.response.data.error)
-          showErrorToastNoPromise(error)
-        })
+      cartService.removeFromCart(item).then((response) => {
+        dispatch(setContent(response.data.content))
+        dispatch(animateCart())
+      })
     }
   }
 
@@ -220,17 +208,10 @@ export const useCartServiceDispatch = () => {
 
   const changeQuantityOfItem = (item) => {
     return async (dispatch) => {
-      cartService
-        .changeQuantity(item)
-        .then((response) => {
-          dispatch(setContent(response.data.content))
-          dispatch(animateCart())
-          dispatch(clearIframe())
-        })
-        .catch((error) => {
-          console.log(error.response.data.error)
-          showErrorToastNoPromise(error)
-        })
+      cartService.changeQuantity(item).then((response) => {
+        dispatch(setContent(response.data.content))
+        dispatch(animateCart())
+      })
     }
   }
   const changeDeliveryMethod = (method) => {
@@ -239,7 +220,6 @@ export const useCartServiceDispatch = () => {
         .changeDeliveryMethod(method)
         .then((response) => {
           dispatch(setDeliveryMethod(response.data.deliveryMethod))
-          dispatch(clearIframe())
         })
         .catch((error) => {
           console.log(error.response.data.error)
@@ -332,12 +312,24 @@ export const useCartServiceDispatch = () => {
         .placeOrder()
         .then((response) => {
           window.location.href = response.data.paymentLink
-          // dispatch(setIframe(response.data.paymentLink))
           dispatch(setPaymentReference(response.data.paymentReference))
         })
         .catch((error) => {
           console.log(error.response.data.error)
           showErrorToastNoPromise(error)
+        })
+    }
+  }
+  const invoice = () => {
+    return async (dispatch) => {
+      cartService
+        .invoice()
+        .then((response) => {
+          dispatch(setPaymentStatus('invoiced'))
+          dispatch(loadCart())
+        })
+        .catch((error) => {
+          console.log(error.response.data.error)
         })
     }
   }
@@ -363,6 +355,7 @@ export const useCartServiceDispatch = () => {
     changeBusinessComments,
     changeDeliveryComments,
     changeGeneralComments,
+    invoice,
   }
 }
 

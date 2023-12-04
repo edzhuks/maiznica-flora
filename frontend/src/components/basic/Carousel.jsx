@@ -83,7 +83,7 @@ const CarouselItem = ({ bannerItem, active }) => {
               : `/products/${bannerItem.product}`
           )
       }}
-      src={`/images/xl_${bannerItem.image}`}
+      src={`https://www.maiznica.lv/images/xl_${bannerItem.image}`}
       active={active}
       className={active && 'fade-in'}
       style={{

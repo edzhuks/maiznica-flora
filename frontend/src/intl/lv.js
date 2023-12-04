@@ -44,7 +44,7 @@ const lv = {
   nature: 'Daba',
   people: 'Cilvēks',
   quality: 'Kvalitāte',
-  how_products_are_made: 'KĀ TOP MAIZNĪCAs FLORA PRODUKTI?',
+  how_products_are_made: 'KĀ TOP MAIZNĪCAS FLORA PRODUKTI',
   product: 'Produkts',
   category: 'Kategorija',
   select_existing_categories: 'Izvēlēties no esošām kategorijām',
@@ -82,6 +82,7 @@ const lv = {
     waiting_for_courrier: 'Gaida kurjeru',
     delivering: 'Tiek piegādāts',
     completed: 'Pabeigts',
+    invoiced: 'Gaida apmaksu',
   },
   last_modified_by: 'Pēdējoreiz mainījis',
   confirm_delete: 'Vai tiešām dzēst šo produktu?',
@@ -298,7 +299,24 @@ const lv = {
   quantity: 'gab.',
   resend_receipt: 'Nosūtīt rēķinu uz e-pastu',
   special_order:
-    'Gatavots pēc pasūtījuma.\nViss pasūtījums tiks sagatavots 10 darbadienu laikā.',
+    'Gatavots pēc pasūtījuma.\nViss pasūtījums tiks sagatavots 10 darbadienu laikā pēc apmaksas saņemšanas.',
+  latvia: 'Latvija',
+  country: 'Valsts',
+  address: 'Adrese',
+  regNo: 'Reģ. Nr.',
+  pay_now: 'Apmaksāt tagad',
+  toast_incomplete_business_comments: 'Nepilnīgi rekvizīti',
+  online_payment: 'Apmaksa',
+  receipt_payment: 'Apmaksa ar priekšapmaksas rēķinu',
+  receive_receipt: 'Saņemt rēķinu',
+  receipt_instructions:
+    'Nosūtīsim priekšapmaksas rēķinu uz profilā norādīto e-pastu.\nPasūtījuma komplektēšana sāksies tikai pēc apmaksas pabeigšanas.',
+  online_payment_instructions: 'Apmaksa ar internetbanku vai maksājumu karti.',
+  vatNo: 'PVN reģ. Nr.',
+  paid: 'Apmaksāts',
+  order_invoiced: 'Rēķins nosūtīts',
+  order_invoiced_info:
+    'Esam nosūtījuši jums priekšapmaksas rēķinu.\nPasūtījuma komplektēšanu sāksim, kad rēķins būs apmakstāts.\nRēķins ir derīgs 7 dienas no nosūtīšnas brīža.',
 }
 
 export default lv
