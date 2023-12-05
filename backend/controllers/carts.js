@@ -120,7 +120,7 @@ router.post(
   verificationRequired,
   prepareForOrder,
   async (req, res) => {
-    const cart = req.cart
+    let cart = req.cart
     try {
       const paymentData = await getPaymentData({
         cart: cart,
