@@ -300,11 +300,27 @@ const ReadyForPickupModal = ({ visible, close, order, submit }) => {
           <h3 className="card-heading">{lang.deliveryComments}</h3>
           <p className="card-text wrap-n">{order.deliveryComments}</p>
           <div className="card-divider" />
-          <h3 className="card-heading">{lang.businessComments}</h3>
-          <p className="card-text wrap-n">{order.businessComments.name}</p>
-          <p className="card-text wrap-n">{order.businessComments.address}</p>
-          <p className="card-text wrap-n">{order.businessComments.regNo}</p>
-          <div className="card-divider" />
+          {order.businessComments && (
+            <>
+              <h3 className="card-heading">{lang.businessComments}</h3>
+              {order.businessComments.name ? (
+                <>
+                  <p className="card-text wrap-n">
+                    {order.businessComments.name}
+                  </p>
+                  <p className="card-text wrap-n">
+                    {order.businessComments.address}
+                  </p>
+                  <p className="card-text wrap-n">
+                    {order.businessComments.regNo}
+                  </p>
+                </>
+              ) : (
+                <p>{order.businessComments}</p>
+              )}
+              <div className="card-divider" />
+            </>
+          )}
           <h3 className="card-heading">{lang.generalComments}</h3>
           <p className="card-text wrap-n">{order.generalComments}</p>
         </div>
@@ -589,15 +605,21 @@ const ExpandedOrder = ({ withManagement }) => {
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.businessComments}</h3>
                 <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text wrap-n">
-                  {order.businessComments.name}
-                </p>
-                <p className="card-text wrap-n">
-                  {order.businessComments.address}
-                </p>
-                <p className="card-text wrap-n">
-                  {order.businessComments.regNo}
-                </p>
+                {order.businessComments.name ? (
+                  <>
+                    <p className="card-text wrap-n">
+                      {order.businessComments.name}
+                    </p>
+                    <p className="card-text wrap-n">
+                      {order.businessComments.address}
+                    </p>
+                    <p className="card-text wrap-n">
+                      {order.businessComments.regNo}
+                    </p>
+                  </>
+                ) : (
+                  <p>{order.businessComments}</p>
+                )}
               </div>
             )}
             {order.generalComments && (
