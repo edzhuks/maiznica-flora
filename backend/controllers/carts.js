@@ -135,6 +135,7 @@ router.post(
         orderId: cart._id,
       })
     } catch (error) {
+      console.log(error)
       if (error.response.data.error.code === 4024) {
         await cart.deleteOne()
         const newCart = new Cart({
@@ -155,7 +156,6 @@ router.post(
           },
         })
       }
-      console.log(error)
       console.log(error.response.data.error)
     }
   }
