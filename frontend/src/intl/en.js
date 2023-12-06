@@ -302,6 +302,7 @@ const en = {
   order_invoiced: 'Invoice sent',
   order_invoiced_info:
     'We have sent you an invoice.\nWe will begin packing the order once payment is completed.\nThe invoice is valid for 7 days.',
+  all: 'All',
 }
 
 export default en

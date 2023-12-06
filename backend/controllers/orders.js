@@ -161,9 +161,16 @@ router.get('/resend_email', userExtractor, async (req, res) => {
 })
 
 router.get('/all', userExtractor, adminRequired, async (req, res) => {
-  const orders = await Order.find().populate([
-    { path: 'content', populate: { path: 'product' } },
-  ])
+  const search = req.query.search
+  console.log(search)
+  delete req.query.search
+  console.log(search)
+  const orders = await Order.find({
+    latestStatus: Object.keys(req.query).filter(
+      (key) => req.query[key] === 'true'
+    ),
+    ...(search && { $text: { $search: search } }),
+  }).populate([{ path: 'content', populate: { path: 'product' } }])
   res.send(orders)
 })
 router.get('/:id', userExtractor, async (req, res) => {

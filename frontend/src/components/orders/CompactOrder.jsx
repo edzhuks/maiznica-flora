@@ -4,11 +4,15 @@ import {
   countProducts,
   gramsToKilos,
 } from '../../util/convert'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom'
 
 const CompactOrder = ({ order, expand }) => {
+  const { search } = useLocation()
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
-  const to = window.innerWidth <= 800 ? `/order/${order.id}` : order.id
+  const to = {
+    pathname: window.innerWidth <= 800 ? `/order/${order.id}` : order.id,
+    search: search,
+  }
 
   return (
     // <NavLink

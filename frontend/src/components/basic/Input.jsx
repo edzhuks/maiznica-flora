@@ -117,7 +117,7 @@ const Input = ({
           <input
             {...props}
             checked={props.value}
-            onChange={() => changeValue(!props.value)}
+            onChange={() => props.onChange(!props.value)}
             type="checkbox"
             placeholder=" "
           />

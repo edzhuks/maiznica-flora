@@ -41,14 +41,13 @@ const CarouselImage = styled.img`
   position: absolute;
   height: auto;
   opacity: 0;
-  transition: all 1000ms linear 0s;
+  transition: opacity 700ms linear 0s;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
-  display: none;
   &.fade-in {
     opacity: 1;
-    display: block;
+    z-index: 2;
   }
 `
 
@@ -59,7 +58,7 @@ const CarouselIndicators = styled.div`
   left: 0;
   bottom: 0;
   justify-content: center;
-  z-index: 2;
+  z-index: 3;
 `
 
 const CarouselIndicator = styled.div`

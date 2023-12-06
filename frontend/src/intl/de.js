@@ -308,6 +308,7 @@ const de = {
   order_invoiced: 'Rechnung gesendet',
   order_invoiced_info:
     'Wir haben Ihnen eine Rechnung geschickt.\nWir beginnen mit dem Verpacken der Bestellung, sobald die Zahlung erfolgt ist.\nDie Rechnung ist 7 Tage lang gültig.',
+  all: 'Alle',
 }
 
 export default de

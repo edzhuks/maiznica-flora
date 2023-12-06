@@ -21,9 +21,12 @@ const useOrderService = () => {
     return request.then((response) => response.data)
   }
 
-  const getAll = () => {
+  const getAll = ({ filters, search }) => {
     const config = makeConfig()
-    const request = axios.get(`${baseURL}/all`, config)
+    const request = axios.get(`${baseURL}/all`, {
+      headers: config.headers,
+      params: { ...filters, search },
+    })
     return request.then((response) => response.data)
   }
   const getById = (id) => {

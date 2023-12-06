@@ -84,5 +84,13 @@ orderSchema.set('toJSON', {
     delete returnedObject.__v
   },
 })
-
+orderSchema.index({
+  deliveryMethod: 'text',
+  'businessComments.name': 'text',
+  'businessComments.address': 'text',
+  'businessComments.regNo': 'text',
+  generalComments: 'text',
+  deliveryComments: 'text',
+  prettyID: 'text',
+})
 module.exports = mongoose.model('Order', orderSchema)

@@ -317,6 +317,7 @@ const lv = {
   order_invoiced: 'Rēķins nosūtīts',
   order_invoiced_info:
     'Esam nosūtījuši jums priekšapmaksas rēķinu.\nPasūtījuma komplektēšanu sāksim, kad rēķins būs apmakstāts.\nRēķins ir derīgs 7 dienas no nosūtīšnas brīža.',
+  all: 'Visi',
 }
 
 export default lv

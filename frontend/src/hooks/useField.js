@@ -22,6 +22,8 @@ const useField = (type, defaultValue) => {
       setValue(event)
     } else if (type === 'select') {
       setValue(event)
+    } else if (type === 'checkbox') {
+      setValue(event)
     } else {
       setValue(event.target.value)
     }
