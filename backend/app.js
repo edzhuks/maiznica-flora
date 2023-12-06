@@ -59,7 +59,19 @@ morgan.token('postbody', function (req) {
     : ' '
 })
 
-app.use(cors())
+if (config.DEV_MODE) {
+  app.use(cors())
+}
+if (config.PROD_MODE) {
+  app.all(/.*/, function (req, res, next) {
+    var host = req.header('host')
+    if (host.match(/\bwww.maiznica.lv\b/i)) {
+      next()
+    } else {
+      res.redirect(301, 'https://www.maiznica.lv' + req.url)
+    }
+  })
+}
 app.use(express.json())
 app.use(express.static('build', { maxAge: 1000 * 60 * 60 }))
 app.use(tokenExtractor)

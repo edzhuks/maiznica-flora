@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 const TEST_MODE = process.env.NODE_ENV === 'test'
+const PROD_MODE = process.env.NODE_ENV === 'production'
+const DEV_MODE = process.env.NODE_ENV === 'development'
 const PORT = process.env.PORT
 const SECRET = process.env.SECRET
 const EMAIL_PASS = process.env.EMAIL_PASS
@@ -38,4 +40,6 @@ module.exports = {
   BANK_API_USERNAME,
   BANK_API_URL,
   DPD_API_URL,
+  PROD_MODE,
+  DEV_MODE,
 }
