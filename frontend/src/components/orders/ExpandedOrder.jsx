@@ -601,27 +601,30 @@ const ExpandedOrder = ({ withManagement }) => {
                 <p className="card-text wrap-n">{order.deliveryComments}</p>
               </div>
             )}
-            {order.businessComments && (
-              <div className="card m-d p">
-                <h3 className="card-heading">{lang.businessComments}</h3>
-                <div className="card-divider m-t-s m-d-s" />
-                {order.businessComments.name ? (
-                  <>
-                    <p className="card-text wrap-n">
-                      {order.businessComments.name}
-                    </p>
-                    <p className="card-text wrap-n">
-                      {order.businessComments.address}
-                    </p>
-                    <p className="card-text wrap-n">
-                      {order.businessComments.regNo}
-                    </p>
-                  </>
-                ) : (
-                  <p>{order.businessComments}</p>
-                )}
-              </div>
-            )}
+            {order.businessComments &&
+              (order.businessComments.length > 0 ||
+                (order.businessComments.name &&
+                  order.businessComments.name.length > 0)) && (
+                <div className="card m-d p">
+                  <h3 className="card-heading">{lang.businessComments}</h3>
+                  <div className="card-divider m-t-s m-d-s" />
+                  {order.businessComments.name ? (
+                    <>
+                      <p className="card-text wrap-n">
+                        {order.businessComments.name}
+                      </p>
+                      <p className="card-text wrap-n">
+                        {order.businessComments.address}
+                      </p>
+                      <p className="card-text wrap-n">
+                        {order.businessComments.regNo}
+                      </p>
+                    </>
+                  ) : (
+                    <p>{order.businessComments}</p>
+                  )}
+                </div>
+              )}
             {order.generalComments && (
               <div className="card m-d p">
                 <h3 className="card-heading">{lang.generalComments}</h3>
