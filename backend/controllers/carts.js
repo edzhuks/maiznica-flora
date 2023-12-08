@@ -478,7 +478,15 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     return res.status(201).send({ deliveryPhone: cart.deliveryPhone })
   }
   if (req.body.hasOwnProperty('businessComments')) {
-    cart.businessComments = req.body.businessComments
+    if (
+      req.body.businessComments.name === '' &&
+      req.body.businessComments.address === '' &&
+      req.body.businessComments.regNo === ''
+    ) {
+      cart.businessComments = undefined
+    } else {
+      cart.businessComments = req.body.businessComments
+    }
     await cart.save()
     return res.status(201).send({ businessComments: cart.businessComments })
   }
