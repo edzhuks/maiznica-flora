@@ -356,7 +356,7 @@ const Header = () => {
                 {lang.profile}
               </NavLink>
             )}
-            <Lang>
+            <Lang className="m-l">
               <button
                 className="btn"
                 onClick={() => {

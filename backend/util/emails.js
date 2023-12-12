@@ -45,7 +45,7 @@ const sendVerificationEmail = (email, token) => {
       content: ' Klikšķini, lai apstiprinātu šo e-pasta adresi.',
       action: {
         text: 'Apstiprināt e-pastu',
-        link: `${BACKEND_URL}/api/users/verifyEmail/${token}`,
+        link: link,
       },
       footer: `<p style="margin: 0">
                   Ja poga nestrādā, iekopē šo saiti savā pārlūkā:
@@ -56,6 +56,27 @@ const sendVerificationEmail = (email, token) => {
     }),
   })
 }
+
+const sendDeliveryInfo = (email, trackingNo, orderNo) => {
+  const link = `https://www.dpdgroup.com/lv/mydpd/my-parcels/track?lang=lv&parcelNumber=${trackingNo}`
+  return sendEmail(email, {
+    subject: 'Sūtījums no Maiznīcas Flora nodots kurjeram',
+    text: `Jūsu sūtījums #${orderNo} ir nodots DPD kurjeram.\nSekošanas numurs: ${trackingNo}`,
+    html: basicEmailHtml({
+      title: 'Sūtījums nodots kurjeram',
+      content: `Jūsu sūtījums #${orderNo} ir nodots DPD kurjeram.\nVarat sekot sūtījumam noklikšķinot uz pogas.`,
+      action: {
+        text: 'Sekot sūtījumam',
+        link: link,
+      },
+      footer: `<p style="margin: 0">
+                  Ja poga nestrādā, izmanto šo sekošanas numuru: ${trackingNo}
+                </p>
+               `,
+    }),
+  })
+}
+
 const sendResetEmail = (email, token) => {
   const link = `${FRONTEND_URL}/finish_reset_password?token=${token}`
   return sendEmail(email, {
@@ -175,4 +196,5 @@ module.exports = {
   sendContactFormEmail,
   sendContactFormFailedEmail,
   sendReadyForPickupEmail,
+  sendDeliveryInfo,
 }

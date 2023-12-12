@@ -309,6 +309,10 @@ const de = {
   order_invoiced_info:
     'Wir haben Ihnen eine Rechnung geschickt.\nWir beginnen mit dem Verpacken der Bestellung, sobald die Zahlung erfolgt ist.\nDie Rechnung ist 7 Tage lang gültig.',
   all: 'Alle',
+  make_dpd_shipment: 'DPD-Sendung',
+  make_own_shipment: 'Eigene Sendung',
+  businessCommentsShort: 'Geschäftliche Details',
+  track: 'Verfolgen',
 }
 
 export default de

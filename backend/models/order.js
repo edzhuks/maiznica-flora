@@ -74,6 +74,7 @@ const orderSchema = new mongoose.Schema({
   generalComments: String,
   deliveryComments: String,
   shipmentID: String,
+  parcelIDs: [String],
   prettyID: String,
 })
 

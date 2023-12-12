@@ -1,7 +1,11 @@
 const express = require('express')
 const Order = require('../models/order')
 const { userExtractor, adminRequired } = require('../util/middleware')
-const { sendReceiptEmail, sendReadyForPickupEmail } = require('../util/emails')
+const {
+  sendReceiptEmail,
+  sendReadyForPickupEmail,
+  sendDeliveryInfo,
+} = require('../util/emails')
 const { DPD_API_URL, DPD_AUTH_HEADER, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
 const axios = require('axios')
@@ -108,7 +112,7 @@ router.put(
         ],
         DPD_AUTH_HEADER
       )
-      order = await updateStatus(req.body.id, 'ready_for_delivery')
+      order = await updateStatus(req.body.id, 'waiting_for_courrier')
       order.shipmentID = response.data[0].id
       await order.save()
       return res.send(order)
@@ -117,7 +121,7 @@ router.put(
       console.log(e && e.response && e.response.data)
       return res
         .status(400)
-        .send({ error: e && e.response && e.response.data[0].title })
+        .send({ error: { en: e && e.response && e.response.data[0].title } })
     }
   }
 )
@@ -137,7 +141,37 @@ router.put(
   adminRequired,
   idRequired,
   async (req, res) => {
-    const order = await updateStatus(req.body.id, 'delivering')
+    let order = await Order.findById(req.body.id).populate([
+      { path: 'content', populate: { path: 'product' } },
+      { path: 'user' },
+    ])
+    if (order.shipmentID) {
+      console.log(order.shipmentID)
+      const response = await axios.get(
+        `${DPD_API_URL}/shipments?ids[]=${order.shipmentID}`,
+        DPD_AUTH_HEADER
+      )
+      console.log(response.data)
+      console.log(response.data.items)
+      if (
+        response.data.items.length < 1 ||
+        response.data.items[0].parcelNumbers.length < 1
+      ) {
+        return res.status(400).send({
+          error: {
+            en: "Parcel labels haven't been printed",
+            lv: 'Pavadlapas vēl nav izdrukātas',
+          },
+        })
+      }
+      console.log(response.data.items)
+      order = await updateStatus(req.body.id, 'delivering')
+      order.parcelIDs = response.data.items[0].parcelNumbers
+      await order.save()
+      sendDeliveryInfo(order.user.email, order.parcelIDs[0], order.prettyID)
+    } else {
+      order = await updateStatus(req.body.id, 'delivering')
+    }
     return res.send(order)
   }
 )

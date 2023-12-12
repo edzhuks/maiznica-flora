@@ -72,6 +72,7 @@ const useOrderService = () => {
   const makeDelivering = (id) => {
     const config = makeConfig()
     const request = axios.put(`${baseURL}/delivering`, { id }, config)
+    showErrorToast(request)
     return request.then((response) => response.data)
   }
   const makePaid = (id) => {

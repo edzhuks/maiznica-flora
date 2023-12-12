@@ -303,6 +303,10 @@ const en = {
   order_invoiced_info:
     'We have sent you an invoice.\nWe will begin packing the order once payment is completed.\nThe invoice is valid for 7 days.',
   all: 'All',
+  make_dpd_shipment: 'DPD shipment',
+  make_own_shipment: 'Own shipment',
+  businessCommentsShort: 'Business details',
+  track: 'Track',
 }
 
 export default en

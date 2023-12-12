@@ -242,16 +242,25 @@ a {
   border-bottom: var(--subtler) solid 1px;
 }
 .card-bottom-link {
-  text-decoration: none;
+  text-decoration: underline;
   color: var(--medium);
   display: block;
+  text-decoration-style: dotted;
+  transition: 0.5s;
+  &:hover {
+    color: var(--accent);
+    text-decoration-color: transparent;
+  }
 }
 .text-link {
   font-weight: bold;
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
   transition: 0.3s;
   &:hover {
     color: var(--accent);
+    text-decoration-color: transparent;
   }
 }
 

@@ -82,7 +82,7 @@ const ShipmentModal = ({ visible, close, order, submit }) => {
       if (order.courrierAddress.city.length <= 35) {
         city.changeValue(order.courrierAddress.city)
       }
-      if (order.courrierAddress.postIndex.replace(/\D/g, '') <= 7) {
+      if (order.courrierAddress.postIndex.replace(/\D/g, '').length <= 7) {
         postalCode.changeValue(
           order.courrierAddress.postIndex.replace(/\D/g, '')
         )
@@ -310,11 +310,9 @@ const ReadyForPickupModal = ({ visible, close, order, submit }) => {
                   <>
                     <p className="card-text wrap-n">
                       {order.businessComments.name}
-                    </p>
-                    <p className="card-text wrap-n">
+                      <br />
                       {order.businessComments.address}
-                    </p>
-                    <p className="card-text wrap-n">
+                      <br />
                       {order.businessComments.regNo}
                     </p>
                   </>
@@ -363,19 +361,25 @@ const ExpandedOrder = ({ withManagement }) => {
     }
   }
   const makeWaitingForCourrier = () => {
-    orderService.makeWaitingForCourrier(order.id).then((response) => {
-      setOrder(response)
-    })
+    if (window.confirm()) {
+      orderService.makeWaitingForCourrier(order.id).then((response) => {
+        setOrder(response)
+      })
+    }
   }
   const makeDelivering = () => {
-    orderService.makeDelivering(order.id).then((response) => {
-      setOrder(response)
-    })
+    if (window.confirm()) {
+      orderService.makeDelivering(order.id).then((response) => {
+        setOrder(response)
+      })
+    }
   }
   const makePaid = () => {
-    orderService.makePaid(order.id).then((response) => {
-      setOrder(response)
-    })
+    if (window.confirm()) {
+      orderService.makePaid(order.id).then((response) => {
+        setOrder(response)
+      })
+    }
   }
 
   return (
@@ -403,36 +407,62 @@ const ExpandedOrder = ({ withManagement }) => {
           overflowY: 'auto',
           overflowX: 'visible',
           width: '100%',
-          height: 'calc(100vh - var(--header-height) - var(--space))',
+          height: 'calc(100vh - var(--header-height) - var(--space)) ',
         }}>
         {order && (
-          <div>
-            <div className="card row between p m-d  ">
-              <h3 className="card-heading">
-                {formatFull(new Date(order.datePlaced))}
-              </h3>
-              <h3 className="card-heading">#{order.prettyID}</h3>
-            </div>
-            <div className="card row m-d">
-              <div className="p">
-                {order.statusHistory.map((s) => (
-                  <p
-                    className="card-text "
-                    key={s._id}>
-                    <b>{lang.order_status[s.status]}</b>
-                  </p>
-                ))}
+          <div className="p p-t-0">
+            <div className="card  p m-d  ">
+              <div className="row between m-d">
+                <h3 className="card-heading">
+                  {formatFull(new Date(order.datePlaced))}
+                </h3>
+                <h3 className="card-heading">#{order.prettyID}</h3>
               </div>
-              <div className="p">
-                {order.statusHistory.map((s) => (
-                  <p
-                    className="card-text"
-                    key={s._id}>
-                    {formatFull(new Date(s.time))}
+              <div className="card-divider m-d" />
+              <div className="row between">
+                <div className="row">
+                  <div className="">
+                    {order.statusHistory.map((s) => (
+                      <p
+                        className="card-text "
+                        key={s._id}>
+                        <b>{lang.order_status[s.status]}</b>
+                      </p>
+                    ))}
+                  </div>
+                  <div className="">
+                    {order.statusHistory.map((s) => (
+                      <p
+                        className="card-text"
+                        key={s._id}>
+                        {formatFull(new Date(s.time))}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+                <div className="row no-wrap">
+                  <p className="card-text text-right">
+                    {lang.sum}
+                    <br />
+                    {lang.delivery}
+                    <br />
+                    <b>{lang.total}</b>
+                    <br />
+                    {lang.vat}
                   </p>
-                ))}
+                  <p className="card-text">
+                    {centsToEuro(order.subtotal)}
+                    <br />
+                    {centsToEuro(order.deliveryCost)}
+                    <br />
+                    <b>{centsToEuro(order.total)}</b>
+                    <br />
+                    {centsToEuro(order.vat)}
+                  </p>
+                </div>
               </div>
             </div>
+
             {order.content.map((i) => (
               <div
                 className="card m-d-s"
@@ -488,29 +518,40 @@ const ExpandedOrder = ({ withManagement }) => {
                     )}
                   </>
                 )}
-                {order.deliveryMethod === 'pickupPoint' && (
+                {(order.deliveryMethod === 'pickupPoint' ||
+                  order.deliveryMethod === 'courrier') && (
                   <>
-                    <h3 className="card-heading">
-                      {lang.delivery_pickupPoint}
-                    </h3>
+                    <div className="row between">
+                      <h3 className="card-heading">
+                        {lang[`delivery_${order.deliveryMethod}`]}
+                      </h3>
+                      {order.parcelIDs && order.parcelIDs.length > 0 && (
+                        <p className="card-text">
+                          {lang.track}:{' '}
+                          <a
+                            className="text-link"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`https://www.dpdgroup.com/lv/mydpd/my-parcels/track?lang=lv&parcelNumber=${order.parcelIDs[0]}`}>
+                            {order.parcelIDs[0]}
+                          </a>
+                        </p>
+                      )}
+                    </div>
                     <div className="card-divider m-t-s m-d-s" />
-                    <AddressInfo
-                      person={`${order.pickupPointData.name} ${order.pickupPointData.surname}`}
-                      email={order.user.email}
-                      phone={order.pickupPointData.phone}
-                      address={order.pickupPointData.id}
-                    />
-                  </>
-                )}
-                {order.deliveryMethod === 'courrier' && (
-                  <>
-                    <h3 className="card-heading">{lang.delivery_courrier}</h3>
-                    <div className="card-divider m-t-s m-d-s" />
-                    <AddressInfo
-                      person={`${order.courrierAddress.name} ${order.courrierAddress.surname}`}
-                      email={order.user.email}
-                      phone={order.courrierAddress.phone}
-                      address={`${order.courrierAddress.city},
+                    {order.deliveryMethod === 'pickupPoint' ? (
+                      <AddressInfo
+                        person={`${order.pickupPointData.name} ${order.pickupPointData.surname}`}
+                        email={order.user.email}
+                        phone={order.pickupPointData.phone}
+                        address={order.pickupPointData.id}
+                      />
+                    ) : (
+                      <AddressInfo
+                        person={`${order.courrierAddress.name} ${order.courrierAddress.surname}`}
+                        email={order.user.email}
+                        phone={order.courrierAddress.phone}
+                        address={`${order.courrierAddress.city},
                       ${order.courrierAddress.street}
                       ${order.courrierAddress.house}
                       ${
@@ -520,7 +561,8 @@ const ExpandedOrder = ({ withManagement }) => {
                       }
                       ${order.courrierAddress.apartment},
                       ${order.courrierAddress.postIndex}`}
-                    />
+                      />
+                    )}
                   </>
                 )}
                 {(order.deliveryMethod === 'pickupPoint' ||
@@ -529,17 +571,24 @@ const ExpandedOrder = ({ withManagement }) => {
                     {withManagement && (
                       <>
                         {order.latestStatus === 'placed' && (
-                          <button
-                            className="btn"
-                            onClick={() => setMakingShipment(true)}>
-                            {lang.ready}
-                          </button>
+                          <>
+                            <button
+                              className="btn"
+                              onClick={() => setMakingShipment(true)}>
+                              {lang.make_dpd_shipment}
+                            </button>
+                            <button
+                              className="btn m-l"
+                              onClick={makeWaitingForCourrier}>
+                              {lang.make_own_shipment}
+                            </button>
+                          </>
                         )}
                         {order.latestStatus === 'ready_for_delivery' && (
                           <button
                             className="btn"
-                            onClick={makeWaitingForCourrier}>
-                            {lang.request_courrier}
+                            onClick={makeDelivering}>
+                            {lang.handed_to_courrier}
                           </button>
                         )}
                         {order.latestStatus === 'waiting_for_courrier' && (
@@ -570,78 +619,55 @@ const ExpandedOrder = ({ withManagement }) => {
                   </button>
                 )}
               </div>
-              <div className="card p">
-                <div className="row no-wrap">
-                  <p className="card-text text-right">
-                    <b>{countProducts(order.content)} </b>
-                    {lang.products}
-                    <br /> {lang.sum}
-                    <br />
-                    {lang.delivery}
-                    <br />
-                    <b>{lang.total}</b>
-                    <br />
-                    {lang.vat}
-                  </p>
-                  <p className="card-text">
-                    <b> {gramsToKilos(calculateWeight(order.content))}</b>
-                    <br />
-                    {centsToEuro(order.subtotal)}
-                    <br />
-                    {centsToEuro(order.deliveryCost)}
-                    <br />
-                    <b>{centsToEuro(order.total)}</b>
-                    <br />
-                    {centsToEuro(order.vat)}
-                  </p>
-                </div>
-              </div>
             </div>
-            {order.deliveryComments && (
-              <div className="card m-d p">
-                <h3 className="card-heading">{lang.deliveryComments}</h3>
-                <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text wrap-n">{order.deliveryComments}</p>
-              </div>
-            )}
-            {order.businessComments &&
-              (order.businessComments.length > 0 ||
-                (order.businessComments.name &&
-                  order.businessComments.name.length > 0)) && (
-                <div className="card m-d p">
-                  <h3 className="card-heading">{lang.businessComments}</h3>
-                  <div className="card-divider m-t-s m-d-s" />
-                  {order.businessComments.name ? (
-                    <>
-                      <p className="card-text wrap-n">
-                        {order.businessComments.name}
-                      </p>
-                      <p className="card-text wrap-n">
-                        {order.businessComments.address}
-                      </p>
-                      <p className="card-text wrap-n">
-                        {order.businessComments.regNo}
-                      </p>
-                    </>
-                  ) : (
-                    <p>{order.businessComments}</p>
-                  )}
+            <div className="row align-cross-stretch">
+              {order.deliveryComments && (
+                <div className="card column p">
+                  <h3 className="card-heading">{lang.deliveryComments}</h3>
+                  <div className="card-divider " />
+                  <p className="card-text wrap-n">{order.deliveryComments}</p>
                 </div>
               )}
-            {order.generalComments && (
-              <div className="card m-d p">
-                <h3 className="card-heading">{lang.generalComments}</h3>
-                <div className="card-divider m-t-s m-d-s" />
-                <p className="card-text wrap-n">{order.generalComments}</p>
-              </div>
+
+              {order.generalComments && (
+                <div className="card column p">
+                  <h3 className="card-heading">{lang.generalComments}</h3>
+                  <div className="card-divider " />
+                  <p className="card-text wrap-n">{order.generalComments}</p>
+                </div>
+              )}
+              {order.businessComments &&
+                (order.businessComments.length > 0 ||
+                  (order.businessComments.name &&
+                    order.businessComments.name.length > 0)) && (
+                  <div className="card column p">
+                    <h3 className="card-heading">
+                      {lang.businessCommentsShort}
+                    </h3>
+                    <div className="card-divider " />
+                    {order.businessComments.name ? (
+                      <>
+                        <p className="card-text wrap-n">
+                          {order.businessComments.name}
+                          <br />
+                          {order.businessComments.address}
+                          <br />
+                          {order.businessComments.regNo}
+                        </p>
+                      </>
+                    ) : (
+                      <p>{order.businessComments}</p>
+                    )}
+                  </div>
+                )}
+            </div>
+            {!withManagement && (
+              <button
+                className="btn m-d m-t"
+                onClick={() => orderService.resendEmail(order.id)}>
+                {lang.resend_receipt}
+              </button>
             )}
-            {/* {!withManagement && ( */}
-            <button
-              className="btn m-d"
-              onClick={() => orderService.resendEmail(order.id)}>
-              {lang.resend_receipt}
-            </button>
-            {/* )} */}
           </div>
         )}
       </div>

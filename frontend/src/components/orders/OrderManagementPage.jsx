@@ -13,8 +13,8 @@ const OrderManagementPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   let [searchParams, setSearchParams] = useSearchParams()
   const filters = [
-    'placed',
     'invoiced',
+    'placed',
     'ready_for_pickup',
     'ready_for_delivery',
     'waiting_for_courrier',
@@ -79,19 +79,21 @@ const OrderManagementPage = () => {
           />
         ))}
         <div className="spacer" />
-        <Input
-          {...search}
-          label={lang.search}
-          width={200}
-        />
-        <button
-          className="btn "
-          onClick={() => {
-            searchParams.set('search', search.value)
-            setSearchParams(searchParams)
-          }}>
-          <SearchOutline className="icon-m" />
-        </button>
+        <div className="row no-gap align-cross-end">
+          <Input
+            {...search}
+            label={lang.search}
+            width={200}
+          />
+          <button
+            className="btn "
+            onClick={() => {
+              searchParams.set('search', search.value)
+              setSearchParams(searchParams)
+            }}>
+            <SearchOutline className="icon-m" />
+          </button>
+        </div>
       </div>
       <OrderList orders={orders} />
     </div>

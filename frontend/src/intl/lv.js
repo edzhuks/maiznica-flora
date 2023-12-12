@@ -318,6 +318,10 @@ const lv = {
   order_invoiced_info:
     'Esam nosūtījuši jums priekšapmaksas rēķinu.\nPasūtījuma komplektēšanu sāksim, kad rēķins būs apmakstāts.\nRēķins ir derīgs 7 dienas no nosūtīšnas brīža.',
   all: 'Visi',
+  make_dpd_shipment: 'DPD sūtījums',
+  make_own_shipment: 'Pašu sūtījums',
+  businessCommentsShort: 'Rekvizīti',
+  track: 'Sekot',
 }
 
 export default lv
