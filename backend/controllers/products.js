@@ -87,9 +87,16 @@ router.get('/', optionalUser, async (req, res) => {
 })
 
 router.get('/:id', optionalUser, async (req, res) => {
-  const product = await Product.findOne({
-    _id: req.params.id,
-  }).populate('relatedProducts')
+  let product
+  try {
+    product = await Product.findOne({
+      _id: req.params.id,
+    }).populate('relatedProducts')
+  } catch (error) {
+    return res.status(404).json({
+      error: { en: 'The product does not exist', lv: 'Produkts neeksistē' },
+    })
+  }
   if (!product) {
     return res.status(404).json({
       error: { en: 'The product does not exist', lv: 'Produkts neeksistē' },

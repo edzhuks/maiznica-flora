@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Categories from './Categories'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProductList from './ProductList'
 import { useEffect } from 'react'
 import useCategoryService from '../../services/category'
@@ -10,13 +10,21 @@ const ProductListWithCategories = () => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const categoryService = useCategoryService()
   let { category } = useParams()
+  const navigate = useNavigate()
   const [categoryData, setCategoryData] = useState({
     categories: [],
     products: [],
   })
 
   useEffect(() => {
-    categoryService.getCategory(category).then((p) => setCategoryData(p))
+    categoryService
+      .getCategory(category)
+      .then((p) => setCategoryData(p))
+      .catch((e) => {
+        if (e.response.status === 404) {
+          navigate('/not-found')
+        }
+      })
   }, [category])
 
   return (

@@ -79,11 +79,18 @@ const Product = () => {
   const id = useParams().id
   const dispatch = useDispatch()
   const refresh = () => {
-    productService.getById(id).then((p) => {
-      console.log(p)
-      setProduct(p)
-      setQuantity(p.bulkThreshold ? p.bulkThreshold : 1)
-    })
+    productService
+      .getById(id)
+      .then((p) => {
+        console.log(p)
+        setProduct(p)
+        setQuantity(p.bulkThreshold ? p.bulkThreshold : 1)
+      })
+      .catch((e) => {
+        if (e.response.status === 404) {
+          navigate('/not-found')
+        }
+      })
   }
   useEffect(() => {
     refresh()
