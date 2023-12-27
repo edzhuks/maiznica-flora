@@ -81,7 +81,8 @@ const useCategoryService = () => {
   }
 
   const getAllIds = () => {
-    const request = axios.get(`${baseUrl}/ids`)
+    const config = makeConfig()
+    const request = axios.get(`${baseUrl}/ids`, config)
     return request.then((response) => response.data)
   }
 

@@ -8,7 +8,7 @@ const {
 } = require('../util/middleware')
 const categoryRouter = express.Router()
 
-categoryRouter.get('/ids', async (req, res) => {
+categoryRouter.get('/ids', userExtractor, adminRequired, async (req, res) => {
   let allIds = await Category.find({})
   res.send(allIds)
 })
@@ -200,7 +200,10 @@ categoryRouter.get(
 categoryRouter.get('/home', async (req, res) => {
   let category = await Category.findById('home')
     .populate({ path: 'products', match: { invisible: { $ne: true } } })
-    .populate({ path: 'categories', populate: [{ path: 'products' }] })
+    .populate({
+      path: 'categories',
+      populate: [{ path: 'products', match: { invisible: { $ne: true } } }],
+    })
   res.send(category)
 })
 categoryRouter.get('/:category', optionalUser, async (req, res) => {
@@ -216,34 +219,34 @@ categoryRouter.get('/:category', optionalUser, async (req, res) => {
   res.send(category)
 })
 
-categoryRouter.post('/init', userExtractor, adminRequired, async (req, res) => {
-  await Category.deleteMany({})
-  const all = new Category({
-    _id: 'all',
-    categories: [],
-    products: [],
-    image: '',
-    displayName: {
-      lv: 'Visi produkti',
-      en: 'All products',
-      de: 'Alle produkte',
-    },
-  })
-  await all.save()
-  const news = new Category({
-    _id: 'new',
-    categories: [],
-    products: [],
-    image: '',
-    displayName: {
-      lv: 'Jaunie produkti',
-      en: 'New products',
-      de: 'Neue produkte',
-    },
-  })
-  await news.save()
-  res.status(201).end()
-})
+// categoryRouter.post('/init', userExtractor, adminRequired, async (req, res) => {
+//   await Category.deleteMany({})
+//   const all = new Category({
+//     _id: 'all',
+//     categories: [],
+//     products: [],
+//     image: '',
+//     displayName: {
+//       lv: 'Visi produkti',
+//       en: 'All products',
+//       de: 'Alle produkte',
+//     },
+//   })
+//   await all.save()
+//   const news = new Category({
+//     _id: 'new',
+//     categories: [],
+//     products: [],
+//     image: '',
+//     displayName: {
+//       lv: 'Jaunie produkti',
+//       en: 'New products',
+//       de: 'Neue produkte',
+//     },
+//   })
+//   await news.save()
+//   res.status(201).end()
+// })
 
 categoryRouter.delete(
   '/products',
