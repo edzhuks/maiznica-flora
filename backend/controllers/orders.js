@@ -196,9 +196,7 @@ router.get('/resend_email', userExtractor, async (req, res) => {
 
 router.get('/all', userExtractor, adminRequired, async (req, res) => {
   const search = req.query.search
-  console.log(search)
   delete req.query.search
-  console.log(search)
   const orders = await Order.find({
     latestStatus: Object.keys(req.query).filter(
       (key) => req.query[key] === 'true'
