@@ -39,37 +39,43 @@ const StaticInformation = ({
             </div>
           )}
 
-          <Price
-            price={product.price}
-            discount={product.discount}
-            weight={product.weight}
-            bulkPrice={product.bulkPrice}
-            bulkThreshold={product.bulkThreshold}
-            isSmall={false}
-          />
-          {product.outOfStock && (
-            <div className="row p-h-b no-wrap bad align-cross-center">
-              <Warning
-                className="icon-b "
-                style={{ flexShrink: '0' }}
+          {!product.invisible ? (
+            <>
+              <Price
+                price={product.price}
+                discount={product.discount}
+                weight={product.weight}
+                bulkPrice={product.bulkPrice}
+                bulkThreshold={product.bulkThreshold}
+                isSmall={false}
               />
-              <p className="card-text wrap-n">{lang.special_order}</p>
-            </div>
+              {product.outOfStock && (
+                <div className="row p-h-b no-wrap bad align-cross-center">
+                  <Warning
+                    className="icon-b "
+                    style={{ flexShrink: '0' }}
+                  />
+                  <p className="card-text wrap-n">{lang.special_order}</p>
+                </div>
+              )}
+              <div className="row align-cross-end">
+                <Input
+                  value={quantity}
+                  onChange={(event) => setQuantity(event.target.value)}
+                  type="number"
+                  width={150}
+                  className="m-0"
+                />
+                <button
+                  className="btn"
+                  onClick={onOrder}>
+                  {lang.add_to_cart}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="hint-text m-m">{lang.currently_unavailable}</p>
           )}
-          <div className="row align-cross-end">
-            <Input
-              value={quantity}
-              onChange={(event) => setQuantity(event.target.value)}
-              type="number"
-              width={150}
-              className="m-0"
-            />
-            <button
-              className="btn"
-              onClick={onOrder}>
-              {lang.add_to_cart}
-            </button>
-          </div>
         </div>
         {(product.description.lv ||
           product.bio ||

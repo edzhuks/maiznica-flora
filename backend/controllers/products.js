@@ -82,7 +82,6 @@ router.get('/', optionalUser, async (req, res) => {
   if (req.user && req.user.admin) {
     return res.send(products)
   }
-  products = products.filter((p) => !p.invisible)
   res.send(products)
 })
 
@@ -105,12 +104,8 @@ router.get('/:id', optionalUser, async (req, res) => {
   if (req.user && req.user.admin) {
     return res.send(product)
   }
-  if (!product.invisible) {
-    return res.send(product)
-  }
-  return res.status(404).json({
-    error: { en: 'The product does not exist', lv: 'Produkts neeksistē' },
-  })
+
+  return res.send(product)
 })
 
 router.delete('/:id', userExtractor, adminRequired, async (req, res) => {

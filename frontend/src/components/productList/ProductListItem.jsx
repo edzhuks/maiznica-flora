@@ -51,35 +51,45 @@ const ProductListItem = ({ inCart, product, quantity }) => {
           <div
             className=" center-vh"
             style={{ flex: '1 1 auto' }}>
-            <Price
-              price={product.price}
-              discount={product.discount}
-              weight={product.weight}
-              bulkPrice={product.bulkPrice}
-              bulkThreshold={product.bulkThreshold}
-              isSmall
-            />
+            {!product.invisible ? (
+              <Price
+                price={product.price}
+                discount={product.discount}
+                weight={product.weight}
+                bulkPrice={product.bulkPrice}
+                bulkThreshold={product.bulkThreshold}
+                isSmall
+              />
+            ) : (
+              <div
+                className="center-vh"
+                style={{ flex: '10' }}>
+                <p className="hint-text">{lang.currently_unavailable}</p>
+              </div>
+            )}
           </div>
         </Link>
-        <div className="row align-cross-end m-t-0 end">
-          {product.outOfStock && (
-            <div className="tooltip">
-              <Warning className="icon-b subtle" />
-              <span className="tooltiptext">{lang.special_order}</span>
-            </div>
-          )}
-          <Input
-            {...quantityToAdd}
-            width={70}
-            className="m-0"
-          />
+        {!product.invisible && (
+          <div className="row align-cross-end m-t-0 end">
+            {product.outOfStock && (
+              <div className="tooltip">
+                <Warning className="icon-b subtle" />
+                <span className="tooltiptext">{lang.special_order}</span>
+              </div>
+            )}
+            <Input
+              {...quantityToAdd}
+              width={70}
+              className="m-0"
+            />
 
-          <button
-            className="btn"
-            onClick={addToCart}>
-            {lang.buy}
-          </button>
-        </div>
+            <button
+              className="btn"
+              onClick={addToCart}>
+              {lang.buy}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -162,7 +162,7 @@ const en = {
   export_manager: 'Export Manager',
   bread_manager: 'Bread Production and Quality Manager',
   pastry_manager: 'Pastry Production and Quality Manager',
-  currently_unavailable: 'Only by request',
+  currently_unavailable: 'Currently not available',
   forgot_password: 'Forgot your password? Click here.',
   reset_password: 'Reset password',
   send_reset_instructions: 'Send reset email',
