@@ -6,6 +6,7 @@ import Input from '../basic/Input'
 import { useSelector } from 'react-redux'
 import { SearchOutline } from '@styled-icons/evaicons-outline/SearchOutline'
 import { useSearchParams } from 'react-router-dom'
+import Collapsible from '../basic/Collapsible'
 
 const OrderManagementPage = () => {
   const orderService = useOrderService()
@@ -20,6 +21,7 @@ const OrderManagementPage = () => {
     'waiting_for_courrier',
     'delivering',
     'completed',
+    'refunded',
   ]
   const allFilters = useField('checkbox')
   const search = useField('text')
@@ -56,28 +58,32 @@ const OrderManagementPage = () => {
   return (
     <div>
       <div className="card p p-t-0 m-d row align-cross-end">
-        <Input
-          {...allFilters}
-          onChange={(value) => {
-            allFilters.onChange(value)
-            for (let filter of filters) {
-              searchParams.set(filter, value)
-            }
-            setSearchParams(searchParams)
-          }}
-          label={lang.all}
-        />
-        {filters.map((f) => (
+        <Collapsible
+          title={lang.filter}
+          className="m-t-m">
           <Input
-            type="checkbox"
-            label={lang.order_status[f]}
-            value={searchParams.get(f) === 'true'}
+            {...allFilters}
             onChange={(value) => {
-              searchParams.set(f, !(searchParams.get(f) === 'true'))
+              allFilters.onChange(value)
+              for (let filter of filters) {
+                searchParams.set(filter, value)
+              }
               setSearchParams(searchParams)
             }}
+            label={lang.all}
           />
-        ))}
+          {filters.map((f) => (
+            <Input
+              type="checkbox"
+              label={lang.order_status[f]}
+              value={searchParams.get(f) === 'true'}
+              onChange={(value) => {
+                searchParams.set(f, !(searchParams.get(f) === 'true'))
+                setSearchParams(searchParams)
+              }}
+            />
+          ))}
+        </Collapsible>
         <div className="spacer" />
         <div className="row no-gap align-cross-end">
           <Input

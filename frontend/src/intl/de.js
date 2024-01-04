@@ -83,6 +83,7 @@ const de = {
     delivering: 'Ausliefern',
     completed: 'Abgeschlossen',
     invoiced: 'Fakturiert',
+    refunded: 'Zurückerstattet',
   },
   last_modified_by: 'zuletzt geändert von',
   confirm_delete: 'Sind Sie sicher, dass Sie dieses Produkt löschen wollen?',
@@ -313,6 +314,7 @@ const de = {
   make_own_shipment: 'Eigene Sendung',
   businessCommentsShort: 'Geschäftliche Details',
   track: 'Verfolgen',
+  filter: 'Filtern',
 }
 
 export default de

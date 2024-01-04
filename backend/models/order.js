@@ -45,6 +45,7 @@ const orderSchema = new mongoose.Schema({
       'waiting_for_courrier',
       'delivering',
       'invoiced',
+      'refunded',
     ],
   },
   statusHistory: [
@@ -59,6 +60,7 @@ const orderSchema = new mongoose.Schema({
           'waiting_for_courrier',
           'delivering',
           'invoiced',
+          'refunded',
         ],
       },
       time: Date,

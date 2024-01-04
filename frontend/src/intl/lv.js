@@ -83,6 +83,7 @@ const lv = {
     delivering: 'Tiek piegādāts',
     completed: 'Pabeigts',
     invoiced: 'Gaida apmaksu',
+    refunded: 'Reversēts',
   },
   last_modified_by: 'Pēdējoreiz mainījis',
   confirm_delete: 'Vai tiešām dzēst šo produktu?',
@@ -322,6 +323,7 @@ const lv = {
   make_own_shipment: 'Pašu sūtījums',
   businessCommentsShort: 'Rekvizīti',
   track: 'Sekot',
+  filter: 'Atlasīt',
 }
 
 export default lv

@@ -83,6 +83,7 @@ const en = {
     delivering: 'Delivering',
     completed: 'Completed',
     invoiced: 'Invoiced',
+    refunded: 'Refunded',
   },
   last_modified_by: 'last modified by',
   confirm_delete: 'Are you sure you want to delete this product?',
@@ -307,6 +308,7 @@ const en = {
   make_own_shipment: 'Own shipment',
   businessCommentsShort: 'Business details',
   track: 'Track',
+  filter: 'Filter',
 }
 
 export default en

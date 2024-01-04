@@ -12,6 +12,7 @@ import DeliveryMethod from './DeliveryMethod'
 import Payment from './Payment'
 import Comments from './Comments'
 import CheckStatus from './CheckStatus'
+import { useEffect } from 'react'
 
 const OrderProcess = ({ stages, stage }) => {
   const currentIndex = stages.length - stages.indexOf(stage) - 1
@@ -40,6 +41,8 @@ const Order = () => {
   const isBusiness = useSelector(selectIsBusiness)
   const navigate = useNavigate()
   const { placeOrder, invoice } = useCartServiceDispatch()
+
+  useEffect(() => window.scrollTo(0, 0), [])
 
   const order = async () => {
     if (checkDeliveryMethod() && checkCartEmpty() && checkBusinessComments()) {

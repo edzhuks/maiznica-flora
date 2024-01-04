@@ -62,6 +62,16 @@ router.put(
   }
 )
 router.put(
+  '/refunded',
+  userExtractor,
+  adminRequired,
+  idRequired,
+  async (req, res) => {
+    const order = await updateStatus(req.body.id, 'refunded')
+    return res.send(order)
+  }
+)
+router.put(
   '/ready_for_delivery',
   userExtractor,
   adminRequired,

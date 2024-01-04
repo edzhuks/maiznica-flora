@@ -381,6 +381,13 @@ const ExpandedOrder = ({ withManagement }) => {
       })
     }
   }
+  const makeRefunded = () => {
+    if (window.confirm()) {
+      orderService.makeRefunded(order.id).then((response) => {
+        setOrder(response)
+      })
+    }
+  }
 
   return (
     <>
@@ -609,13 +616,22 @@ const ExpandedOrder = ({ withManagement }) => {
                     {lang.paid}
                   </button>
                 )}
-                {order.latestStatus !== 'completed' && withManagement && (
+                {order.latestStatus !== 'completed' &&
+                  order.latestStatus !== 'refunded' &&
+                  withManagement && (
+                    <button
+                      className="btn m-l"
+                      onClick={makeCompleted}>
+                      {order.deliveryMethod === 'bakery'
+                        ? lang.picked_up
+                        : lang.delivered}
+                    </button>
+                  )}
+                {order.latestStatus !== 'refunded' && withManagement && (
                   <button
                     className="btn m-l"
-                    onClick={makeCompleted}>
-                    {order.deliveryMethod === 'bakery'
-                      ? lang.picked_up
-                      : lang.delivered}
+                    onClick={makeRefunded}>
+                    {lang.order_status.refunded}
                   </button>
                 )}
               </div>
