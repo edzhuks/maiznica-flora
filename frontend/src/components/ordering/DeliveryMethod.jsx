@@ -7,7 +7,7 @@ import useDPDservice from '../../services/dpd'
 import Addresses from '../user/Adresses'
 import AddressWithMap from '../contact/AddressWithMap'
 import {
-  getDeliveryCost,
+  selectAllDeliveryCosts,
   useCartServiceDispatch,
 } from '../../reducers/cartReducer'
 import Input from '../basic/Input'
@@ -15,6 +15,8 @@ import useField from '../../hooks/useField'
 import BusinessMap from '../contact/BusinessMap'
 
 const DeliveryOption = ({ deliveryMethod, children, map }) => {
+  const deliveryCosts = useSelector(selectAllDeliveryCosts)
+  console.log(deliveryCosts)
   const dispatch = useDispatch()
   const selected = useSelector(
     (state) => state.cart.deliveryMethod === deliveryMethod
@@ -36,7 +38,7 @@ const DeliveryOption = ({ deliveryMethod, children, map }) => {
           <h3 className="title">{lang[`delivery_${deliveryMethod}`]}</h3>
           <Price
             className="m-v"
-            price={getDeliveryCost(deliveryMethod)}
+            price={deliveryCosts[deliveryMethod]}
             isSmall={true}
           />
           <p className="hint-text">

@@ -9,7 +9,7 @@ const en = {
   categories: 'Categories',
   sign_out: 'Sign out',
   sum: 'Sum',
-  paid_delivery: 'Paid delivery',
+  paid_delivery: 'Delivery',
   under: 'under €',
   total: 'Total',
   order: 'Order',
@@ -309,6 +309,7 @@ const en = {
   businessCommentsShort: 'Business details',
   track: 'Track',
   filter: 'Filter',
+  depending_on_delivery: 'Depending on delivery method',
 }
 
 export default en

@@ -91,36 +91,52 @@ const selectCartTotal = createSelector([selectContent], (content) =>
     }, 0)
 )
 
-const DELIVERY_THRESHOLD = 6000
+const deliveryMethods = ['bakery', 'pickupPoint', 'courrier']
 
-const selectCartOverThreshold = createSelector([selectCartTotal], (total) => {
-  console.log(total)
-  return total > DELIVERY_THRESHOLD
-})
-
-const getDeliveryCost = (method) => {
-  switch (method) {
-    case 'bakery':
-      return [0]
-    case 'pickupPoint':
-      return [399]
-    case 'courrier':
-      return [599]
-    default:
-      return [0, 599]
-  }
+const deliveryCosts = {
+  bakery: 0,
+  pickupPoint: 330,
+  courrier: 599,
+}
+const thresholds = {
+  bakery: undefined,
+  pickupPoint: 2500,
+  courrier: undefined,
 }
 
 const selectDeliveryCost = createSelector(
-  [selectCartOverThreshold, selectDeliveryMethod],
-  (over, deliveryMethod) => {
-    if (!over) {
-      return getDeliveryCost(deliveryMethod)
+  [selectCartTotal, selectDeliveryMethod],
+  (total, deliveryMethod) => {
+    if (!deliveryMethod) {
+      return undefined
+    }
+    if (thresholds[deliveryMethod]) {
+      if (total >= thresholds[deliveryMethod]) {
+        return 0
+      } else {
+        return deliveryCosts[deliveryMethod]
+      }
     } else {
-      return [0]
+      return deliveryCosts[deliveryMethod]
     }
   }
 )
+
+const selectAllDeliveryCosts = createSelector([selectCartTotal], (total) => {
+  return Object.fromEntries(
+    deliveryMethods.map((c) => {
+      if (thresholds[c]) {
+        if (total >= thresholds[c]) {
+          return [c, 0]
+        } else {
+          return [c, deliveryCosts[c]]
+        }
+      } else {
+        return [c, deliveryCosts[c]]
+      }
+    })
+  )
+})
 
 const selectIsBusiness = createSelector(
   [selectBusinessComments],
@@ -132,11 +148,10 @@ const selectIsBusiness = createSelector(
 )
 export {
   selectCartTotal,
-  selectCartOverThreshold,
-  DELIVERY_THRESHOLD,
   selectDeliveryCost,
   selectIsBusiness,
-  getDeliveryCost,
+  selectAllDeliveryCosts,
+  deliveryCosts,
 }
 
 export const {

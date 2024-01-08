@@ -1,7 +1,12 @@
 const express = require('express')
 const Cart = require('../models/cart')
 const { userExtractor, verificationRequired } = require('../util/middleware')
-const { isInteger, makeOrderID } = require('../util/functions')
+const {
+  isInteger,
+  makeOrderID,
+  getDeliveryCost,
+  getSubtotal,
+} = require('../util/functions')
 const Address = require('../models/address')
 const { BACKEND_URL, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
@@ -96,17 +101,8 @@ const prepareForOrder = async (req, res, next) => {
     })
   }
 
-  const subtotal = cart.content
-    .map((i) => getPrice(i) * i.quantity)
-    .reduce((acc, cur) => acc + cur, 0)
-  const deliveryCost =
-    subtotal >= 6000
-      ? 0
-      : cart.deliveryMethod === 'courrier'
-      ? 599
-      : cart.deliveryMethod === 'bakery'
-      ? 0
-      : 399
+  const subtotal = getSubtotal(cart.content)
+  const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
   const total = subtotal + deliveryCost
   cart.total = total
   cart = await cart.save()
@@ -168,17 +164,8 @@ router.post(
   prepareForOrder,
   async (req, res) => {
     const cart = req.cart
-    const subtotal = cart.content
-      .map((i) => getPrice(i) * i.quantity)
-      .reduce((acc, cur) => acc + cur, 0)
-    const deliveryCost =
-      subtotal >= 6000
-        ? 0
-        : cart.deliveryMethod === 'courrier'
-        ? 599
-        : cart.deliveryMethod === 'bakery'
-        ? 0
-        : 399
+    const subtotal = getSubtotal(cart.content)
+    const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
     const total = subtotal + deliveryCost
     let order = new Order({
       user: cart.user,
@@ -265,17 +252,8 @@ const updatePaymentStatus = async (paymentReference) => {
       )
       if (response.data.payment_state === 'settled') {
         if (cart.paymentStatus !== 'settled') {
-          const subtotal = cart.content
-            .map((i) => getPrice(i) * i.quantity)
-            .reduce((acc, cur) => acc + cur, 0)
-          const deliveryCost =
-            subtotal >= 6000
-              ? 0
-              : cart.deliveryMethod === 'courrier'
-              ? 599
-              : cart.deliveryMethod === 'bakery'
-              ? 0
-              : 399
+          const subtotal = getSubtotal(cart.content)
+          const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
           const total = subtotal + deliveryCost
           let order = new Order({
             user: cart.user,

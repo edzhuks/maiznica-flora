@@ -41,7 +41,7 @@ const OrderManagementPage = () => {
   useEffect(() => {
     if (searchParams.size === 0) {
       for (let filter of filters) {
-        if (filter === 'completed') {
+        if (filter === 'completed' || filter === 'refunded') {
           searchParams.set(filter, false)
         } else {
           searchParams.set(filter, true)

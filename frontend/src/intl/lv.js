@@ -9,7 +9,7 @@ const lv = {
   categories: 'Kategorijas',
   sign_out: 'Iziet',
   sum: 'Kopā',
-  paid_delivery: 'Maksas piegāde',
+  paid_delivery: 'Piegāde',
   under: 'zem €',
   total: 'Pavisam',
   order: 'Pasūtīt',
@@ -324,6 +324,7 @@ const lv = {
   businessCommentsShort: 'Rekvizīti',
   track: 'Sekot',
   filter: 'Atlasīt',
+  depending_on_delivery: 'Atkarīgs no piegādes veida',
 }
 
 export default lv

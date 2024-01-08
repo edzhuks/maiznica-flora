@@ -246,9 +246,10 @@ const DistanceAgreementPage = () => {
 
         <p>
           5.3 Preču piegādes cena E-veikala pircējiem ir atkarīga no pasūtījuma
-          summas: pasūtījumiem virs 60&euro; (summa apmaksai pēc atlaižu
-          piemērošanas) - bezmaksas, pasūtījumiem līdz 60&euro; piegādes maksa
-          uz DPD pakomātu ir 3.99&euro;, kurjera piegādes maksa ir 5.99&euro; .
+          summas un piegādes veida: pasūtījumiem virs 25&euro; (summa apmaksai
+          pēc atlaižu piemērošanas) piegāde uz DPD pakomātu ir bezmaksas,
+          pasūtījumiem līdz 25&euro; piegādes maksa uz DPD pakomātu ir
+          3.30&euro;. Kurjera piegādes maksa vienmēr ir 5.99&euro; .
         </p>
 
         <p>

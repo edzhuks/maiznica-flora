@@ -1,15 +1,11 @@
 import { useSelector } from 'react-redux'
 import { centsToEuro } from '../../util/convert'
 import { Link } from 'react-router-dom'
-import {
-  DELIVERY_THRESHOLD,
-  selectCartOverThreshold,
-  selectCartTotal,
-  selectDeliveryCost,
-} from '../../reducers/cartReducer'
+import { selectCartTotal, selectDeliveryCost } from '../../reducers/cartReducer'
 import { Warning } from '@styled-icons/ionicons-solid/Warning'
 
-const SummaryTile = ({ title, subtitle, price, price2 }) => {
+const SummaryTile = ({ title, subtitle, price }) => {
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div className="row p no-row-gap">
       <div className="column no-gap">
@@ -17,9 +13,11 @@ const SummaryTile = ({ title, subtitle, price, price2 }) => {
         <p className="card-text">{subtitle}</p>
       </div>
       <div className="float-to-end">
-        <p className="price-main no-break-words">
-          {centsToEuro(price)} {price2 && <span> - {centsToEuro(price2)}</span>}
-        </p>
+        {isNaN(price) ? (
+          <p className="hint-text">{lang.depending_on_delivery}</p>
+        ) : (
+          <p className="price-main no-break-words">{centsToEuro(price)}</p>
+        )}
       </div>
     </div>
   )
@@ -41,16 +39,13 @@ const CartSummary = ({ nextStage, runChecksAndNavigate }) => {
       <div className="card-divider" />
       <SummaryTile
         title={lang.paid_delivery}
-        subtitle={`${lang.under}${DELIVERY_THRESHOLD / 100}`}
-        price={deliveryCost[0]}
-        price2={deliveryCost[1]}
+        price={deliveryCost}
       />
 
       <div className="card-divider" />
       <SummaryTile
         title={lang.total}
-        price={deliveryCost[0] + total}
-        price2={deliveryCost[1] && deliveryCost[1] + total}
+        price={deliveryCost + total}
       />
       {specialOrder && (
         <div className="row p-h p-d no-wrap bad align-cross-center">

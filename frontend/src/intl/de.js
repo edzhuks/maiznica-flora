@@ -9,7 +9,7 @@ const de = {
   categories: 'Kategorien',
   sign_out: 'Abmelden',
   sum: 'Summe',
-  paid_delivery: 'Bezahlte Lieferung',
+  paid_delivery: 'Lieferung',
   under: 'unter €',
   total: 'Gesamt',
   order: 'Bestellung',
@@ -315,6 +315,7 @@ const de = {
   businessCommentsShort: 'Geschäftliche Details',
   track: 'Verfolgen',
   filter: 'Filtern',
+  depending_on_delivery: 'Abhängig von der Liefermethode',
 }
 
 export default de

@@ -28,6 +28,32 @@ const getPrice = (item) => {
   }
   return item.product.price
 }
+const deliveryCosts = {
+  bakery: 0,
+  pickupPoint: 330,
+  courrier: 599,
+}
+const thresholds = {
+  bakery: undefined,
+  pickupPoint: 2500,
+  courrier: undefined,
+}
+const getDeliveryCost = (total, deliveryMethod) => {
+  if (thresholds[deliveryMethod]) {
+    if (total >= thresholds[deliveryMethod]) {
+      return 0
+    } else {
+      return deliveryCosts[deliveryMethod]
+    }
+  } else {
+    return deliveryCosts[deliveryMethod]
+  }
+}
+const getSubtotal = (content) => {
+  return content
+    .map((i) => getPrice(i) * i.quantity)
+    .reduce((acc, cur) => acc + cur, 0)
+}
 const gramsToKilos = (grams) => {
   const kilos = new Intl.NumberFormat('en-EU', {
     minimumFractionDigits: 1,
@@ -81,4 +107,6 @@ module.exports = {
   formatDate,
   escapeHTML,
   makeOrderID,
+  getDeliveryCost,
+  getSubtotal,
 }
