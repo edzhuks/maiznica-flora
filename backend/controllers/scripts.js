@@ -38,18 +38,18 @@ const router = express.Router()
 //   res.status(200).end()
 // })
 
-router.get('/give_flora_money', async (req, res) => {
-  const totals = await Order.aggregate([
-    { $group: { _id: '$user', sum: { $sum: '$subtotal' } } },
-  ])
+// router.get('/give_flora_money', async (req, res) => {
+//   const totals = await Order.aggregate([
+//     { $group: { _id: '$user', sum: { $sum: '$subtotal' } } },
+//   ])
 
-  for (const t of totals) {
-    console.log(t)
-    const cart = await Cart.findOne({ user: t._id })
-    cart.availableLoyaltyMoney = t.sum * 0.01
-    await cart.save()
-  }
-  res.status(200).end()
-})
+//   for (const t of totals) {
+//     console.log(t)
+//     const cart = await Cart.findOne({ user: t._id })
+//     cart.availableLoyaltyMoney = t.sum * 0.01
+//     await cart.save()
+//   }
+//   res.status(200).end()
+// })
 
 module.exports = router
