@@ -32,6 +32,8 @@ const cartSchema = new mongoose.Schema({
   businessComments: { name: String, address: String, regNo: String },
   generalComments: String,
   deliveryComments: String,
+  usingLoyaltyMoney: Boolean,
+  availableLoyaltyMoney: Number,
 })
 
 cartSchema.set('toJSON', {

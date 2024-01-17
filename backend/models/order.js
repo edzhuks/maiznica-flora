@@ -78,6 +78,9 @@ const orderSchema = new mongoose.Schema({
   shipmentID: String,
   parcelIDs: [String],
   prettyID: String,
+
+  usingLoyaltyMoney: Boolean,
+  availableLoyaltyMoney: Number,
 })
 
 orderSchema.set('toJSON', {

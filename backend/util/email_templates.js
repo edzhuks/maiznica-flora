@@ -552,11 +552,15 @@ const receiptEmail = (order, orderURL) => {
                     </table>
                   </td>
                 </tr>
-<tr><td colspan="4">Rēķins derīgs līdz ${formatDate(
-                        new Date(
-                          new Date().setDate(order.datePlaced.getDate() + 7)
-                        )
-                      )}</td></tr>
+                <tr>
+                  <td colspan="4">
+                    Rēķins derīgs līdz ${formatDate(
+                      new Date(
+                        new Date().setDate(order.datePlaced.getDate() + 7)
+                      )
+                    )}
+                  </td>
+                </tr>
                 `
                     : ''
                 }
@@ -691,9 +695,8 @@ const receiptEmail = (order, orderURL) => {
                   )
                   .join('')}
                 <tr>
-                  <td rowspan="4"></td>
                   <td
-                    colspan="2"
+                    colspan="3"
                     style="
                       font-size: 12px;
                       font-family: 'Open Sans', sans-serif;
@@ -720,7 +723,7 @@ const receiptEmail = (order, orderURL) => {
                 </tr>
                 <tr>
                   <td
-                    colspan="2"
+                    colspan="3"
                     style="
                       font-size: 12px;
                       font-family: 'Open Sans', sans-serif;
@@ -743,9 +746,40 @@ const receiptEmail = (order, orderURL) => {
                     ${centsToEuro(order.deliveryCost)}
                   </td>
                 </tr>
+                ${
+                  order.usingLoyaltyMoney
+                    ? `
                 <tr>
                   <td
-                    colspan="2"
+                    colspan="3"
+                    style="
+                      font-size: 12px;
+                      font-family: 'Open Sans', sans-serif;
+                      color: #646a6e;
+                      line-height: 22px;
+                      vertical-align: top;
+                      text-align: right;
+                    ">
+                    Apmaksāts ar FLORA naudu
+                  </td>
+                  <td
+                    style="
+                      font-size: 12px;
+                      font-family: 'Open Sans', sans-serif;
+                      color: #646a6e;
+                      line-height: 22px;
+                      vertical-align: top;
+                      text-align: right;
+                    ">
+                    ${centsToEuro(-order.availableLoyaltyMoney)}
+                  </td>
+                </tr>
+                `
+                    : ''
+                }
+                <tr>
+                  <td
+                    colspan="3"
                     style="
                       font-size: 12px;
                       font-family: 'Open Sans', sans-serif;
@@ -770,7 +804,7 @@ const receiptEmail = (order, orderURL) => {
                 </tr>
                 <tr>
                   <td
-                    colspan="2"
+                    colspan="3"
                     style="
                       font-size: 12px;
                       font-family: 'Open Sans', sans-serif;
@@ -1034,6 +1068,7 @@ const receiptEmail = (order, orderURL) => {
                               switch (order.deliveryMethod) {
                                 case 'courrier':
                                   return 'Piegāde ar kurjeru'
+
                                 case 'bakery':
                                   return 'Saņemšana maiznīcā'
                                 case 'pickupPoint':
@@ -1111,6 +1146,7 @@ const receiptEmail = (order, orderURL) => {
     <td height="20"></td>
   </tr>
 </table>
+
 
 `
 }

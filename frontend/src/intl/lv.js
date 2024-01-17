@@ -325,6 +325,11 @@ const lv = {
   track: 'Sekot',
   filter: 'Atlasīt',
   depending_on_delivery: 'Atkarīgs no piegādes veida',
+  accumulated: 'Uzkrātā',
+  money: 'nauda',
+  will_receive: 'Saņemsiet',
+  money_accusative: 'naudu',
+  sum_too_low: 'Kopsumma nevar būt negatīva',
 }
 
 export default lv

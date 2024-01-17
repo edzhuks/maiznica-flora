@@ -103,7 +103,10 @@ const prepareForOrder = async (req, res, next) => {
 
   const subtotal = getSubtotal(cart.content)
   const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
-  const total = subtotal + deliveryCost
+  const total =
+    subtotal +
+    deliveryCost -
+    (cart.usingLoyaltyMoney ? cart.availableLoyaltyMoney : 0)
   cart.total = total
   cart = await cart.save()
   req.cart = cart
@@ -166,7 +169,10 @@ router.post(
     const cart = req.cart
     const subtotal = getSubtotal(cart.content)
     const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
-    const total = subtotal + deliveryCost
+    const total =
+      subtotal +
+      deliveryCost -
+      (cart.usingLoyaltyMoney ? cart.availableLoyaltyMoney : 0)
     let order = new Order({
       user: cart.user,
       content: cart.content,
@@ -186,6 +192,8 @@ router.post(
       latestStatus: 'invoiced',
       statusHistory: [{ status: 'invoiced', time: Date.now() }],
       prettyID: makeOrderID(),
+      usingLoyaltyMoney: cart.usingLoyaltyMoney,
+      availableLoyaltyMoney: cart.availableLoyaltyMoney,
     })
     order = await order.save()
     if (!TEST_MODE) {
@@ -220,6 +228,10 @@ router.post(
       businessComments: cart.businessComments,
       generalComments: cart.generalComments,
       deliveryComments: cart.deliveryComments,
+      usingLoyaltyMoney: false,
+      availableLoyaltyMoney: cart.usingLoyaltyMoney
+        ? 0
+        : cart.availableLoyaltyMoney,
     })
     await newCart.save()
 
@@ -254,7 +266,10 @@ const updatePaymentStatus = async (paymentReference) => {
         if (cart.paymentStatus !== 'settled') {
           const subtotal = getSubtotal(cart.content)
           const deliveryCost = getDeliveryCost(subtotal, cart.deliveryMethod)
-          const total = subtotal + deliveryCost
+          const total =
+            subtotal +
+            deliveryCost -
+            (cart.usingLoyaltyMoney ? cart.availableLoyaltyMoney : 0)
           let order = new Order({
             user: cart.user,
             content: cart.content,
@@ -276,6 +291,8 @@ const updatePaymentStatus = async (paymentReference) => {
             latestStatus: 'placed',
             statusHistory: [{ status: 'placed', time: Date.now() }],
             prettyID: makeOrderID(),
+            usingLoyaltyMoney: cart.usingLoyaltyMoney,
+            availableLoyaltyMoney: cart.availableLoyaltyMoney,
           })
           order = await order.save()
           if (order.total !== cart.total) {
@@ -314,6 +331,10 @@ const updatePaymentStatus = async (paymentReference) => {
             businessComments: cart.businessComments,
             generalComments: cart.generalComments,
             deliveryComments: cart.deliveryComments,
+            usingLoyaltyMoney: false,
+            availableLoyaltyMoney:
+              Math.ceil(subtotal * 0.01) +
+              (!cart.usingLoyaltyMoney ? cart.availableLoyaltyMoney : 0),
           })
           await newCart.save()
         }
@@ -429,7 +450,8 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     !req.body.hasOwnProperty('deliveryMethod') &&
     !req.body.hasOwnProperty('businessComments') &&
     !req.body.hasOwnProperty('generalComments') &&
-    !req.body.hasOwnProperty('deliveryComments')
+    !req.body.hasOwnProperty('deliveryComments') &&
+    !req.body.hasOwnProperty('usingLoyaltyMoney')
   ) {
     return res
       .status(400)
@@ -477,6 +499,11 @@ router.put('/', userExtractor, verificationRequired, async (req, res) => {
     cart.deliveryComments = req.body.deliveryComments
     await cart.save()
     return res.status(201).send({ deliveryComments: cart.deliveryComments })
+  }
+  if (req.body.hasOwnProperty('usingLoyaltyMoney')) {
+    cart.usingLoyaltyMoney = req.body.usingLoyaltyMoney
+    await cart.save()
+    return res.status(201).send({ usingLoyaltyMoney: cart.usingLoyaltyMoney })
   }
   cart.deliveryMethod = req.body.deliveryMethod
   await cart.save()

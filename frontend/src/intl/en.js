@@ -310,6 +310,11 @@ const en = {
   track: 'Track',
   filter: 'Filter',
   depending_on_delivery: 'Depending on delivery method',
+  accumulated: 'Use',
+  money: 'money',
+  will_receive: 'Will earn',
+  money_accusative: 'money',
+  sum_too_low: 'Total cannot be negative',
 }
 
 export default en

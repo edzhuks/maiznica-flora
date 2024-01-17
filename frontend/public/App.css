@@ -179,6 +179,9 @@ a {
   text-decoration: none;
   color: var(--main);
 }
+.logo-inline {
+  height: 24px;
+}
 
 .btn {
   cursor: pointer;
@@ -875,11 +878,12 @@ input:disabled {
   position: relative;
   transition: 0.3s cubic-bezier(0.31, 0.27, 0, 1.61);
   width: 10rem;
+  filter: unset;
 }
 .product-image-small:hover img {
   z-index: 3000;
-  transform: scale(1.5) translateY(-40px) translateX(-20px);
-  box-shadow: var(--shadow);
+  transform: scale(1.5) translateY(-40px);
+  filter: drop-shadow(0 0.2rem 0.3rem var(--main));
 }
 .product-title-small {
   font-size: 1rem;
@@ -1100,7 +1104,6 @@ a:hover .product-title-small {
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
-  z-index: 20;
   bottom: 150%;
   left: 50%;
   margin-left: -130px;
@@ -1109,6 +1112,7 @@ a:hover .product-title-small {
   font-size: 1rem;
   font-family: var(--sans);
   padding: var(--space);
+  z-index: 1001;
 }
 
 .tooltip .tooltiptext::after {
@@ -1119,7 +1123,7 @@ a:hover .product-title-small {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: var(--accent) transparent transparent transparent;
+  border-color: var(--subtler) transparent transparent transparent;
 }
 
 .tooltip:hover .tooltiptext {

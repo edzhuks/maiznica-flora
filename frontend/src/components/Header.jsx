@@ -18,6 +18,8 @@ import { changeLanguage } from '../reducers/languageReducer'
 import { ScrewdriverWrench } from '@styled-icons/fa-solid/ScrewdriverWrench'
 import { DocumentBulletListClock } from '@styled-icons/fluentui-system-filled/DocumentBulletListClock'
 import Search from './basic/Search'
+import { PiggyBank } from '@styled-icons/fa-solid/PiggyBank'
+import { centsToEuro } from '../util/convert'
 
 const pop = keyframes`
   0% {
@@ -117,6 +119,10 @@ const Header = () => {
       return acc + cur.quantity
     }, 0)
   )
+  const availableLoyaltyMoney = useSelector(
+    (state) => state.cart.availableLoyaltyMoney
+  )
+
   const [sideMenu, setSideMenu] = useState(false)
   const logout = () => {
     dispatch(clearCart())
@@ -303,10 +309,21 @@ const Header = () => {
           </>
         )}
         <div style={{ flex: '100 ' }} />
+
         {user ? (
           <NavLink
             className="tab relative"
             to="/order_process/cart">
+            {availableLoyaltyMoney > 0 && (
+              <p className=" column no-gap align-cross-center m-r-m m-t">
+                <PiggyBank className="icon-b" />
+                <p
+                  className=""
+                  style={{ fontSize: '0.9rem' }}>
+                  {centsToEuro(availableLoyaltyMoney)}
+                </p>
+              </p>
+            )}
             <AnimatedShoppingCart
               animate={cart.animate}
               key={JSON.stringify(cart)}>

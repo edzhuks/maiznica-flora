@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  selectCartSubtotal,
+  selectCartTotal,
   selectIsBusiness,
   useCartServiceDispatch,
 } from '../../reducers/cartReducer'
@@ -41,6 +43,7 @@ const Order = () => {
   const isBusiness = useSelector(selectIsBusiness)
   const navigate = useNavigate()
   const { placeOrder, invoice } = useCartServiceDispatch()
+  const total = useSelector(selectCartTotal)
 
   useEffect(() => window.scrollTo(0, 0), [])
 
@@ -71,6 +74,7 @@ const Order = () => {
   }
 
   const checkDeliveryMethod = () => {
+    console.log(total)
     if (!cart.deliveryMethod) {
       toast.error(lang.toast_select_delivery_method)
       return false
@@ -90,6 +94,9 @@ const Order = () => {
       return false
     } else if (cart.deliveryMethod === 'courrier' && !cart.courrierAddress) {
       toast.error(lang.toast_select_address)
+      return false
+    } else if (total < 0) {
+      toast.error(lang.sum_too_low)
       return false
     } else {
       return true
@@ -168,7 +175,7 @@ const Order = () => {
             />
           </Routes>
         </div>
-        <div style={{ flex: '1 0 320px' }}>
+        <div style={{ flex: '1 0 360px' }}>
           <CartSummary
             stage={stage}
             nextStage={nextStage()}

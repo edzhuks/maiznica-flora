@@ -14,9 +14,7 @@ import Input from '../basic/Input'
 import useField from '../../hooks/useField'
 import BusinessMap from '../contact/BusinessMap'
 
-const DeliveryOption = ({ deliveryMethod, children, map }) => {
-  const deliveryCosts = useSelector(selectAllDeliveryCosts)
-  console.log(deliveryCosts)
+const DeliveryOption = ({ deliveryMethod, children, map, deliveryCosts }) => {
   const dispatch = useDispatch()
   const selected = useSelector(
     (state) => state.cart.deliveryMethod === deliveryMethod
@@ -36,11 +34,7 @@ const DeliveryOption = ({ deliveryMethod, children, map }) => {
         }}>
         <div className="column align-cross-center center">
           <h3 className="title">{lang[`delivery_${deliveryMethod}`]}</h3>
-          <Price
-            className="m-v"
-            price={deliveryCosts[deliveryMethod]}
-            isSmall={true}
-          />
+          <div className="m-v">{deliveryCosts}</div>
           <p className="hint-text">
             <Calendar3 className="icon-m m-r" />
             {lang[`delivery_time_${deliveryMethod}`]}
@@ -74,7 +68,13 @@ const BakeryPickup = ({}) => {
   return (
     <DeliveryOption
       deliveryMethod="bakery"
-      map={<BusinessMap key="a" />}>
+      map={<BusinessMap key="a" />}
+      deliveryCosts={
+        <Price
+          price={0}
+          isSmall={true}
+        />
+      }>
       <p
         className="card-text"
         style={{ maxWidth: '300px' }}>
@@ -127,6 +127,24 @@ const PickupPoint = ({}) => {
 
   return (
     <DeliveryOption
+      deliveryCosts={
+        <div>
+          <div className="row align-cross-center">
+            <p className="hint-text">&lt; &euro;25</p>
+            <Price
+              price={330}
+              isSmall={true}
+            />
+          </div>
+          <div className="row align-cross-center">
+            <p className="hint-text">&gt; &euro;25</p>
+            <Price
+              price={0}
+              isSmall={true}
+            />
+          </div>
+        </div>
+      }
       deliveryMethod="pickupPoint"
       map={
         <AddressWithMap
@@ -206,7 +224,14 @@ const Courrier = ({}) => {
   const courrierAddress = useSelector((state) => state.cart.courrierAddress)
 
   return (
-    <DeliveryOption deliveryMethod="courrier">
+    <DeliveryOption
+      deliveryMethod="courrier"
+      deliveryCosts={
+        <Price
+          price={599}
+          isSmall={true}
+        />
+      }>
       <Addresses
         selectedAddress={courrierAddress}
         style={{ maxWidth: '31rem' }}

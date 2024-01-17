@@ -453,6 +453,12 @@ const ExpandedOrder = ({ withManagement }) => {
                     <br />
                     {lang.delivery}
                     <br />
+                    {order.usingLoyaltyMoney && (
+                      <>
+                        FLORA {lang.money}
+                        <br />
+                      </>
+                    )}
                     <b>{lang.total}</b>
                     <br />
                     {lang.vat}
@@ -462,6 +468,12 @@ const ExpandedOrder = ({ withManagement }) => {
                     <br />
                     {centsToEuro(order.deliveryCost)}
                     <br />
+                    {order.usingLoyaltyMoney && (
+                      <>
+                        {centsToEuro(-order.availableLoyaltyMoney)}
+                        <br />
+                      </>
+                    )}
                     <b>{centsToEuro(order.total)}</b>
                     <br />
                     {centsToEuro(order.vat)}

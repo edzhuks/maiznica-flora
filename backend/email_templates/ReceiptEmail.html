@@ -206,9 +206,8 @@
                               vertical-align: top;
                             ">
                             Nosaukums: ${order.businessComments.name}<br />
-                            Reģ. Nr.: ${order.businessComments.Reģ. Nr.}<br />
-                            PVN reģ. Nr.: LV${order.businessComments.Reģ.
-                            Nr.}<br />
+                            Reģ. Nr.: ${order.businessComments.regNo}<br />
+                            PVN reģ. Nr.: LV${ order.businessComments.regNo }<br />
                             Adrese: ${order.businessComments.address}<br />
                           </td>
                         </tr>
@@ -254,13 +253,19 @@
                             PVN reģ. Nr.: LV50003251341<br />
                             Adrese:Vecvaltes, Krimuldas pagasts, Siguldas
                             novads, Latvija, LV-2144<br />
+                            Norēķinu konts: LV49UNLA0034304403100
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </td>
                 </tr>
-
+                <tr>
+                  <td colspan="4">
+                    Rēķins derīgs līdz ${formatDate( new Date( new
+                    Date().setDate(order.datePlaced.getDate() + 7) ) )}
+                  </td>
+                </tr>
                 ` : '' }
                 <tr>
                   <td height="30"></td>
@@ -441,6 +446,33 @@
                     ${centsToEuro(order.deliveryCost)}
                   </td>
                 </tr>
+                {order.usingLoyaltyMoney && '
+                <tr>
+                  <td
+                    colspan="2"
+                    style="
+                      font-size: 12px;
+                      font-family: 'Open Sans', sans-serif;
+                      color: #646a6e;
+                      line-height: 22px;
+                      vertical-align: top;
+                      text-align: right;
+                    ">
+                    Apmaksāts ar FLORA naudu
+                  </td>
+                  <td
+                    style="
+                      font-size: 12px;
+                      font-family: 'Open Sans', sans-serif;
+                      color: #646a6e;
+                      line-height: 22px;
+                      vertical-align: top;
+                      text-align: right;
+                    ">
+                    ${centsToEuro(order.availableLoyaltyMoney)}
+                  </td>
+                </tr>
+                ' }
                 <tr>
                   <td
                     colspan="2"

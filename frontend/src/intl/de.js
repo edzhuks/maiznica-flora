@@ -316,6 +316,11 @@ const de = {
   track: 'Verfolgen',
   filter: 'Filtern',
   depending_on_delivery: 'Abhängig von der Liefermethode',
+  accumulated: 'Verwenden',
+  money: 'Geld',
+  will_receive: 'Empfangen',
+  money_accusative: 'Geld',
+  sum_too_low: 'Die Summe kann nicht negativ sein',
 }
 
 export default de

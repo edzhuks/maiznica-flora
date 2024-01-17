@@ -77,6 +77,11 @@ const useCartService = () => {
     const request = axios.put(baseURL, { deliveryComments: comments }, config)
     return request
   }
+  const changeUsingLoyaltyMoney = (usingLoyaltyMoney) => {
+    const config = makeConfig()
+    const request = axios.put(baseURL, { usingLoyaltyMoney }, config)
+    return request
+  }
   const placeOrder = () => {
     const config = makeConfig()
     const request = axios.post(`${baseURL}/pay/`, { selectedLang }, config)
@@ -112,6 +117,7 @@ const useCartService = () => {
     changeBusinessComments,
     changeDeliveryComments,
     changeGeneralComments,
+    changeUsingLoyaltyMoney,
     invoice,
   }
 }

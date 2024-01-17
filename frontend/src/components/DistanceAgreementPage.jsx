@@ -406,21 +406,38 @@ const DistanceAgreementPage = () => {
           komunikācijas mērķis netiek sasniegts ar iepriekš minētajām metodēm,
           to par pārvirzīt un nodot PTAC vai Latvijas Republikas tiesā.
         </p>
-
-        <h4>9. Nobeiguma noteikumi</h4>
+        <h4>9. Lojalitātes programma "FLORA nauda"</h4>
         <p>
-          9.1. Noteikumi sagatavoti atbilstoši Latvijas Republikas normatīvajiem
-          aktiem.
+          9.1. E-veikala pircēji saņem FLORA naudu 1% apmērā no pirkuma produktu
+          summas. FLORA naudas valūta ir eiro. Nauda tiek piešķirta, kad pirkums
+          ir apmaksāts. FLORA naudu var izmantot kā atlaidi kādā no nākamajiem
+          pirkumiem.
+        </p>
+        <p>
+          9.2. FLORA naudu var izmantot nākamajā pirkumā vai turpināt uzkrāt.
+          Izmantojot FLORA naudu, tā visa ir jāizmanto vienā pirkumā, to nevar
+          izmantot daļēji. FLORA naudu var izmantot arī piegādes apmaksai.
+        </p>
+        <p>
+          9.3. FLORA naudu nevar izmantot nekādā citā veidā, izņemot, lai
+          apmaksātu daļu pirkuma E-veikalā. FLORA naudu nevar pārsūtīt uz citu
+          kontu. Ar FLORA naudu nevar apmaksāt pirkumu, kura kopsumma ir mazāka
+          par kopējo uzkrāto FLORA naudu.
+        </p>
+        <h4>10. Nobeiguma noteikumi</h4>
+        <p>
+          10.1. Noteikumi sagatavoti atbilstoši Latvijas Republikas
+          normatīvajiem aktiem.
         </p>
 
         <p>
-          9.2. E-veikals ir tiesības vienpusēji grozīt, labot vai papildināt
+          10.2. E-veikals ir tiesības vienpusēji grozīt, labot vai papildināt
           Noteikumus. Pircējam ir saistoši Noteikumi, kas ir spēkā pasūtījuma
           iesniegšanas brīdī un ir publicēti E-veikalā.
         </p>
 
         <p>
-          9.3. E-veikals ir tiesīgs ierobežot vai apturēt pasūtījumu izpildi
+          10.3. E-veikals ir tiesīgs ierobežot vai apturēt pasūtījumu izpildi
           un/vai izbeigt interneta veikala darbību objektīvi pamatotu iemeslu
           dēļ. Šādā gadījumā E-veikals atgriež pircējam samaksāto naudu par
           nepiegādātajiem pasūtījumiem atbilstoši šajos Noteikumos paredzētajai

@@ -28,6 +28,7 @@ const Input = ({
   option2,
   options,
   required,
+  children,
   ...props
 }) => {
   if (type === 'select') {
@@ -122,7 +123,7 @@ const Input = ({
             placeholder=" "
           />
           <span className="checkbox" />
-          <span className="label">{label}</span>
+          {children || <span className="label">{label}</span>}
         </label>
       </div>
     )

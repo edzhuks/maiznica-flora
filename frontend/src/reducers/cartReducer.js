@@ -20,6 +20,8 @@ const initialState = {
   businessComments: { name: undefined, regNo: undefined, address: undefined },
   generalComments: undefined,
   deliveryComments: undefined,
+  availableLoyaltyMoney: undefined,
+  usingLoyaltyMoney: true,
 }
 
 const cartSlice = createSlice({
@@ -77,18 +79,29 @@ const cartSlice = createSlice({
     setDeliveryComments(state, action) {
       state.deliveryComments = action.payload
     },
+    setUsingLoyaltyMoney(state, action) {
+      state.usingLoyaltyMoney = action.payload
+    },
   },
 })
 const selectContent = (state) => state.cart.content
 const selectDeliveryMethod = (state) => state.cart.deliveryMethod
 const selectBusinessComments = (state) => state.cart.businessComments
+const selectAvailableLoyaltyMoney = (state) => state.cart.availableLoyaltyMoney
+const selectUsingLoyaltyMoney = (state) => state.cart.usingLoyaltyMoney
 
-const selectCartTotal = createSelector([selectContent], (content) =>
+const selectCartSubtotal = createSelector([selectContent], (content) =>
   content
     .map((i) => calculateItemPrice(i))
     .reduce((acc, cur) => {
       return acc + cur
     }, 0)
+)
+const selectReceivedLoyaltyMoney = createSelector(
+  [selectCartSubtotal],
+  (subtotal) => {
+    return subtotal * 0.01
+  }
 )
 
 const deliveryMethods = ['bakery', 'pickupPoint', 'courrier']
@@ -105,7 +118,7 @@ const thresholds = {
 }
 
 const selectDeliveryCost = createSelector(
-  [selectCartTotal, selectDeliveryMethod],
+  [selectCartSubtotal, selectDeliveryMethod],
   (total, deliveryMethod) => {
     if (!deliveryMethod) {
       return undefined
@@ -122,7 +135,7 @@ const selectDeliveryCost = createSelector(
   }
 )
 
-const selectAllDeliveryCosts = createSelector([selectCartTotal], (total) => {
+const selectAllDeliveryCosts = createSelector([selectCartSubtotal], (total) => {
   return Object.fromEntries(
     deliveryMethods.map((c) => {
       if (thresholds[c]) {
@@ -138,6 +151,26 @@ const selectAllDeliveryCosts = createSelector([selectCartTotal], (total) => {
   )
 })
 
+const selectCartTotal = createSelector(
+  [
+    selectContent,
+    selectDeliveryCost,
+    selectAvailableLoyaltyMoney,
+    selectUsingLoyaltyMoney,
+  ],
+  (content, deliveryCost, availableLoyaltyMoney, usingLoyaltyMoney) => {
+    return (
+      content
+        .map((i) => calculateItemPrice(i))
+        .reduce((acc, cur) => {
+          return acc + cur
+        }, 0) +
+      deliveryCost -
+      (usingLoyaltyMoney ? availableLoyaltyMoney : 0)
+    )
+  }
+)
+
 const selectIsBusiness = createSelector(
   [selectBusinessComments],
   (businessComments) =>
@@ -148,10 +181,12 @@ const selectIsBusiness = createSelector(
 )
 export {
   selectCartTotal,
+  selectCartSubtotal,
   selectDeliveryCost,
   selectIsBusiness,
   selectAllDeliveryCosts,
   deliveryCosts,
+  selectReceivedLoyaltyMoney,
 }
 
 export const {
@@ -172,6 +207,7 @@ export const {
   setBusinessComments,
   setDeliveryComments,
   setGeneralComments,
+  setUsingLoyaltyMoney,
 } = cartSlice.actions
 
 export const useCartServiceDispatch = () => {
@@ -320,6 +356,19 @@ export const useCartServiceDispatch = () => {
         })
     }
   }
+  const changeUsingLoyaltyMoney = (usingLoyaltyMoney) => {
+    return async (dispatch) => {
+      cartService
+        .changeUsingLoyaltyMoney(usingLoyaltyMoney)
+        .then((response) =>
+          dispatch(setUsingLoyaltyMoney(response.data.usingLoyaltyMoney))
+        )
+        .catch((error) => {
+          console.log(error.response.data.error)
+          showErrorToastNoPromise(error)
+        })
+    }
+  }
 
   const placeOrder = () => {
     return async (dispatch) => {
@@ -370,6 +419,7 @@ export const useCartServiceDispatch = () => {
     changeBusinessComments,
     changeDeliveryComments,
     changeGeneralComments,
+    changeUsingLoyaltyMoney,
     invoice,
   }
 }

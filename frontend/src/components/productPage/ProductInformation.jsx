@@ -205,7 +205,7 @@ const StaticInformation = ({
             </table>
           </div>
         )}
-        {product.EAN && (
+        {product.EAN && product.EAN !== '0' && (
           <div className="card p">
             <p className="product-text">
               <Barcode className="icon-b m-r" />

@@ -9,6 +9,7 @@ const {
 const { DPD_API_URL, DPD_AUTH_HEADER, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
 const axios = require('axios')
+const Cart = require('../models/cart')
 
 const idRequired = async (request, response, next) => {
   if (!request.body.id) {
@@ -58,6 +59,10 @@ router.put(
   idRequired,
   async (req, res) => {
     const order = await updateStatus(req.body.id, 'placed')
+    const cart = await Cart.findOne({ user: order.user })
+
+    cart.availableLoyaltyMoney += Math.ceil(order.subtotal * 0.01)
+    await cart.save()
     return res.send(order)
   }
 )
