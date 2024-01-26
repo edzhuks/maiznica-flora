@@ -20,7 +20,7 @@ import Footer from './components/Footer'
 import OrderManagementPage from './components/orders/OrderManagementPage'
 import AboutPage from './components/AboutPage'
 import ContactPage from './components/contact/ContactPage'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useCartServiceDispatch } from './reducers/cartReducer'
 import MobileContext from './contexts/mobileContext'
 import Header from './components/Header'
@@ -55,6 +55,7 @@ import CategoryManagementPage from './components/management/CategoryManagementPa
 import NewCategory from './components/management/NewCategory'
 import NotFoundPage from './components/NotFoundPage'
 import Invoiced from './components/info/Invoiced'
+import { Helmet } from 'react-helmet'
 
 const baseTheme = {
   main: '#45941e',
@@ -86,7 +87,7 @@ const responsiveTheme = (isMobile) => {
 function App() {
   const dispatch = useDispatch()
   const { loadCart } = useCartServiceDispatch()
-
+  const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -121,6 +122,9 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>{lang.site_name}</title>
+      </Helmet>
       <ThemeProvider theme={responsiveTheme(isMobile)}>
         <UserContext.Provider value={[user, setUser]}>
           <MobileContext.Provider value={[isMobile, setIsMobile]}>

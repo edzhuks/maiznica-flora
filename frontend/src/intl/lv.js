@@ -285,7 +285,7 @@ const lv = {
   company_name: 'Nosaukums',
   contact_info: 'Contact info',
   catalogue: 'Katalogs',
-  unlisted: 'Neredzami',
+  unlisted: 'Nepārdodas',
   unavailable: 'Pasūtījuma',
   uncategorized: 'Nekategorizēti',
   active: 'Aktīvie',
@@ -330,6 +330,7 @@ const lv = {
   will_receive: 'Saņemsiet',
   money_accusative: 'naudu',
   sum_too_low: 'Kopsumma nevar būt negatīva',
+  site_name: 'Maiznīca Flora',
 }
 
 export default lv

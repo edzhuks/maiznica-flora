@@ -17,10 +17,11 @@ const CategoryList = styled.ul`
   position: relative;
   padding: 0;
   margin: 0;
-  margin-left: 30px;
+  padding-inline-start: 0;
 `
 
 const ProductItem = ({
+  depth,
   product,
   parentCategory,
   removeProduct,
@@ -29,12 +30,26 @@ const ProductItem = ({
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   return (
-    <div>
+    <div
+      className="row no-gap"
+      style={{ marginLeft: `calc(${depth} * 20px)` }}>
+      <div className="depth-indicators">
+        {[...Array(depth)].map((e, i) => (
+          <div className="depth-indicator" />
+        ))}
+      </div>
       <Link
         to={`/products/${product.id}`}
         style={{
-          textDecoration: product.outOfStock ? 'line-through' : 'none',
-          color: product.invisible ? 'var(--subtle)' : 'unset',
+          color: product.invisible
+            ? product.outOfStock
+              ? 'color-mix(in srgb,var(--subtle),var(--bad))'
+              : 'var(--subtle)'
+            : product.outOfStock
+            ? 'var(--bad)'
+            : 'unset',
+          fontWeight:
+            product.invisible && product.outOfStock ? 'bold' : 'unset',
         }}>
         <span>
           {product.name[selectedLang] || product.name.lv} {product.weight}g
@@ -72,6 +87,7 @@ const ProductItem = ({
 }
 
 const CategoryItem = ({
+  depth,
   category,
   removeCategory,
   parentCategory,
@@ -84,14 +100,21 @@ const CategoryItem = ({
   return (
     <div>
       {category.displayName && (
-        <>
+        <div
+          className="row no-gap"
+          style={{ marginLeft: `calc(${depth} * 20px)` }}>
+          <div className="depth-indicators">
+            {[...Array(depth)].map((e, i) => (
+              <div className="depth-indicator big" />
+            ))}
+          </div>
           <Link
             to={`/category/${category.id}`}
             style={{
               textDecoration: 'none',
               color: category.invisible ? 'var(--subtle)' : 'unset',
             }}>
-            <span>
+            <span className="card-heading">
               {category.displayName[selectedLang] || category.displayName.lv}
             </span>
           </Link>
@@ -130,7 +153,7 @@ const CategoryItem = ({
             onClick={handleCategoryButton}>
             + {lang.category}
           </button>
-        </>
+        </div>
       )}
     </div>
   )
@@ -146,6 +169,7 @@ const CategoryTab = ({
   toggleShow,
   toggleStock,
   toggleShowCategory,
+  depth,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -160,6 +184,7 @@ const CategoryTab = ({
   return (
     <div>
       <CategoryItem
+        depth={depth}
         category={category}
         removeCategory={removeCategory}
         parentCategory={parentCategory}
@@ -171,6 +196,7 @@ const CategoryTab = ({
         {category.products &&
           category.products.map((product) => (
             <ProductItem
+              depth={depth + 1}
               key={product.id}
               product={product}
               parentCategory={category}
@@ -184,6 +210,7 @@ const CategoryTab = ({
         {category.categories &&
           category.categories.map((c) => (
             <CategoryTab
+              depth={depth + 1}
               key={c.id}
               category={c}
               handleCategory={handleCategory}
@@ -282,9 +309,10 @@ const CategoryManagement = ({}) => {
         activeCategory={activeCategory}
         onClose={onModalClose}
       />
-      <ul style={{ listStyle: 'none' }}>
+      <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
         {catalogue ? (
           <CategoryTab
+            depth={0}
             handleProduct={clickProduct}
             handleCategory={clickCategory}
             removeProduct={removeProduct}

@@ -1,23 +1,31 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const CategoryManagementPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div>
-      <div className="row m-t">
-        <Link to="complete">
-          <button className="btn">{lang.catalogue}</button>
-        </Link>
-        <Link to="unlisted">
-          <button className="btn">{lang.unlisted}</button>
-        </Link>
-        <Link to="unavailable">
-          <button className="btn">{lang.unavailable}</button>
-        </Link>
-        <Link to="uncategorized">
-          <button className="btn">{lang.uncategorized}</button>
-        </Link>
+      <div className="header sub-header card">
+        <NavLink
+          className="tab"
+          to="complete">
+          {lang.catalogue}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="unlisted">
+          {lang.unlisted}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="unavailable">
+          {lang.unavailable}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="uncategorized">
+          {lang.uncategorized}
+        </NavLink>
       </div>
 
       <Outlet />

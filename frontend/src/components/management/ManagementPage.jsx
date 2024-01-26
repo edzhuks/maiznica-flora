@@ -1,30 +1,57 @@
-import { Link, Outlet } from 'react-router-dom'
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const ManagementPage = () => {
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
+  const { pathname } = useLocation()
+  console.log(pathname.includes('categories'))
+  console.log(pathname)
+  const navigate = useNavigate()
   return (
     <div>
-      <div className="row">
-        <Link to="categories/complete">
-          <button className="btn">{lang.categories}</button>
-        </Link>
-        <Link to="new_product">
-          <button className="btn">{lang.new_product}</button>
-        </Link>
-        <Link to="new_category">
-          <button className="btn">{lang.new_category}</button>
-        </Link>
-        <Link to="sorting">
-          <button className="btn">{lang.sorting}</button>
-        </Link>
-        <Link to="banners">
-          <button className="btn">{lang.banner}</button>
-        </Link>
-
-        <Link to="settings">
-          <button className="btn">{lang.settings}</button>
-        </Link>
+      <div
+        className="header sub-header card"
+        style={{ top: 'var(--header-height)' }}>
+        <NavLink
+          className="tab"
+          to="categories"
+          onClick={(event) => {
+            event.preventDefault()
+            navigate('categories/complete')
+          }}>
+          {lang.categories}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="new_product">
+          {lang.new_product}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="new_category">
+          {lang.new_category}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="sorting">
+          {lang.sorting}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="banners">
+          {lang.banner}
+        </NavLink>
+        <NavLink
+          className="tab"
+          to="settings">
+          {lang.settings}
+        </NavLink>
       </div>
 
       <Outlet />

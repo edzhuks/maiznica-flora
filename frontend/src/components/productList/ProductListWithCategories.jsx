@@ -5,6 +5,7 @@ import ProductList from './ProductList'
 import { useEffect } from 'react'
 import useCategoryService from '../../services/category'
 import { useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 const ProductListWithCategories = () => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
@@ -35,6 +36,12 @@ const ProductListWithCategories = () => {
       />
       {categoryData.displayName && (
         <h1 className="big-title m-d">
+          <Helmet>
+            <title>
+              {categoryData.displayName[selectedLang] ||
+                categoryData.displayName.lv}
+            </title>
+          </Helmet>
           {categoryData.displayName[selectedLang] ||
             categoryData.displayName.lv}
         </h1>

@@ -4,6 +4,7 @@ import { Barcode } from '@styled-icons/icomoon/Barcode'
 import Price from '../basic/Price'
 import Input from '../basic/Input'
 import { Warning } from '@styled-icons/ionicons-solid/Warning'
+import { Helmet } from 'react-helmet'
 const StaticInformation = ({
   product,
   quantity,
@@ -15,13 +16,36 @@ const StaticInformation = ({
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div className={`row center ${className ? className : ''}`}>
+      <Helmet>
+        <title>{product.name[selectedLang] || product.name.lv}</title>
+        <meta
+          property="og:image"
+          content={`https://www.maiznica.lv/images/${product.image}`}
+        />
+        <meta
+          property="og:image:secure_url"
+          content={`https://www.maiznica.lv/images/${product.image}`}
+        />
+        <meta
+          property="og:title"
+          content={product.name[selectedLang] || product.name.lv}
+        />
+        <meta
+          property="og:type"
+          content="website"
+        />
+        <meta
+          property="og:url"
+          content={`https://www.maiznica.lv/products/${product.id}`}
+        />
+      </Helmet>
       <img
         className="product-image"
         src={`https://www.maiznica.lv/images/${product.image}`}
       />
       <div
         className="column align-cross-start"
-        style={{ maxWidth: 'min(100vw,600px)', flex: '1 1 600px' }}>
+        style={{ maxWidth: 'min(100vw,600px)', flex: '1 1 500px' }}>
         <div className="card p column self-stretch align-cross-center">
           <h2 className="title">
             {product.name[selectedLang] || product.name.lv} &nbsp;

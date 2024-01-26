@@ -313,7 +313,11 @@ const Header = () => {
         {user ? (
           <NavLink
             className="tab relative"
-            to="/order_process/cart">
+            to="/order_process"
+            onClick={(event) => {
+              event.preventDefault()
+              navigate('order_process/cart')
+            }}>
             {availableLoyaltyMoney > 0 && (
               <p className=" column no-gap align-cross-center m-r-m m-t">
                 <PiggyBank className="icon-b" />
@@ -349,7 +353,11 @@ const Header = () => {
               <>
                 <NavLink
                   className="tab"
-                  to="/management/categories/complete">
+                  to="/management"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    navigate('management/categories/complete')
+                  }}>
                   <ScrewdriverWrench className="icon-b" />
                 </NavLink>
                 <NavLink
@@ -369,7 +377,11 @@ const Header = () => {
             {user && (
               <NavLink
                 className="tab"
-                to="/account/previous_orders">
+                to="/account"
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigate('/account/previous_orders')
+                }}>
                 {lang.profile}
               </NavLink>
             )}
