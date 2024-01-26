@@ -24,7 +24,7 @@ const StaticInformation = ({
         />
         <meta
           property="og:image:secure_url"
-          content={`https://www.maiznica.lv/images/${product.image}`}
+          content={`https://www.maiznica.lv/images/xs_${product.image}`}
         />
         <meta
           property="og:title"
