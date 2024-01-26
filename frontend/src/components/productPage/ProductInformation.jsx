@@ -16,29 +16,31 @@ const StaticInformation = ({
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
   return (
     <div className={`row center ${className ? className : ''}`}>
-      <Helmet>
-        <title>{product.name[selectedLang] || product.name.lv}</title>
-        <meta
-          property="og:image"
-          content={`https://www.maiznica.lv/images/${product.image}`}
-        />
-        <meta
-          property="og:image:secure_url"
-          content={`https://www.maiznica.lv/images/xs_${product.image}`}
-        />
-        <meta
-          property="og:title"
-          content={product.name[selectedLang] || product.name.lv}
-        />
-        <meta
-          property="og:type"
-          content="website"
-        />
-        <meta
-          property="og:url"
-          content={`https://www.maiznica.lv/products/${product.id}`}
-        />
-      </Helmet>
+      {product.image && (
+        <Helmet>
+          <title>{product.name[selectedLang] || product.name.lv}</title>
+          <meta
+            property="og:image"
+            content={`https://www.maiznica.lv/images/xs_${product.image}`}
+          />
+          <meta
+            property="og:image:secure_url"
+            content={`https://www.maiznica.lv/images/xs_${product.image}`}
+          />
+          <meta
+            property="og:title"
+            content={product.name[selectedLang] || product.name.lv}
+          />
+          <meta
+            property="og:type"
+            content="website"
+          />
+          <meta
+            property="og:url"
+            content={`https://www.maiznica.lv/products/${product.id}`}
+          />
+        </Helmet>
+      )}
       <img
         className="product-image"
         src={`https://www.maiznica.lv/images/${product.image}`}
