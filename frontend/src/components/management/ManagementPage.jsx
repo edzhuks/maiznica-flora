@@ -20,6 +20,11 @@ const ManagementPage = () => {
         style={{ top: 'var(--header-height)' }}>
         <NavLink
           className="tab"
+          to="products">
+          {lang.products}
+        </NavLink>
+        <NavLink
+          className="tab"
           to="categories"
           onClick={(event) => {
             event.preventDefault()

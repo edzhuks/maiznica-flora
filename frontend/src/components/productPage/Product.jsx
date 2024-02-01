@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import UserContext from '../../contexts/userContext'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import useProductService from '../../services/product'
 import StaticInformation from './ProductInformation'
 import { useDispatch, useSelector } from 'react-redux'
@@ -75,7 +75,8 @@ const Product = () => {
     image: '',
     bio: false,
   })
-
+  const [searchParams, setSearchParams] = useSearchParams()
+  const eis = searchParams.get('eis') === 'true'
   const id = useParams().id
   const dispatch = useDispatch()
   const refresh = () => {
@@ -88,7 +89,7 @@ const Product = () => {
       })
       .catch((e) => {
         if (e.response.status === 404) {
-          navigate('/not-found')
+          navigate('/not-found', { replace: true })
         }
       })
   }
@@ -176,6 +177,7 @@ const Product = () => {
           setQuantity={setQuantity}
           onOrder={addToCart}
           className="m-d-b"
+          eis={eis}
         />
         {product.relatedProducts && product.relatedProducts.length > 0 && (
           <>

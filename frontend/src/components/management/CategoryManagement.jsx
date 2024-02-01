@@ -39,7 +39,7 @@ const ProductItem = ({
         ))}
       </div>
       <Link
-        to={`/products/${product.id}`}
+        to={`/products/${product.prettyID}`}
         style={{
           color: product.invisible
             ? product.outOfStock

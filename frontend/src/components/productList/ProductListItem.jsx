@@ -35,7 +35,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
     <div
       className="card product-card row no-wrap no-gap stretch m-d"
       style={{ flex: '1 1 400px' }}>
-      <Link to={`/products/${product.id}`}>
+      <Link to={`/products/${product.prettyID}`}>
         <div className="product-image-small">
           <img src={`https://www.maiznica.lv/images/lg_${product.image}`} />
         </div>
@@ -43,7 +43,7 @@ const ProductListItem = ({ inCart, product, quantity }) => {
       <div className="p column no-gap">
         <Link
           className="column "
-          to={`/products/${product.id}`}>
+          to={`/products/${product.prettyID}`}>
           <h3 className="product-title-small ">
             {product.name[selectedLang] || product.name.lv}{' '}
             {gramsToKilos(product.weight)}

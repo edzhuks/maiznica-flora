@@ -7,7 +7,7 @@ const {
   productChecker,
   adminRequired,
 } = require('../util/middleware')
-const { isPositiveInteger } = require('../util/functions')
+const { isPositiveInteger, toEnglishAlphabet } = require('../util/functions')
 const category = require('../models/category')
 const Cart = require('../models/cart')
 const Order = require('../models/order')
@@ -51,5 +51,17 @@ const router = express.Router()
 //   }
 //   res.status(200).end()
 // })
+
+router.get('/make_pretty_ids', async (req, res) => {
+  const products = await Product.find()
+
+  for (const t of products) {
+    const newName = toEnglishAlphabet(t.name.lv).replaceAll(' ', '-')
+    console.log(newName)
+    t.prettyID = `${newName}-${t.weight}g`
+    t.save()
+  }
+  res.status(200).end()
+})
 
 module.exports = router

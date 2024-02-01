@@ -356,7 +356,7 @@ const Header = () => {
                   to="/management"
                   onClick={(event) => {
                     event.preventDefault()
-                    navigate('management/categories/complete')
+                    navigate('management/products')
                   }}>
                   <ScrewdriverWrench className="icon-b" />
                 </NavLink>

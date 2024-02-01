@@ -71,7 +71,7 @@ const escapeHTML = (s) => {
     '<': '&lt;',
     '>': '&gt;',
   }
-  return s.replace(/[&"'<>]/g, (c) => lookup[c])
+  return s.replaceAll(/[&"'<>]/g, (c) => lookup[c])
 }
 const formatDate = (date) => {
   const formatterFull = new Intl.DateTimeFormat('lv-LV', {
@@ -98,6 +98,34 @@ const makeOrderID = () => {
   )}`
 }
 
+const toEnglishAlphabet = (text) => {
+  return text
+    .replaceAll('ā', 'a')
+    .replaceAll('č', 'c')
+    .replaceAll('ē', 'e')
+    .replaceAll('ģ', 'g')
+    .replaceAll('ļ', 'l')
+    .replaceAll('ķ', 'k')
+    .replaceAll('ī', 'i')
+    .replaceAll('ņ', 'n')
+    .replaceAll('š', 's')
+    .replaceAll('ū', 'u')
+    .replaceAll('ž', 'z')
+    .replaceAll('ŗ', 'r')
+    .replaceAll('Ā', 'A')
+    .replaceAll('Č', 'C')
+    .replaceAll('Ē', 'E')
+    .replaceAll('Ģ', 'G')
+    .replaceAll('Ļ', 'L')
+    .replaceAll('Ķ', 'K')
+    .replaceAll('Ī', 'I')
+    .replaceAll('Ņ', 'N')
+    .replaceAll('Š', 'S')
+    .replaceAll('Ū', 'U')
+    .replaceAll('Ž', 'Z')
+    .replaceAll('Ŗ', 'R')
+}
+
 module.exports = {
   isPositiveInteger,
   centsToEuro,
@@ -109,4 +137,5 @@ module.exports = {
   makeOrderID,
   getDeliveryCost,
   getSubtotal,
+  toEnglishAlphabet,
 }

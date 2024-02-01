@@ -11,6 +11,7 @@ const StaticInformation = ({
   setQuantity,
   onOrder,
   className,
+  eis,
 }) => {
   const selectedLang = useSelector((state) => state.lang.selectedLang)
   const lang = useSelector((state) => state.lang[state.lang.selectedLang])
@@ -37,7 +38,7 @@ const StaticInformation = ({
           />
           <meta
             property="og:url"
-            content={`https://www.maiznica.lv/products/${product.id}`}
+            content={`https://www.maiznica.lv/products/${product.prettyID}`}
           />
         </Helmet>
       )}
@@ -64,43 +65,46 @@ const StaticInformation = ({
               ))}
             </div>
           )}
-
-          {!product.invisible ? (
+          {!eis && (
             <>
-              <Price
-                price={product.price}
-                discount={product.discount}
-                weight={product.weight}
-                bulkPrice={product.bulkPrice}
-                bulkThreshold={product.bulkThreshold}
-                isSmall={false}
-              />
-              {product.outOfStock && (
-                <div className="row p-h-b no-wrap bad align-cross-center">
-                  <Warning
-                    className="icon-b "
-                    style={{ flexShrink: '0' }}
+              {!product.invisible ? (
+                <>
+                  <Price
+                    price={product.price}
+                    discount={product.discount}
+                    weight={product.weight}
+                    bulkPrice={product.bulkPrice}
+                    bulkThreshold={product.bulkThreshold}
+                    isSmall={false}
                   />
-                  <p className="card-text wrap-n">{lang.special_order}</p>
-                </div>
+                  {product.outOfStock && (
+                    <div className="row p-h-b no-wrap bad align-cross-center">
+                      <Warning
+                        className="icon-b "
+                        style={{ flexShrink: '0' }}
+                      />
+                      <p className="card-text wrap-n">{lang.special_order}</p>
+                    </div>
+                  )}
+                  <div className="row align-cross-end">
+                    <Input
+                      value={quantity}
+                      onChange={(event) => setQuantity(event.target.value)}
+                      type="number"
+                      width={150}
+                      className="m-0"
+                    />
+                    <button
+                      className="btn"
+                      onClick={onOrder}>
+                      {lang.add_to_cart}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <p className="hint-text m-m">{lang.currently_unavailable}</p>
               )}
-              <div className="row align-cross-end">
-                <Input
-                  value={quantity}
-                  onChange={(event) => setQuantity(event.target.value)}
-                  type="number"
-                  width={150}
-                  className="m-0"
-                />
-                <button
-                  className="btn"
-                  onClick={onOrder}>
-                  {lang.add_to_cart}
-                </button>
-              </div>
             </>
-          ) : (
-            <p className="hint-text m-m">{lang.currently_unavailable}</p>
           )}
         </div>
         {(product.description.lv ||
@@ -125,14 +129,14 @@ const StaticInformation = ({
                 )}
                 {product.spoonRed && (
                   <img
-                    src="http://karotite.lv/img/bordo-intro-logo.png"
+                    src="https://maiznica.lv/images/bordo-intro-logo.png"
                     width={100}
                     height={66}
                   />
                 )}
                 {product.spoonGreen && (
                   <img
-                    src="http://karotite.lv/img/green-intro-logo.png"
+                    src="https://maiznica.lv/images/green-intro-logo.png"
                     width={100}
                     height={66}
                   />
@@ -238,6 +242,64 @@ const StaticInformation = ({
               {product.EAN}
             </p>
           </div>
+        )}
+        {eis && (
+          <>
+            <div className="card p">
+              <p className="card-text">
+                <b>Alergēni</b>: graudaugi, kas satur lipekli, piens un tā
+                produkti, rieksti un to produkti, sojas pupas un to produkti,
+                olas un to produkti, sezama sēklas un to produkti.
+              </p>
+              <p className="card-text m-t">
+                <b>Uzglabāšanas nosacījumi</b>: uzglabāšanas temperatūra no 3°C
+                līdz 18°C. Uzglabāt sausā un vēsā vietā, neuzglabāt tiešos
+                saules staros.
+              </p>
+              <p className="card-text m-t">
+                <b>Derīgs līdz</b>: skatīt uz iepakojuma.
+              </p>
+            </div>
+            <div className="card p">
+              <p className="card-text">
+                <b>Zīmols</b>: Maiznīca Flora
+              </p>
+              <p className="card-text m-t">
+                <b>Ražotājs</b>: SIA Maiznīca Flora, “Vecvaltes” Krimuldas
+                pagasts, Siguldas novads.
+              </p>
+              <p className="card-text m-t">
+                <b>Izplatītājs un piegādātājs</b>: SIA Maiznīca Flora,
+                “Vecvaltes” Krimuldas pagasts, Siguldas novads, LV2144, e-pasts:
+                flora@maiznica.lv, www.maiznica.lv, tālrunis +37167521291
+              </p>
+              <p className="card-text m-t">
+                <b>Izcelsmes valsts</b>: Latvija
+              </p>
+            </div>
+            <div className="card p">
+              <p className="card-text">
+                <i>
+                  Nosaukums, Zīmols, Marķējums, Daudzums, Izcelsmes valsts,
+                  Ražotājs- Atbilstoši vispārīgo obligāto prasību pārtikas
+                  precēm 10.punktam
+                </i>
+              </p>
+              <p className="card-text m-t">
+                <i>
+                  Daudzums – atbisltoši tehniskās specifikācijas prasībām
+                  pozīcijā.
+                </i>
+              </p>
+              <p className="card-text m-t">
+                <i>
+                  Nosaukums, Sastāvdaļas, Alergēni, Uzturvērtība, Daudzums,
+                  Uzglabāšanas un lietošanas noteikumi, Izcelsmes valsts,
+                  Izplatītājs – Atbilstoši regulas Nr.1169/2011 prasībām
+                </i>
+              </p>
+            </div>
+          </>
         )}
       </div>
     </div>

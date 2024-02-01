@@ -55,6 +55,7 @@ const productSchema = new mongoose.Schema({
       ref: 'Product',
     },
   ],
+  prettyID: String,
 })
 
 productSchema.set('toJSON', {

@@ -56,6 +56,7 @@ import NewCategory from './components/management/NewCategory'
 import NotFoundPage from './components/NotFoundPage'
 import Invoiced from './components/info/Invoiced'
 import { Helmet } from 'react-helmet'
+import ProductManagement from './components/management/ProductManagement'
 
 const baseTheme = {
   main: '#45941e',
@@ -155,6 +156,10 @@ function App() {
                       path="/management"
                       element={<ManagementPage />}>
                       <Route
+                        path="products"
+                        element={<ProductManagement />}
+                      />
+                      <Route
                         path="categories"
                         element={<CategoryManagementPage />}>
                         <Route
@@ -190,7 +195,6 @@ function App() {
                         path="new_category/:categoryId?"
                         element={<NewCategory />}
                       />
-
                       <Route
                         path="settings"
                         element={<SettingsPage />}

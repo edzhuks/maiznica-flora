@@ -23,7 +23,7 @@ const ProductListWithCategories = () => {
       .then((p) => setCategoryData(p))
       .catch((e) => {
         if (e.response.status === 404) {
-          navigate('/not-found')
+          navigate('/not-found', { replace: true })
         }
       })
   }, [category])

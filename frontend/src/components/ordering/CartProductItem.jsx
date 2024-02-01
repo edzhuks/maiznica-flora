@@ -78,14 +78,16 @@ const CartProductItem = ({ inCart, product, quantity }) => {
   return (
     <>
       <tr className="m-d">
-        <td to={`/products/${product.id}`}>
-          <img
-            className="image-xs"
-            src={`https://www.maiznica.lv/images/xs_${product.image}`}
-          />
+        <td>
+          <Link to={`/products/${product.prettyID}`}>
+            <img
+              className="image-xs"
+              src={`https://www.maiznica.lv/images/xs_${product.image}`}
+            />
+          </Link>
         </td>
         <td style={{ width: '100%' }}>
-          <Link to={`/products/${product.id}`}>
+          <Link to={`/products/${product.prettyID}`}>
             <h3 className="product-title-small ">
               {product.name[selectedLang] || product.name.lv}{' '}
               {gramsToKilos(product.weight)}
