@@ -321,6 +321,8 @@ const de = {
   will_receive: 'Empfangen',
   money_accusative: 'Geld',
   sum_too_low: 'Die Summe kann nicht negativ sein',
+  site_name: 'Bäckerei Flora',
+  cert_no: 'Zertifikat Nr:',
 }
 
 export default de

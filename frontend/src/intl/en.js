@@ -315,6 +315,8 @@ const en = {
   will_receive: 'Will earn',
   money_accusative: 'money',
   sum_too_low: 'Total cannot be negative',
+  site_name: 'Bakery Flora',
+  cert_no: 'Certificate No:',
 }
 
 export default en

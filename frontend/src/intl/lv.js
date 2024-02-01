@@ -331,6 +331,7 @@ const lv = {
   money_accusative: 'naudu',
   sum_too_low: 'Kopsumma nevar būt negatīva',
   site_name: 'Maiznīca Flora',
+  cert_no: 'Sertifikāta Nr:',
 }
 
 export default lv

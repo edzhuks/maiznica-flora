@@ -119,7 +119,7 @@ const StaticInformation = ({
               </p>
             )}
             {(product.bio || product.spoonGreen || product.spoonRed) && (
-              <div className="row ">
+              <div className="row align-cross-center">
                 {product.bio && (
                   <img
                     src="https://www.maiznica.lv/images/eurobio.jpg"
@@ -128,18 +128,28 @@ const StaticInformation = ({
                   />
                 )}
                 {product.spoonRed && (
-                  <img
-                    src="https://maiznica.lv/images/bordo-intro-logo.png"
-                    width={100}
-                    height={66}
-                  />
+                  <>
+                    <img
+                      src="https://maiznica.lv/images/bordo-intro-logo.png"
+                      width={100}
+                      height={66}
+                    />
+                    {eis && (
+                      <p className="card-text">{lang.cert_no} 247-80-16/1</p>
+                    )}
+                  </>
                 )}
                 {product.spoonGreen && (
-                  <img
-                    src="https://maiznica.lv/images/green-intro-logo.png"
-                    width={100}
-                    height={66}
-                  />
+                  <>
+                    <img
+                      src="https://maiznica.lv/images/green-intro-logo.png"
+                      width={100}
+                      height={66}
+                    />
+                    {eis && (
+                      <p className="card-text">{lang.cert_no} 88-80-16/4</p>
+                    )}
+                  </>
                 )}
               </div>
             )}
@@ -252,8 +262,8 @@ const StaticInformation = ({
                 olas un to produkti, sezama sēklas un to produkti.
               </p>
               <p className="card-text m-t">
-                <b>Uzglabāšanas nosacījumi</b>: uzglabāšanas temperatūra no 3°C
-                līdz 18°C. Uzglabāt sausā un vēsā vietā, neuzglabāt tiešos
+                <b>Uzglabāšanas nosacījumi</b>: uzglabāšanas temperatūra no 10°C
+                līdz 25°C. Uzglabāt sausā un vēsā vietā, neuzglabāt tiešos
                 saules staros.
               </p>
               <p className="card-text m-t">
