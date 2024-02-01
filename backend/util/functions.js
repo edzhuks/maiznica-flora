@@ -125,6 +125,10 @@ const toEnglishAlphabet = (text) => {
     .replaceAll('Ž', 'Z')
     .replaceAll('Ŗ', 'R')
 }
+const getPrettyProductID = (product) => {
+  const newName = toEnglishAlphabet(product.name.lv).replaceAll(' ', '-')
+  return `${newName}-${t.weight}g`
+}
 
 module.exports = {
   isPositiveInteger,
@@ -138,4 +142,5 @@ module.exports = {
   getDeliveryCost,
   getSubtotal,
   toEnglishAlphabet,
+  getPrettyProductID,
 }

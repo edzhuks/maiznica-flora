@@ -9,7 +9,7 @@ const {
   adminRequired,
   optionalUser,
 } = require('../util/middleware')
-const { isPositiveInteger } = require('../util/functions')
+const { isPositiveInteger, getPrettyProductID } = require('../util/functions')
 const category = require('../models/category')
 const user = require('../models/user')
 const router = express.Router()
@@ -196,6 +196,7 @@ router.post(
   async (req, res) => {
     const createdProduct = new Product(req.body.product)
     createdProduct.invisible = true
+    createdProduct.prettyID = getPrettyProductID(createdProduct)
     await createdProduct.save()
     if (req.body.addToAll) {
       const topCategory = await Category.findById('all')

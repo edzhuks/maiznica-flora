@@ -267,7 +267,7 @@ const StaticInformation = ({
                 saules staros.
               </p>
               <p className="card-text m-t">
-                <b>Derīgs līdz</b>: skatīt uz iepakojuma.
+                <b>Ieteicams līdz</b>: skatīt uz iepakojuma.
               </p>
             </div>
             <div className="card p">
