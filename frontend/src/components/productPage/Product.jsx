@@ -125,7 +125,7 @@ const Product = () => {
   }
   const removeDiscount = () => {
     if (window.confirm(lang.confirm_remove_discount)) {
-      const promise = productService.removeDiscount(id)
+      const promise = productService.removeDiscount(product.id)
       showPromiseToast({
         promise,
         successMessage: lang.toast_discount_removed,
