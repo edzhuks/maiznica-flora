@@ -108,12 +108,12 @@ const Product = () => {
 
   const deleteProduct = () => {
     if (window.confirm(lang.confirm_delete)) {
-      productService.deleteProduct(id).then(navigate('/'))
+      productService.deleteProduct(product.id).then(navigate('/'))
     }
   }
   const { showPromiseToast } = useToast()
   const createDiscount = (discount) => {
-    const promise = productService.makeDiscount(id, discount)
+    const promise = productService.makeDiscount(product.id, discount)
     showPromiseToast({
       promise,
       successMessage: lang.toast_discount_created,
@@ -148,7 +148,7 @@ const Product = () => {
           <div className="row m-d">
             <button
               className="btn"
-              onClick={() => navigate(`/management/new_product/${id}`)}>
+              onClick={() => navigate(`/management/new_product/${product.id}`)}>
               {lang.edit_product}
             </button>
             <button
