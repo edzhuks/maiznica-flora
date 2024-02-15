@@ -323,6 +323,7 @@ const de = {
   sum_too_low: 'Die Summe kann nicht negativ sein',
   site_name: 'Bäckerei Flora',
   cert_no: 'Zertifikat Nr:',
+  print: 'Versandetikett drucken',
 }
 
 export default de

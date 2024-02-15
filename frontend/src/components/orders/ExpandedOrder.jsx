@@ -556,6 +556,16 @@ const ExpandedOrder = ({ withManagement }) => {
                           </a>
                         </p>
                       )}
+                      {order.latestStatus === 'waiting_for_courrier' &&
+                        withManagement && (
+                          <a
+                            className="text-link"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`/shipment_labels/${order.prettyID}.pdf`}>
+                            {lang.print}
+                          </a>
+                        )}
                     </div>
                     <div className="card-divider m-t-s m-d-s" />
                     {order.deliveryMethod === 'pickupPoint' ? (

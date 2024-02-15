@@ -317,6 +317,7 @@ const en = {
   sum_too_low: 'Total cannot be negative',
   site_name: 'Bakery Flora',
   cert_no: 'Certificate No:',
+  print: 'Print label',
 }
 
 export default en

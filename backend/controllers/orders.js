@@ -10,6 +10,7 @@ const { DPD_API_URL, DPD_AUTH_HEADER, FRONTEND_URL } = require('../util/config')
 const router = express.Router()
 const axios = require('axios')
 const Cart = require('../models/cart')
+const fs = require('fs')
 
 const idRequired = async (request, response, next) => {
   if (!request.body.id) {
@@ -129,6 +130,26 @@ router.put(
       )
       order = await updateStatus(req.body.id, 'waiting_for_courrier')
       order.shipmentID = response.data[0].id
+      const labelResponse = await axios.post(
+        `${DPD_API_URL}/shipments/labels`,
+
+        {
+          shipmentIds: [order.shipmentID],
+          downloadLabel: true,
+        },
+
+        DPD_AUTH_HEADER
+      )
+      fs.writeFile(
+        `shipment_labels/${order.prettyID}.pdf`,
+        labelResponse.data.pages[0].binaryData.split(
+          'data:application/pdf;base64,'
+        )[1],
+        'base64',
+        (err) => {
+          console.log(err)
+        }
+      )
       await order.save()
       return res.send(order)
     } catch (e) {
@@ -163,7 +184,7 @@ router.put(
     if (order.shipmentID) {
       console.log(order.shipmentID)
       const response = await axios.get(
-        `${DPD_API_URL}/shipments?ids[]=${order.shipmentID}`,
+        `${DPD_API_URL}/shipments?ids[]=${order.shipmentID}&status[]=pending&status[]=not_printed&status[]=not_booked`,
         DPD_AUTH_HEADER
       )
       console.log(response.data)
@@ -220,6 +241,7 @@ router.get('/all', userExtractor, adminRequired, async (req, res) => {
   }).populate([{ path: 'content', populate: { path: 'product' } }])
   res.send(orders)
 })
+
 router.get('/:id', userExtractor, async (req, res) => {
   const order = await Order.findOne({
     _id: req.params.id,

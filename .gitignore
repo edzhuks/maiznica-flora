@@ -2,6 +2,7 @@
 **/.env
 **/build
 backend/images
+backend/shipment_labels
 backend/log
 backend/greenlock.d
 backend/.greenlockrc

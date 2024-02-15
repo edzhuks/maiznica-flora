@@ -332,6 +332,7 @@ const lv = {
   sum_too_low: 'Kopsumma nevar būt negatīva',
   site_name: 'Maiznīca Flora',
   cert_no: 'Sertifikāta Nr:',
+  print: 'Drukāt pavadlapu',
 }
 
 export default lv
