@@ -889,7 +889,6 @@ input:disabled {
 .product-image-small:hover img {
   z-index: 3000;
   transform: scale(1.5) translateY(-40px);
-  filter: drop-shadow(0 0.2rem 0.3rem var(--main));
 }
 .product-title-small {
   font-size: 1rem;
