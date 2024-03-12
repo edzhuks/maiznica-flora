@@ -109,6 +109,7 @@ const StaticInformation = ({
         </div>
         {(product.description.lv ||
           product.bio ||
+          product.ingredients.lv ||
           product.spoonGreen ||
           product.spoonRed ||
           product.expiration) && (
