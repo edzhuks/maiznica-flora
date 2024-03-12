@@ -23,7 +23,6 @@ router.post(
   upload.single('image'),
   async (req, res) => {
     const image = req.file
-    res.status(201).send({ path: `${image.originalname}` })
     await sharp(image.buffer).toFile(`images/${image.originalname}`)
     await sharp(image.buffer)
       .resize(55, 55, { fit: 'inside' })

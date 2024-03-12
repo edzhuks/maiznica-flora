@@ -127,7 +127,7 @@ const toEnglishAlphabet = (text) => {
 }
 const getPrettyProductID = (product) => {
   const newName = toEnglishAlphabet(product.name.lv).replaceAll(' ', '-')
-  return `${newName}-${t.weight}g`
+  return `${newName}-${product.weight}g`
 }
 
 module.exports = {
